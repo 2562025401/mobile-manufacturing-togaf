@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图5-7 容灾架构</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">容灾备份架构 — 同城双活 + 异地灾备 + 3-2-1备份策略</div>
+<svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+  <marker id="arrow-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#94a3b8"/></marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#059669"/></marker>
+</defs>
+<rect width="1200" height="720" fill="#f8fafc"/><rect width="1200" height="720" fill="url(#grid)"/>
+<text x="600" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">容灾备份架构 — 同城双活 + 异地灾备 + 3-2-1备份策略 + 分级容灾</text>
+
+<!-- ===== A: 同城双活 ===== -->
+<rect x="40" y="50" width="540" height="240" rx="8" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.15)" stroke-width="1.5"/>
+<rect x="40" y="50" width="540" height="32" rx="8" fill="rgba(16,185,129,.08)"/>
+<text x="310" y="71" text-anchor="middle" fill="#065f46" font-size="13" font-weight="600">同城双活 — Active-Active (距离 30km)</text>
+
+<!-- AZ1 -->
+<rect x="60" y="94" width="230" height="140" rx="5" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.12)" stroke-width="1"/>
+<rect x="60" y="94" width="230" height="22" rx="5" fill="rgba(16,185,129,.1)"/>
+<text x="175" y="110" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">AZ1 — 主可用区</text>
+<text x="75" y="130" fill="#475569" font-size="8">• SAP S/4HANA ERP (主)</text>
+<text x="75" y="146" fill="#475569" font-size="8">• CRM · PLM · MES</text>
+<text x="75" y="162" fill="#475569" font-size="8">• MySQL Cluster (主)</text>
+<text x="75" y="178" fill="#475569" font-size="8">• Redis Cluster (主)</text>
+<text x="75" y="194" fill="#475569" font-size="8">• Kafka (主)</text>
+<text x="75" y="210" fill="#475569" font-size="8">• 计算: 3000 vCPU</text>
+<text x="75" y="226" fill="#475569" font-size="8">• 存储: 200TB NVMe</text>
+
+<!-- Arrow sync -->
+<path d="M 290 164 L 318 164" stroke="#059669" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+<text x="304" y="158" text-anchor="middle" fill="#059669" font-size="7" font-weight="600">同步</text>
+<text x="304" y="174" text-anchor="middle" fill="#059669" font-size="7">&lt;1ms</text>
+
+<!-- AZ2 -->
+<rect x="320" y="94" width="230" height="140" rx="5" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.12)" stroke-width="1"/>
+<rect x="320" y="94" width="230" height="22" rx="5" fill="rgba(16,185,129,.1)"/>
+<text x="435" y="110" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">AZ2 — 备可用区</text>
+<text x="335" y="130" fill="#475569" font-size="8">• SAP S/4HANA ERP (备)</text>
+<text x="335" y="146" fill="#475569" font-size="8">• CRM · PLM · MES (备)</text>
+<text x="335" y="162" fill="#475569" font-size="8">• MySQL Cluster (备)</text>
+<text x="335" y="178" fill="#475569" font-size="8">• Redis Cluster (备)</text>
+<text x="335" y="194" fill="#475569" font-size="8">• Kafka (备)</text>
+<text x="335" y="210" fill="#475569" font-size="8">• 计算: 3000 vCPU</text>
+<text x="335" y="226" fill="#475569" font-size="8">• 存储: 200TB NVMe</text>
+
+<!-- DR Level -->
+<rect x="60" y="246" width="490" height="32" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="305" y="266" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">RPO = 0 · RTO &lt; 5min · 自动故障切换 · AZ级故障100%覆盖</text>
+
+<!-- ===== B: 异地灾备 ===== -->
+<rect x="620" y="50" width="540" height="240" rx="8" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.15)" stroke-width="1.5"/>
+<rect x="620" y="50" width="540" height="32" rx="8" fill="rgba(59,130,246,.08)"/>
+<text x="890" y="71" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="600">异地灾备 — Active-Passive (距离 &gt;500km)</text>
+
+<!-- Production Site -->
+<rect x="640" y="94" width="230" height="140" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.12)" stroke-width="1"/>
+<rect x="640" y="94" width="230" height="22" rx="5" fill="rgba(59,130,246,.1)"/>
+<text x="755" y="110" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">生产中心 — 深圳</text>
+<text x="655" y="130" fill="#475569" font-size="8">• 全量核心系统运行</text>
+<text x="655" y="146" fill="#475569" font-size="8">• SAP · CRM · PLM · MES</text>
+<text x="655" y="162" fill="#475569" font-size="8">• 数据实时写入主库</text>
+<text x="655" y="178" fill="#475569" font-size="8">• 业务时延 &lt;5ms</text>
+<text x="655" y="194" fill="#475569" font-size="8">• 7x24 生产级运营</text>
+
+<!-- Arrow async -->
+<path d="M 870 164 L 898 164" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-dash)"/>
+<text x="884" y="158" text-anchor="middle" fill="#94a3b8" font-size="7" font-weight="600">异步</text>
+<text x="884" y="174" text-anchor="middle" fill="#94a3b8" font-size="7">RPO&lt;15min</text>
+
+<!-- DR Site -->
+<rect x="900" y="94" width="230" height="140" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.12)" stroke-width="1"/>
+<rect x="900" y="94" width="230" height="22" rx="5" fill="rgba(59,130,246,.1)"/>
+<text x="1015" y="110" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">灾备中心 — 成都</text>
+<text x="915" y="130" fill="#475569" font-size="8">• 核心系统冷备/温备</text>
+<text x="915" y="146" fill="#475569" font-size="8">• 数据库异步复制</text>
+<text x="915" y="162" fill="#475569" font-size="8">• 数据延迟 &lt;15min</text>
+<text x="915" y="178" fill="#475569" font-size="8">• 季度容灾演练</text>
+<text x="915" y="194" fill="#475569" font-size="8">• 容灾拉起 RTO&lt;2h</text>
+
+<rect x="640" y="246" width="490" height="32" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="885" y="266" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">RPO &lt; 15min · RTO &lt; 2h · 季度容灾演练 · 年故障切换≥1次</text>
+
+<!-- Connector between sites -->
+<path d="M 310 290 L 310 308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="600" y="280" text-anchor="middle" fill="#64748b" font-size="8">核心系统同城双活</text>
+<path d="M 890 290 L 890 308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="600" y="296" text-anchor="middle" fill="#64748b" font-size="8">全量数据异地灾备</text>
+
+<!-- ===== C: 3-2-1 备份策略 ===== -->
+<rect x="40" y="316" width="540" height="170" rx="8" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.15)" stroke-width="1.5"/>
+<rect x="40" y="316" width="540" height="30" rx="8" fill="rgba(245,158,11,.08)"/>
+<text x="310" y="336" text-anchor="middle" fill="#92400e" font-size="12" font-weight="600">3-2-1 备份策略</text>
+
+<rect x="60" y="354" width="150" height="50" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="135" y="370" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">3份副本</text>
+<text x="135" y="390" text-anchor="middle" fill="#475569" font-size="8">原始+本地+异地</text>
+
+<rect x="230" y="354" width="150" height="50" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="305" y="370" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">2种介质</text>
+<text x="305" y="390" text-anchor="middle" fill="#475569" font-size="8">SSD/HDD+磁带/云</text>
+
+<rect x="400" y="354" width="150" height="50" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="475" y="370" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">1份异地</text>
+<text x="475" y="390" text-anchor="middle" fill="#475569" font-size="8">至少1份异地存储</text>
+
+<text x="60" y="422" fill="#0f172a" font-size="9" font-weight="600">备份策略:</text>
+<text x="140" y="422" fill="#475569" font-size="8">全量备份(周) + 增量备份(日) + 日志备份(15min)</text>
+<text x="60" y="440" fill="#475569" font-size="8">• 核心交易库: 全量每日 · 归档日志每15min · 保留90天</text>
+<text x="60" y="458" fill="#475569" font-size="8">• 文件/文档: 全量每周 · 增量每日 · 保留180天</text>
+<text x="60" y="476" fill="#475569" font-size="8">• 备份校验: 自动校验+季度恢复演练</text>
+
+<!-- ===== D: 分级容灾 ===== -->
+<rect x="620" y="316" width="540" height="170" rx="8" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.15)" stroke-width="1.5"/>
+<rect x="620" y="316" width="540" height="30" rx="8" fill="rgba(139,92,246,.08)"/>
+<text x="890" y="336" text-anchor="middle" fill="#6d28d9" font-size="12" font-weight="600">分级容灾 — Graded DR Levels</text>
+
+<rect x="640" y="356" width="490" height="22" rx="3" fill="rgba(239,68,68,.06)"/><text x="885" y="371" text-anchor="middle" fill="#b91c1c" font-size="8" font-weight="500">L5: 同城双活 · RPO=0 · RTO&lt;5min · 核心交易(ERP/PLM/CRM/MDM)</text>
+<rect x="640" y="382" width="490" height="22" rx="3" fill="rgba(245,158,11,.06)"/><text x="885" y="397" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">L4: 异地灾备 · RPO&lt;15min · RTO&lt;2h · 数据平台(MDM/数仓)</text>
+<rect x="640" y="408" width="490" height="22" rx="3" fill="rgba(59,130,246,.06)"/><text x="885" y="423" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="500">L3: 本地高可用 · RPO&lt;1h · RTO&lt;4h · 区域系统(OMS/WMS)</text>
+<rect x="640" y="434" width="490" height="22" rx="3" fill="rgba(99,102,241,.06)"/><text x="885" y="449" text-anchor="middle" fill="#4338ca" font-size="8" font-weight="500">L2: 本地备份 · RPO&lt;24h · RTO&lt;48h · 非核心系统</text>
+<rect x="640" y="460" width="490" height="22" rx="3" fill="rgba(148,163,184,.06)"/><text x="885" y="475" text-anchor="middle" fill="#475569" font-size="8" font-weight="500">L1: 无灾备要求 · 边缘/测试/临时系统</text>
+
+<!-- ===== Bottom: DR Matrix ===== -->
+<path d="M 310 486 L 310 502" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M 890 486 L 890 502" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="510" width="1120" height="100" rx="8" fill="rgba(14,165,233,.03)" stroke="rgba(14,165,233,.1)" stroke-width="1"/>
+<text x="600" y="534" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="600">容灾矩阵 — DR Matrix</text>
+
+<rect x="60" y="548" width="140" height="24" rx="3" fill="rgba(14,165,233,.08)"/><text x="130" y="564" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">容灾等级</text>
+<rect x="210" y="548" width="160" height="24" rx="3" fill="rgba(14,165,233,.08)"/><text x="290" y="564" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">覆盖系统</text>
+<rect x="380" y="548" width="100" height="24" rx="3" fill="rgba(14,165,233,.08)"/><text x="430" y="564" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">RPO</text>
+<rect x="490" y="548" width="100" height="24" rx="3" fill="rgba(14,165,233,.08)"/><text x="540" y="564" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">RTO</text>
+<rect x="600" y="548" width="240" height="24" rx="3" fill="rgba(14,165,233,.08)"/><text x="720" y="564" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">技术方案</text>
+
+<rect x="60" y="576" width="140" height="24" rx="3" fill="rgba(239,68,68,.04)"/><text x="130" y="592" text-anchor="middle" fill="#b91c1c" font-size="7.5" font-weight="500">L5 同城双活</text>
+<rect x="210" y="576" width="160" height="24" rx="3" fill="rgba(239,68,68,.04)"/><text x="290" y="592" text-anchor="middle" fill="#475569" font-size="7.5">ERP/PLM/CRM/MDM</text>
+<rect x="380" y="576" width="100" height="24" rx="3" fill="rgba(239,68,68,.04)"/><text x="430" y="592" text-anchor="middle" fill="#b91c1c" font-size="7.5">RPO=0</text>
+<rect x="490" y="576" width="100" height="24" rx="3" fill="rgba(239,68,68,.04)"/><text x="540" y="592" text-anchor="middle" fill="#b91c1c" font-size="7.5">&lt;5min</text>
+<rect x="600" y="576" width="240" height="24" rx="3" fill="rgba(239,68,68,.04)"/><text x="720" y="592" text-anchor="middle" fill="#475569" font-size="7.5">Oracle DataGuard + 应用双活</text>
+
+<rect x="60" y="604" width="140" height="24" rx="3" fill="rgba(59,130,246,.04)"/><text x="130" y="619" text-anchor="middle" fill="#1e40af" font-size="7.5" font-weight="500">L4 异地灾备</text>
+<rect x="210" y="604" width="160" height="24" rx="3" fill="rgba(59,130,246,.04)"/><text x="290" y="619" text-anchor="middle" fill="#475569" font-size="7.5">数据平台/数仓</text>
+<rect x="380" y="604" width="100" height="24" rx="3" fill="rgba(59,130,246,.04)"/><text x="430" y="619" text-anchor="middle" fill="#1e40af" font-size="7.5">&lt;15min</text>
+<rect x="490" y="604" width="100" height="24" rx="3" fill="rgba(59,130,246,.04)"/><text x="540" y="619" text-anchor="middle" fill="#1e40af" font-size="7.5">&lt;2h</text>
+<rect x="600" y="604" width="240" height="24" rx="3" fill="rgba(59,130,246,.04)"/><text x="720" y="619" text-anchor="middle" fill="#475569" font-size="7.5">MySQL Binlog/Canal异步复制</text>
+
+<!-- Legend -->
+<rect x="40" y="626" width="1120" height="22" rx="4" fill="rgba(99,102,241,.025)" stroke="rgba(99,102,241,.06)" stroke-width=".5"/>
+<rect x="60" y="630" width="8" height="8" rx="2" fill="rgba(16,185,129,.25)"/><text x="72" y="638" fill="#475569" font-size="7.5">同城双活</text>
+<rect x="170" y="630" width="8" height="8" rx="2" fill="rgba(59,130,246,.25)"/><text x="182" y="638" fill="#475569" font-size="7.5">异地灾备</text>
+<rect x="280" y="630" width="8" height="8" rx="2" fill="rgba(245,158,11,.25)"/><text x="292" y="638" fill="#475569" font-size="7.5">3-2-1备份</text>
+<rect x="380" y="630" width="8" height="8" rx="2" fill="rgba(139,92,246,.25)"/><text x="392" y="638" fill="#475569" font-size="7.5">分级容灾</text>
+<text x="500" y="638" fill="#475569" font-size="7.5">总目标: 核心系统 RPO=0, RTO&lt;5min · 全量数据不丢 · 季度实战演练</text>
+
+<!-- Bottom -->
+<rect x="40" y="656" width="1120" height="30" rx="6" fill="rgba(239,68,68,.03)" stroke="rgba(239,68,68,.08)" stroke-width="1"/>
+<text x="600" y="675" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">容灾总投资: ¥5000万+ · 年运营: ¥800万 · 覆盖12个核心系统 · 年演练12次 · 等保2.0三级</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-7_容灾架构.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-7_容灾架构.pdf');});}
+</script>
+</body>
+</html>

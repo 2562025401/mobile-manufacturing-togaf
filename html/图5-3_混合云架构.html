@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图5-3 混合云架构</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">混合云/多云架构 — Hybrid & Multi-Cloud Strategy</div>
+<svg viewBox="0 0 1250 740" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+  <marker id="arrow-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#94a3b8"/></marker>
+</defs>
+<rect width="1250" height="740" fill="#f8fafc"/><rect width="1250" height="740" fill="url(#grid)"/>
+<text x="625" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">混合云/多云架构 — 私有云 + 公有云 + 多云管理平台</text>
+
+<!-- ===== A: PRIVATE CLOUD ===== -->
+<rect x="40" y="50" width="520" height="460" rx="10" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.2)" stroke-width="1.5" stroke-dasharray="6,3"/>
+<rect x="40" y="50" width="520" height="32" rx="10" fill="rgba(59,130,246,.08)"/>
+<text x="300" y="71" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="600">私有云 — Private Cloud (核心交易与数据)</text>
+
+<!-- Security zone label -->
+<rect x="60" y="92" width="480" height="22" rx="4" fill="rgba(239,68,68,.06)"/>
+<text x="300" y="108" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="500">安全隔离区 · 物理隔离 · 专属硬件 · SOC2 Type II</text>
+
+<!-- ERP Block -->
+<rect x="60" y="124" width="230" height="86" rx="5" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.15)" stroke-width="1"/>
+<rect x="60" y="124" width="230" height="22" rx="5" fill="rgba(16,185,129,.12)"/>
+<text x="175" y="140" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">核心交易</text>
+<text x="75" y="158" fill="#475569" font-size="8.5">• ERP: SAP S/4HANA (财务/供应链/制造)</text>
+<text x="75" y="174" fill="#475569" font-size="8.5">• PLM: Siemens Teamcenter (产品生命周期)</text>
+<text x="75" y="190" fill="#475569" font-size="8.5">• MES: 自研 (生产过程执行)</text>
+<text x="75" y="206" fill="#475569" font-size="8.5">• CRM: Salesforce (国内版·数据不出境)</text>
+
+<!-- Data Block -->
+<rect x="310" y="124" width="230" height="86" rx="5" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.15)" stroke-width="1"/>
+<rect x="310" y="124" width="230" height="22" rx="5" fill="rgba(139,92,246,.12)"/>
+<text x="425" y="140" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">主数据与数据平台</text>
+<text x="325" y="158" fill="#475569" font-size="8.5">• MDM: 产品/客户/供应商/组织</text>
+<text x="325" y="174" fill="#475569" font-size="8.5">• EDW: Teradata / ClickHouse 数仓</text>
+<text x="325" y="190" fill="#475569" font-size="8.5">• 数据湖: MinIO + Spark (历史数据)</text>
+<text x="325" y="206" fill="#475569" font-size="8.5">• BI: Power BI / Tableau 报表分析</text>
+
+<!-- Integration Block -->
+<rect x="60" y="222" width="480" height="70" rx="5" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.12)" stroke-width="1"/>
+<text x="300" y="242" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">私有云集成服务</text>
+<text x="75" y="260" fill="#475569" font-size="8.5">• 企业服务总线: IBM MQ / RabbitMQ · 接口网关: Kong / APISIX</text>
+<text x="75" y="278" fill="#475569" font-size="8.5">• 数据同步: CDC (Debezium) · ETL (Informatica) · 批次同步</text>
+
+<!-- Private Cloud infra -->
+<rect x="60" y="302" width="480" height="70" rx="5" fill="rgba(99,102,241,.04)" stroke="rgba(99,102,241,.12)" stroke-width="1"/>
+<text x="300" y="322" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">基础设施 (On-Premise / 托管私有云)</text>
+<text x="75" y="340" fill="#475569" font-size="8.5">• VMware vSphere 8 · NSX · vSAN · 全闪存NVMe存储</text>
+<text x="75" y="358" fill="#475569" font-size="8.5">• 裸金属: SAP HANA专用服务器 · Oracle RAC节点</text>
+
+<!-- Private Cloud capacity -->
+<rect x="60" y="382" width="480" height="52" rx="5" fill="rgba(99,102,241,.06)" stroke="rgba(99,102,241,.12)" stroke-width="1"/>
+<text x="75" y="400" fill="#0f172a" font-size="9" font-weight="600">容量: vCPU 3500+ · 内存 15TB · 存储 500TB+ · GPU A100×8</text>
+<text x="75" y="420" fill="#0f172a" font-size="9" font-weight="600">定位: 承载不可上公有云的"核心交易+敏感数据+主数据"</text>
+
+<!-- ===== B: PUBLIC CLOUD ===== -->
+<rect x="600" y="50" width="610" height="360" rx="10" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.2)" stroke-width="1.5" stroke-dasharray="6,3"/>
+<rect x="600" y="50" width="610" height="32" rx="10" fill="rgba(16,185,129,.08)"/>
+<text x="905" y="71" text-anchor="middle" fill="#065f46" font-size="14" font-weight="600">公有云 — Public Cloud (弹性 + 海外)</text>
+
+<!-- AWS Block -->
+<rect x="620" y="94" width="280" height="148" rx="5" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.12)" stroke-width="1"/>
+<rect x="620" y="94" width="280" height="22" rx="5" fill="rgba(245,158,11,.1)"/>
+<text x="760" y="110" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">AWS — 海外区域</text>
+<text x="635" y="130" fill="#475569" font-size="8.5">• EKS (K8s) 生产集群</text>
+<text x="635" y="146" fill="#475569" font-size="8.5">• RDS (Aurora/PostgreSQL)</text>
+<text x="635" y="162" fill="#475569" font-size="8.5">• ElastiCache (Redis)</text>
+<text x="635" y="178" fill="#475569" font-size="8.5">• S3 + CloudFront CDN</text>
+<text x="635" y="194" fill="#475569" font-size="8.5">• Lambda + API Gateway</text>
+<text x="635" y="210" fill="#475569" font-size="8.5">• LTC: OMS · WMS · 海外电商</text>
+<text x="635" y="226" fill="#475569" font-size="8.5">• WAF + Shield (DDoS防护)</text>
+<text x="635" y="242" fill="#475569" font-size="8.5">• 区域: us-east-1 · eu-west-1 · ap-southeast-1</text>
+
+<!-- AliCloud Block -->
+<rect x="920" y="94" width="270" height="148" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.12)" stroke-width="1"/>
+<rect x="920" y="94" width="270" height="22" rx="5" fill="rgba(59,130,246,.1)"/>
+<text x="1055" y="110" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">阿里云 — 国内弹性</text>
+<text x="935" y="130" fill="#475569" font-size="8.5">• ACK (K8s) 弹性集群</text>
+<text x="935" y="146" fill="#475569" font-size="8.5">• PolarDB + RDS 数据库</text>
+<text x="935" y="162" fill="#475569" font-size="8.5">• Redis · Kafka · RocketMQ</text>
+<text x="935" y="178" fill="#475569" font-size="8.5">• OSS + CDN (静态资源)</text>
+<text x="935" y="194" fill="#475569" font-size="8.5">• MaxCompute (大数据)</text>
+<text x="935" y="210" fill="#475569" font-size="8.5">• LTC: 渠道门户 · 营销活动</text>
+<text x="935" y="226" fill="#475569" font-size="8.5">• WAF + Anti-DDoS</text>
+<text x="935" y="242" fill="#475569" font-size="8.5">• Region: 华东2 · 华南1 · 华北2</text>
+
+<!-- Public Cloud Services -->
+<rect x="620" y="254" width="570" height="70" rx="5" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.12)" stroke-width="1"/>
+<text x="905" y="274" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">公有云共享服务层</text>
+<text x="635" y="294" fill="#475569" font-size="8.5">• 对象存储 (S3/OSS) · CDN · DNS (Route53/云解析) · 证书管理 (ACM/CAS)</text>
+<text x="635" y="312" fill="#475569" font-size="8.5">• 监控: CloudWatch/Arm sli · 日志: CloudTrail/SLS · 告警: SNS/云监控</text>
+
+<!-- Multi-Cloud Management -->
+<rect x="600" y="422" width="610" height="88" rx="8" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.18)" stroke-width="1.5"/>
+<rect x="600" y="422" width="610" height="26" rx="8" fill="rgba(139,92,246,.08)"/>
+<text x="905" y="440" text-anchor="middle" fill="#6d28d9" font-size="11" font-weight="600">多云管理平台 — Multi-Cloud Management</text>
+<text x="620" y="462" fill="#475569" font-size="8.5">• 统一控制面: VMware Aria / HashiCorp Terraform Cloud · 跨云资源编排</text>
+<text x="620" y="478" fill="#475569" font-size="8.5">• 成本管理: CloudHealth + FinOps · 安全策略: Prisma Cloud (跨云)</text>
+<text x="620" y="494" fill="#475569" font-size="8.5">• 统一监控: Datadog · 统一日志: ELK · 统一告警: PagerDuty</text>
+
+<!-- ===== C: SYSTEM PLACEMENT MATRIX ===== -->
+<rect x="40" y="522" width="1170" height="196" rx="8" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.12)" stroke-width="1"/>
+<text x="625" y="546" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">系统部署矩阵 — System Placement Matrix</text>
+
+<!-- Matrix header -->
+<rect x="60" y="558" width="140" height="30" rx="3" fill="rgba(99,102,241,.08)"/><text x="130" y="577" text-anchor="middle" fill="#4338ca" font-size="9" font-weight="600">业务系统</text>
+<rect x="208" y="558" width="130" height="30" rx="3" fill="rgba(16,185,129,.08)"/><text x="273" y="577" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">私有云</text>
+<rect x="346" y="558" width="130" height="30" rx="3" fill="rgba(245,158,11,.08)"/><text x="411" y="577" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">公有云(AWS)</text>
+<rect x="484" y="558" width="130" height="30" rx="3" fill="rgba(59,130,246,.08)"/><text x="549" y="577" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">公有云(阿里)</text>
+<rect x="622" y="558" width="130" height="30" rx="3" fill="rgba(139,92,246,.08)"/><text x="687" y="577" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">边缘(工厂)</text>
+<rect x="760" y="558" width="150" height="30" rx="3" fill="rgba(14,165,233,.08)"/><text x="835" y="577" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">协同模式</text>
+<rect x="918" y="558" width="272" height="30" rx="3" fill="rgba(99,102,241,.08)"/><text x="1054" y="577" text-anchor="middle" fill="#4338ca" font-size="9" font-weight="600">说明</text>
+
+<!-- Row template function via SVG reuse -->
+<!-- Row 1 -->
+<rect x="60" y="592" width="140" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="130" y="609" text-anchor="middle" fill="#1e293b" font-size="8.5" font-weight="500">ERP (SAP S/4HANA)</text>
+<rect x="208" y="592" width="130" height="26" rx="2" fill="rgba(16,185,129,.12)"/><text x="273" y="609" text-anchor="middle" fill="#065f46" font-size="8.5">★ 核心部署</text>
+<rect x="346" y="592" width="130" height="26" rx="2" fill="rgba(245,158,11,.04)"/><text x="411" y="609" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="484" y="592" width="130" height="26" rx="2" fill="rgba(59,130,246,.04)"/><text x="549" y="609" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="622" y="592" width="130" height="26" rx="2" fill="rgba(139,92,246,.04)"/><text x="687" y="609" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="760" y="592" width="150" height="26" rx="2" fill="rgba(14,165,233,.04)"/><text x="835" y="609" text-anchor="middle" fill="#0369a1" font-size="8.5">私有云唯一承载</text>
+<rect x="918" y="592" width="272" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="1054" y="609" text-anchor="middle" fill="#475569" font-size="8">核心交易不可上公有云</text>
+
+<!-- Row 2 -->
+<rect x="60" y="622" width="140" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="130" y="639" text-anchor="middle" fill="#1e293b" font-size="8.5" font-weight="500">PLM (Teamcenter)</text>
+<rect x="208" y="622" width="130" height="26" rx="2" fill="rgba(16,185,129,.12)"/><text x="273" y="639" text-anchor="middle" fill="#065f46" font-size="8.5">★ 核心部署</text>
+<rect x="346" y="622" width="130" height="26" rx="2" fill="rgba(245,158,11,.04)"/><text x="411" y="639" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="484" y="622" width="130" height="26" rx="2" fill="rgba(59,130,246,.04)"/><text x="549" y="639" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="622" y="622" width="130" height="26" rx="2" fill="rgba(139,92,246,.04)"/><text x="687" y="639" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="760" y="622" width="150" height="26" rx="2" fill="rgba(14,165,233,.04)"/><text x="835" y="639" text-anchor="middle" fill="#0369a1" font-size="8.5">私有云唯一承载</text>
+<rect x="918" y="622" width="272" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="1054" y="639" text-anchor="middle" fill="#475569" font-size="8">产品数据·高密级IP</text>
+
+<!-- Row 3 -->
+<rect x="60" y="652" width="140" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="130" y="669" text-anchor="middle" fill="#1e293b" font-size="8.5" font-weight="500">国内CRM</text>
+<rect x="208" y="652" width="130" height="26" rx="2" fill="rgba(16,185,129,.12)"/><text x="273" y="669" text-anchor="middle" fill="#065f46" font-size="8.5">★ 核心部署</text>
+<rect x="346" y="652" width="130" height="26" rx="2" fill="rgba(245,158,11,.04)"/><text x="411" y="669" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="484" y="652" width="130" height="26" rx="2" fill="rgba(59,130,246,.04)"/><text x="549" y="669" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="622" y="652" width="130" height="26" rx="2" fill="rgba(139,92,246,.04)"/><text x="687" y="669" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="760" y="652" width="150" height="26" rx="2" fill="rgba(14,165,233,.04)"/><text x="835" y="669" text-anchor="middle" fill="#0369a1" font-size="8.5">数据不出境</text>
+<rect x="918" y="652" width="272" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="1054" y="669" text-anchor="middle" fill="#475569" font-size="8">国内客户数据合规</text>
+
+<!-- Row 4 -->
+<rect x="60" y="682" width="140" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="130" y="699" text-anchor="middle" fill="#1e293b" font-size="8.5" font-weight="500">海外OMS/WMS</text>
+<rect x="208" y="682" width="130" height="26" rx="2" fill="rgba(16,185,129,.04)"/><text x="273" y="699" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="346" y="682" width="130" height="26" rx="2" fill="rgba(245,158,11,.12)"/><text x="411" y="699" text-anchor="middle" fill="#92400e" font-size="8.5">★ 核心部署</text>
+<rect x="484" y="682" width="130" height="26" rx="2" fill="rgba(59,130,246,.04)"/><text x="549" y="699" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="622" y="682" width="130" height="26" rx="2" fill="rgba(139,92,246,.04)"/><text x="687" y="699" text-anchor="middle" fill="#94a3b8" font-size="8.5">—</text>
+<rect x="760" y="682" width="150" height="26" rx="2" fill="rgba(14,165,233,.04)"/><text x="835" y="699" text-anchor="middle" fill="#0369a1" font-size="8.5">AWS原生部署</text>
+<rect x="918" y="682" width="272" height="26" rx="2" fill="rgba(99,102,241,.04)"/><text x="1054" y="699" text-anchor="middle" fill="#475569" font-size="8">海外区域·全球覆盖</text>
+
+<!-- Legend -->
+<rect x="40" y="720" width="1170" height="16" rx="3" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width=".5"/>
+<text x="625" y="732" text-anchor="middle" fill="#475569" font-size="8">策略: 核心交易/敏感数据→私有云 · 弹性/海外/非敏感→公有云 · 实时处理→边缘 · 多云统一管理</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-3_混合云架构.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-3_混合云架构.pdf');});}
+</script>
+</body>
+</html>

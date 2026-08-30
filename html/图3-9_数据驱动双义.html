@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-9 数据驱动双义与数据链视图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#f8fafc;
+  font-family:'JetBrains Mono','Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;
+  padding:24px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100vh
+}
+.toolbar{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:8px;
+  padding:8px 14px;
+  align-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04)
+}
+.toolbar .label{
+  font-size:12px;
+  color:#64748b;
+  margin-right:6px;
+  font-weight:500
+}
+.toolbar button{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:6px 14px;
+  border:1px solid #e2e8f0;
+  border-radius:6px;
+  background:#fff;
+  color:#1e293b;
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all 0.15s
+}
+.toolbar button:hover{
+  background:#f1f5f9;
+  border-color:#cbd5e1
+}
+.toolbar button:active{
+  background:#e2e8f0
+}
+.toolbar button svg{
+  width:14px;
+  height:14px;
+  flex-shrink:0
+}
+#diagram{
+  width:1120px;
+  max-width:100%;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 24px rgba(15,23,42,0.05);
+  background:#fff;
+  line-height:1.2
+}
+#diagram svg{
+  display:block;
+  width:100%;
+  height:auto
+}
+.toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:#0f172a;
+  color:#fff;
+  padding:10px 24px;
+  border-radius:8px;
+  font-size:13px;
+  opacity:0;
+  transition:all 0.3s;
+  pointer-events:none;
+  z-index:9999;
+  font-family:inherit
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0)
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="label">Export</span>
+  <button onclick="copyDiagram()" title="Copy as PNG to clipboard">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="10" height="10" rx="1.5"/><path d="M5 5V3.5A1.5 1.5 0 0 1 6.5 2h3A1.5 1.5 0 0 1 11 3.5V5"/></svg>
+    Copy
+  </button>
+  <button onclick="downloadPNG()" title="Download PNG image">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1.5"/><circle cx="5.5" cy="5.5" r="1"/><path d="m2 10 3-3 2 2 3-3 4 4v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+    PNG
+  </button>
+  <button onclick="downloadPDF()" title="Download PDF document">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h5l4 4v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M9 2v4h4"/><path d="M5 11h6M5 8h4M5 14h6"/></svg>
+    PDF
+  </button>
+</div>
+
+<div id="diagram">
+  <svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <rect width="20" height="20" fill="#ffffff"/>
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <filter id="shadowSm" x="-4%" y="-4%" width="108%" height="116%">
+        <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.05"/>
+      </filter>
+      <filter id="shadowMd" x="-4%" y="-4%" width="108%" height="116%">
+        <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.06"/>
+      </filter>
+      <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+        <polygon points="0 0,8 3,0 6" fill="#94a3b8"/>
+      </marker>
+      <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+        <polygon points="0 0,8 3,0 6" fill="#3b82f6"/>
+      </marker>
+      <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+        <polygon points="0 0,8 3,0 6" fill="#10b981"/>
+      </marker>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1300" height="780" fill="url(#grid)"/>
+
+    <!-- ===== HEADER ===== -->
+    <rect x="0" y="0" width="1300" height="82" fill="#f8fafc"/>
+    <text x="650" y="38" text-anchor="middle" fill="#0f172a" font-size="23" font-weight="700" letter-spacing="1">数据驱动双义与数据链视图</text>
+    <text x="650" y="65" text-anchor="middle" fill="#475569" font-size="14" font-weight="400">事后分析 vs 事中嵌入 · 流向反转 · LTC三场景</text>
+
+    <!-- ===== LEFT PANEL ===== -->
+    <g transform="translate(30,95)">
+      <rect x="0" y="0" width="565" height="335" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowSm)"/>
+      <rect x="0" y="0" width="5" height="335" rx="2.5" fill="#3b82f6"/>
+
+      <!-- Panel title -->
+      <text x="282" y="34" text-anchor="middle" fill="#0f172a" font-size="17" font-weight="700">数据驱动决策（事后分析）</text>
+      <!-- Time tag -->
+      <rect x="205" y="46" width="155" height="24" rx="12" fill="rgba(59,130,246,0.1)"/>
+      <text x="282" y="63" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="500">时效 T+1 ~ T+N</text>
+
+      <!-- Flow boxes -->
+      <g font-size="12" font-weight="500" fill="#1e293b" text-anchor="middle">
+        <!-- Box 1: 业务系统 -->
+        <rect x="55" y="88" width="80" height="36" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+        <text x="95" y="110">业务系统</text>
+        <!-- Arrow 1 -->
+        <line x1="135" y1="106" x2="148" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 2: ETL -->
+        <rect x="150" y="88" width="80" height="36" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+        <text x="190" y="110">ETL</text>
+        <!-- Arrow 2 -->
+        <line x1="230" y1="106" x2="243" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 3: 数仓 -->
+        <rect x="245" y="88" width="80" height="36" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+        <text x="285" y="110">数仓</text>
+        <!-- Arrow 3 -->
+        <line x1="325" y1="106" x2="338" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 4: 报表 -->
+        <rect x="340" y="88" width="80" height="36" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+        <text x="380" y="110">报表</text>
+        <!-- Arrow 4 -->
+        <line x1="420" y1="106" x2="433" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 5: 人工决策 -->
+        <rect x="435" y="88" width="80" height="36" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+        <text x="475" y="110">人工决策</text>
+      </g>
+
+      <!-- Flow label -->
+      <text x="282" y="150" text-anchor="middle" fill="#64748b" font-size="11">典型数据价值链 · 批处理链路</text>
+
+      <!-- Separator -->
+      <line x1="40" y1="168" x2="525" y2="168" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- Value section -->
+      <text x="282" y="192" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">价值定位</text>
+
+      <!-- Value tags -->
+      <g font-size="12" fill="#1e293b" text-anchor="middle" font-weight="500">
+        <rect x="153" y="204" width="95" height="28" rx="6" fill="rgba(99,102,241,0.08)" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+        <text x="200.5" y="223">发生了什么</text>
+
+        <rect x="260" y="204" width="70" height="28" rx="6" fill="rgba(99,102,241,0.08)" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+        <text x="295" y="223">为什么</text>
+
+        <rect x="342" y="204" width="70" height="28" rx="6" fill="rgba(99,102,241,0.08)" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+        <text x="377" y="223">怎么办</text>
+      </g>
+
+      <!-- Bottom label -->
+      <text x="282" y="270" text-anchor="middle" fill="#64748b" font-size="11" font-style="italic">问题诊断式 · 回溯分析</text>
+    </g>
+
+    <!-- ===== CENTER DIVIDER ===== -->
+    <g transform="translate(605,95)">
+      <rect x="0" y="0" width="90" height="335" rx="8" fill="rgba(99,102,241,0.05)" stroke="rgba(99,102,241,0.15)" stroke-width="1"/>
+      <rect x="0" y="0" width="90" height="6" rx="3" fill="#6366f1"/>
+
+      <!-- Stacked title -->
+      <g text-anchor="middle" fill="#6366f1" font-size="20" font-weight="700">
+        <text x="45" y="48">流</text>
+        <text x="45" y="78">向</text>
+        <text x="45" y="108">反</text>
+        <text x="45" y="138">转</text>
+      </g>
+
+      <line x1="15" y1="162" x2="75" y2="162" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+
+      <!-- Traditional -->
+      <text x="45" y="195" text-anchor="middle" fill="#64748b" font-size="10" font-weight="600">传统模式</text>
+      <text x="45" y="217" text-anchor="middle" fill="#475569" font-size="10">流程→数据</text>
+      <text x="45" y="233" text-anchor="middle" fill="#94a3b8" font-size="9">(副产品记录)</text>
+
+      <!-- Reversal arrow -->
+      <g transform="translate(45,255)">
+        <path d="M-12,0 L12,0" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+        <path d="M12,10 L-12,10" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arrGreen)"/>
+      </g>
+
+      <!-- Digital -->
+      <text x="45" y="290" text-anchor="middle" fill="#64748b" font-size="10" font-weight="600">数字化模式</text>
+      <text x="45" y="312" text-anchor="middle" fill="#475569" font-size="10">数据→流程</text>
+      <text x="45" y="328" text-anchor="middle" fill="#94a3b8" font-size="9">(核心驱动力)</text>
+    </g>
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <g transform="translate(705,95)">
+      <rect x="0" y="0" width="565" height="335" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowSm)"/>
+      <rect x="560" y="0" width="5" height="335" rx="2.5" fill="#10b981"/>
+
+      <!-- Panel title -->
+      <text x="282" y="34" text-anchor="middle" fill="#0f172a" font-size="17" font-weight="700">数据驱动业务（事中嵌入）</text>
+      <!-- Time tag -->
+      <rect x="190" y="46" width="185" height="24" rx="12" fill="rgba(16,185,129,0.1)"/>
+      <text x="282" y="63" text-anchor="middle" fill="#10b981" font-size="12" font-weight="500">时效 实时 / 准实时（ms~min）</text>
+
+      <!-- Flow boxes -->
+      <g font-size="12" font-weight="500" fill="#1e293b" text-anchor="middle">
+        <!-- Box 1: 实时事件 -->
+        <rect x="55" y="88" width="80" height="36" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+        <text x="95" y="110">实时事件</text>
+        <line x1="135" y1="106" x2="148" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 2: 流处理 -->
+        <rect x="150" y="88" width="80" height="36" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+        <text x="190" y="110">流处理</text>
+        <line x1="230" y1="106" x2="243" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 3: 数据服务 -->
+        <rect x="245" y="88" width="80" height="36" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+        <text x="285" y="110">数据服务</text>
+        <line x1="325" y1="106" x2="338" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 4: 业务系统 -->
+        <rect x="340" y="88" width="80" height="36" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+        <text x="380" y="110">业务系统</text>
+        <line x1="420" y1="106" x2="433" y2="106" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Box 5: 自动执行 -->
+        <rect x="435" y="88" width="80" height="36" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+        <text x="475" y="110">自动执行</text>
+      </g>
+
+      <!-- Flow label -->
+      <text x="282" y="150" text-anchor="middle" fill="#64748b" font-size="11">实时数据管道 · 流处理链路</text>
+
+      <!-- Separator -->
+      <line x1="40" y1="168" x2="525" y2="168" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- Value section -->
+      <text x="282" y="192" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="600">价值定位</text>
+
+      <!-- Value tags -->
+      <g font-size="12" fill="#1e293b" text-anchor="middle" font-weight="500">
+        <rect x="200" y="204" width="80" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+        <text x="240" y="223">正在发生</text>
+
+        <rect x="292" y="204" width="80" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+        <text x="332" y="223">立即响应</text>
+      </g>
+
+      <!-- Bottom label -->
+      <text x="282" y="270" text-anchor="middle" fill="#64748b" font-size="11" font-style="italic">实时干预式 · 自动执行</text>
+    </g>
+
+    <!-- ===== LTC SECTION ===== -->
+    <!-- Section divider line -->
+    <line x1="40" y1="448" x2="1260" y2="448" stroke="#e2e8f0" stroke-width="1"/>
+
+    <text x="650" y="478" text-anchor="middle" fill="#0f172a" font-size="16" font-weight="700">LTC 三场景实例</text>
+    <text x="650" y="496" text-anchor="middle" fill="#64748b" font-size="11">数据驱动业务在 Lead-to-Cash 全链路的实践</text>
+
+    <!-- Card 1 -->
+    <g transform="translate(45,515)">
+      <rect x="0" y="0" width="385" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowSm)"/>
+      <rect x="0" y="0" width="385" height="4" rx="2" fill="#f59e0b"/>
+      <circle cx="18" cy="32" r="8" fill="#f59e0b" opacity="0.15"/>
+      <text x="18" y="36" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700">1</text>
+      <text x="36" y="28" fill="#0f172a" font-size="13" font-weight="600">库存路由实时决策</text>
+      <text x="36" y="48" fill="#475569" font-size="11">OMS调用路由引擎API，200ms内返回最优履约节点</text>
+      <text x="36" y="66" fill="#64748b" font-size="10">算法：多维寻优 · 范围：供应端</text>
+    </g>
+
+    <!-- Card 2 -->
+    <g transform="translate(457,515)">
+      <rect x="0" y="0" width="385" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowSm)"/>
+      <rect x="0" y="0" width="385" height="4" rx="2" fill="#f59e0b"/>
+      <circle cx="18" cy="32" r="8" fill="#f59e0b" opacity="0.15"/>
+      <text x="18" y="36" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700">2</text>
+      <text x="36" y="28" fill="#0f172a" font-size="13" font-weight="600">SMT产线实时预警</text>
+      <text x="36" y="48" fill="#475569" font-size="11">AOI检测数据流，5分钟滑动窗口缺陷率 &gt; 500PPM</text>
+      <text x="36" y="66" fill="#64748b" font-size="10">动作：自动触发停线告警 · 范围：制造端</text>
+    </g>
+
+    <!-- Card 3 -->
+    <g transform="translate(869,515)">
+      <rect x="0" y="0" width="385" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadowSm)"/>
+      <rect x="0" y="0" width="385" height="4" rx="2" fill="#f59e0b"/>
+      <circle cx="18" cy="32" r="8" fill="#f59e0b" opacity="0.15"/>
+      <text x="18" y="36" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700">3</text>
+      <text x="36" y="28" fill="#0f172a" font-size="13" font-weight="600">营销实时推荐</text>
+      <text x="36" y="48" fill="#475569" font-size="11">CDP 360画像 + 协同过滤，100ms内返回推荐SKU</text>
+      <text x="36" y="66" fill="#64748b" font-size="10">算法：协同过滤 · 范围：销售端</text>
+    </g>
+
+    <!-- ===== INFO CARDS ===== -->
+    <line x1="40" y1="618" x2="1260" y2="618" stroke="#e2e8f0" stroke-width="1"/>
+
+    <g transform="translate(45,635)">
+      <rect x="0" y="0" width="385" height="60" rx="6" fill="rgba(99,102,241,0.04)" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="0" y="0" width="3" height="60" rx="1.5" fill="#6366f1"/>
+      <text x="16" y="22" fill="#0f172a" font-size="12" font-weight="600">决策 vs 业务对比</text>
+      <text x="16" y="42" fill="#475569" font-size="11">事后分析辅助人工决策 · 事中嵌入实现自动业务响应</text>
+    </g>
+
+    <g transform="translate(457,635)">
+      <rect x="0" y="0" width="385" height="60" rx="6" fill="rgba(99,102,241,0.04)" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="0" y="0" width="3" height="60" rx="1.5" fill="#6366f1"/>
+      <text x="16" y="22" fill="#0f172a" font-size="12" font-weight="600">流向反转的架构含义</text>
+      <text x="16" y="42" fill="#475569" font-size="11">传统：流程执行→数据副产品 · 数字化：数据驱动→流程运行</text>
+    </g>
+
+    <g transform="translate(869,635)">
+      <rect x="0" y="0" width="385" height="60" rx="6" fill="rgba(99,102,241,0.04)" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="0" y="0" width="3" height="60" rx="1.5" fill="#6366f1"/>
+      <text x="16" y="22" fill="#0f172a" font-size="12" font-weight="600">LTC三个数据驱动业务实例</text>
+      <text x="16" y="42" fill="#475569" font-size="11">库存路由 · SMT预警 · 营销推荐 — 覆盖供应→制造→销售全链</text>
+    </g>
+
+    <!-- Footer -->
+    <text x="650" y="745" text-anchor="middle" fill="#94a3b8" font-size="9">图3-9 数据驱动双义与数据链视图 · TOGAF Data Architecture</text>
+  </svg>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2200)
+}
+
+async function capture(){
+  return html2canvas(document.getElementById('diagram'),{
+    backgroundColor:'#f8fafc',
+    scale:2,
+    logging:false,
+    useCORS:true
+  })
+}
+
+async function copyDiagram(){
+  try{
+    var c=await capture();
+    var b=await new Promise(function(r){c.toBlob(r,'image/png')});
+    await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);
+    showToast('Copied to clipboard!')
+  }catch(e){
+    showToast('Copy failed: '+e.message)
+  }
+}
+
+async function downloadPNG(){
+  try{
+    var c=await capture();
+    var a=document.createElement('a');
+    a.download='图3-9_数据驱动双义.png';
+    a.href=c.toDataURL('image/png');
+    a.click();
+    showToast('PNG downloaded!')
+  }catch(e){
+    showToast('PNG failed: '+e.message)
+  }
+}
+
+async function downloadPDF(){
+  try{
+    var c=await capture();
+    var img=c.toDataURL('image/png');
+    var w=c.width;
+    var h=c.height;
+    var pdf=new jspdf.jsPDF({orientation:w>h?'landscape':'portrait',unit:'px',format:[w,h]});
+    pdf.addImage(img,'PNG',0,0,w,h);
+    pdf.save('图3-9_数据驱动双义.pdf');
+    showToast('PDF downloaded!')
+  }catch(e){
+    showToast('PDF failed: '+e.message)
+  }
+}
+</script>
+
+</body>
+</html>

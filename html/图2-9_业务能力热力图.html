@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-9 业务能力热力图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', sans-serif; color: #1e293b; padding: 24px; display: flex; justify-content: center; }
+.container { max-width: 1260px; width: 100%; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px 32px 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+.toolbar button { font-family: inherit; font-size: 12px; padding: 6px 14px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; color: #475569; cursor: pointer; transition: all 0.15s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.toolbar .spacer { flex: 1; }
+.toolbar .badge { font-size: 11px; color: #94a3b8; }
+.title-section { margin-bottom: 16px; }
+.title-section h1 { font-size: 20px; font-weight: 600; color: #0f172a; }
+.title-section p { font-size: 13px; color: #64748b; margin-top: 4px; }
+.svg-wrap { width: 100%; overflow-x: auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; }
+.cards-row { display: flex; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
+.info-card { flex: 1; min-width: 220px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; }
+.info-card h3 { font-size: 13px; font-weight: 600; color: #0f172a; margin-bottom: 6px; }
+.info-card h3 .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.info-card p, .info-card ul { font-size: 12px; color: #475569; line-height: 1.7; }
+.info-card ul { padding-left: 16px; margin-top: 4px; }
+@media print { .toolbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="container" id="report-container">
+  <div class="toolbar">
+    <button onclick="copyAsImage(this)">📋 Copy</button>
+    <button onclick="downloadPNG(this)">🖼️ PNG</button>
+    <button onclick="downloadPDF(this)">📄 PDF</button>
+    <span class="spacer"></span>
+    <span class="badge">图2-9 · 业务能力热力图</span>
+  </div>
+
+  <div class="title-section">
+    <h1>业务能力热力图 — 战略重要度 × 当前成熟度</h1>
+    <p>Capability Heatmap · 红(P0优先建) · 黄(P1优化) · 绿(P2维持)  ·  ★ = Top 8 P0</p>
+  </div>
+
+  <div class="svg-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 920" width="100%" height="auto">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.3"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="920" fill="url(#grid)"/>
+
+      <!-- Title -->
+      <text x="20" y="26" font-size="13" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">业务能力热力图 — 战略重要度×当前成熟度</text>
+
+      <!-- Legend top-right -->
+      <rect x="500" y="8" width="18" height="12" rx="3" fill="#ef4444" opacity="0.6"/>
+      <text x="524" y="18" font-size="10" fill="#475569" font-family="'JetBrains Mono',sans-serif">P0</text>
+      <rect x="560" y="8" width="18" height="12" rx="3" fill="#f59e0b" opacity="0.6"/>
+      <text x="584" y="18" font-size="10" fill="#475569" font-family="'JetBrains Mono',sans-serif">P1</text>
+      <rect x="620" y="8" width="18" height="12" rx="3" fill="#059669" opacity="0.6"/>
+      <text x="644" y="18" font-size="10" fill="#475569" font-family="'JetBrains Mono',sans-serif">P2</text>
+      <text x="700" y="18" font-size="10" fill="#ef4444" font-family="'JetBrains Mono',sans-serif">★ Top8 P0</text>
+
+      <!-- Column Headers -->
+      <rect x="10" y="38" width="960" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="94" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">能力域</text>
+      <text x="330" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">业务能力项</text>
+      <text x="510" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">战略重要度</text>
+      <text x="600" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">当前成熟度</text>
+      <text x="690" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">差距(GAP)</text>
+      <text x="800" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">类别</text>
+      <text x="900" y="57" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">优先级</text>
+
+      <!-- Domain Header separator -->
+      <line x1="10" y1="68" x2="970" y2="68" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- ===== HEATMAP ROWS ===== -->
+      <g font-family="'JetBrains Mono',sans-serif">
+        <!-- Domain 1: 产品创新 = 4 rows, y=72 -->
+        <rect x="12" y="72" width="176" height="72" rx="4" fill="#3b82f620" stroke="#3b82f6" stroke-width="1"/>
+        <text x="100" y="112" text-anchor="middle" font-size="11" font-weight="600" fill="#3b82f6">产品创新</text>
+
+        <text x="195" y="85" font-size="11" fill="#1e293b">需求洞察与用户画像</text>
+        <rect x="475" y="75" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="75" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">2</text>
+        <rect x="654" y="77" width="114" height="12" rx="2" fill="#ef4444" opacity="0.7"/><text x="690" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3</text>
+        <rect x="770" y="75" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="87" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="87" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="105" font-size="11" fill="#1e293b">产品路线图与规划</text>
+        <rect x="475" y="95" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="95" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="107" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="654" y="97" width="76" height="12" rx="2" fill="#ef4444" opacity="0.3"/><text x="690" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="95" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="107" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+        <text x="900" y="107" text-anchor="middle" font-size="11" fill="#94a3b8">—</text>
+
+        <text x="195" y="125" font-size="11" fill="#1e293b">BOM管理与单一可信源</text>
+        <rect x="475" y="115" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="127" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="115" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="127" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="117" width="95" height="12" rx="2" fill="#ef4444" opacity="0.6"/><text x="690" y="127" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2.5</text>
+        <rect x="770" y="115" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="127" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="127" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="145" font-size="11" fill="#1e293b">ECN变更闭环管理</text>
+        <rect x="475" y="135" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="135" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="147" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2.5</text>
+        <rect x="654" y="137" width="57" height="12" rx="2" fill="#f59e0b" opacity="0.3"/><text x="690" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1.5</text>
+        <rect x="770" y="135" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="147" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <!-- Domain 2: 敏捷供应 = 5 rows, y=150 -->
+        <rect x="12" y="150" width="176" height="90" rx="4" fill="#0891b220" stroke="#0891b2" stroke-width="1"/>
+        <text x="100" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#0891b2">敏捷供应</text>
+
+        <text x="195" y="163" font-size="11" fill="#1e293b">需求预测与S&amp;OP协同</text>
+        <rect x="475" y="153" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="153" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">2</text>
+        <rect x="654" y="155" width="114" height="12" rx="2" fill="#ef4444" opacity="0.7"/><text x="690" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3</text>
+        <rect x="770" y="153" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="165" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="165" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="183" font-size="11" fill="#1e293b">供应商协同与风险预警</text>
+        <rect x="475" y="173" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="185" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="173" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="185" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">2</text>
+        <rect x="654" y="175" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="185" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="173" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="185" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="185" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="203" font-size="11" fill="#1e293b">MRP物料需求计划</text>
+        <rect x="475" y="193" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="205" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="193" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="205" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2.5</text>
+        <rect x="654" y="195" width="57" height="12" rx="2" fill="#f59e0b" opacity="0.3"/><text x="690" y="205" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1.5</text>
+        <rect x="770" y="193" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="205" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="223" font-size="11" fill="#1e293b">多级库存优化MEIO</text>
+        <rect x="475" y="213" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="213" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="225" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2</text>
+        <rect x="654" y="215" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="213" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="225" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="243" font-size="11" fill="#1e293b">采购执行与OTD管理</text>
+        <rect x="475" y="233" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="245" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="233" width="56" height="16" rx="3" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="600" y="245" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">4</text>
+        <rect x="654" y="235" width="38" height="12" rx="2" fill="#059669" opacity="0.2"/><text x="690" y="245" text-anchor="middle" font-size="11" font-weight="500" fill="#059669">-1</text>
+        <rect x="770" y="233" width="50" height="16" rx="8" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="795" y="245" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">P2</text>
+
+        <!-- Domain 3: 全域营销 = 4 rows, y=248 -->
+        <rect x="12" y="248" width="176" height="72" rx="4" fill="#f9731620" stroke="#f97316" stroke-width="1"/>
+        <text x="100" y="288" text-anchor="middle" font-size="11" font-weight="600" fill="#f97316">全域营销</text>
+
+        <text x="195" y="261" font-size="11" fill="#1e293b">CDP统一用户画像</text>
+        <rect x="475" y="251" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="263" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="251" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="263" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="253" width="133" height="12" rx="2" fill="#ef4444" opacity="0.8"/><text x="690" y="263" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3.5</text>
+        <rect x="770" y="251" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="263" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="263" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="281" font-size="11" fill="#1e293b">MA营销自动化</text>
+        <rect x="475" y="271" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="271" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="273" width="95" height="12" rx="2" fill="#ef4444" opacity="0.6"/><text x="690" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2.5</text>
+        <rect x="770" y="271" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="283" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+
+        <text x="195" y="301" font-size="11" fill="#1e293b">精准投放与实时优化</text>
+        <rect x="475" y="291" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="303" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="291" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="303" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2</text>
+        <rect x="654" y="293" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="303" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="291" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="303" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="321" font-size="11" fill="#1e293b">MQL→SQL线索转化</text>
+        <rect x="475" y="311" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="323" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="311" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="323" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="313" width="95" height="12" rx="2" fill="#ef4444" opacity="0.6"/><text x="690" y="323" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2.5</text>
+        <rect x="770" y="311" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="323" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+
+        <!-- Domain 4: 渠道销售 = 5 rows, y=326 -->
+        <rect x="12" y="326" width="176" height="90" rx="4" fill="#ef444420" stroke="#ef4444" stroke-width="1"/>
+        <text x="100" y="376" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">渠道销售</text>
+
+        <text x="195" y="339" font-size="11" fill="#1e293b">全渠道路由引擎(L7)</text>
+        <rect x="475" y="329" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="341" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="329" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="341" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="331" width="133" height="12" rx="2" fill="#ef4444" opacity="0.8"/><text x="690" y="341" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3.5</text>
+        <rect x="770" y="329" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="341" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="341" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="359" font-size="11" fill="#1e293b">经销商门户与动销可视</text>
+        <rect x="475" y="349" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="361" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="349" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="361" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="351" width="95" height="12" rx="2" fill="#ef4444" opacity="0.6"/><text x="690" y="361" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2.5</text>
+        <rect x="770" y="349" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="361" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="361" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="379" font-size="11" fill="#1e293b">门店数字化POS/进销存</text>
+        <rect x="475" y="369" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="381" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="369" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="381" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="371" width="133" height="12" rx="2" fill="#ef4444" opacity="0.8"/><text x="690" y="381" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3.5</text>
+        <rect x="770" y="369" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="381" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+        <text x="900" y="381" text-anchor="middle" font-size="14" fill="#ef4444">★</text>
+
+        <text x="195" y="399" font-size="11" fill="#1e293b">渠道价盘管控</text>
+        <rect x="475" y="389" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="401" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="389" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="401" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="654" y="391" width="38" height="12" rx="2" fill="#f59e0b" opacity="0.25"/><text x="690" y="401" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1</text>
+        <rect x="770" y="389" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="401" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="419" font-size="11" fill="#1e293b">线上电商运营</text>
+        <rect x="475" y="409" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="421" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="409" width="56" height="16" rx="3" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="600" y="421" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">4</text>
+        <rect x="654" y="411" width="38" height="12" rx="2" fill="#94a3b8" opacity="0.2"/><text x="690" y="421" text-anchor="middle" font-size="11" font-weight="500" fill="#94a3b8">0</text>
+        <rect x="770" y="409" width="50" height="16" rx="8" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="795" y="421" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">P2</text>
+
+        <!-- Domain 5: 生产制造 = 4 rows, y=422 -->
+        <rect x="12" y="422" width="176" height="72" rx="4" fill="#05966920" stroke="#059669" stroke-width="1"/>
+        <text x="100" y="462" text-anchor="middle" font-size="11" font-weight="600" fill="#059669">生产制造</text>
+
+        <text x="195" y="435" font-size="11" fill="#1e293b">SMT贴片与AOI检测(L7)</text>
+        <rect x="475" y="425" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="437" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="425" width="56" height="16" rx="3" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="600" y="437" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">4</text>
+        <rect x="654" y="427" width="38" height="12" rx="2" fill="#059669" opacity="0.2"/><text x="690" y="437" text-anchor="middle" font-size="11" font-weight="500" fill="#059669">-1</text>
+        <rect x="770" y="425" width="50" height="16" rx="8" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="795" y="437" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">P2</text>
+
+        <text x="195" y="455" font-size="11" fill="#1e293b">生产排产优化(L6)</text>
+        <rect x="475" y="445" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="457" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="445" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="457" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">2</text>
+        <rect x="654" y="447" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="457" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="445" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="457" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="475" font-size="11" fill="#1e293b">全追溯链(数字出生证明)</text>
+        <rect x="475" y="465" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="477" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="465" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="477" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1</text>
+        <rect x="654" y="467" width="114" height="12" rx="2" fill="#ef4444" opacity="0.7"/><text x="690" y="477" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3</text>
+        <rect x="770" y="465" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="477" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+
+        <text x="195" y="495" font-size="11" fill="#1e293b">质量管控IQC/IPQC/OQC</text>
+        <rect x="475" y="485" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="497" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="485" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="497" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="654" y="487" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="497" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="485" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="497" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <!-- Domain 6: 用户服务 = 3 rows, y=500 -->
+        <rect x="12" y="500" width="176" height="54" rx="4" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1"/>
+        <text x="100" y="531" text-anchor="middle" font-size="11" font-weight="600" fill="#8b5cf6">用户服务</text>
+
+        <text x="195" y="513" font-size="11" fill="#1e293b">售后→研发质量反馈闭环</text>
+        <rect x="475" y="503" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="515" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="503" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="515" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1</text>
+        <rect x="654" y="505" width="114" height="12" rx="2" fill="#ef4444" opacity="0.7"/><text x="690" y="515" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3</text>
+        <rect x="770" y="503" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="515" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+
+        <text x="195" y="533" font-size="11" fill="#1e293b">服务工单与备件管理</text>
+        <rect x="475" y="523" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="535" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="523" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="535" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2.5</text>
+        <rect x="654" y="525" width="38" height="12" rx="2" fill="#f59e0b" opacity="0.2"/><text x="690" y="535" text-anchor="middle" font-size="11" font-weight="500" fill="#f59e0b">+0.5</text>
+        <rect x="770" y="523" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="535" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="553" font-size="11" fill="#1e293b">会员运营与以旧换新</text>
+        <rect x="475" y="543" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="555" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="543" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="555" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2</text>
+        <rect x="654" y="545" width="76" height="12" rx="2" fill="#ef4444" opacity="0.5"/><text x="690" y="555" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+2</text>
+        <rect x="770" y="543" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="555" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <!-- Domain 7: 生态平台 = 3 rows, y=558 -->
+        <rect x="12" y="558" width="176" height="54" rx="4" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/>
+        <text x="100" y="589" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">生态平台</text>
+
+        <text x="195" y="571" font-size="11" fill="#1e293b">IoT设备管理与影子服务</text>
+        <rect x="475" y="561" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="573" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="561" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="573" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2</text>
+        <rect x="654" y="563" width="38" height="12" rx="2" fill="#f59e0b" opacity="0.25"/><text x="690" y="573" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1</text>
+        <rect x="770" y="561" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="573" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="591" font-size="11" fill="#1e293b">开发者平台与SDK/API</text>
+        <rect x="475" y="581" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="593" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="581" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="593" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">1.5</text>
+        <rect x="654" y="583" width="57" height="12" rx="2" fill="#f59e0b" opacity="0.35"/><text x="690" y="593" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1.5</text>
+        <rect x="770" y="581" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="593" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <text x="195" y="611" font-size="11" fill="#1e293b">内容分发与应用商店</text>
+        <rect x="475" y="601" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="613" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="601" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="613" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">2</text>
+        <rect x="654" y="603" width="38" height="12" rx="2" fill="#f59e0b" opacity="0.25"/><text x="690" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1</text>
+        <rect x="770" y="601" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="613" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+
+        <!-- Domain 8: 职能支撑 = 3 rows, y=616 -->
+        <rect x="12" y="616" width="176" height="54" rx="4" fill="#64748b20" stroke="#64748b" stroke-width="1"/>
+        <text x="100" y="647" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b">职能支撑</text>
+
+        <text x="195" y="629" font-size="11" fill="#1e293b">财务会计(多组织/多币种)</text>
+        <rect x="475" y="619" width="56" height="16" rx="3" fill="#93c5fd40"/><text x="503" y="631" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="572" y="619" width="56" height="16" rx="3" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="600" y="631" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">4</text>
+        <rect x="654" y="621" width="38" height="12" rx="2" fill="#059669" opacity="0.2"/><text x="690" y="631" text-anchor="middle" font-size="11" font-weight="500" fill="#059669">-1</text>
+        <rect x="770" y="619" width="50" height="16" rx="8" fill="#05966920" stroke="#059669" stroke-width="1"/><text x="795" y="631" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">P2</text>
+
+        <text x="195" y="649" font-size="11" fill="#1e293b">IT系统与数据平台</text>
+        <rect x="475" y="639" width="56" height="16" rx="3" fill="#3b82f640"/><text x="503" y="651" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">5</text>
+        <rect x="572" y="639" width="56" height="16" rx="3" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="600" y="651" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">2</text>
+        <rect x="654" y="641" width="114" height="12" rx="2" fill="#ef4444" opacity="0.7"/><text x="690" y="651" text-anchor="middle" font-size="11" font-weight="600" fill="#ef4444">+3</text>
+        <rect x="770" y="639" width="50" height="16" rx="8" fill="#ef444420" stroke="#ef4444" stroke-width="1"/><text x="795" y="651" text-anchor="middle" font-size="9" font-weight="600" fill="#ef4444">P0</text>
+
+        <text x="195" y="669" font-size="11" fill="#1e293b">信息安全与合规</text>
+        <rect x="475" y="659" width="56" height="16" rx="3" fill="#60a5fa40"/><text x="503" y="671" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">4</text>
+        <rect x="572" y="659" width="56" height="16" rx="3" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="600" y="671" text-anchor="middle" font-size="11" font-weight="500" fill="#0f172a">3</text>
+        <rect x="654" y="661" width="38" height="12" rx="2" fill="#f59e0b" opacity="0.25"/><text x="690" y="671" text-anchor="middle" font-size="11" font-weight="600" fill="#f59e0b">+1</text>
+        <rect x="770" y="659" width="50" height="16" rx="8" fill="#f59e0b20" stroke="#f59e0b" stroke-width="1"/><text x="795" y="671" text-anchor="middle" font-size="9" font-weight="600" fill="#f59e0b">P1</text>
+      </g>
+
+      <!-- Bottom border -->
+      <line x1="10" y1="678" x2="970" y2="678" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- Stats summary -->
+      <text x="20" y="710" font-size="10" fill="#475569" font-family="'JetBrains Mono',sans-serif">统计: P0红色 10项 (★ Top8已标)  |  P1黄色 12项  |  P2绿色 8项  |  共 32 项业务能力</text>
+
+      <!-- Bottom Legend -->
+      <text x="20" y="735" font-size="10" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">指标说明</text>
+      <text x="20" y="755" font-size="9" fill="#475569" font-family="'JetBrains Mono',sans-serif">战略重要度: 1(低) ~ 5(高) — 基于战略屋三大支柱对齐评估 | 成熟度: 1(初始) ~ 5(优化) — 基于CMMI分级评估 | GAP = 重要度-成熟度(正=滞后/负=超前) | P0=Imp≥4 &amp; Mat≤2 | P1=Imp≥3 &amp; Mat≤3 | P2=Mat≥3.5</text>
+
+      <!-- Assessment method -->
+      <text x="20" y="780" font-size="10" font-weight="600" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">P0建设优先级排序(Top 8)</text>
+      <text x="20" y="798" font-size="9" fill="#475569" font-family="'JetBrains Mono',sans-serif">1.全渠道路由引擎(+3.5)  2.门店数字化(+3.5)  3.CDP用户画像(+3.5)  4.预测与S&amp;OP(+3.0)  5.需求洞察(+3.0)  6.全追溯链(+3.0)  7.售后质量反馈(+3.0)  8.IT数据平台(+3.0)</text>
+
+      <!-- Border around matrix -->
+      <rect x="10" y="38" width="960" height="640" rx="4" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <div class="cards-row">
+    <div class="info-card">
+      <h3><span class="dot" style="background:#ef4444;"></span>P0 红色优先建设 (10项)</h3>
+      <p>战略重要度≥4 且 成熟度≤2，LTC核心链路关键短板，<b>需立即投入资源重点建设</b>。涵盖全渠道路由、门店数字化、CDP画像、S&amp;OP协同等。</p>
+    </div>
+    <div class="info-card">
+      <h3><span class="dot" style="background:#f59e0b;"></span>P1 黄色优化提升 (12项)</h3>
+      <p>战略重要度≥3 且 成熟度≤3，已有基础但需持续改进。包括价盘管控、排产优化、会员运营、IoT开发者平台等。</p>
+    </div>
+    <div class="info-card">
+      <h3><span class="dot" style="background:#059669;"></span>P2 绿色维持运营 (8项)</h3>
+      <p>成熟度≥3.5 的稳定能力，如电商运营、SMT贴片、采购执行、财务会计等，保持常态运营与渐进式优化即可。</p>
+    </div>
+    <div class="info-card">
+      <h3>📐 评分方法</h3>
+      <p>战略重要度: 基于战略屋三大支柱(高端突破/全球扩张/生态变现)对齐评分(1-5)；当前成熟度: 基于CMMI分级(1初始→5优化)逐项评估。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+async function copyAsImage(btn) {
+  const orig = btn.textContent;
+  try {
+    const el = document.getElementById('report-container');
+    const r = el.getBoundingClientRect();
+    const pad = 32;
+    const canvas = await html2canvas(document.body, { backgroundColor: '#f8fafc', scale: 2, useCORS: true, ignoreElements: (e) => e.closest && e.closest('.toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    btn.textContent = '✓ Copied!';
+  } catch (e) {
+    btn.textContent = '✗ Failed';
+  }
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+async function downloadPNG(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '⏳ ...';
+  try {
+    const el = document.getElementById('report-container');
+    const r = el.getBoundingClientRect();
+    const pad = 32;
+    const canvas = await html2canvas(document.body, { backgroundColor: '#f8fafc', scale: 2, useCORS: true, ignoreElements: (e) => e.closest && e.closest('.toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+    const link = document.createElement('a');
+    link.download = '图2-9_业务能力热力图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.textContent = '✓ Done!';
+  } catch (e) {
+    btn.textContent = '✗ Failed';
+  }
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+async function downloadPDF(btn) {
+  const orig = btn.textContent;
+  btn.textContent = '⏳ ...';
+  try {
+    const el = document.getElementById('report-container');
+    const r = el.getBoundingClientRect();
+    const pad = 32;
+    const canvas = await html2canvas(document.body, { backgroundColor: '#f8fafc', scale: 2, useCORS: true, ignoreElements: (e) => e.closest && e.closest('.toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait';
+    const pdf = new jsPDF({ orientation, unit: 'px', format: [canvas.width, canvas.height], hotfixes: ['px_scaling'] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('图2-9_业务能力热力图.pdf');
+    btn.textContent = '✓ Done!';
+  } catch (e) {
+    btn.textContent = '✗ Failed';
+  }
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+</script>
+</body>
+</html>

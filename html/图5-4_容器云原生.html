@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图5-4 容器云原生</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">容器与云原生平台 — Kubernetes Multi-Cluster + GitOps + Service Mesh</div>
+<svg viewBox="0 0 1250 750" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+  <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#7c3aed"/></marker>
+</defs>
+<rect width="1250" height="750" fill="#f8fafc"/><rect width="1250" height="750" fill="url(#grid)"/>
+<text x="625" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">容器与云原生平台 — K8s Multi-Cluster · Helm/ArgoCD · HPA · Istio</text>
+
+<!-- ===== TOP: 统一控制面 ===== -->
+<rect x="320" y="50" width="610" height="46" rx="8" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.2)" stroke-width="1.5"/>
+<text x="625" y="69" text-anchor="middle" fill="#6d28d9" font-size="11" font-weight="600">☸ 统一控制面 — Rancher / ACK One / Anthos</text>
+<text x="625" y="85" text-anchor="middle" fill="#475569" font-size="8.5">多集群管理 · 统一策略 · 统一监控 · 统一日志 · 统一告警</text>
+
+<!-- Down arrow -->
+<path d="M 625 96 L 625 112" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+<!-- ===== K8s Multi-Cluster Layer ===== -->
+<rect x="40" y="120" width="1170" height="200" rx="8" fill="rgba(59,130,246,.03)" stroke="rgba(59,130,246,.1)" stroke-width="1"/>
+<text x="625" y="144" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">Kubernetes 多集群架构</text>
+
+<!-- Center K8s -->
+<rect x="60" y="156" width="320" height="150" rx="6" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.15)" stroke-width="1"/>
+<rect x="60" y="156" width="320" height="26" rx="6" fill="rgba(16,185,129,.1)"/>
+<text x="220" y="174" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">中心生产集群 — Production</text>
+<text x="75" y="196" fill="#475569" font-size="8.5">• 节点: 500+ Worker Nodes (物理机/虚拟机)</text>
+<text x="75" y="212" fill="#475569" font-size="8.5">• 规格: 32-128 vCPU/Node · 256GB-1TB RAM</text>
+<text x="75" y="228" fill="#475569" font-size="8.5">• 存储: CSI (Ceph RBD · NFS · Local SSD)</text>
+<text x="75" y="244" fill="#475569" font-size="8.5">• 网络: Calico (BGP) · 双栈 IPv4/IPv6</text>
+<text x="75" y="260" fill="#475569" font-size="8.5">• 运行时: containerd + gVisor (安全容器)</text>
+<text x="75" y="276" fill="#475569" font-size="8.5">• LTC: ERP · CRM · PLM · MES · MDM</text>
+<rect x="75" y="286" width="80" height="14" rx="2" fill="rgba(16,185,129,.12)"/>
+<text x="115" y="296" text-anchor="middle" fill="#065f46" font-size="7">双AZ部署</text>
+
+<!-- Regional K8s -->
+<rect x="410" y="156" width="340" height="150" rx="6" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.15)" stroke-width="1"/>
+<rect x="410" y="156" width="340" height="26" rx="6" fill="rgba(59,130,246,.1)"/>
+<text x="580" y="174" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">区域集群 — EU / SEA / LATAM</text>
+<text x="425" y="196" fill="#475569" font-size="8.5">• 节点: 50-100 Worker Nodes / Region</text>
+<text x="425" y="212" fill="#475569" font-size="8.5">• 规格: 16-64 vCPU/Node · 64GB-256GB RAM</text>
+<text x="425" y="228" fill="#475569" font-size="8.5">• 网络: Calico (VXLAN) · 多租户隔离</text>
+<text x="425" y="244" fill="#475569" font-size="8.5">• 存储: CSI + 云厂商EBS/PV</text>
+<text x="425" y="260" fill="#475569" font-size="8.5">• 集群联邦: Submariner (跨集群通信)</text>
+<text x="425" y="276" fill="#475569" font-size="8.5">• LTC: OMS · WMS · TMS · 海外电商</text>
+<rect x="425" y="286" width="90" height="14" rx="2" fill="rgba(59,130,246,.12)"/>
+<text x="470" y="296" text-anchor="middle" fill="#1e40af" font-size="7">区域自治</text>
+
+<!-- Edge K8s -->
+<rect x="780" y="156" width="410" height="150" rx="6" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.15)" stroke-width="1"/>
+<rect x="780" y="156" width="410" height="26" rx="6" fill="rgba(245,158,11,.1)"/>
+<text x="985" y="174" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">边缘集群 — K3s / MicroK8s (工厂)</text>
+<text x="795" y="196" fill="#475569" font-size="8.5">• 节点: 5-20 Nodes / Factory (轻量K8s)</text>
+<text x="795" y="212" fill="#475569" font-size="8.5">• 规格: 8-32 vCPU/Node · 16GB-64GB RAM</text>
+<text x="795" y="228" fill="#475569" font-size="8.5">• 网络: Flannel (WireGuard加密隧道)</text>
+<text x="795" y="244" fill="#475569" font-size="8.5">• 存储: Local PV + 边缘对象存储 (MinIO)</text>
+<text x="795" y="260" fill="#475569" font-size="8.5">• 离线自治: 断网自愈 · 本地决策 · 延时&lt;1ms</text>
+<text x="795" y="276" fill="#475569" font-size="8.5">• LTC: 产线MES · 质检AI · IoT Hub</text>
+<rect x="795" y="286" width="100" height="14" rx="2" fill="rgba(245,158,11,.12)"/>
+<text x="845" y="296" text-anchor="middle" fill="#92400e" font-size="7">边缘自治</text>
+
+<!-- ===== GitOps / Helm Layer ===== -->
+<path d="M 625 320 L 625 338" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+<rect x="40" y="346" width="570" height="130" rx="8" fill="rgba(139,92,246,.03)" stroke="rgba(139,92,246,.1)" stroke-width="1"/>
+<text x="325" y="370" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">Helm + ArgoCD GitOps 持续部署</text>
+
+<rect x="60" y="382" width="160" height="42" rx="4" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.12)" stroke-width=".8"/>
+<text x="140" y="398" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">Helm Charts</text>
+<text x="140" y="416" text-anchor="middle" fill="#475569" font-size="8">200+ 应用模板</text>
+
+<rect x="240" y="382" width="160" height="42" rx="4" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.12)" stroke-width=".8"/>
+<text x="320" y="398" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">ArgoCD</text>
+<text x="320" y="416" text-anchor="middle" fill="#475569" font-size="8">Git-as-source · 自动同步</text>
+
+<rect x="420" y="382" width="170" height="42" rx="4" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.12)" stroke-width=".8"/>
+<text x="505" y="398" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">GitLab CI</text>
+<text x="505" y="416" text-anchor="middle" fill="#475569" font-size="8">流水线 · 镜像构建 · 扫描</text>
+
+<text x="60" y="450" fill="#475569" font-size="8.5">• 多环境: dev→staging→prod (自动提升) · 回滚: 1-click Rollback</text>
+<text x="60" y="466" fill="#475569" font-size="8.5">• 金丝雀: Flagger (渐进式交付) · 蓝绿: Istio Traffic Split · A/B测试</text>
+
+<!-- ===== HPA / Autoscaling ===== -->
+<rect x="640" y="346" width="570" height="130" rx="8" fill="rgba(245,158,11,.03)" stroke="rgba(245,158,11,.1)" stroke-width="1"/>
+<text x="925" y="370" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">HPA 弹性伸缩 — Auto Scaling</text>
+
+<rect x="660" y="382" width="160" height="42" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="740" y="398" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">HPA (水平)</text>
+<text x="740" y="416" text-anchor="middle" fill="#475569" font-size="8">CPU/MEM 阈值 · 自定义Metric</text>
+
+<rect x="840" y="382" width="160" height="42" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="920" y="398" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">VPA (垂直)</text>
+<text x="920" y="416" text-anchor="middle" fill="#475569" font-size="8">自动调整资源Limit</text>
+
+<rect x="1020" y="382" width="170" height="42" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="1105" y="398" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">Cluster AutoScaler</text>
+<text x="1105" y="416" text-anchor="middle" fill="#475569" font-size="8">节点自动扩缩容</text>
+
+<text x="660" y="450" fill="#475569" font-size="8.5">• 业务指标: QPS · 排队深度 · 响应延迟 · 自定义业务Metric</text>
+<text x="660" y="466" fill="#475569" font-size="8.5">• KEDA: 基于事件驱动 (Kafka Queue · RabbitMQ · Cron · 自定义Scaler)</text>
+
+<!-- ===== Service Mesh ===== -->
+<path d="M 625 476 L 625 496" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+<rect x="40" y="504" width="1170" height="140" rx="8" fill="rgba(14,165,233,.03)" stroke="rgba(14,165,233,.1)" stroke-width="1"/>
+<text x="625" y="528" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">Service Mesh — Istio 服务网格</text>
+
+<!-- Istio components -->
+<rect x="60" y="542" width="170" height="42" rx="4" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.12)" stroke-width=".8"/>
+<text x="145" y="558" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Pilot (控制面)</text>
+<text x="145" y="576" text-anchor="middle" fill="#475569" font-size="8">服务发现 · 流量管理</text>
+
+<rect x="250" y="542" width="170" height="42" rx="4" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.12)" stroke-width=".8"/>
+<text x="335" y="558" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Mixer (策略)</text>
+<text x="335" y="576" text-anchor="middle" fill="#475569" font-size="8">访问控制 · 配额管理</text>
+
+<rect x="440" y="542" width="170" height="42" rx="4" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.12)" stroke-width=".8"/>
+<text x="525" y="558" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Citadel (安全)</text>
+<text x="525" y="576" text-anchor="middle" fill="#475569" font-size="8">mTLS · 证书管理</text>
+
+<rect x="630" y="542" width="170" height="42" rx="4" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.12)" stroke-width=".8"/>
+<text x="715" y="558" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Galley (配置)</text>
+<text x="715" y="576" text-anchor="middle" fill="#475569" font-size="8">配置验证 · 分发</text>
+
+<rect x="820" y="542" width="170" height="42" rx="4" fill="rgba(14,165,233,.06)" stroke="rgba(14,165,233,.12)" stroke-width=".8"/>
+<text x="905" y="558" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">Envoy (数据面)</text>
+<text x="905" y="576" text-anchor="middle" fill="#475569" font-size="8">Sidecar Proxy · L7治理</text>
+
+<!-- Capabilities -->
+<text x="60" y="606" fill="#0f172a" font-size="9" font-weight="600">服务网格能力:</text>
+<text x="180" y="606" fill="#475569" font-size="8.5">全链路mTLS加密 · 灰度发布(金丝雀/蓝绿) · 流量镜像 · 熔断/限流/重试 · 全链路追踪(Jaeger) · 可观测(Kiali)</text>
+<text x="60" y="624" fill="#0f172a" font-size="9" font-weight="600">生产规模:</text>
+<text x="180" y="624" fill="#475569" font-size="8.5">2000+ 服务 · 8000+ Pod · 日均10亿+ 请求 · P99延迟 &lt;50ms · 网格TLS 100%覆盖</text>
+
+<!-- ===== Bottom: 平台价值 ===== -->
+<rect x="40" y="660" width="1170" height="44" rx="6" fill="rgba(99,102,241,.04)" stroke="rgba(99,102,241,.1)" stroke-width="1"/>
+<text x="625" y="678" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">平台价值: 资源利用率↑60% · 部署频率↑10x · MTTR↓80% · 弹性响应&lt;30s · 安全合规100%</text>
+<text x="625" y="696" text-anchor="middle" fill="#475569" font-size="9">技术栈: Kubernetes + Helm + ArgoCD + Istio + Prometheus + Grafana + KEDA + Flagger + OPA</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-4_容器云原生.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-4_容器云原生.pdf');});}
+</script>
+</body>
+</html>

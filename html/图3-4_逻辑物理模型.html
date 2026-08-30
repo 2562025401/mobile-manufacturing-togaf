@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-4 逻辑/物理数据模型</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif;padding:24px}
+.container{max-width:1450px;margin:0 auto;position:relative}
+.header{text-align:center;margin-bottom:20px;padding:16px 0}
+.header h1{color:#0f172a;font-size:28px;font-weight:700;letter-spacing:2px}
+.header p{color:#475569;font-size:14px;margin-top:6px;letter-spacing:1px}
+.diagram-wrapper{position:relative;display:inline-block;width:100%;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 2px 12px rgba(0,0,0,.04);background:#fff;overflow:hidden}
+svg{display:block;width:100%;height:auto;background:#fff}
+.export-toolbar{position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:10}
+.export-toolbar button{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 14px;cursor:pointer;font-family:'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif;font-size:12px;color:#475569;transition:all .2s ease;display:flex;align-items:center;gap:4px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.export-toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;box-shadow:0 2px 4px rgba(0,0,0,.06)}
+.export-toolbar button:active{background:#e2e8f0}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>逻辑 / 物理数据模型</h1>
+<p>LDM → PDM · 销售订单L5-L6属性 · 存储引擎矩阵</p>
+</div>
+<div class="diagram-wrapper">
+<div class="export-toolbar">
+<button onclick="exportCopy()">📋 Copy</button>
+<button onclick="exportPNG()">🖼️ PNG</button>
+<button onclick="exportPDF()">📄 PDF</button>
+</div>
+<svg id="diagram" viewBox="0 0 1350 820" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+<path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+<path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+</marker>
+<filter id="shadow" x="-3%" y="-3%" width="106%" height="106%">
+<feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/>
+</filter>
+</defs>
+
+<!-- Background -->
+<rect width="1350" height="820" fill="#ffffff"/>
+<rect width="1350" height="820" fill="url(#grid)"/>
+
+<!-- ===== LEFT PANEL: LDM Entity ===== -->
+<rect x="20" y="15" width="520" height="630" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="20" y="15" width="520" height="4" rx="2" fill="#3b82f6" opacity="0.3"/>
+
+<text x="50" y="48" fill="#0f172a" font-size="16" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">逻辑数据模型 LDM</text>
+<text x="50" y="66" fill="#475569" font-size="11" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">Logical Data Model · 销售订单 L5-L6</text>
+
+<!-- Entity header card -->
+<rect x="40" y="85" width="480" height="48" rx="8" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.25)" stroke-width="1.5"/>
+<rect x="40" y="85" width="5" height="48" rx="2.5" fill="#ef4444"/>
+<text x="280" y="106" text-anchor="middle" fill="#0f172a" font-size="16" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">Sales_Order</text>
+<text x="280" y="124" text-anchor="middle" fill="#475569" font-size="10" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">«逻辑实体 L5-L6»</text>
+
+<!-- Attribute groups -->
+<g font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">
+
+<!-- 标识 -->
+<rect x="40" y="148" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="148" width="46" height="46" rx="6" fill="rgba(59,130,246,0.08)"/>
+<text x="63" y="176" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">标识</text>
+<rect x="94" y="155" width="82" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="0.5"/>
+<text x="135" y="170" text-anchor="middle" fill="#1e293b" font-size="10">order_id (PK)</text>
+<rect x="182" y="155" width="100" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="0.5"/>
+<text x="232" y="170" text-anchor="middle" fill="#1e293b" font-size="10">order_number</text>
+<rect x="288" y="155" width="112" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="0.5"/>
+<text x="344" y="170" text-anchor="middle" fill="#1e293b" font-size="10">source_system_id</text>
+
+<!-- 关联 -->
+<rect x="40" y="200" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="200" width="46" height="46" rx="6" fill="rgba(139,92,246,0.08)"/>
+<text x="63" y="228" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">关联</text>
+<rect x="94" y="207" width="105" height="22" rx="4" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="0.5"/>
+<text x="146" y="222" text-anchor="middle" fill="#1e293b" font-size="10">customer_id (FK)</text>
+<rect x="205" y="207" width="88" height="22" rx="4" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="0.5"/>
+<text x="249" y="222" text-anchor="middle" fill="#1e293b" font-size="10">store_id (FK)</text>
+<rect x="299" y="207" width="100" height="22" rx="4" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="0.5"/>
+<text x="349" y="222" text-anchor="middle" fill="#1e293b" font-size="10">address_id (FK)</text>
+
+<!-- 状态 -->
+<rect x="40" y="252" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="252" width="46" height="46" rx="6" fill="rgba(245,158,11,0.08)"/>
+<text x="63" y="280" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">状态</text>
+<rect x="94" y="259" width="94" height="22" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.5"/>
+<text x="141" y="274" text-anchor="middle" fill="#1e293b" font-size="10">order_status</text>
+<rect x="194" y="259" width="112" height="22" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.5"/>
+<text x="250" y="274" text-anchor="middle" fill="#1e293b" font-size="10">approval_status</text>
+<rect x="312" y="259" width="118" height="22" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.5"/>
+<text x="371" y="274" text-anchor="middle" fill="#1e293b" font-size="10">fulfillment_status</text>
+
+<!-- 金额 -->
+<rect x="40" y="304" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="304" width="46" height="46" rx="6" fill="rgba(16,185,129,0.08)"/>
+<text x="63" y="332" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">金额</text>
+<rect x="94" y="311" width="106" height="22" rx="4" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.15)" stroke-width="0.5"/>
+<text x="147" y="326" text-anchor="middle" fill="#1e293b" font-size="10">total_amount</text>
+<rect x="206" y="311" width="112" height="22" rx="4" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.15)" stroke-width="0.5"/>
+<text x="262" y="326" text-anchor="middle" fill="#1e293b" font-size="10">discount_amount</text>
+<rect x="324" y="311" width="100" height="22" rx="4" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.15)" stroke-width="0.5"/>
+<text x="374" y="326" text-anchor="middle" fill="#1e293b" font-size="10">paid_amount</text>
+
+<!-- 时间 -->
+<rect x="40" y="356" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="356" width="46" height="46" rx="6" fill="rgba(14,165,233,0.08)"/>
+<text x="63" y="384" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">时间</text>
+<rect x="94" y="363" width="94" height="22" rx="4" fill="rgba(14,165,233,0.06)" stroke="rgba(14,165,233,0.15)" stroke-width="0.5"/>
+<text x="141" y="378" text-anchor="middle" fill="#1e293b" font-size="10">order_date</text>
+<rect x="194" y="363" width="112" height="22" rx="4" fill="rgba(14,165,233,0.06)" stroke="rgba(14,165,233,0.15)" stroke-width="0.5"/>
+<text x="250" y="378" text-anchor="middle" fill="#1e293b" font-size="10">promised_date</text>
+<rect x="312" y="363" width="106" height="22" rx="4" fill="rgba(14,165,233,0.06)" stroke="rgba(14,165,233,0.15)" stroke-width="0.5"/>
+<text x="365" y="378" text-anchor="middle" fill="#1e293b" font-size="10">delivered_date</text>
+
+<!-- 路由 -->
+<rect x="40" y="408" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="408" width="46" height="46" rx="6" fill="rgba(249,115,22,0.08)"/>
+<text x="63" y="436" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">路由</text>
+<rect x="94" y="415" width="100" height="22" rx="4" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.15)" stroke-width="0.5"/>
+<text x="144" y="430" text-anchor="middle" fill="#1e293b" font-size="10">region_code</text>
+<rect x="200" y="415" width="106" height="22" rx="4" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.15)" stroke-width="0.5"/>
+<text x="253" y="430" text-anchor="middle" fill="#1e293b" font-size="10">sales_org_id</text>
+<rect x="312" y="415" width="124" height="22" rx="4" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.15)" stroke-width="0.5"/>
+<text x="374" y="430" text-anchor="middle" fill="#1e293b" font-size="10">distribution_channel</text>
+
+<!-- 渠道 -->
+<rect x="40" y="460" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="460" width="46" height="46" rx="6" fill="rgba(236,72,153,0.08)"/>
+<text x="63" y="488" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">渠道</text>
+<rect x="94" y="467" width="94" height="22" rx="4" fill="rgba(236,72,153,0.06)" stroke="rgba(236,72,153,0.15)" stroke-width="0.5"/>
+<text x="141" y="482" text-anchor="middle" fill="#1e293b" font-size="10">channel_id</text>
+<rect x="194" y="467" width="112" height="22" rx="4" fill="rgba(236,72,153,0.06)" stroke="rgba(236,72,153,0.15)" stroke-width="0.5"/>
+<text x="250" y="482" text-anchor="middle" fill="#1e293b" font-size="10">order_source</text>
+<rect x="312" y="467" width="106" height="22" rx="4" fill="rgba(236,72,153,0.06)" stroke="rgba(236,72,153,0.15)" stroke-width="0.5"/>
+<text x="365" y="482" text-anchor="middle" fill="#1e293b" font-size="10">campaign_id</text>
+
+<!-- 质量 -->
+<rect x="40" y="512" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="512" width="46" height="46" rx="6" fill="rgba(34,197,94,0.08)"/>
+<text x="63" y="540" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">质量</text>
+<rect x="94" y="519" width="132" height="22" rx="4" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.15)" stroke-width="0.5"/>
+<text x="160" y="534" text-anchor="middle" fill="#1e293b" font-size="10">data_quality_score</text>
+<rect x="232" y="519" width="118" height="22" rx="4" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.15)" stroke-width="0.5"/>
+<text x="291" y="534" text-anchor="middle" fill="#1e293b" font-size="10">match_confidence</text>
+
+<!-- 审计 -->
+<rect x="40" y="564" width="480" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="40" y="564" width="46" height="46" rx="6" fill="rgba(148,163,184,0.12)"/>
+<text x="63" y="592" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">审计</text>
+<rect x="94" y="571" width="94" height="22" rx="4" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.2)" stroke-width="0.5"/>
+<text x="141" y="586" text-anchor="middle" fill="#1e293b" font-size="10">created_at</text>
+<rect x="194" y="571" width="94" height="22" rx="4" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.2)" stroke-width="0.5"/>
+<text x="241" y="586" text-anchor="middle" fill="#1e293b" font-size="10">updated_at</text>
+<rect x="294" y="571" width="70" height="22" rx="4" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.2)" stroke-width="0.5"/>
+<text x="329" y="586" text-anchor="middle" fill="#1e293b" font-size="10">version</text>
+
+<!-- Total count -->
+<text x="500" y="628" text-anchor="end" fill="#475569" font-size="10" opacity="0.6">共 26 属性</text>
+
+</g>
+
+<!-- ===== RIGHT PANEL: Storage Engine Matrix ===== -->
+<rect x="555" y="15" width="778" height="630" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="555" y="15" width="778" height="4" rx="2" fill="#14b8a6" opacity="0.3"/>
+
+<text x="585" y="48" fill="#0f172a" font-size="16" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">物理存储引擎矩阵</text>
+<text x="585" y="66" fill="#475569" font-size="11" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">Physical Storage Engine Matrix · 多模多引擎</text>
+
+<!-- Table header -->
+<rect x="575" y="90" width="738" height="32" rx="4" fill="rgba(20,184,166,0.1)" stroke="rgba(20,184,166,0.2)" stroke-width="1"/>
+<text x="640" y="111" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">数据类型</text>
+<line x1="707" y1="90" x2="707" y2="122" stroke="rgba(20,184,166,0.2)" stroke-width="1"/>
+<text x="820" y="111" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">存储引擎</text>
+<line x1="942" y1="90" x2="942" y2="122" stroke="rgba(20,184,166,0.2)" stroke-width="1"/>
+<text x="1085" y="111" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">特征</text>
+<line x1="1202" y1="90" x2="1202" y2="122" stroke="rgba(20,184,166,0.2)" stroke-width="1"/>
+<text x="1280" y="111" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">典型场景</text>
+
+<!-- Row data -->
+<g font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">
+
+<!-- Row 1: OLTP -->
+<rect x="575" y="127" width="738" height="44" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>
+<rect x="575" y="127" width="132" height="44" rx="4" fill="rgba(59,130,246,0.06)"/>
+<circle cx="595" cy="149" r="5" fill="#3b82f6" opacity="0.6"/>
+<text x="640" y="153" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="600">OLTP</text>
+<text x="820" y="153" text-anchor="middle" fill="#1e293b" font-size="12">MySQL / PostgreSQL 行存</text>
+<text x="1085" y="153" text-anchor="middle" fill="#475569" font-size="11">ACID · 高并发 · 事务型</text>
+<text x="1280" y="153" text-anchor="middle" fill="#475569" font-size="11">订单交易</text>
+
+<!-- Row 2: OLAP -->
+<rect x="575" y="175" width="738" height="44" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>
+<rect x="575" y="175" width="132" height="44" rx="4" fill="rgba(139,92,246,0.06)"/>
+<circle cx="595" cy="197" r="5" fill="#8b5cf6" opacity="0.6"/>
+<text x="640" y="201" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="600">OLAP</text>
+<text x="820" y="201" text-anchor="middle" fill="#1e293b" font-size="12">ClickHouse 列存</text>
+<text x="1085" y="201" text-anchor="middle" fill="#475569" font-size="11">大宽表 · 聚合分析 · MPP</text>
+<text x="1280" y="201" text-anchor="middle" fill="#475569" font-size="11">经营分析</text>
+
+<!-- Row 3: 文档 -->
+<rect x="575" y="223" width="738" height="44" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>
+<rect x="575" y="223" width="132" height="44" rx="4" fill="rgba(16,185,129,0.06)"/>
+<circle cx="595" cy="245" r="5" fill="#10b981" opacity="0.6"/>
+<text x="640" y="249" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="600">文档</text>
+<text x="820" y="249" text-anchor="middle" fill="#1e293b" font-size="12">MinIO S3</text>
+<text x="1085" y="249" text-anchor="middle" fill="#475569" font-size="11">对象存储 · 非结构化</text>
+<text x="1280" y="249" text-anchor="middle" fill="#475569" font-size="11">附件/图片</text>
+
+<!-- Row 4: 时序 -->
+<rect x="575" y="271" width="738" height="44" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>
+<rect x="575" y="271" width="132" height="44" rx="4" fill="rgba(245,158,11,0.06)"/>
+<circle cx="595" cy="293" r="5" fill="#f59e0b" opacity="0.6"/>
+<text x="640" y="297" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="600">时序</text>
+<text x="820" y="297" text-anchor="middle" fill="#1e293b" font-size="12">TDengine</text>
+<text x="1085" y="297" text-anchor="middle" fill="#475569" font-size="11">时序数据 · 高吞吐写入</text>
+<text x="1280" y="297" text-anchor="middle" fill="#475569" font-size="11">IoT / 设备</text>
+
+<!-- Row 5: 图 -->
+<rect x="575" y="319" width="738" height="44" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>
+<rect x="575" y="319" width="132" height="44" rx="4" fill="rgba(239,68,68,0.06)"/>
+<circle cx="595" cy="341" r="5" fill="#ef4444" opacity="0.6"/>
+<text x="640" y="345" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="600">图</text>
+<text x="820" y="345" text-anchor="middle" fill="#1e293b" font-size="12">Neo4j</text>
+<text x="1085" y="345" text-anchor="middle" fill="#475569" font-size="11">关系图谱 · 路径分析</text>
+<text x="1280" y="345" text-anchor="middle" fill="#475569" font-size="11">推荐/风控</text>
+
+</g>
+
+<!-- Mapping annotation -->
+<g font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">
+<path d="M 40 630 Q 300 650 575 630" fill="none" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+<text x="307" y="658" text-anchor="middle" fill="#475569" font-size="10" opacity="0.7">逻辑 → 物理映射</text>
+</g>
+
+<!-- ===== BOTTOM PANEL: 冷热分层 ===== -->
+<rect x="20" y="660" width="1313" height="145" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+<rect x="20" y="660" width="1313" height="4" rx="2" fill="#f59e0b" opacity="0.3"/>
+
+<text x="50" y="692" fill="#0f172a" font-size="16" font-weight="700" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">数据冷热分层</text>
+<text x="50" y="710" fill="#475569" font-size="11" font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">Data Temperature Hierarchy</text>
+
+<!-- Temperature layers -->
+<g font-family="'JetBrains Mono','Microsoft YaHei','PingFang SC',sans-serif">
+
+<!-- Hot: <30d SSD -->
+<rect x="50" y="730" width="310" height="54" rx="6" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="1.5"/>
+<rect x="50" y="730" width="6" height="54" rx="3" fill="#ef4444"/>
+<text x="205" y="754" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">热 Hot</text>
+<text x="205" y="773" text-anchor="middle" fill="#475569" font-size="11">&lt; 30天 · NVMe SSD · 高吞吐</text>
+<text x="323" y="757" fill="#ef4444" font-size="18" font-weight="700">→</text>
+
+<!-- Warm: 30d-2y 混合 -->
+<rect x="340" y="730" width="350" height="54" rx="6" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+<rect x="340" y="730" width="6" height="54" rx="3" fill="#f59e0b"/>
+<text x="515" y="754" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">温 Warm</text>
+<text x="515" y="773" text-anchor="middle" fill="#475569" font-size="11">30天 - 2年 · 混合存储 · 平衡</text>
+<text x="653" y="757" fill="#f59e0b" font-size="18" font-weight="700">→</text>
+
+<!-- Cold: 2-5y HDD -->
+<rect x="670" y="730" width="280" height="54" rx="6" fill="rgba(59,130,246,0.1)" stroke="rgba(59,130,246,0.3)" stroke-width="1.5"/>
+<rect x="670" y="730" width="6" height="54" rx="3" fill="#3b82f6"/>
+<text x="810" y="754" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">冷 Cold</text>
+<text x="810" y="773" text-anchor="middle" fill="#475569" font-size="11">2 - 5年 · HDD · 低成本</text>
+<text x="913" y="757" fill="#3b82f6" font-size="18" font-weight="700">→</text>
+
+<!-- Archive: >5y WORM -->
+<rect x="930" y="730" width="310" height="54" rx="6" fill="rgba(148,163,184,0.15)" stroke="rgba(148,163,184,0.3)" stroke-width="1.5"/>
+<rect x="930" y="730" width="6" height="54" rx="3" fill="#64748b"/>
+<text x="1085" y="754" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">归档 Archive</text>
+<text x="1085" y="773" text-anchor="middle" fill="#475569" font-size="11">&gt; 5年 · WORM · 合规保留</text>
+
+<!-- Arrow markers between layers -->
+<g fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.4">
+<line x1="320" y1="757" x2="340" y2="757"/>
+<line x1="660" y1="757" x2="670" y2="757"/>
+<line x1="910" y1="757" x2="930" y2="757"/>
+</g>
+
+</g>
+
+</svg>
+</div>
+</div>
+
+<script>
+const FILENAME = '图3-4_逻辑物理模型';
+
+function getCanvas() {
+    return html2canvas(document.getElementById('diagram'), {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: 1350,
+        height: 820
+    });
+}
+
+function exportCopy() {
+    getCanvas().then(canvas => {
+        canvas.toBlob(blob => {
+            navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(() => {
+                const btn = event.target;
+                const orig = btn.textContent;
+                btn.textContent = '✅ Copied';
+                setTimeout(() => btn.textContent = orig, 1500);
+            });
+        });
+    });
+}
+
+function exportPNG() {
+    getCanvas().then(canvas => {
+        const a = document.createElement('a');
+        a.download = FILENAME + '.png';
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+    });
+}
+
+function exportPDF() {
+    getCanvas().then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' });
+        const w = pdf.internal.pageSize.getWidth();
+        const h = (canvas.height * w) / canvas.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, w, h);
+        pdf.save(FILENAME + '.pdf');
+    });
+}
+</script>
+</body>
+</html>

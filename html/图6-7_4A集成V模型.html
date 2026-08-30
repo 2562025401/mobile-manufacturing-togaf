@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图6-7 4A集成V模型</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">4A集成V模型与域级映射 — BA→DA→AA→TA · 验证→确认 · 1:1域映射</div>
+<svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+</defs>
+<rect width="1300" height="780" fill="#f8fafc"/><rect width="1300" height="780" fill="url(#grid)"/>
+<text x="650" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">4A集成V模型与域级映射 — 左臂(BA→DA→AA→TA) · 右臂(验证→确认) · 1:1域映射</text>
+
+<!-- V-Model shape -->
+
+<!-- ===== LEFT ARM: BA → DA → AA → TA (Design) ===== -->
+<rect x="50" y="660" width="1200" height="24" rx="4" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width=".5"/>
+<text x="650" y="677" text-anchor="middle" fill="#4338ca" font-size="8" font-weight="500">纵向: 抽象层级从上到下(业务→技术) · 横向: 设计与验证对应关系 · 域级: 1:1追踪映射</text>
+
+<!-- V shape left side: BA (top left) -->
+<rect x="60" y="60" width="360" height="70" rx="8" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.2)" stroke-width="2"/>
+<rect x="60" y="60" width="360" height="24" rx="8" fill="rgba(16,185,129,.1)"/>
+<text x="240" y="78" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">BA — 业务架构</text>
+<text x="80" y="100" fill="#475569" font-size="8">• 业务能力·价值链·流程·组织·KPI</text>
+<text x="80" y="116" fill="#475569" font-size="8">• LTC端到端: 从线索到现金全流程</text>
+
+<!-- V shape left side: DA (mid-left) -->
+<rect x="280" y="170" width="360" height="70" rx="8" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.2)" stroke-width="2"/>
+<rect x="280" y="170" width="360" height="24" rx="8" fill="rgba(59,130,246,.1)"/>
+<text x="460" y="188" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">DA — 数据架构</text>
+<text x="300" y="210" fill="#475569" font-size="8">• 数据实体·数据流·数据治理·数据模型</text>
+<text x="300" y="226" fill="#475569" font-size="8">• MDM主数据·交易数据·分析数据&KPI</text>
+
+<!-- V shape left side: AA (mid-left 2) -->
+<rect x="500" y="280" width="360" height="70" rx="8" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.2)" stroke-width="2"/>
+<rect x="500" y="280" width="360" height="24" rx="8" fill="rgba(245,158,11,.1)"/>
+<text x="680" y="298" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">AA — 应用架构</text>
+<text x="520" y="320" fill="#475569" font-size="8">• 应用系统·服务·API·交互·集成</text>
+<text x="520" y="336" fill="#475569" font-size="8">• ERP·CRM·PLM·MES·OMS·WMS·TMS</text>
+
+<!-- V shape left side: TA (bottom-left) -->
+<rect x="720" y="390" width="360" height="70" rx="8" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.2)" stroke-width="2"/>
+<rect x="720" y="390" width="360" height="24" rx="8" fill="rgba(139,92,246,.1)"/>
+<text x="900" y="408" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">TA — 技术架构</text>
+<text x="740" y="430" fill="#475569" font-size="8">• 基础设施·容器·中间件·安全·灾备</text>
+<text x="740" y="446" fill="#475569" font-size="8">• Ch5全部技术决策 · 云原生·零信任·混合云</text>
+
+<!-- V connecting lines (left side) -->
+<line x1="240" y1="130" x2="460" y2="170" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="460" y1="240" x2="680" y2="280" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="680" y1="350" x2="900" y2="390" stroke="#94a3b8" stroke-width="1.5"/>
+
+<!-- ===== BOTTOM: 解决方案 ===== -->
+<rect x="300" y="490" width="700" height="60" rx="10" fill="rgba(239,68,68,.04)" stroke="rgba(239,68,68,.15)" stroke-width="2"/>
+<rect x="300" y="490" width="700" height="22" rx="10" fill="rgba(239,68,68,.08)"/>
+<text x="650" y="506" text-anchor="middle" fill="#b91c1c" font-size="12" font-weight="600">Solution — 解决方案</text>
+<text x="320" y="528" fill="#475569" font-size="8">技术架构蓝图的实施落地 · 项目组合 · 迁移Waves · 3年路线图</text>
+<text x="320" y="542" fill="#475569" font-size="8">Ch5技术决策 + Ch6实施规划 = 完整的企业级技术架构转型方案</text>
+
+<!-- ===== RIGHT ARM: 验证→确认 (Verification & Validation) ===== -->
+<rect x="850" y="60" width="360" height="70" rx="8" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.2)" stroke-width="2"/>
+<rect x="850" y="60" width="360" height="24" rx="8" fill="rgba(16,185,129,.1)"/>
+<text x="1030" y="78" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">业务验证 — Business Validation</text>
+<text x="870" y="100" fill="#475569" font-size="8">• 业务流程正确性验证</text>
+<text x="870" y="116" fill="#475569" font-size="8">• LTC端到端场景验收</text>
+
+<rect x="650" y="170" width="360" height="70" rx="8" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.2)" stroke-width="2"/>
+<rect x="650" y="170" width="360" height="24" rx="8" fill="rgba(59,130,246,.1)"/>
+<text x="830" y="188" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">数据验证 — Data Validation</text>
+<text x="670" y="210" fill="#475569" font-size="8">• 数据完整性·一致性验证</text>
+<text x="670" y="226" fill="#475569" font-size="8">• 数据迁移准确性校验</text>
+
+<rect x="450" y="280" width="360" height="70" rx="8" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.2)" stroke-width="2"/>
+<rect x="450" y="280" width="360" height="24" rx="8" fill="rgba(245,158,11,.1)"/>
+<text x="630" y="298" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">应用验证 — Application Validation</text>
+<text x="470" y="320" fill="#475569" font-size="8">• 系统功能·接口·集成验证</text>
+<text x="470" y="336" fill="#475569" font-size="8">• 微服务·API·集成测试</text>
+
+<rect x="250" y="390" width="360" height="70" rx="8" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.2)" stroke-width="2"/>
+<rect x="250" y="390" width="360" height="24" rx="8" fill="rgba(139,92,246,.1)"/>
+<text x="430" y="408" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">技术验证 — Technical Validation</text>
+<text x="270" y="430" fill="#475569" font-size="8">• 性能·容量·安全·灾备验证</text>
+<text x="270" y="446" fill="#475569" font-size="8">• POC·压力测试·红蓝对抗</text>
+
+<!-- V connecting lines (right side) -->
+<line x1="850" y1="60" x2="650" y2="170" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="650" y1="170" x2="450" y2="280" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="450" y1="280" x2="250" y2="390" stroke="#94a3b8" stroke-width="1.5"/>
+
+<!-- ===== 1:1 Domain Mapping ===== -->
+<rect x="40" y="570" width="1220" height="90" rx="8" fill="rgba(14,165,233,.03)" stroke="rgba(14,165,233,.12)" stroke-width="1.5"/>
+<text x="650" y="596" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">域级 1:1 映射 — Domain-Level Traceability</text>
+
+<rect x="60" y="610" width="260" height="40" rx="5" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.12)" stroke-width=".8"/>
+<text x="190" y="626" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">BA业务域 ↔ DA数据域</text>
+<text x="190" y="642" text-anchor="middle" fill="#475569" font-size="7">业务能力→数据实体</text>
+
+<rect x="350" y="610" width="260" height="40" rx="5" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.12)" stroke-width=".8"/>
+<text x="480" y="626" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">DA数据域 ↔ AA应用域</text>
+<text x="480" y="642" text-anchor="middle" fill="#475569" font-size="7">数据流→应用服务</text>
+
+<rect x="640" y="610" width="260" height="40" rx="5" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.12)" stroke-width=".8"/>
+<text x="770" y="626" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">AA应用域 ↔ TA技术域</text>
+<text x="770" y="642" text-anchor="middle" fill="#475569" font-size="7">应用需求→技术组件</text>
+
+<rect x="930" y="610" width="310" height="40" rx="5" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.12)" stroke-width=".8"/>
+<text x="1085" y="626" text-anchor="middle" fill="#6d28d9" font-size="8" font-weight="600">BA↔DA↔AA↔TA 全链路追踪</text>
+<text x="1085" y="642" text-anchor="middle" fill="#475569" font-size="7">业务需求→技术实现→验证确认</text>
+
+<!-- ===== Bottom: Traceability Line ===== -->
+<rect x="40" y="700" width="1220" height="36" rx="6" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width="1"/>
+<text x="650" y="718" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">V模型价值: 左臂设计→右臂验证 · 每个架构域都有对应的验证活动 · 确保BA-DA-AA-TA一致</text>
+<text x="650" y="734" text-anchor="middle" fill="#475569" font-size="8.5">域级映射: 每个能力域(d capability)可以映射到1个或多个软件包/组件 · 1:1追踪确保无遗漏</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图6-7_4A集成V模型.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图6-7_4A集成V模型.pdf');});}
+</script>
+</body>
+</html>

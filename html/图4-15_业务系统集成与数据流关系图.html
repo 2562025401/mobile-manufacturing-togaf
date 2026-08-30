@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图4-15 业务系统集成与数据流关系图</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f8fafc;color:#1e293b;font-family:'Inter','Microsoft YaHei',Arial,sans-serif;padding:24px}
+.container{max-width:1580px;margin:0 auto}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.title{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:.2px}
+.subtitle{margin-top:6px;color:#64748b;font-size:13px;line-height:1.6;max-width:1120px}
+.badge{display:inline-flex;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap}
+.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(15,23,42,.05);overflow:auto}
+.section-title{font-size:16px;font-weight:800;color:#0f172a;margin:18px 0 10px}
+.note{font-size:12px;color:#64748b;line-height:1.5;margin:8px 0 14px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.legend span{font-size:12px;border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:5px 9px}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.domain{border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:12px;min-height:160px}
+.domain.core{border-color:#bae6fd;background:#f0f9ff}
+.domain.ops{border-color:#ddd6fe;background:#faf5ff}
+.domain.guard{border-color:#fecdd3;background:#fff7f7}
+.domain-title{font-size:14px;font-weight:800;color:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.domain-code{font-size:11px;color:#64748b;font-weight:700}
+.group{border-left:3px solid #38bdf8;padding-left:8px;margin:8px 0}
+.group-name{font-size:12px;font-weight:800;color:#334155;margin-bottom:5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;line-height:1.35;border:1px solid #e2e8f0;background:#fff;border-radius:7px;padding:4px 6px;color:#334155}
+.chip.master{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.tx{border-color:#bfdbfe;background:#eff6ff;color:#1e40af}
+.chip.rule{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.chip.api{border-color:#c7d2fe;background:#eef2ff;color:#3730a3}
+.chip.app{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+.lane{display:grid;grid-template-columns:170px repeat(7,minmax(130px,1fr));border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;min-width:1180px}
+.lane div{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:9px;font-size:12px;line-height:1.45;background:#fff}
+.lane .head{font-weight:800;background:#f1f5f9;color:#0f172a;text-align:center}
+.lane .rowhead{font-weight:800;background:#f8fafc;color:#0f172a}
+.lane div:nth-child(8n){border-right:0}
+.mini{font-size:11px;color:#64748b}
+.stack{display:flex;flex-direction:column;gap:6px}
+.flow-svg{width:100%;height:auto;min-width:1220px}
+.node-title{font-size:13px;font-weight:800;fill:#0f172a}
+.node-sub{font-size:10px;fill:#475569}
+.edge-label{font-size:10px;fill:#334155;font-weight:700}
+.footer{margin-top:14px;color:#64748b;font-size:11px;text-align:right}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;min-width:1100px}
+th,td{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:8px;vertical-align:top;line-height:1.45}
+th{background:#f1f5f9;color:#0f172a;font-weight:800;text-align:left;position:sticky;top:0}
+td:first-child,th:first-child{border-left:1px solid #e2e8f0}
+tr:first-child th{border-top:1px solid #e2e8f0}
+tr:first-child th:first-child{border-top-left-radius:8px}
+tr:first-child th:last-child{border-top-right-radius:8px}
+@media(max-width:1100px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.header{flex-direction:column}.title{font-size:20px}}
+</style>
+
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <div class="title">图4-15 业务系统集成与数据流关系图</div>
+      <div class="subtitle">独立说明系统间集成关系，特别是跨PLM、ERP、MES、OMS、WMS、TMS、SRM、数据平台的数据流。</div>
+    </div>
+    <div class="badge">数据流集成</div>
+  </div>
+  <div class="diagram-card">
+    <svg class="flow-svg" viewBox="0 0 1310 660" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#64748b"/></marker></defs>
+      <rect x="20" y="28" width="1270" height="600" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="655" y="58" text-anchor="middle" class="node-title">业务系统集成与数据流关系图</text>
+      <g stroke="#64748b" stroke-width="1.55" marker-end="url(#arrow)" fill="none"><path d="M220 141 L330 141"/><rect x="263" y="112" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="280" y="125" text-anchor="middle" class="edge-label">F01</text><path d="M480 141 L870 106"/><rect x="638" y="98" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="655" y="111" text-anchor="middle" class="edge-label">F02</text><path d="M220 301 L330 301"/><rect x="263" y="272" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="280" y="285" text-anchor="middle" class="edge-label">F03</text><path d="M480 301 L585 301"/><rect x="520" y="272" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="537" y="285" text-anchor="middle" class="edge-label">F04</text><path d="M755 301 L870 241"/><rect x="798" y="236" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="815" y="249" text-anchor="middle" class="edge-label">F05</text><path d="M755 301 L870 376"/><rect x="798" y="346" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="815" y="359" text-anchor="middle" class="edge-label">F06</text><path d="M1020 376 L1060 376 L1060 461 L1110 461"/><rect x="1048" y="396" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="1065" y="409" text-anchor="middle" class="edge-label">F07</text><path d="M1020 511 L1110 497"/><rect x="1048" y="504" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="1065" y="517" text-anchor="middle" class="edge-label">F08</text><path d="M480 461 L535 461 L535 301 L585 301"/><rect x="523" y="386" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="540" y="399" text-anchor="middle" class="edge-label">F09</text><path d="M755 301 L930 301 L930 241 L1110 241"/><rect x="918" y="271" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="935" y="284" text-anchor="middle" class="edge-label">F10</text><path d="M220 461 L330 461"/><rect x="263" y="432" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="280" y="445" text-anchor="middle" class="edge-label">F11</text><path d="M480 497 L1110 497" stroke-dasharray="6,5"/><rect x="748" y="508" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="765" y="521" text-anchor="middle" class="edge-label">D01</text><path d="M1020 106 L1050 106 L1050 441 L1110 441" stroke-dasharray="6,5"/><rect x="1038" y="156" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="1055" y="169" text-anchor="middle" class="edge-label">D02</text><path d="M1020 241 L1058 241 L1058 461 L1110 461" stroke-dasharray="6,5"/><rect x="1046" y="291" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="1063" y="304" text-anchor="middle" class="edge-label">D03</text><path d="M1185 425 L1185 277" stroke-dasharray="6,5"/><rect x="1204" y="340" width="34" height="18" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/><text x="1221" y="353" text-anchor="middle" class="edge-label">D04</text></g>
+      <g><rect x="70" y="105" width="150" height="72" rx="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.8"/><text x="145.0" y="129" text-anchor="middle" class="node-title">PLM</text><text x="145.0" y="148" text-anchor="middle" class="node-sub">产品/BOM/ECN</text><text x="145.0" y="165" text-anchor="middle" class="node-sub">研发主数据</text><rect x="70" y="265" width="150" height="72" rx="9" fill="#fae8ff" stroke="#c026d3" stroke-width="1.8"/><text x="145.0" y="289" text-anchor="middle" class="node-title">CRM/CDP/MA</text><text x="145.0" y="308" text-anchor="middle" class="node-sub">客户/线索/营销</text><text x="145.0" y="325" text-anchor="middle" class="node-sub">需求生成</text><rect x="70" y="425" width="150" height="72" rx="9" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/><text x="145.0" y="449" text-anchor="middle" class="node-title">售后服务平台</text><text x="145.0" y="468" text-anchor="middle" class="node-sub">服务工单/备件/NPS</text><text x="145.0" y="485" text-anchor="middle" class="node-sub">服务闭环</text><rect x="330" y="105" width="150" height="72" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/><text x="405.0" y="129" text-anchor="middle" class="node-title">APS</text><text x="405.0" y="148" text-anchor="middle" class="node-sub">预测/S&amp;OP/MRP</text><text x="405.0" y="165" text-anchor="middle" class="node-sub">计划决策</text><rect x="330" y="265" width="150" height="72" rx="9" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/><text x="405.0" y="289" text-anchor="middle" class="node-title">OMS</text><text x="405.0" y="308" text-anchor="middle" class="node-sub">订单/价格/履约</text><text x="405.0" y="325" text-anchor="middle" class="node-sub">LTC交易主链</text><rect x="330" y="425" width="150" height="72" rx="9" fill="#dcfce7" stroke="#16a34a" stroke-width="1.8"/><text x="405.0" y="449" text-anchor="middle" class="node-title">ERP</text><text x="405.0" y="468" text-anchor="middle" class="node-sub">采购/库存/财务</text><text x="405.0" y="485" text-anchor="middle" class="node-sub">经营交易中枢</text><rect x="585" y="265" width="170" height="72" rx="9" fill="#fff7ed" stroke="#f97316" stroke-width="1.8"/><text x="670.0" y="289" text-anchor="middle" class="node-title">iPaaS/事件总线</text><text x="670.0" y="308" text-anchor="middle" class="node-sub">API/事件/CDC</text><text x="670.0" y="325" text-anchor="middle" class="node-sub">集成编排</text><rect x="870" y="70" width="150" height="72" rx="9" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.8"/><text x="945.0" y="94" text-anchor="middle" class="node-title">SRM</text><text x="945.0" y="113" text-anchor="middle" class="node-sub">供应商/寻源/ASN</text><text x="945.0" y="130" text-anchor="middle" class="node-sub">供应协同</text><rect x="870" y="205" width="150" height="72" rx="9" fill="#fee2e2" stroke="#dc2626" stroke-width="1.8"/><text x="945.0" y="229" text-anchor="middle" class="node-title">MES</text><text x="945.0" y="248" text-anchor="middle" class="node-sub">工单/过程/追溯</text><text x="945.0" y="265" text-anchor="middle" class="node-sub">制造执行</text><rect x="870" y="340" width="150" height="72" rx="9" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8"/><text x="945.0" y="364" text-anchor="middle" class="node-title">WMS</text><text x="945.0" y="383" text-anchor="middle" class="node-sub">库存/波次/出入库</text><text x="945.0" y="400" text-anchor="middle" class="node-sub">仓储执行</text><rect x="870" y="475" width="150" height="72" rx="9" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.8"/><text x="945.0" y="499" text-anchor="middle" class="node-title">TMS</text><text x="945.0" y="518" text-anchor="middle" class="node-sub">路由/承运/签收</text><text x="945.0" y="535" text-anchor="middle" class="node-sub">物流执行</text><rect x="1110" y="205" width="150" height="72" rx="9" fill="#ecfccb" stroke="#65a30d" stroke-width="1.8"/><text x="1185.0" y="229" text-anchor="middle" class="node-title">财务共享</text><text x="1185.0" y="248" text-anchor="middle" class="node-sub">应收/对账/回款</text><text x="1185.0" y="265" text-anchor="middle" class="node-sub">资金闭环</text><rect x="1110" y="425" width="150" height="72" rx="9" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.8"/><text x="1185.0" y="449" text-anchor="middle" class="node-title">MDM/数据平台</text><text x="1185.0" y="468" text-anchor="middle" class="node-sub">主数据/数仓/指标</text><text x="1185.0" y="485" text-anchor="middle" class="node-sub">数据服务</text></g>
+    </svg>
+    <div class='legend'><span>实线：业务交易/API调用</span><span>虚线：数据同步/事件入湖/质量回流</span><span>所有连线均连接到系统形状边缘</span><span>iPaaS/事件总线承接跨系统编排和异步解耦</span></div>
+    <div class="section-title">集成链路与数据流说明</div>
+    <table><tr><th>编号</th><th>集成链路</th><th>数据流/接口语义</th></tr><tr><td><b>F01</b></td><td>PLM→APS</td><td>BOM、ECN、物料与产品主数据，支撑需求计划和供应计划约束计算。</td></tr><tr><td><b>F02</b></td><td>APS→SRM</td><td>MRP需求、采购建议、供应风险预警，触发寻源和供应商交期协同。</td></tr><tr><td><b>F03</b></td><td>CRM/CDP/MA→OMS</td><td>客户、线索、活动、促销资格与渠道价格规则进入订单交易链路。</td></tr><tr><td><b>F04</b></td><td>OMS→iPaaS/事件总线</td><td>订单创建、变更、取消、履约状态等事件统一发布和编排。</td></tr><tr><td><b>F05</b></td><td>iPaaS/事件总线→MES</td><td>销售订单需求、工单、MBOM、工艺路线和生产进度事件。</td></tr><tr><td><b>F06</b></td><td>iPaaS/事件总线→WMS</td><td>库存预占、拣配出库、调拨补货、签收回传等履约事件。</td></tr><tr><td><b>F07</b></td><td>WMS→MDM/数据平台</td><td>库存流水、批次、出入库与签收事实进入数据平台。</td></tr><tr><td><b>F08</b></td><td>TMS→MDM/数据平台</td><td>承运商、路由、在途轨迹、签收证明和异常物流事件。</td></tr><tr><td><b>F09</b></td><td>ERP→iPaaS/事件总线</td><td>采购、库存、成本、财务凭证、收发票等经营交易事件。</td></tr><tr><td><b>F10</b></td><td>iPaaS/事件总线→财务共享</td><td>应收确认、开票依据、对账单、回款核销触发信息。</td></tr><tr><td><b>F11</b></td><td>售后服务平台→ERP</td><td>服务工单、备件消耗、质量问题和费用结算回流。</td></tr><tr><td><b>D01</b></td><td>ERP→MDM/数据平台</td><td>主数据、交易数据、财务指标和经营分析数据同步入湖。</td></tr><tr><td><b>D02</b></td><td>SRM→MDM/数据平台</td><td>供应商绩效、风险、质量协同、ASN和交付表现数据。</td></tr><tr><td><b>D03</b></td><td>MES→MDM/数据平台</td><td>生产过程、质量检测、追溯、CAPA和设备采集数据。</td></tr><tr><td><b>D04</b></td><td>MDM/数据平台→财务共享</td><td>客户、组织、科目、收入、回款与经营指标数据服务。</td></tr></table>
+    </div>
+  <div class="footer">Generated from enterprise architecture metadata · html/图4-15 业务系统集成与数据流关系图 · Light architecture diagram style</div>
+</div>
+</body>
+</html>

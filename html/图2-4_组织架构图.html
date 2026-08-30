@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-4 — 组织架构图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#f8fafc;
+  font-family:'JetBrains Mono',monospace;
+  color:#1e293b;
+  padding:24px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.container{max-width:1160px;width:100%;}
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:14px;gap:12px;
+}
+.title-group h1{
+  font-size:18px;font-weight:700;color:#0f172a;
+  letter-spacing:0.3px;line-height:1.3;
+}
+.title-group .subtitle{
+  font-size:11px;color:#475569;margin-top:2px;
+  font-weight:400;
+}
+.toolbar{display:flex;gap:6px;flex-shrink:0;padding-top:2px;}
+.toolbar button{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:5px 12px;border:1px solid #e2e8f0;border-radius:5px;
+  background:#ffffff;color:#475569;cursor:pointer;
+  transition:all 0.15s;letter-spacing:0.3px;
+}
+.toolbar button:hover{
+  background:#f1f5f9;border-color:#3b82f6;color:#3b82f6;
+}
+.diagram-wrapper{
+  background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;
+  padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.diagram-wrapper svg{display:block;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>组织架构图 — 集团·事业部·区域三层结构</h1>
+      <div class="subtitle">Organization Structure · 集中-下放平衡 · 七大业务域归属</div>
+    </div>
+    <div class="toolbar">
+      <button onclick="copyDiagram()">复制</button>
+      <button onclick="exportPNG()">PNG</button>
+      <button onclick="exportPDF()">PDF</button>
+    </div>
+  </div>
+  <div class="diagram-wrapper" id="diagram">
+    <svg viewBox="0 0 1100 700" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family:'JetBrains Mono',monospace;">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+        </pattern>
+        <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+        </marker>
+        <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.04"/>
+        </filter>
+      </defs>
+      <!-- Grid -->
+      <rect width="1100" height="700" fill="url(#grid)"/>
+      <rect width="1100" height="700" fill="#ffffff" opacity="0.92"/>
+
+      <!-- Side panel backgrounds -->
+      <rect x="22" y="50" width="140" height="600" rx="10" fill="rgba(59,130,246,0.04)" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="938" y="50" width="140" height="600" rx="10" fill="rgba(249,115,22,0.04)" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- LEFT PANEL: 集中管理 -->
+      <text x="92" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6" letter-spacing="1">集中管理</text>
+      <text x="92" y="96" text-anchor="middle" font-size="7" fill="#94a3b8" letter-spacing="0.5">CENTRALIZED</text>
+      <line x1="38" y1="106" x2="146" y2="106" stroke="#e2e8f0" stroke-width="0.5"/>
+      <!-- Items -->
+      <circle cx="42" cy="128" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="132" font-size="10" fill="#475569">研发 R&amp;D</text>
+      <text x="52" y="146" font-size="7" fill="#94a3b8">产品研发集中管控</text>
+
+      <circle cx="42" cy="172" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="176" font-size="10" fill="#475569">S&amp;OP 计划</text>
+      <text x="52" y="190" font-size="7" fill="#94a3b8">销售与运营计划</text>
+
+      <circle cx="42" cy="216" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="220" font-size="10" fill="#475569">采购 Procurement</text>
+      <text x="52" y="234" font-size="7" fill="#94a3b8">战略采购集中管理</text>
+
+      <circle cx="42" cy="260" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="264" font-size="10" fill="#475569">IT 标准</text>
+      <text x="52" y="278" font-size="7" fill="#94a3b8">IT 架构与标准</text>
+
+      <circle cx="42" cy="304" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="308" font-size="10" fill="#475569">品牌 Brand</text>
+      <text x="52" y="322" font-size="7" fill="#94a3b8">全球品牌统一管理</text>
+
+      <circle cx="42" cy="348" r="3" fill="#3b82f6" opacity="0.5"/>
+      <text x="52" y="352" font-size="10" fill="#475569">数据标准</text>
+      <text x="52" y="366" font-size="7" fill="#94a3b8">主数据 / 数据治理</text>
+
+      <!-- Centralization bracket (connecting to HQ) -->
+      <path d="M 162,340 Q 172,340 172,330 L 172,72 Q 172,62 162,62" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+      <text x="167" y="200" text-anchor="middle" font-size="7" fill="#3b82f6" opacity="0.6" transform="rotate(-90,167,200)">集中管控 →</text>
+
+      <!-- RIGHT PANEL: 下放自主 -->
+      <text x="1008" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#f97316" letter-spacing="1">下放自主</text>
+      <text x="1008" y="96" text-anchor="middle" font-size="7" fill="#94a3b8" letter-spacing="0.5">DECENTRALIZED</text>
+      <line x1="954" y1="106" x2="1062" y2="106" stroke="#e2e8f0" stroke-width="0.5"/>
+
+      <circle cx="958" cy="128" r="3" fill="#f97316" opacity="0.5"/>
+      <text x="968" y="132" font-size="10" fill="#475569">本地营销</text>
+      <text x="968" y="146" font-size="7" fill="#94a3b8">区域定制化营销</text>
+
+      <circle cx="958" cy="172" r="3" fill="#f97316" opacity="0.5"/>
+      <text x="968" y="176" font-size="10" fill="#475569">渠道政策</text>
+      <text x="968" y="190" font-size="7" fill="#94a3b8">本地渠道管理</text>
+
+      <circle cx="958" cy="216" r="3" fill="#f97316" opacity="0.5"/>
+      <text x="968" y="220" font-size="10" fill="#475569">售后备件</text>
+      <text x="968" y="234" font-size="7" fill="#94a3b8">区域备件管理</text>
+
+      <circle cx="958" cy="260" r="3" fill="#f97316" opacity="0.5"/>
+      <text x="968" y="264" font-size="10" fill="#475569">本地合规</text>
+      <text x="968" y="278" font-size="7" fill="#94a3b8">当地法规遵从</text>
+
+      <circle cx="958" cy="304" r="3" fill="#f97316" opacity="0.5"/>
+      <text x="968" y="308" font-size="10" fill="#475569">海外应用选型</text>
+      <text x="968" y="322" font-size="7" fill="#94a3b8">本地化应用适配</text>
+
+      <path d="M 938,340 Q 928,340 928,330 L 928,72 Q 928,62 938,62" fill="none" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+      <text x="933" y="200" text-anchor="middle" font-size="7" fill="#f97316" opacity="0.6" transform="rotate(-90,933,200)"><- 区域自主</text>
+
+      <!-- CENTER: ORG CHART -->
+      <!-- Level indicators (left side) -->
+      <text x="178" y="65" font-size="9" fill="#94a3b8" text-anchor="end" font-weight="500">总 部 层</text>
+      <line x1="182" y1="68" x2="192" y2="68" stroke="#cbd5e1" stroke-width="1"/>
+
+      <text x="178" y="200" font-size="9" fill="#94a3b8" text-anchor="end" font-weight="500">事业部层</text>
+      <line x1="182" y1="203" x2="192" y2="203" stroke="#cbd5e1" stroke-width="1"/>
+
+      <text x="178" y="355" font-size="9" fill="#94a3b8" text-anchor="end" font-weight="500">区 域 层</text>
+      <line x1="182" y1="358" x2="192" y2="358" stroke="#cbd5e1" stroke-width="1"/>
+
+      <!-- Center X: 550, BU centers: 275, 459, 643, 827 -->
+
+      <!-- Connecting lines: HQ to BUs -->
+      <!-- Vertical from HQ bottom to horizontal -->
+      <path d="M 550,88 L 550,110" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <!-- Horizontal trunk -->
+      <path d="M 275,110 L 827,110" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <!-- Vertical branches to each BU -->
+      <path d="M 275,110 L 275,168" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 459,110 L 459,168" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 643,110 L 643,168" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 827,110 L 827,168" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+
+      <!-- Connecting lines: BUs to Regions -->
+      <path d="M 275,225 L 275,328" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 459,225 L 459,328" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 643,225 L 643,328" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+      <path d="M 827,225 L 827,328" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+
+      <!-- Level 0: 集团总部 -->
+      <rect x="410" y="35" width="280" height="53" rx="10" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+      <text x="550" y="57" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a" letter-spacing="1">集团总部 GROUP HQ</text>
+      <text x="550" y="77" text-anchor="middle" font-size="8" fill="#475569">战略 + 共享职能 : 品牌 · IT · 财务共享 · HR · 法务</text>
+
+      <!-- Level 1: Business Units -->
+      <!-- BU 1: 旗舰事业部 -->
+      <rect x="195" y="168" width="160" height="57" rx="8" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="275" y="191" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">旗舰事业部</text>
+      <text x="275" y="207" text-anchor="middle" font-size="8" fill="#475569">FLAGSHIP BU</text>
+      <text x="275" y="220" text-anchor="middle" font-size="7" fill="#64748b">高端旗舰 / 折叠屏</text>
+
+      <!-- BU 2: 性能事业部 -->
+      <rect x="379" y="168" width="160" height="57" rx="8" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="459" y="191" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">性能事业部</text>
+      <text x="459" y="207" text-anchor="middle" font-size="8" fill="#475569">PERFORMANCE BU</text>
+      <text x="459" y="220" text-anchor="middle" font-size="7" fill="#64748b">性能机 / 游戏手机</text>
+
+      <!-- BU 3: 影像事业部 -->
+      <rect x="563" y="168" width="160" height="57" rx="8" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="643" y="191" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">影像事业部</text>
+      <text x="643" y="207" text-anchor="middle" font-size="8" fill="#475569">IMAGING BU</text>
+      <text x="643" y="220" text-anchor="middle" font-size="7" fill="#64748b">专业影像 / 相机手机</text>
+
+      <!-- BU 4: 海外事业部 -->
+      <rect x="747" y="168" width="160" height="57" rx="8" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="827" y="191" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">海外事业部</text>
+      <text x="827" y="207" text-anchor="middle" font-size="8" fill="#475569">OVERSEAS BU</text>
+      <text x="827" y="220" text-anchor="middle" font-size="7" fill="#64748b">全球市场 / 本地化</text>
+
+      <!-- Level 2: Regions -->
+      <!-- Region 1: 国内四大区 -->
+      <rect x="205" y="328" width="140" height="45" rx="7" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1" filter="url(#shadow)"/>
+      <text x="275" y="350" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b">国内四大区</text>
+      <text x="275" y="365" text-anchor="middle" font-size="7" fill="#475569">华东 / 华南 / 华北 / 西南</text>
+
+      <!-- Region 2: 东南亚 -->
+      <rect x="389" y="328" width="140" height="45" rx="7" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="1" filter="url(#shadow)"/>
+      <text x="459" y="350" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b">东南亚</text>
+      <text x="459" y="365" text-anchor="middle" font-size="7" fill="#475569">SEA · 印尼 / 越南 / 泰国</text>
+
+      <!-- Region 3: 欧洲 -->
+      <rect x="573" y="328" width="140" height="45" rx="7" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="1" filter="url(#shadow)"/>
+      <text x="643" y="350" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b">欧洲</text>
+      <text x="643" y="365" text-anchor="middle" font-size="7" fill="#475569">EU · 德 / 法 / 意 / 西</text>
+
+      <!-- Region 4: 拉美 -->
+      <rect x="757" y="328" width="140" height="45" rx="7" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="1" filter="url(#shadow)"/>
+      <text x="827" y="350" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b">拉美</text>
+      <text x="827" y="365" text-anchor="middle" font-size="7" fill="#475569">LATAM · 巴西 / 墨西哥</text>
+
+      <!-- Legend / Footer -->
+      <rect x="195" y="410" width="710" height="36" rx="6" fill="rgba(255,255,255,0.8)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="210" y="433" font-size="8" fill="#64748b" font-weight="500">图例 :</text>
+      <circle cx="260" cy="429" r="4" fill="#3b82f6" opacity="0.4"/>
+      <text x="270" y="433" font-size="7" fill="#64748b">旗舰产品线</text>
+      <circle cx="350" cy="429" r="4" fill="#0891b2" opacity="0.4"/>
+      <text x="360" y="433" font-size="7" fill="#64748b">性能产品线</text>
+      <circle cx="450" cy="429" r="4" fill="#8b5cf6" opacity="0.4"/>
+      <text x="460" y="433" font-size="7" fill="#64748b">影像产品线</text>
+      <circle cx="540" cy="429" r="4" fill="#f97316" opacity="0.4"/>
+      <text x="550" y="433" font-size="7" fill="#64748b">海外市场</text>
+      <text x="650" y="433" font-size="7" fill="#94a3b8">|</text>
+      <text x="660" y="433" font-size="7" fill="#64748b">实线: 直接汇报线</text>
+      <text x="790" y="433" font-size="7" fill="#64748b">虚线: 职能指导关系</text>
+      <line x1="775" y1="429" x2="788" y2="429" stroke="#3b82f6" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+
+      <!-- Bottom annotation -->
+      <text x="550" y="480" text-anchor="middle" font-size="8" fill="#94a3b8">注：左侧集中管理职能由集团总部统一管控，右侧下放职能由各事业部 / 区域自主决策，虚线表示职能指导关系</text>
+    </svg>
+  </div>
+</div>
+
+<script>
+async function getCanvas() {
+  return await html2canvas(document.getElementById('diagram'), {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    width: document.getElementById('diagram').scrollWidth,
+    height: document.getElementById('diagram').scrollHeight,
+    windowWidth: document.getElementById('diagram').scrollWidth,
+    windowHeight: document.getElementById('diagram').scrollHeight,
+  });
+}
+
+async function exportPNG() {
+  try {
+    const canvas = await getCanvas();
+    const link = document.createElement('a');
+    link.download = '图2-4_组织架构图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('导出PNG失败: ' + e.message);
+  }
+}
+
+async function exportPDF() {
+  try {
+    const canvas = await getCanvas();
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'l', unit:'mm', format:'a4'});
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图2-4_组织架构图.pdf');
+  } catch(e) {
+    alert('导出PDF失败: ' + e.message);
+  }
+}
+
+async function copyDiagram() {
+  try {
+    const canvas = await getCanvas();
+    canvas.toBlob(async function(blob) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      } catch(e) {
+        // Fallback: create a temporary image
+        const url = URL.createObjectURL(blob);
+        const img = document.createElement('img');
+        img.src = url;
+        const sel = window.getSelection();
+        const range = document.createRange();
+        document.body.appendChild(img);
+        range.selectNodeContents(img);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        document.body.removeChild(img);
+        URL.revokeObjectURL(url);
+      }
+    });
+  } catch(e) {
+    alert('复制失败: ' + e.message);
+  }
+}
+</script>
+</body>
+</html>

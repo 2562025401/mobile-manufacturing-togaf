@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图6-6 差距分析</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">现状调研与差距分析 — Research-First · 能力差距→项目映射</div>
+<svg viewBox="0 0 1150 700" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#dc2626"/></marker>
+</defs>
+<rect width="1150" height="700" fill="#f8fafc"/><rect width="1150" height="700" fill="url(#grid)"/>
+<text x="575" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">现状调研与差距分析 — 调研先行 · 两大差距问题 · 能力→项目映射</text>
+
+<!-- ===== A: 调研先行 ===== -->
+<rect x="40" y="50" width="1070" height="100" rx="8" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.15)" stroke-width="1.5"/>
+<rect x="40" y="50" width="280" height="100" rx="8" fill="rgba(59,130,246,.1)"/>
+<text x="180" y="78" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="700">调研先行原则</text>
+<text x="180" y="98" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="500">Research-First Principle</text>
+<text x="180" y="118" text-anchor="middle" fill="#475569" font-size="7.5">无调研，不决策</text>
+<text x="180" y="134" text-anchor="middle" fill="#475569" font-size="7.5">No Research, No Decision</text>
+
+<text x="350" y="76" fill="#0f172a" font-size="10" font-weight="600">调研方法论:</text>
+<text x="350" y="96" fill="#475569" font-size="8">• 业务调研: 流程·痛点·需求·KPI (访谈30+业务负责人)</text>
+<text x="350" y="112" fill="#475569" font-size="8">• 系统调研: 现有系统清单·技术栈·架构·性能·容量</text>
+<text x="350" y="128" fill="#475569" font-size="8">• 数据调研: 数据模型·数据质量·数据流向·数据量</text>
+<text x="350" y="144" fill="#475569" font-size="8">• 技术调研: 基础设施·安全·运维·团队能力评估</text>
+
+<!-- Arrow -->
+<path d="M 575 150 L 575 170" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== B: 两大差距问题 ===== -->
+<rect x="40" y="178" width="1070" height="170" rx="8" fill="rgba(245,158,11,.03)" stroke="rgba(245,158,11,.12)" stroke-width="1"/>
+<text x="575" y="206" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">两大核心差距问题 — Two Core Gap Questions</text>
+
+<!-- Question 1 -->
+<rect x="60" y="218" width="490" height="118" rx="6" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width="1"/>
+<rect x="60" y="218" width="490" height="26" rx="6" fill="rgba(245,158,11,.08)"/>
+<text x="305" y="236" text-anchor="middle" fill="#92400e" font-size="10" font-weight="600">Q1: 现状能力 vs. 目标能力</text>
+<text x="80" y="258" fill="#475569" font-size="8">现状评估 (As-Is):</text>
+<text x="80" y="274" fill="#475569" font-size="8">• 传统单体架构 · 手工部署 · 无容器化</text>
+<text x="80" y="290" fill="#475569" font-size="8">• 私有云为主 · 海外系统零散 · 灾备不完善</text>
+<text x="80" y="306" fill="#475569" font-size="8">• 安全以合规驱动 · 无零信任 · 手工运维</text>
+<text x="80" y="322" fill="#475569" font-size="8">• 团队: 传统运维+开发 · DevOps初级</text>
+
+<path d="M 550 277 L 558 277" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<text x="554" y="272" text-anchor="middle" fill="#dc2626" font-size="7" font-weight="600">差距</text>
+
+<rect x="570" y="218" width="520" height="118" rx="6" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width="1"/>
+<rect x="570" y="218" width="520" height="26" rx="6" fill="rgba(59,130,246,.08)"/>
+<text x="830" y="236" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">Q2: 目标能力 vs. 技术趋势</text>
+<text x="590" y="258" fill="#475569" font-size="8">目标评估 (To-Be):</text>
+<text x="590" y="274" fill="#475569" font-size="8">• 100%容器化 · K8s+Nistio Service Mesh · GitOps</text>
+<text x="590" y="290" fill="#475569" font-size="8">• 混合云+多云管理 · 海外系统统一平台</text>
+<text x="590" y="306" fill="#475569" font-size="8">• 零信任架构 · DevSecOps · AIOps智能运维</text>
+<text x="590" y="322" fill="#475569" font-size="8">• 团队: 全栈敏捷 · SRE · 平台工程</text>
+
+<path d="M 1080 277 L 1090 277" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+<text x="1085" y="272" text-anchor="middle" fill="#dc2626" font-size="7" font-weight="600">趋势</text>
+
+<!-- ===== C: 能力差距分析矩阵 ===== -->
+<path d="M 575 348 L 575 368" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="376" width="1070" height="150" rx="8" fill="rgba(14,165,233,.03)" stroke="rgba(14,165,233,.1)" stroke-width="1"/>
+<text x="575" y="402" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">能力差距分析矩阵 — Capability Gap Analysis</text>
+
+<!-- Matrix -->
+<rect x="60" y="414" width="180" height="22" rx="3" fill="rgba(14,165,233,.08)"/><text x="150" y="430" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">能力域</text>
+<rect x="248" y="414" width="180" height="22" rx="3" fill="rgba(14,165,233,.08)"/><text x="338" y="430" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">现状成熟度</text>
+<rect x="436" y="414" width="180" height="22" rx="3" fill="rgba(14,165,233,.08)"/><text x="526" y="430" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">目标成熟度</text>
+<rect x="624" y="414" width="140" height="22" rx="3" fill="rgba(14,165,233,.08)"/><text x="694" y="430" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">差距等级</text>
+<rect x="772" y="414" width="200" height="22" rx="3" fill="rgba(14,165,233,.08)"/><text x="872" y="430" text-anchor="middle" fill="#0369a1" font-size="8" font-weight="600">映射项目</text>
+
+<!-- Row 1 -->
+<rect x="60" y="440" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="150" y="456" text-anchor="middle" fill="#1e293b" font-size="7.5">容器化</text>
+<rect x="248" y="440" width="180" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="338" y="456" text-anchor="middle" fill="#92400e" font-size="7.5">L1 (手工部署)</text>
+<rect x="436" y="440" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="526" y="456" text-anchor="middle" fill="#065f46" font-size="7.5">L4 (K8s+GitOps)</text>
+<rect x="624" y="440" width="140" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="694" y="456" text-anchor="middle" fill="#b91c1c" font-size="7.5">重大差距</text>
+<rect x="772" y="440" width="200" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="872" y="456" text-anchor="middle" fill="#b91c1c" font-size="7.5">K8s平台·DevOps</text>
+
+<!-- Row 2 -->
+<rect x="60" y="468" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="150" y="484" text-anchor="middle" fill="#1e293b" font-size="7.5">微服务</text>
+<rect x="248" y="468" width="180" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="338" y="484" text-anchor="middle" fill="#92400e" font-size="7.5">L2 (少量拆分)</text>
+<rect x="436" y="468" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="526" y="484" text-anchor="middle" fill="#065f46" font-size="7.5">L4 (Mesh治理)</text>
+<rect x="624" y="468" width="140" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="694" y="484" text-anchor="middle" fill="#b91c1c" font-size="7.5">重大差距</text>
+<rect x="772" y="468" width="200" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="872" y="484" text-anchor="middle" fill="#b91c1c" font-size="7.5">微服务治理·Mesh</text>
+
+<!-- Row 3 -->
+<rect x="60" y="496" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="150" y="512" text-anchor="middle" fill="#1e293b" font-size="7.5">安全</text>
+<rect x="248" y="496" width="180" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="338" y="512" text-anchor="middle" fill="#92400e" font-size="7.5">L2 (基础WAF/AV)</text>
+<rect x="436" y="496" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="526" y="512" text-anchor="middle" fill="#065f46" font-size="7.5">L4 (零信任)</text>
+<rect x="624" y="496" width="140" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="694" y="496" text-anchor="middle" fill="#92400e" font-size="7.5">较大差距</text>
+<rect x="772" y="496" width="200" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="872" y="512" text-anchor="middle" fill="#92400e" font-size="7.5">安全体系·零信任</text>
+
+<!-- Row 4 -->
+<rect x="60" y="524" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="150" y="540" text-anchor="middle" fill="#1e293b" font-size="7.5">灾备</text>
+<rect x="248" y="524" width="180" height="24" rx="2" fill="rgba(245,158,11,.04)"/><text x="338" y="540" text-anchor="middle" fill="#92400e" font-size="7.5">L1 (无灾备)</text>
+<rect x="436" y="524" width="180" height="24" rx="2" fill="rgba(16,185,129,.04)"/><text x="526" y="540" text-anchor="middle" fill="#065f46" font-size="7.5">L5 (双活+异地)</text>
+<rect x="624" y="524" width="140" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="694" y="540" text-anchor="middle" fill="#b91c1c" font-size="7.5">重大差距</text>
+<rect x="772" y="524" width="200" height="24" rx="2" fill="rgba(239,68,68,.04)"/><text x="872" y="540" text-anchor="middle" fill="#b91c1c" font-size="7.5">同城双活·异地灾备</text>
+
+<!-- ===== D: Gap → Project Mapping ===== -->
+<path d="M 575 526 L 575 544" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="552" width="1070" height="80" rx="8" fill="rgba(139,92,246,.03)" stroke="rgba(139,92,246,.1)" stroke-width="1"/>
+<text x="575" y="576" text-anchor="middle" fill="#0f172a" font-size="12" font-weight="600">能力差距→项目映射 — Capability Gap to Project Mapping</text>
+
+<rect x="60" y="590" width="240" height="30" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<text x="180" y="609" text-anchor="middle" fill="#6d28d9" font-size="8" font-weight="500">重大差距(P0) → 5个项目(¥1.8亿)</text>
+
+<rect x="320" y="590" width="240" height="30" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="440" y="609" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">较大差距(P1) → 7个项目(¥1.0亿)</text>
+
+<rect x="580" y="590" width="240" height="30" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="700" y="609" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="500">中等差距(P2) → 6个项目(¥0.7亿)</text>
+
+<rect x="840" y="590" width="250" height="30" rx="4" fill="rgba(99,102,241,.04)" stroke="rgba(99,102,241,.1)" stroke-width=".8"/>
+<text x="965" y="609" text-anchor="middle" fill="#4338ca" font-size="8" font-weight="500">差距总分: 28分(当前)/70分(目标)</text>
+
+<!-- Bottom -->
+<rect x="40" y="648" width="1070" height="28" rx="6" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width="1"/>
+<text x="575" y="667" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">差距分析结论: 当前成熟度L2(初始级) → 目标成熟度L4(量化管理级) · 3年分步演进 · 阶段验收</text>
+
+<rect x="40" y="684" width="1070" height="12" rx="3" fill="rgba(99,102,241,.015)" stroke="rgba(99,102,241,.04)" stroke-width=".5"/>
+<text x="575" y="693" text-anchor="middle" fill="#475569" font-size="7">成熟度模型: L0(无)·L1(初始)·L2(已定义)·L3(已管理)·L4(量化管理)·L5(优化级)</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图6-6_差距分析.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图6-6_差距分析.pdf');});}
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图5-6 零信任架构</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">网络安全与零信任架构 — Zero Trust · Identity-Centric · Micro-Segmentation</div>
+<svg viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#dc2626"/></marker>
+</defs>
+<rect width="1200" height="700" fill="#f8fafc"/><rect width="1200" height="700" fill="url(#grid)"/>
+<text x="600" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">网络安全与零信任架构 — Zero Trust Architecture · NIST SP 800-207</text>
+
+<!-- ===== 3 Zero Trust Principles ===== -->
+<rect x="40" y="50" width="360" height="170" rx="8" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.15)" stroke-width="1"/>
+<rect x="40" y="50" width="360" height="30" rx="8" fill="rgba(59,130,246,.1)"/>
+<text x="220" y="70" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="600">身份为中心 · Identity-Centric</text>
+<text x="60" y="96" fill="#475569" font-size="9">• 不依赖网络位置，一切以身份为基础</text>
+<text x="60" y="114" fill="#475569" font-size="9">• 每次请求都需要认证和授权</text>
+<text x="60" y="132" fill="#475569" font-size="9">• 动态风险评估与自适应访问控制</text>
+<text x="60" y="150" fill="#475569" font-size="9">• IAM + SSO + MFA 统一身份底座</text>
+<text x="60" y="168" fill="#475569" font-size="9">• 用户·设备·应用·API 四维身份管理</text>
+<text x="60" y="186" fill="#475569" font-size="9">• SDP (软件定义边界) 隐藏网络入口</text>
+
+<rect x="420" y="50" width="360" height="170" rx="8" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.15)" stroke-width="1"/>
+<rect x="420" y="50" width="360" height="30" rx="8" fill="rgba(245,158,11,.1)"/>
+<text x="600" y="70" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">最小权限 · Least Privilege</text>
+<text x="440" y="96" fill="#475569" font-size="9">• Just-In-Time (JIT) 临时权限提升</text>
+<text x="440" y="114" fill="#475569" font-size="9">• Just-Enough-Access (JEA) 最小够用</text>
+<text x="440" y="132" fill="#475569" font-size="9">• RBAC + ABAC 精细化授权模型</text>
+<text x="440" y="150" fill="#475569" font-size="9">• 微隔离: 按应用/工作负载划分安全域</text>
+<text x="440" y="168" fill="#475569" font-size="9">• 特权账号管理 PAM</text>
+<text x="440" y="186" fill="#475569" font-size="9">• 零持续信任: 会话级Token即时刷新</text>
+
+<rect x="800" y="50" width="360" height="170" rx="8" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.15)" stroke-width="1"/>
+<rect x="800" y="50" width="360" height="30" rx="8" fill="rgba(16,185,129,.1)"/>
+<text x="980" y="70" text-anchor="middle" fill="#065f46" font-size="11" font-weight="600">持续验证 · Continuous Verify</text>
+<text x="820" y="96" fill="#475569" font-size="9">• 永不信任，始终验证 (Never Trust, Always Verify)</text>
+<text x="820" y="114" fill="#475569" font-size="9">• 实时信任评估 (设备健康·行为分析·地理位置)</text>
+<text x="820" y="132" fill="#475569" font-size="9">• 持续监控·异常检测·动态阻断</text>
+<text x="820" y="150" fill="#475569" font-size="9">• UEBA 用户实体行为分析</text>
+<text x="820" y="168" fill="#475569" font-size="9">• 会话持续验证·Token动态刷新</text>
+<text x="820" y="186" fill="#475569" font-size="9">• AI驱动的自适应安全策略</text>
+
+<!-- ===== Micro-Segmentation ===== -->
+<path d="M 600 220 L 600 238" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="246" width="1120" height="140" rx="8" fill="rgba(139,92,246,.03)" stroke="rgba(139,92,246,.12)" stroke-width="1"/>
+<text x="600" y="272" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">微隔离 — Micro-Segmentation · 东西向流量安全</text>
+
+<rect x="60" y="284" width="200" height="90" rx="5" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="60" y="284" width="200" height="22" rx="5" fill="rgba(139,92,246,.08)"/>
+<text x="160" y="300" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">生产区</text>
+<text x="75" y="322" fill="#475569" font-size="8">ERP·CRM·PLM·MES</text>
+<text x="75" y="338" fill="#475569" font-size="8">内部微服务互通</text>
+<text x="75" y="354" fill="#475569" font-size="8">mTLS 双向加密</text>
+
+<rect x="280" y="284" width="200" height="90" rx="5" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="280" y="284" width="200" height="22" rx="5" fill="rgba(139,92,246,.08)"/>
+<text x="380" y="300" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">开发测试区</text>
+<text x="295" y="322" fill="#475569" font-size="8">Dev/Staging 环境</text>
+<text x="295" y="338" fill="#475569" font-size="8">与生产区完全隔离</text>
+<text x="295" y="354" fill="#475569" font-size="8">外部不可达</text>
+
+<rect x="500" y="284" width="200" height="90" rx="5" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="500" y="284" width="200" height="22" rx="5" fill="rgba(139,92,246,.08)"/>
+<text x="600" y="300" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">DMZ区</text>
+<text x="515" y="322" fill="#475569" font-size="8">Web前端·API Gateway</text>
+<text x="515" y="338" fill="#475569" font-size="8">WAF+CDN 前置防护</text>
+<text x="515" y="354" fill="#475569" font-size="8">禁止直接访问后端</text>
+
+<rect x="720" y="284" width="200" height="90" rx="5" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="720" y="284" width="200" height="22" rx="5" fill="rgba(139,92,246,.08)"/>
+<text x="820" y="300" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">数据区</text>
+<text x="735" y="322" fill="#475569" font-size="8">数据库·缓存·对象存储</text>
+<text x="735" y="338" fill="#475569" font-size="8">仅允许特定服务访问</text>
+<text x="735" y="354" fill="#475569" font-size="8">数据加密存储</text>
+
+<rect x="940" y="284" width="200" height="90" rx="5" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="940" y="284" width="200" height="22" rx="5" fill="rgba(139,92,246,.08)"/>
+<text x="1040" y="300" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">管理区</text>
+<text x="955" y="322" fill="#475569" font-size="8">运维堡垒机·跳板机</text>
+<text x="955" y="338" fill="#475569" font-size="8">仅PAM授权访问</text>
+<text x="955" y="354" fill="#475569" font-size="8">全量操作审计</text>
+
+<!-- ===== Zero Trust Implementation ===== -->
+<path d="M 600 386 L 600 404" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="412" width="1120" height="130" rx="8" fill="rgba(14,165,233,.03)" stroke="rgba(14,165,233,.12)" stroke-width="1"/>
+<text x="600" y="438" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="600">零信任访问控制 — ZTNA (Zero Trust Network Access)</text>
+
+<rect x="60" y="452" width="240" height="78" rx="5" fill="rgba(14,165,233,.04)" stroke="rgba(14,165,233,.1)" stroke-width=".8"/>
+<rect x="60" y="452" width="240" height="20" rx="5" fill="rgba(14,165,233,.08)"/>
+<text x="180" y="466" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">访问请求阶段</text>
+<text x="75" y="486" fill="#475569" font-size="8">用户/设备 → 应用/API → 数据</text>
+<text x="75" y="504" fill="#475569" font-size="8">上下文: 身份·设备·位置·时间·行为</text>
+<text x="75" y="522" fill="#475569" font-size="8">多维度信任评分 (0-100)</text>
+
+<rect x="330" y="452" width="240" height="78" rx="5" fill="rgba(14,165,233,.04)" stroke="rgba(14,165,233,.1)" stroke-width=".8"/>
+<rect x="330" y="452" width="240" height="20" rx="5" fill="rgba(14,165,233,.08)"/>
+<text x="450" y="466" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">策略决策阶段</text>
+<text x="345" y="486" fill="#475569" font-size="8">PEP (策略执行点) → PDP (策略决策点)</text>
+<text x="345" y="504" fill="#475569" font-size="8">RBAC + ABAC 动态授权计算</text>
+<text x="345" y="522" fill="#475569" font-size="8">信任阈值 &lt;60 阻断 · &lt;80 MFA挑战</text>
+
+<rect x="600" y="452" width="240" height="78" rx="5" fill="rgba(14,165,233,.04)" stroke="rgba(14,165,233,.1)" stroke-width=".8"/>
+<rect x="600" y="452" width="240" height="20" rx="5" fill="rgba(14,165,233,.08)"/>
+<text x="720" y="466" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">访问执行阶段</text>
+<text x="615" y="486" fill="#475569" font-size="8">加密隧道 (SPA单包授权)</text>
+<text x="615" y="504" fill="#475569" font-size="8">微隔离策略下发 (Calico/NSX)</text>
+<text x="615" y="522" fill="#475569" font-size="8">全链路审计日志</text>
+
+<rect x="870" y="452" width="270" height="78" rx="5" fill="rgba(14,165,233,.04)" stroke="rgba(14,165,233,.1)" stroke-width=".8"/>
+<rect x="870" y="452" width="270" height="20" rx="5" fill="rgba(14,165,233,.08)"/>
+<text x="1005" y="466" text-anchor="middle" fill="#0369a1" font-size="9" font-weight="600">持续监控阶段</text>
+<text x="885" y="486" fill="#475569" font-size="8">实时行为分析 (UEBA)</text>
+<text x="885" y="504" fill="#475569" font-size="8">异常检测 → 动态策略调整</text>
+<text x="885" y="522" fill="#475569" font-size="8">会话风险升级→强制下线</text>
+
+<!-- ===== Bottom: Implementation Roadmap ===== -->
+<path d="M 600 542 L 600 558" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="566" width="1120" height="55" rx="8" fill="rgba(239,68,68,.03)" stroke="rgba(239,68,68,.1)" stroke-width="1"/>
+<text x="600" y="586" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">零信任实施路线图</text>
+<rect x="80" y="598" width="200" height="16" rx="3" fill="rgba(239,68,68,.06)"/><text x="180" y="610" text-anchor="middle" fill="#b91c1c" font-size="7">Phase 1: 身份基石(已完)</text>
+<rect x="300" y="598" width="200" height="16" rx="3" fill="rgba(245,158,11,.06)"/><text x="400" y="610" text-anchor="middle" fill="#92400e" font-size="7">Phase 2: 网络强化(进行)</text>
+<rect x="520" y="598" width="200" height="16" rx="3" fill="rgba(59,130,246,.06)"/><text x="620" y="610" text-anchor="middle" fill="#1e40af" font-size="7">Phase 3: 微隔离(Y2)</text>
+<rect x="740" y="598" width="200" height="16" rx="3" fill="rgba(16,185,129,.06)"/><text x="840" y="610" text-anchor="middle" fill="#065f46" font-size="7">Phase 4: 持续自适应(Y3)</text>
+
+<rect x="40" y="634" width="1120" height="22" rx="4" fill="rgba(99,102,241,.025)" stroke="rgba(99,102,241,.06)" stroke-width=".5"/>
+<text x="600" y="649" text-anchor="middle" fill="#475569" font-size="9">零信任成熟度: 传统(阶段0) → 静态策略(阶段1) → 动态策略(阶段2) → 自适应(阶段3) → 智能化(阶段4)</text>
+
+<!-- Legend -->
+<rect x="40" y="664" width="1120" height="24" rx="4" fill="rgba(99,102,241,.02)" stroke="rgba(99,102,241,.05)" stroke-width=".5"/>
+<rect x="60" y="669" width="8" height="8" rx="2" fill="rgba(59,130,246,.25)"/><text x="72" y="677" fill="#475569" font-size="7.5">身份</text>
+<rect x="150" y="669" width="8" height="8" rx="2" fill="rgba(245,158,11,.25)"/><text x="162" y="677" fill="#475569" font-size="7.5">权限</text>
+<rect x="240" y="669" width="8" height="8" rx="2" fill="rgba(16,185,129,.25)"/><text x="252" y="677" fill="#475569" font-size="7.5">验证</text>
+<rect x="330" y="669" width="8" height="8" rx="2" fill="rgba(139,92,246,.25)"/><text x="342" y="677" fill="#475569" font-size="7.5">微隔离</text>
+<rect x="430" y="669" width="8" height="8" rx="2" fill="rgba(14,165,233,.25)"/><text x="442" y="677" fill="#475569" font-size="7.5">ZTNA</text>
+<text x="530" y="677" fill="#475569" font-size="7.5">零信任原则: 永不信任，始终验证 · 按需授予最小权限 · 持续风险评估 · 全链路加密</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-6_零信任架构.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-6_零信任架构.pdf');});}
+</script>
+</body>
+</html>

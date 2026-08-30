@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-5 干系人地图与关注点矩阵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  padding: 24px;
+  font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+}
+#container {
+  max-width: 1240px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+  overflow: hidden;
+  position: relative;
+}
+.toolbar {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+.toolbar button {
+  font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.toolbar button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+.toolbar button:active {
+  background: #e2e8f0;
+}
+.toolbar button svg { width: 16px; height: 16px; flex-shrink: 0; }
+#diagram {
+  padding: 0;
+  line-height: 0;
+}
+#diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div class="toolbar">
+    <button onclick="copyDiagram()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+    <button onclick="exportPNG()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      PNG
+    </button>
+    <button onclick="exportPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      PDF
+    </button>
+  </div>
+
+  <div id="diagram">
+    <svg viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.4"/>
+        </pattern>
+        <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="0" orient="auto">
+          <path d="M0,10 L5,0 L10,10" fill="#475569" stroke="none"/>
+        </marker>
+        <marker id="arrowRight" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+          <path d="M0,0 L10,5 L0,10" fill="#475569" stroke="none"/>
+        </marker>
+        <filter id="cardShadow" x="-2%" y="-2%" width="104%" height="108%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="1200" height="820" fill="#ffffff"/>
+      <rect width="1200" height="820" fill="url(#grid)"/>
+
+      <!-- Title -->
+      <text x="600" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">干系人地图与关注点矩阵</text>
+      <text x="600" y="54" text-anchor="middle" font-size="11" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">Stakeholder Map · Power-Interest Matrix · 权力-利益分析与沟通策略</text>
+
+      <!-- ===== POWER-INTEREST MATRIX ===== -->
+
+      <!-- Axis lines -->
+      <!-- Power axis (vertical, left) -->
+      <line x1="225" y1="430" x2="225" y2="80" stroke="#475569" stroke-width="1.5" marker-end="url(#arrowUp)"/>
+      <!-- Interest axis (horizontal, bottom) -->
+      <line x1="260" y1="455" x2="940" y2="455" stroke="#475569" stroke-width="1.5" marker-end="url(#arrowRight)"/>
+
+      <!-- Axis labels -->
+      <text x="200" y="260" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b" transform="rotate(-90,200,260)" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">权力 Power</text>
+      <text x="230" y="86" text-anchor="start" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">高 High</text>
+      <text x="230" y="430" text-anchor="start" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">低 Low</text>
+
+      <text x="600" y="480" text-anchor="middle" font-size="11" font-weight="600" fill="#1e293b" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">利益 Interest</text>
+      <text x="260" y="468" text-anchor="start" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">低 Low</text>
+      <text x="940" y="468" text-anchor="end" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">高 High</text>
+
+      <!-- Matrix outer border -->
+      <rect x="260" y="80" width="680" height="375" fill="none" stroke="#1e293b" stroke-width="1.5" rx="0"/>
+
+      <!-- Matrix dividers -->
+      <line x1="600" y1="80" x2="600" y2="455" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="260" y1="267" x2="940" y2="267" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Q1 - High Power, High Interest (top-right) -->
+      <rect x="600" y="80" width="340" height="187" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.5" opacity="0.7"/>
+      <rect x="600" y="80" width="340" height="26" fill="#fef2f2" stroke="none"/>
+      <text x="770" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">核心决策层 · 密切管理</text>
+      <text x="601" y="84" text-anchor="start" font-size="9" font-weight="500" fill="#dc2626" opacity="0.6" font-family="'JetBrains Mono',sans-serif">Q1</text>
+      <!-- Stakeholder chips row 1 -->
+      <rect x="618" y="116" width="100" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="668" y="133" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CEO</text>
+      <rect x="728" y="116" width="100" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="778" y="133" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CFO</text>
+      <rect x="830" y="116" width="110" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="885" y="133" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CIO/CTO</text>
+      <!-- Stakeholder chips row 2 -->
+      <rect x="618" y="150" width="100" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="668" y="167" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">研发VP</text>
+      <rect x="728" y="150" width="100" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="778" y="167" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">供应链VP</text>
+      <rect x="830" y="150" width="100" height="26" rx="13" fill="#fecaca" stroke="#fca5a5" stroke-width="0.5"/>
+      <text x="880" y="167" text-anchor="middle" font-size="11" font-weight="600" fill="#dc2626" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">营销VP</text>
+      <!-- Communication -->
+      <text x="770" y="249" text-anchor="middle" font-size="9.5" fill="#9f1239" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">沟通: 高频一对一汇报 · 战略对齐会议 · 架构评审会</text>
+
+      <!-- Q2 - High Power, Low Interest (top-left) -->
+      <rect x="260" y="80" width="340" height="187" fill="#eff6ff" stroke="#93c5fd" stroke-width="0.5" opacity="0.7"/>
+      <rect x="260" y="80" width="340" height="26" fill="#eff6ff" stroke="none"/>
+      <text x="430" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">影响者/合规者 · 保持满意</text>
+      <text x="261" y="84" text-anchor="start" font-size="9" font-weight="500" fill="#2563eb" opacity="0.6" font-family="'JetBrains Mono',sans-serif">Q2</text>
+      <!-- Stakeholder chips -->
+      <rect x="365" y="130" width="130" height="26" rx="13" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+      <text x="430" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#2563eb" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">董事会</text>
+      <rect x="360" y="164" width="140" height="26" rx="13" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+      <text x="430" y="181" text-anchor="middle" font-size="11" font-weight="600" fill="#2563eb" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">外部监管机构</text>
+      <rect x="365" y="198" width="130" height="26" rx="13" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+      <text x="430" y="215" text-anchor="middle" font-size="11" font-weight="600" fill="#2563eb" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">审计委员会</text>
+      <!-- Communication -->
+      <text x="430" y="249" text-anchor="middle" font-size="9.5" fill="#1e3a8a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">沟通: 定期合规报告 · 关键决策点审批</text>
+
+      <!-- Q3 - Low Power, High Interest (bottom-right) -->
+      <rect x="600" y="267" width="340" height="188" fill="#f0fdf4" stroke="#86efac" stroke-width="0.5" opacity="0.7"/>
+      <rect x="600" y="267" width="340" height="26" fill="#f0fdf4" stroke="none"/>
+      <text x="770" y="283" text-anchor="middle" font-size="12" font-weight="700" fill="#16a34a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">主要用户/受益者 · 持续沟通</text>
+      <text x="601" y="271" text-anchor="start" font-size="9" font-weight="500" fill="#16a34a" opacity="0.6" font-family="'JetBrains Mono',sans-serif">Q3</text>
+      <rect x="700" y="317" width="140" height="26" rx="13" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+      <text x="770" y="334" text-anchor="middle" font-size="11" font-weight="600" fill="#16a34a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">各业务域总监</text>
+      <rect x="710" y="351" width="120" height="26" rx="13" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+      <text x="770" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#16a34a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">区域GM</text>
+      <rect x="700" y="385" width="140" height="26" rx="13" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+      <text x="770" y="402" text-anchor="middle" font-size="11" font-weight="600" fill="#16a34a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">IT核心团队</text>
+      <!-- Communication -->
+      <text x="770" y="438" text-anchor="middle" font-size="9.5" fill="#166534" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">沟通: 工作坊 · 架构评审 · 双周进展通报</text>
+
+      <!-- Q4 - Low Power, Low Interest (bottom-left) -->
+      <rect x="260" y="267" width="340" height="188" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.5" opacity="0.7"/>
+      <rect x="260" y="267" width="340" height="26" fill="#f8fafc" stroke="none"/>
+      <text x="430" y="283" text-anchor="middle" font-size="12" font-weight="700" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">一般受众 · 信息告知</text>
+      <text x="261" y="271" text-anchor="start" font-size="9" font-weight="500" fill="#475569" opacity="0.6" font-family="'JetBrains Mono',sans-serif">Q4</text>
+      <!-- Stakeholder chips -->
+      <rect x="365" y="332" width="130" height="26" rx="13" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.5"/>
+      <text x="430" y="349" text-anchor="middle" font-size="11" font-weight="600" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">普通员工</text>
+      <rect x="365" y="366" width="130" height="26" rx="13" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="0.5"/>
+      <text x="430" y="383" text-anchor="middle" font-size="11" font-weight="600" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">一般IT人员</text>
+      <!-- Communication -->
+      <text x="430" y="438" text-anchor="middle" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">沟通: 全员邮件 · 内部Wiki</text>
+
+      <!-- ===== 关注点矩阵 TABLE ===== -->
+      <text x="600" y="496" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">关注点矩阵 Stakeholder Concern Matrix</text>
+
+      <!-- Table header -->
+      <rect x="50" y="508" width="1100" height="28" fill="#1e293b" rx="4"/>
+      <text x="95" y="526" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">干系人</text>
+      <text x="270" y="526" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">核心关注点</text>
+      <text x="550" y="526" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构诉求</text>
+      <text x="850" y="526" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">应看到的架构视图</text>
+
+      <!-- Table row function: y positions -->
+      <!-- Row 1: CEO -->
+      <rect x="50" y="536" width="1100" height="24" fill="#ffffff"/>
+      <text x="62" y="552" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CEO</text>
+      <text x="152" y="552" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">战略对齐度、ROI</text>
+      <text x="392" y="552" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">投入→能力→战略的因果链路</text>
+      <text x="742" y="552" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">战略地图、收益曲线</text>
+
+      <!-- Row 2: CFO -->
+      <rect x="50" y="560" width="1100" height="24" fill="#f8fafc"/>
+      <text x="62" y="576" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CFO</text>
+      <text x="152" y="576" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">投资结构、预算</text>
+      <text x="392" y="576" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">分年预算可控、成本效益有据</text>
+      <text x="742" y="576" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">投资结构图、NPV/IRR</text>
+
+      <!-- Row 3: CIO -->
+      <rect x="50" y="584" width="1100" height="24" fill="#ffffff"/>
+      <text x="62" y="600" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CIO</text>
+      <text x="152" y="600" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构合理、可演进</text>
+      <text x="392" y="600" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">4A之间有清晰接口契约</text>
+      <text x="742" y="600" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">4A集成V模型、ADR</text>
+
+      <!-- Row 4: 研发VP -->
+      <rect x="50" y="608" width="1100" height="24" fill="#f8fafc"/>
+      <text x="62" y="624" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">研发VP</text>
+      <text x="152" y="624" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">IPD流程支撑</text>
+      <text x="392" y="624" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">PLM支撑跨职能协同</text>
+      <text x="742" y="624" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">研发域能力地图</text>
+
+      <!-- Row 5: 供应链VP -->
+      <rect x="50" y="632" width="1100" height="24" fill="#ffffff"/>
+      <text x="62" y="648" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">供应链VP</text>
+      <text x="152" y="648" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">计划准确性</text>
+      <text x="392" y="648" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">S&amp;OP平台提升预测准确率</text>
+      <text x="742" y="648" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">供应链数据流图</text>
+
+      <!-- Row 6: 营销VP -->
+      <rect x="50" y="656" width="1100" height="24" fill="#f8fafc"/>
+      <text x="62" y="672" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">营销VP</text>
+      <text x="152" y="672" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">全渠道一致体验</text>
+      <text x="392" y="672" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CDP 360°用户画像</text>
+      <text x="742" y="672" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">全渠道架构</text>
+
+      <!-- Table bottom border -->
+      <rect x="50" y="680" width="1100" height="1" fill="#e2e8f0"/>
+
+      <!-- ===== INFO CARDS ===== -->
+
+      <!-- Card 1: 权力-利益分类 (amber) -->
+      <g filter="url(#cardShadow)">
+        <rect x="30" y="700" width="370" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Header -->
+        <circle cx="46" cy="718" r="5" fill="#f59e0b"/>
+        <text x="58" y="722" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">权力-利益分类</text>
+        <!-- Items -->
+        <circle cx="46" cy="740" r="3" fill="#f59e0b"/>
+        <text x="56" y="744" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">高权力高利益 → 密切管理</text>
+        <circle cx="46" cy="757" r="3" fill="#f59e0b"/>
+        <text x="56" y="761" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">高权力低利益 → 保持满意</text>
+        <circle cx="46" cy="774" r="3" fill="#f59e0b"/>
+        <text x="56" y="778" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">低权力高利益 → 持续沟通</text>
+        <circle cx="46" cy="791" r="3" fill="#f59e0b"/>
+        <text x="56" y="795" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">低权力低利益 → 信息告知</text>
+      </g>
+
+      <!-- Card 2: 关键干系人关注点 (violet) -->
+      <g filter="url(#cardShadow)">
+        <rect x="415" y="700" width="370" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="431" cy="718" r="5" fill="#8b5cf6"/>
+        <text x="443" y="722" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">关键干系人关注点</text>
+        <circle cx="431" cy="740" r="3" fill="#8b5cf6"/>
+        <text x="441" y="744" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CEO关注ROI与战略对齐</text>
+        <circle cx="431" cy="757" r="3" fill="#8b5cf6"/>
+        <text x="441" y="761" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CFO关注投资结构与预算</text>
+        <circle cx="431" cy="774" r="3" fill="#8b5cf6"/>
+        <text x="441" y="778" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">CIO关注架构合理性与演进</text>
+        <circle cx="431" cy="791" r="3" fill="#8b5cf6"/>
+        <text x="441" y="795" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务VP关注效率与体验提升</text>
+      </g>
+
+      <!-- Card 3: 沟通策略 (emerald) -->
+      <g filter="url(#cardShadow)">
+        <rect x="800" y="700" width="370" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="816" cy="718" r="5" fill="#10b981"/>
+        <text x="828" y="722" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">沟通策略</text>
+        <circle cx="816" cy="740" r="3" fill="#10b981"/>
+        <text x="826" y="744" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">高层月度架构评审会</text>
+        <circle cx="816" cy="757" r="3" fill="#10b981"/>
+        <text x="826" y="761" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务域双周工作坊</text>
+        <circle cx="816" cy="774" r="3" fill="#10b981"/>
+        <text x="826" y="778" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">全员季度通报</text>
+        <circle cx="816" cy="791" r="3" fill="#10b981"/>
+        <text x="826" y="795" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构决策记录ADR公开透明</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function getCanvas() {
+  return html2canvas(document.getElementById('container'), {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#f8fafc',
+    logging: false,
+    width: document.getElementById('container').scrollWidth,
+    height: document.getElementById('container').scrollHeight
+  });
+}
+
+function copyDiagram() {
+  getCanvas().then(function(canvas) {
+    canvas.toBlob(function(blob) {
+      navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]).then(function() {
+        showToast('Copied to clipboard');
+      }).catch(function() {
+        alert('Copy failed. Try PNG export instead.');
+      });
+    });
+  });
+}
+
+function exportPNG() {
+  getCanvas().then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = '图1-5_干系人地图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+function exportPDF() {
+  getCanvas().then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({
+      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('图1-5_干系人地图.pdf');
+  });
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font:500 13px/1 "JetBrains Mono",sans-serif;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:opacity 0.3s';
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2000);
+}
+</script>
+</body>
+</html>

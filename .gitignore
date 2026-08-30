@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Node / frontend build
+node_modules/
+dist/
+build/
+*.local
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+
+# Local env (never commit secrets)
+.env
+.env.*

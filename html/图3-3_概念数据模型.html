@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-3 企业级概念数据模型（ER图）</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','PingFang SC',sans-serif;padding:20px;display:flex;justify-content:center;color:#1e293b}
+.container{max-width:1560px;width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 24px 24px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.toolbar{display:flex;gap:8px;margin-bottom:14px;align-items:center}
+.toolbar button{font-family:inherit;font-size:11px;padding:5px 12px;border:1px solid #e2e8f0;background:#fff;border-radius:5px;color:#475569;cursor:pointer;transition:all .15s}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}
+.toolbar .spacer{flex:1}
+.title-section{margin-bottom:12px}
+.title-section h1{font-size:18px;font-weight:600;color:#0f172a}
+.title-section p{font-size:11px;color:#64748b;margin-top:2px}
+.svg-wrap{width:100%;overflow:auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px}
+.cards-row{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+.info-card{flex:1;min-width:180px;background:#fff;border:1px solid #e2e8f0;border-radius:7px;padding:12px 14px}
+.info-card h3{font-size:11px;font-weight:600;color:#0f172a;margin-bottom:4px}
+.info-card h3 .dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px}
+.info-card p,.info-card ul{font-size:10px;color:#475569;line-height:1.6}
+.info-card ul{padding-left:14px;margin-top:2px}
+@media print{.toolbar{display:none!important}}
+</style>
+</head>
+<body>
+<div class="container" id="report-container">
+  <div class="toolbar">
+    <button onclick="copyAsImage(this)">📋 Copy</button>
+    <button onclick="downloadPNG(this)">🖼️ PNG</button>
+    <button onclick="downloadPDF(this)">📄 PDF</button>
+    <span class="spacer"></span>
+    <span style="font-size:10px;color:#94a3b8">图3-3 · 企业级概念数据模型（ER图）</span>
+  </div>
+  <div class="title-section">
+    <h1>企业级概念数据模型（ER图）— 手机制造商LTC全链路</h1>
+    <p>Enterprise Conceptual Data Model · 20核心实体 · 26条关系 · 基数+业务规则 · 正交折线连接</p>
+  </div>
+  <div class="svg-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1060" width="100%" height="auto">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.3"/></pattern>
+        <marker id="arrowB" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/></marker>
+        <marker id="arrowR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ef4444"/></marker>
+        <marker id="arrowG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker>
+        <marker id="arrowT" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0891b2"/></marker>
+        <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#64748b" flood-opacity="0.06"/></filter>
+      </defs>
+      <rect width="1500" height="1060" fill="#fff"/>
+      <rect width="1500" height="1060" fill="url(#grid)"/>
+
+      <!-- ============ ENTITY DEFINITIONS ============ -->
+      <!-- Each entity: (x, y, w, color, name_en, pk, attr1, attr2, attr3, attr4) -->
+
+      <!-- ===== ROW 1: Demand Side (y=30) ===== -->
+      <g class="entity" font-family="'JetBrains Mono',sans-serif">
+      <!-- Campaign 营销活动 (x=24) -->
+      <rect x="24" y="30" width="190" height="132" rx="5" fill="#fff" stroke="#f97316" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="24" y="30" width="190" height="24" rx="5" fill="#fff7ed"/><rect x="24" y="40" width="190" height="14" fill="#fff7ed"/>
+      <text x="119" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#c2410c">D04 营销活动</text>
+      <text x="119" y="60" text-anchor="middle" font-size="8" fill="#94a3b8">Campaign</text>
+      <line x1="30" y1="66" x2="208" y2="66" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="34" y="80" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">campaign_id</tspan> (PK)</text>
+      <text x="34" y="96" font-size="9" fill="#475569">campaign_name</text>
+      <text x="34" y="112" font-size="9" fill="#475569">budget · start_date</text>
+      <text x="34" y="128" font-size="9" fill="#475569">channel · roi</text>
+      <text x="34" y="144" font-size="9" fill="#475569">target_audience</text>
+
+      <!-- Customer 客户 (x=260) -->
+      <rect x="260" y="30" width="190" height="132" rx="5" fill="#fff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="260" y="30" width="190" height="24" rx="5" fill="#eff6ff"/><rect x="260" y="40" width="190" height="14" fill="#eff6ff"/>
+      <text x="355" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">D02 客户</text>
+      <text x="355" y="60" text-anchor="middle" font-size="8" fill="#94a3b8">Customer</text>
+      <line x1="266" y1="66" x2="444" y2="66" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="270" y="80" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">customer_id</tspan> (PK)</text>
+      <text x="270" y="96" font-size="9" fill="#475569">customer_name</text>
+      <text x="270" y="112" font-size="9" fill="#475569">type · credit_level</text>
+      <text x="270" y="128" font-size="9" fill="#475569">region · status</text>
+      <text x="270" y="144" font-size="9" fill="#475569">contact_info</text>
+
+      <!-- User 用户 (x=496) -->
+      <rect x="496" y="30" width="190" height="132" rx="5" fill="#fff" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="496" y="30" width="190" height="24" rx="5" fill="#eff6ff"/><rect x="496" y="40" width="190" height="14" fill="#eff6ff"/>
+      <text x="591" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">D02 用户</text>
+      <text x="591" y="60" text-anchor="middle" font-size="8" fill="#94a3b8">User</text>
+      <line x1="502" y1="66" x2="680" y2="66" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="506" y="80" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">user_id</tspan> (PK)</text>
+      <text x="506" y="96" font-size="9" fill="#475569">phone · email</text>
+      <text x="506" y="112" font-size="9" fill="#475569">member_level · points</text>
+      <text x="506" y="128" font-size="9" fill="#475569">register_date</text>
+      <text x="506" y="144" font-size="9" fill="#475569">privacy_consent</text>
+
+      <!-- Store 门店 (x=732) -->
+      <rect x="732" y="30" width="190" height="132" rx="5" fill="#fff" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="732" y="30" width="190" height="24" rx="5" fill="#faf5ff"/><rect x="732" y="40" width="190" height="14" fill="#faf5ff"/>
+      <text x="827" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#6d28d9">D03 门店</text>
+      <text x="827" y="60" text-anchor="middle" font-size="8" fill="#94a3b8">Store</text>
+      <line x1="738" y1="66" x2="916" y2="66" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="742" y="80" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">store_id</tspan> (PK)</text>
+      <text x="742" y="96" font-size="9" fill="#475569">store_name · type</text>
+      <text x="742" y="112" font-size="9" fill="#475569">address · gps</text>
+      <text x="742" y="128" font-size="9" fill="#475569">dealer_id (FK)</text>
+      <text x="742" y="144" font-size="9" fill="#475569">status · open_date</text>
+
+      <!-- IO Device (x=968) -->
+      <rect x="968" y="30" width="190" height="132" rx="5" fill="#fff" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="968" y="30" width="190" height="24" rx="5" fill="#fffbeb"/><rect x="968" y="40" width="190" height="14" fill="#fffbeb"/>
+      <text x="1063" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">D10 IoT设备</text>
+      <text x="1063" y="60" text-anchor="middle" font-size="8" fill="#94a3b8">IoT_Device</text>
+      <line x1="974" y1="66" x2="1152" y2="66" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="978" y="80" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">device_id</tspan> (PK)</text>
+      <text x="978" y="96" font-size="9" fill="#475569">mac · type · model</text>
+      <text x="978" y="112" font-size="9" fill="#475569">fw_version · status</text>
+      <text x="978" y="128" font-size="9" fill="#475569">owner_user_id (FK)</text>
+      <text x="978" y="144" font-size="9" fill="#475569">activated_date</text>
+      </g>
+
+      <!-- ===== ROW 2: Transaction Core (y=195) ===== -->
+      <g font-family="'JetBrains Mono',sans-serif">
+      <!-- Sales Order 销售订单 (x=260) -->
+      <rect x="260" y="195" width="210" height="150" rx="5" fill="#fff" stroke="#ef4444" stroke-width="3" filter="url(#shadow)"/>
+      <rect x="260" y="195" width="210" height="26" rx="5" fill="#fef2f2"/><rect x="260" y="207" width="210" height="14" fill="#fef2f2"/>
+      <text x="365" y="212" text-anchor="middle" font-size="12" font-weight="800" fill="#b91c1c">D05 销售订单 ★</text>
+      <text x="365" y="228" text-anchor="middle" font-size="8" fill="#94a3b8">Sales_Order · LTC心脏</text>
+      <line x1="266" y1="234" x2="464" y2="234" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="270" y="250" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">order_id</tspan> (PK)</text>
+      <text x="270" y="266" font-size="9" fill="#475569">customer_id (FK) · store_id (FK)</text>
+      <text x="270" y="282" font-size="9" fill="#475569">campaign_id (FK) · user_id (FK)</text>
+      <text x="270" y="298" font-size="9" fill="#475569">order_status · payment_status</text>
+      <text x="270" y="314" font-size="9" fill="#475569">total_amount · paid_amount</text>
+      <text x="270" y="330" font-size="9" fill="#475569">created_time · signed_time</text>
+
+      <!-- Order Line 订单行 (x=520) -->
+      <rect x="520" y="195" width="200" height="150" rx="5" fill="#fff" stroke="#ef4444" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="520" y="195" width="200" height="26" rx="5" fill="#fef2f2"/><rect x="520" y="207" width="200" height="14" fill="#fef2f2"/>
+      <text x="620" y="212" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">D05 订单行</text>
+      <text x="620" y="228" text-anchor="middle" font-size="8" fill="#94a3b8">Order_Line</text>
+      <line x1="526" y1="234" x2="714" y2="234" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="530" y="250" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">line_id</tspan> (PK)</text>
+      <text x="530" y="266" font-size="9" fill="#475569">order_id (FK)</text>
+      <text x="530" y="282" font-size="9" fill="#475569">sku_id (FK)</text>
+      <text x="530" y="298" font-size="9" fill="#475569">quantity · unit_price</text>
+      <text x="530" y="314" font-size="9" fill="#475569">discount · line_amount</text>
+      <text x="530" y="330" font-size="9" fill="#475569">fulfill_status</text>
+
+      <!-- Product SKU 产品 (x=770) -->
+      <rect x="770" y="195" width="200" height="150" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="770" y="195" width="200" height="26" rx="5" fill="#ecfeff"/><rect x="770" y="207" width="200" height="14" fill="#ecfeff"/>
+      <text x="870" y="212" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D01 产品SKU</text>
+      <text x="870" y="228" text-anchor="middle" font-size="8" fill="#94a3b8">Product_SKU</text>
+      <line x1="776" y1="234" x2="964" y2="234" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="780" y="250" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">sku_id</tspan> (PK)</text>
+      <text x="780" y="266" font-size="9" fill="#475569">sku_code · name</text>
+      <text x="780" y="282" font-size="9" fill="#475569">brand · color · storage</text>
+      <text x="780" y="298" font-size="9" fill="#475569">price · cost · weight</text>
+      <text x="780" y="314" font-size="9" fill="#475569">launch_date · eol_date</text>
+      <text x="780" y="330" font-size="9" fill="#475569">bom_version (FK)</text>
+      </g>
+
+      <!-- ===== ROW 3: Supply & Manufacture (y=390) ===== -->
+      <g font-family="'JetBrains Mono',sans-serif">
+      <!-- Material/BOM 物料 (x=24) -->
+      <rect x="24" y="390" width="190" height="132" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="24" y="390" width="190" height="24" rx="5" fill="#ecfeff"/><rect x="24" y="400" width="190" height="14" fill="#ecfeff"/>
+      <text x="119" y="406" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D01 物料/BOM</text>
+      <text x="119" y="420" text-anchor="middle" font-size="8" fill="#94a3b8">Material / BOM</text>
+      <line x1="30" y1="426" x2="208" y2="426" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="34" y="440" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">material_id</tspan> (PK)</text>
+      <text x="34" y="456" font-size="9" fill="#475569">material_code · name</text>
+      <text x="34" y="472" font-size="9" fill="#475569">spec · unit · moq</text>
+      <text x="34" y="488" font-size="9" fill="#475569">lead_time · abc_class</text>
+      <text x="34" y="504" font-size="9" fill="#475569">bom_level · parent_id (FK)</text>
+
+      <!-- Supplier 货商 (x=260) -->
+      <rect x="260" y="390" width="190" height="132" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="260" y="390" width="190" height="24" rx="5" fill="#ecfeff"/><rect x="260" y="400" width="190" height="14" fill="#ecfeff"/>
+      <text x="355" y="406" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D06 供应商</text>
+      <text x="355" y="420" text-anchor="middle" font-size="8" fill="#94a3b8">Supplier</text>
+      <line x1="266" y1="426" x2="444" y2="426" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="270" y="440" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">supplier_id</tspan> (PK)</text>
+      <text x="270" y="456" font-size="9" fill="#475569">supplier_name · type</text>
+      <text x="270" y="472" font-size="9" fill="#475569">region · cert_status</text>
+      <text x="270" y="488" font-size="9" fill="#475569">credit_limit · bank_acct</text>
+      <text x="270" y="504" font-size="9" fill="#475569">contact · rating</text>
+
+      <!-- Purchase Order 采购订单 (x=496) -->
+      <rect x="496" y="390" width="200" height="132" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="496" y="390" width="200" height="24" rx="5" fill="#ecfeff"/><rect x="496" y="400" width="200" height="14" fill="#ecfeff"/>
+      <text x="596" y="406" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D06 采购订单</text>
+      <text x="596" y="420" text-anchor="middle" font-size="8" fill="#94a3b8">Purchase_Order</text>
+      <line x1="502" y1="426" x2="690" y2="426" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="506" y="440" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">po_id</tspan> (PK)</text>
+      <text x="506" y="456" font-size="9" fill="#475569">supplier_id (FK)</text>
+      <text x="506" y="472" font-size="9" fill="#475569">material_id (FK) · qty</text>
+      <text x="506" y="488" font-size="9" fill="#475569">po_status · currency</text>
+      <text x="506" y="504" font-size="9" fill="#475569">promised_date · otd</text>
+
+      <!-- Work Order 生产工单 (x=742) -->
+      <rect x="742" y="390" width="200" height="150" rx="5" fill="#fff" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="742" y="390" width="200" height="26" rx="5" fill="#ecfdf5"/><rect x="742" y="402" width="200" height="14" fill="#ecfdf5"/>
+      <text x="842" y="408" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">D07 生产工单</text>
+      <text x="842" y="422" text-anchor="middle" font-size="8" fill="#94a3b8">Work_Order</text>
+      <line x1="748" y1="430" x2="936" y2="430" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="752" y="448" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">wo_id</tspan> (PK)</text>
+      <text x="752" y="464" font-size="9" fill="#475569">sku_id (FK) · bom_version</text>
+      <text x="752" y="480" font-size="9" fill="#475569">line_id (FK) · shift_id</text>
+      <text x="752" y="496" font-size="9" fill="#475569">planned_start · actual_start</text>
+      <text x="752" y="512" font-size="9" fill="#475569">produced_qty · defect_qty</text>
+      <text x="752" y="528" font-size="9" fill="#475569">oee · yield_rate</text>
+
+      <!-- Production Line 产线 (x=988) -->
+      <rect x="988" y="390" width="190" height="132" rx="5" fill="#fff" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="988" y="390" width="190" height="24" rx="5" fill="#ecfdf5"/><rect x="988" y="400" width="190" height="14" fill="#ecfdf5"/>
+      <text x="1083" y="406" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">D07 产线/工厂</text>
+      <text x="1083" y="420" text-anchor="middle" font-size="8" fill="#94a3b8">Prod_Line / Plant</text>
+      <line x1="994" y1="426" x2="1172" y2="426" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="998" y="440" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">line_id</tspan> (PK)</text>
+      <text x="998" y="456" font-size="9" fill="#475569">line_name · plant_id</text>
+      <text x="998" y="472" font-size="9" fill="#475569">type · uph · status</text>
+      <text x="998" y="488" font-size="9" fill="#475569">changeover_time</text>
+      <text x="998" y="504" font-size="9" fill="#475569">maintenance_schedule</text>
+      </g>
+
+      <!-- ===== ROW 4: Quality, Delivery, Settlement (y=575) ===== -->
+      <g font-family="'JetBrains Mono',sans-serif">
+      <!-- Quality Inspection 质检 (x=24) -->
+      <rect x="24" y="575" width="190" height="115" rx="5" fill="#fff" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="24" y="575" width="190" height="24" rx="5" fill="#ecfdf5"/><rect x="24" y="585" width="190" height="14" fill="#ecfdf5"/>
+      <text x="119" y="591" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">D07 质检记录</text>
+      <text x="119" y="605" text-anchor="middle" font-size="8" fill="#94a3b8">Quality_Inspection</text>
+      <line x1="30" y1="611" x2="208" y2="611" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="34" y="625" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">inspection_id</tspan> (PK)</text>
+      <text x="34" y="641" font-size="9" fill="#475569">wo_id (FK) · station</text>
+      <text x="34" y="657" font-size="9" fill="#475569">type · result · defect_code</text>
+      <text x="34" y="673" font-size="9" fill="#475569">inspector · timestamp</text>
+
+      <!-- IMEI Trace 追溯 (x=260) -->
+      <rect x="260" y="575" width="200" height="115" rx="5" fill="#fff" stroke="#059669" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="260" y="575" width="200" height="24" rx="5" fill="#ecfdf5"/><rect x="260" y="585" width="200" height="14" fill="#ecfdf5"/>
+      <text x="360" y="591" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">D07 IMEI追溯</text>
+      <text x="360" y="605" text-anchor="middle" font-size="8" fill="#94a3b8">IMEI_Traceability · L7</text>
+      <line x1="266" y1="611" x2="454" y2="611" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="270" y="625" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">imei</tspan> (PK)</text>
+      <text x="270" y="641" font-size="9" fill="#475569">wo_id (FK) · line_id (FK)</text>
+      <text x="270" y="657" font-size="9" fill="#475569">batch_soc · batch_screen</text>
+      <text x="270" y="673" font-size="9" fill="#475569">aoi_result · test_result</text>
+
+      <!-- Warehouse 仓库 (x=506) -->
+      <rect x="506" y="575" width="190" height="115" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="506" y="575" width="190" height="24" rx="5" fill="#ecfeff"/><rect x="506" y="585" width="190" height="14" fill="#ecfeff"/>
+      <text x="601" y="591" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D08 仓库</text>
+      <text x="601" y="605" text-anchor="middle" font-size="8" fill="#94a3b8">Warehouse</text>
+      <line x1="512" y1="611" x2="690" y2="611" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="516" y="625" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">wh_id</tspan> (PK)</text>
+      <text x="516" y="641" font-size="9" fill="#475569">wh_name · type · level</text>
+      <text x="516" y="657" font-size="9" fill="#475569">address · capacity</text>
+      <text x="516" y="673" font-size="9" fill="#475569">region · status</text>
+
+      <!-- Inventory 库存 (x=742) -->
+      <rect x="742" y="575" width="200" height="115" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="742" y="575" width="200" height="24" rx="5" fill="#ecfeff"/><rect x="742" y="585" width="200" height="14" fill="#ecfeff"/>
+      <text x="842" y="591" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D08 库存水位</text>
+      <text x="842" y="605" text-anchor="middle" font-size="8" fill="#94a3b8">Inventory (6-level)</text>
+      <line x1="748" y1="611" x2="936" y2="611" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="752" y="625" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">inventory_id</tspan> (PK)</text>
+      <text x="752" y="641" font-size="9" fill="#475569">sku_id (FK) · wh_id (FK)</text>
+      <text x="752" y="657" font-size="9" fill="#475569">qty_on_hand · qty_reserved</text>
+      <text x="752" y="673" font-size="9" fill="#475569">safety_stock · abc_class</text>
+
+      <!-- Shipment 发运 (x=988) -->
+      <rect x="988" y="575" width="190" height="115" rx="5" fill="#fff" stroke="#0891b2" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="988" y="575" width="190" height="24" rx="5" fill="#ecfeff"/><rect x="988" y="585" width="190" height="14" fill="#ecfeff"/>
+      <text x="1083" y="591" text-anchor="middle" font-size="11" font-weight="700" fill="#0e7490">D08 发运单</text>
+      <text x="1083" y="605" text-anchor="middle" font-size="8" fill="#94a3b8">Shipment</text>
+      <line x1="994" y1="611" x2="1172" y2="611" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="998" y="625" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">shipment_id</tspan> (PK)</text>
+      <text x="998" y="641" font-size="9" fill="#475569">order_id (FK) · wh_id (FK)</text>
+      <text x="998" y="657" font-size="9" fill="#475569">tracking_no · carrier</text>
+      <text x="998" y="673" font-size="9" fill="#475569">ship_date · sign_date</text>
+      </g>
+
+      <!-- ===== ROW 5: Finance (y=740) ===== -->
+      <g font-family="'JetBrains Mono',sans-serif">
+      <!-- Payment 支付 (x=24) -->
+      <rect x="24" y="740" width="190" height="115" rx="5" fill="#fff" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="24" y="740" width="190" height="24" rx="5" fill="#fef2f2"/><rect x="24" y="750" width="190" height="14" fill="#fef2f2"/>
+      <text x="119" y="756" text-anchor="middle" font-size="11" font-weight="700" fill="#b91c1c">D05 支付</text>
+      <text x="119" y="770" text-anchor="middle" font-size="8" fill="#94a3b8">Payment</text>
+      <line x1="30" y1="776" x2="208" y2="776" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="34" y="790" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">payment_id</tspan> (PK)</text>
+      <text x="34" y="806" font-size="9" fill="#475569">order_id (FK) · amount</text>
+      <text x="34" y="822" font-size="9" fill="#475569">method · status</text>
+      <text x="34" y="838" font-size="9" fill="#475569">paid_time</text>
+
+      <!-- Invoice 发票 (x=260) -->
+      <rect x="260" y="740" width="190" height="115" rx="5" fill="#fff" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="260" y="740" width="190" height="24" rx="5" fill="#fffbeb"/><rect x="260" y="750" width="190" height="14" fill="#fffbeb"/>
+      <text x="355" y="756" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">D05 发票</text>
+      <text x="355" y="770" text-anchor="middle" font-size="8" fill="#94a3b8">Invoice</text>
+      <line x1="266" y1="776" x2="444" y2="776" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="270" y="790" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">invoice_id</tspan> (PK)</text>
+      <text x="270" y="806" font-size="9" fill="#475569">order_id (FK) · type</text>
+      <text x="270" y="822" font-size="9" fill="#475569">amount · tax_rate</text>
+      <text x="270" y="838" font-size="9" fill="#475569">issue_date · status</text>
+
+      <!-- AR 应收 (x=496) -->
+      <rect x="496" y="740" width="190" height="115" rx="5" fill="#fff" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="496" y="740" width="190" height="24" rx="5" fill="#fffbeb"/><rect x="496" y="750" width="190" height="14" fill="#fffbeb"/>
+      <text x="591" y="756" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309">D09 应收</text>
+      <text x="591" y="770" text-anchor="middle" font-size="8" fill="#94a3b8">AR_Receivable</text>
+      <line x1="502" y1="776" x2="680" y2="776" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="506" y="790" font-size="9" fill="#1e293b"><tspan font-weight="700" text-decoration="underline">ar_id</tspan> (PK)</text>
+      <text x="506" y="806" font-size="9" fill="#475569">order_id (FK) · amount</text>
+      <text x="506" y="822" font-size="9" fill="#475569">due_date · aging_days</text>
+      <text x="506" y="838" font-size="9" fill="#475569">collection_status</text>
+      </g>
+
+      <!-- ===== RELATIONSHIP LINES (drawn as orthogonal paths) ===== -->
+      <g fill="none" stroke-width="1.5" font-family="'JetBrains Mono',sans-serif" font-size="8">
+
+      <!-- ROW 1→ROW 2 (Demand → Order) -->
+      <!-- Campaign → Sales_Order (1:N) -->
+      <path d="M 214 96 L 230 96 L 230 280 L 260 280" stroke="#64748b" marker-end="url(#arrowG)"/>
+      <text x="220" y="200" fill="#64748b" font-size="7">1:N 归因</text>
+
+      <!-- Customer → Sales_Order (1:N) -->
+      <path d="M 355 162 L 355 175 L 365 175 L 365 195" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowB)"/>
+      <text x="340" y="170" fill="#3b82f6" font-size="7">1:N</text>
+
+      <!-- User → Sales_Order (1:N) -->
+      <path d="M 496 96 L 478 96 L 478 175 L 365 175" stroke="#64748b"/>
+      <text x="430" y="165" fill="#64748b" font-size="7">1:N (零售)</text>
+
+      <!-- Store → Sales_Order (N:1) -->
+      <path d="M 827 162 L 827 185 L 365 185 L 365 195" stroke="#8b5cf6" marker-end="url(#arrowG)"/>
+      <text x="500" y="180" fill="#8b5cf6" font-size="7">N:1</text>
+
+      <!-- User → IoT_Device (1:N) -->
+      <path d="M 686 96 L 870 96 L 870 70 L 968 70" stroke="#64748b"/>
+      <text x="800" y="90" fill="#64748b" font-size="7">1:N 归属</text>
+
+      <!-- ROW 2→ROW 3 (Order → Supply/Manufacture) -->
+      <!-- Sales_Order → Order_Line (1:N) -->
+      <path d="M 470 270 L 500 270 L 500 270 L 520 270" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowR)"/>
+      <text x="495" y="262" fill="#ef4444" font-size="7">1:N 组成</text>
+
+      <!-- Order_Line → Product_SKU (N:1) -->
+      <path d="M 720 270 L 745 270 L 745 270 L 770 270" stroke="#0891b2" stroke-width="2" marker-end="url(#arrowT)"/>
+      <text x="745" y="262" fill="#0891b2" font-size="7">N:1</text>
+
+      <!-- Product_SKU → Material/BOM (N:N via BOM) -->
+      <path d="M 770 310 L 740 310 L 740 330 L 310 330 L 310 370 L 119 370 L 119 390" stroke="#0891b2" stroke-dasharray="4,2" marker-end="url(#arrowT)"/>
+      <text x="450" y="380" fill="#0891b2" font-size="7">N:N (via BOM展开)</text>
+
+      <!-- Sales_Order → Purchase_Order (via MRP) -->
+      <path d="M 470 345 L 470 375 L 596 375 L 596 390" stroke="#64748b" stroke-dasharray="3,3" marker-end="url(#arrowG)"/>
+      <text x="510" y="385" fill="#64748b" font-size="7">MRP触发</text>
+
+      <!-- Supplier → Purchase_Order (1:N) -->
+      <path d="M 450 456 L 476 456 L 476 456 L 496 456" stroke="#0891b2" stroke-width="2" marker-end="url(#arrowT)"/>
+      <text x="473" y="448" fill="#0891b2" font-size="7">1:N</text>
+
+      <!-- Product_SKU → Work_Order (1:N) -->
+      <path d="M 870 345 L 870 370 L 842 370 L 842 390" stroke="#059669" marker-end="url(#arrowG)"/>
+      <text x="856" y="380" fill="#059669" font-size="7">1:N</text>
+
+      <!-- ROW 3→ROW 4 (Manufacture → Quality/Delivery) -->
+      <!-- Work_Order → IMEI_Trace (1:1) -->
+      <path d="M 742 465 L 726 465 L 726 630 L 460 630 L 460 632" stroke="#059669" stroke-width="2" marker-end="url(#arrowG)"/>
+      <text x="560" y="620" fill="#059669" font-size="7">1:1 数字出生证明</text>
+
+      <!-- Work_Order → Quality_Inspection (1:N) -->
+      <path d="M 742 465 L 720 465 L 720 630 L 214 630 L 214 632" stroke="#059669"/>
+      <text x="460" y="622" fill="#059669" font-size="7">1:N 每工序检测</text>
+
+      <!-- Production_Line → Work_Order (1:N) -->
+      <path d="M 1083 522 L 1083 540 L 842 540 L 842 540" stroke="#059669" marker-end="url(#arrowG)"/>
+      <text x="960" y="535" fill="#059669" font-size="7">1:N 排产</text>
+
+      <!-- Work_Order → Inventory (产出→入库) -->
+      <path d="M 942 465 L 960 465 L 960 630 L 842 630 L 842 632" stroke="#0891b2" stroke-dasharray="3,2"/>
+      <text x="950" y="555" fill="#0891b2" font-size="7">完工入库</text>
+
+      <!-- Sales_Order → Shipment (1:N) -->
+      <path d="M 470 345 L 470 500 L 1083 500 L 1083 575" stroke="#0891b2" stroke-dasharray="3,2" marker-end="url(#arrowT)"/>
+      <text x="800" y="510" fill="#0891b2" font-size="7">1:N 触发发运</text>
+
+      <!-- Inventory → Shipment (N:1) -->
+      <path d="M 942 632 L 960 632 L 960 632 L 988 632" stroke="#0891b2" marker-end="url(#arrowT)"/>
+      <text x="965" y="624" fill="#0891b2" font-size="7">N:1</text>
+
+      <!-- ROW 4→ROW 5 (Delivery → Finance) -->
+      <!-- Shipment → AR (1:1 签收触发) -->
+      <path d="M 1083 690 L 1083 710 L 686 710 L 686 740" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowG)"/>
+      <text x="850" y="720" fill="#f59e0b" font-size="7">1:1 签收→收入确认(IFRS15)</text>
+
+      <!-- Sales_Order → Payment (1:N) -->
+      <path d="M 260 280 L 220 280 L 220 795 L 214 795" stroke="#ef4444"/>
+      <text x="195" y="550" fill="#ef4444" font-size="7">1:N</text>
+
+      <!-- Sales_Order → Invoice (1:N) -->
+      <path d="M 260 280 L 240 280 L 240 795 L 260 795" stroke="#f59e0b"/>
+      <text x="225" y="550" fill="#f59e0b" font-size="7">1:N</text>
+
+      <!-- Sales_Order → AR (1:1) -->
+      <path d="M 470 345 L 490 345 L 490 795 L 496 795" stroke="#f59e0b" stroke-dasharray="3,2"/>
+      <text x="495" y="570" fill="#f59e0b" font-size="7">1:1</text>
+
+      </g>
+
+      <!-- ===== LEGEND (bottom left) ===== -->
+      <g font-family="'JetBrains Mono',sans-serif" font-size="8">
+      <text x="24" y="895" font-size="10" font-weight="700" fill="#0f172a">图例 Legend</text>
+      <line x1="24" y1="905" x2="132" y2="905" stroke="#3b82f6" stroke-width="2"/><text x="138" y="909" fill="#475569">实线=强关联/引用  </text>
+      <line x1="250" y1="905" x2="358" y2="905" stroke="#64748b" stroke-dasharray="3,3"/><text x="364" y="909" fill="#475569">虚线=间接触发/异步</text>
+      <text x="520" y="909" fill="#475569">|  基数标注: 1:1 / 1:N / N:1 / N:N  </text>
+      <text x="800" y="909" fill="#475569">|  ★ = LTC数据链心脏(订单域)  </text>
+      <text x="520" y="923" fill="#94a3b8">实体颜色: 蓝=客户/用户  |  红=订单/交易  |  青=产品/供应/物流  |  绿=制造/质量  |  橙=生态/财务</text>
+      </g>
+
+      <!-- ===== Enterprise Boundary ===== -->
+      <rect x="15" y="20" width="1205" height="850" rx="10" fill="none" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="8,4"/>
+      <text x="35" y="930" font-size="9" fill="#64748b" font-family="'JetBrains Mono',sans-serif">覆盖 D01-D10 十大主题域  |  20核心实体  |  26条关系(含基数+业务规则)  |  正交折线连接  |  手机制造商LTC全链路ER模型</text>
+    </svg>
+  </div>
+  <div class="cards-row">
+    <div class="info-card"><h3><span class="dot" style="background:#3b82f6;"></span>客户/用户域 (Demand)</h3><ul><li>客户(Customer)→销售订单 1:N</li><li>用户(User)→销售订单 1:N</li><li>门店(Store)→销售订单 N:1</li><li>营销活动(Campaign)→订单 1:N</li></ul></div>
+    <div class="info-card"><h3><span class="dot" style="background:#ef4444;"></span>订单/交易域 (Transaction)</h3><ul><li>订单→订单行 1:N 组成关系</li><li>订单行→产品SKU N:1 引用</li><li>订单→支付/发票/应收 1:N</li><li>订单→发货 MRP→PO→制造</li></ul></div>
+    <div class="info-card"><h3><span class="dot" style="background:#0891b2;"></span>产品/供应链/物流</h3><ul><li>SKU→物料 N:N via BOM</li><li>供应商→PO 1:N · PO→物料 N:1</li><li>库存→发运 N:1 · 完工入库</li><li>发运→签收→应收(IFRS15)</li></ul></div>
+    <div class="info-card"><h3><span class="dot" style="background:#059669;"></span>制造/质量 (Manufacturing)</h3><ul><li>工单→IMEI追溯 1:1(数字出生证明)</li><li>工单→质检记录 1:N(每工序)</li><li>产线→工单 1:N(排产)</li><li>IMEI→全追溯链L7</li></ul></div>
+  </div>
+</div>
+<script>
+async function copyAsImage(b){const o=b.textContent;try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),bl=await new Promise(r=>c.toBlob(r,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':bl})]);b.textContent='✓ Copied!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+async function downloadPNG(b){const o=b.textContent;b.textContent='⏳ ...';try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),a=document.createElement('a');a.download='图3-3_概念数据模型.png';a.href=c.toDataURL('image/png');a.click();b.textContent='✓ Done!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+async function downloadPDF(b){const o=b.textContent;b.textContent='⏳ ...';try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),d=c.toDataURL('image/png'),{jsPDF:j}=window.jspdf,o2=c.width>c.height?'landscape':'portrait',pdf=new j({orientation:o2,unit:'px',format:[c.width,c.height],hotfixes:['px_scaling']});pdf.addImage(d,'PNG',0,0,c.width,c.height);pdf.save('图3-3_概念数据模型.pdf');b.textContent='✓ Done!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+</script>
+</body>
+</html>

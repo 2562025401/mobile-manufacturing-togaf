@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图5-2 基础设施架构</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b;}
+.container{max-width:1400px;margin:0 auto;}
+.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px;}
+.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#ffffff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s;}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a;}
+.diagram-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:0.5px;}
+svg{width:100%;height:auto;display:block;}
+text{font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">基础设施架构 — Infrastructure Architecture (3-Tier Compute + Storage + Network)</div>
+<svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+  </pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+  </marker>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="rgba(59,130,246,0.04)"/>
+    <stop offset="100%" stop-color="rgba(59,130,246,0)"/>
+  </linearGradient>
+</defs>
+<rect width="1300" height="780" fill="url(#bg)"/>
+<rect width="1300" height="780" fill="url(#grid)"/>
+
+<text x="650" y="30" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700" letter-spacing="1">手机制造企业基础设施架构 — 三级计算 + 存储 + 网络 + LTC系统映射</text>
+
+<!-- ===== TIER 1: 中心云 (双AZ) ===== -->
+<rect x="40" y="50" width="1220" height="200" rx="8" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.15)" stroke-width="1.5"/>
+<rect x="40" y="50" width="1220" height="28" rx="8" fill="rgba(16,185,129,0.08)"/>
+<text x="650" y="69" text-anchor="middle" fill="#065f46" font-size="13" font-weight="600">一级：中心云 (双AZ) — 核心交易与数据</text>
+
+<!-- Compute -->
+<rect x="60" y="88" width="240" height="150" rx="5" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+<rect x="60" y="88" width="240" height="22" rx="5" fill="rgba(16,185,129,0.1)"/>
+<text x="180" y="104" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">计算 Compute</text>
+<text x="75" y="126" fill="#475569" font-size="8.5">• 物理机: HPE Synergy 480 + 华为 FusionServer</text>
+<text x="75" y="142" fill="#475569" font-size="8.5">• vCPU: 5000+ 核心 (Intel Xeon Gold 6438M)</text>
+<text x="75" y="158" fill="#475569" font-size="8.5">• 内存: 20TB+ DDR5 (ECC)</text>
+<text x="75" y="174" fill="#475569" font-size="8.5">• GPU: NVIDIA A100 × 16 (AI推理/训练)</text>
+<text x="75" y="190" fill="#475569" font-size="8.5">• 虚拟化: VMware vSphere 8 / KVM</text>
+<text x="75" y="206" fill="#475569" font-size="8.5">• 容器: Kubernetes 500+ Node</text>
+<text x="75" y="224" fill="#475569" font-size="8.5">• LTC: SAP S/4HANA · CRM · PLM · MES</text>
+
+<!-- Storage -->
+<rect x="320" y="88" width="260" height="150" rx="5" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+<rect x="320" y="88" width="260" height="22" rx="5" fill="rgba(16,185,129,0.1)"/>
+<text x="450" y="104" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">存储 Storage</text>
+<text x="335" y="126" fill="#475569" font-size="8.5">• 分布式块存储: Ceph / PureStorage × 200TB</text>
+<text x="335" y="142" fill="#475569" font-size="8.5">• 对象存储: MinIO / S3 × 500TB (非结构化)</text>
+<text x="335" y="158" fill="#475569" font-size="8.5">• 文件存储: NAS / NetApp × 100TB (共享)</text>
+<text x="335" y="174" fill="#475569" font-size="8.5">• DB存储: All-Flash NVMe × 50TB (交易库)</text>
+<text x="335" y="190" fill="#475569" font-size="8.5">• 备份存储: HDD × 1PB (冷数据/归档)</text>
+<text x="335" y="206" fill="#475569" font-size="8.5">• 双AZ同步: 同步复制 · 跨AZ延迟&lt;1ms</text>
+<text x="335" y="224" fill="#475569" font-size="8.5">• LTC: MDM主数据 · 交易历史 · 产品BOM</text>
+
+<!-- Network -->
+<rect x="600" y="88" width="260" height="150" rx="5" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+<rect x="600" y="88" width="260" height="22" rx="5" fill="rgba(16,185,129,0.1)"/>
+<text x="730" y="104" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">网络 Network</text>
+<text x="615" y="126" fill="#475569" font-size="8.5">• Spine-Leaf: 100G/25G 数据中心架构</text>
+<text x="615" y="142" fill="#475569" font-size="8.5">• 交换机: Cisco Nexus 9000 / Huawei CE</text>
+<text x="615" y="158" fill="#475569" font-size="8.5">• 防火墙: Palo Alto PA-5400 集群</text>
+<text x="615" y="174" fill="#475569" font-size="8.5">• 负载均衡: F5 BIG-IP / Nginx Plus</text>
+<text x="615" y="190" fill="#475569" font-size="8.5">• SDN: VMware NSX / Calico</text>
+<text x="615" y="206" fill="#475569" font-size="8.5">• AZ互联: 专线 100Gbps × 2 (冗余)</text>
+<text x="615" y="224" fill="#475569" font-size="8.5">• LTC: 核心 ERP · CRM 实时在线交易</text>
+
+<!-- Key Spec Box -->
+<rect x="880" y="88" width="360" height="150" rx="5" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.15)" stroke-width="1"/>
+<rect x="880" y="88" width="360" height="22" rx="5" fill="rgba(16,185,129,0.12)"/>
+<text x="1060" y="104" text-anchor="middle" fill="#065f46" font-size="10" font-weight="600">中心云关键指标</text>
+<text x="900" y="128" fill="#0f172a" font-size="9" font-weight="600">LTC系统部署:</text>
+<text x="900" y="146" fill="#475569" font-size="8.5">ERP (SAP S/4HANA) · PLM (Teamcenter)</text>
+<text x="900" y="162" fill="#475569" font-size="8.5">CRM (Salesforce) · MES (自家研发)</text>
+<text x="900" y="180" fill="#475569" font-size="8.5">BI/数仓 · MDM主数据管理</text>
+<text x="900" y="200" fill="#0f172a" font-size="9" font-weight="600">可靠性: 99.995% · AZ级故障自动切换</text>
+<text x="900" y="218" fill="#475569" font-size="8.5">双AZ物理距离: 30km · 光纤直连</text>
+
+<!-- Connector -->
+<path d="M 650 250 L 650 266" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== TIER 2: 区域云 ===== -->
+<rect x="40" y="274" width="1220" height="190" rx="8" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.15)" stroke-width="1.5"/>
+<rect x="40" y="274" width="1220" height="28" rx="8" fill="rgba(59,130,246,0.08)"/>
+<text x="650" y="293" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="600">二级：区域云 — EMEA / SEA / LATAM / CN</text>
+
+<!-- EU -->
+<rect x="60" y="312" width="270" height="140" rx="5" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.12)" stroke-width="1"/>
+<rect x="60" y="312" width="270" height="22" rx="5" fill="rgba(59,130,246,0.1)"/>
+<text x="195" y="328" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">欧洲 EMEA (法兰克福)</text>
+<text x="75" y="348" fill="#475569" font-size="8.5">vCPU: 2000 · 内存: 8TB · 存储: 100TB</text>
+<text x="75" y="364" fill="#475569" font-size="8.5">LTC: OMS · WMS · 海外电商</text>
+<text x="75" y="380" fill="#475569" font-size="8.5">数据合规: GDPR · 数据本地化</text>
+<text x="75" y="396" fill="#475569" font-size="8.5">AZ: 双可用区 · 专线回中心</text>
+<text x="75" y="412" fill="#475569" font-size="8.5">容器: K8s 100 Node · Istio</text>
+<text x="75" y="428" fill="#475569" font-size="8.5">网络: 50Gbps × 2 出口</text>
+<text x="75" y="444" fill="#475569" font-size="8.5">缓存: Redis Cluster · CDN</text>
+
+<!-- SEA -->
+<rect x="350" y="312" width="270" height="140" rx="5" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.12)" stroke-width="1"/>
+<rect x="350" y="312" width="270" height="22" rx="5" fill="rgba(59,130,246,0.1)"/>
+<text x="485" y="328" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">东南亚 SEA (新加坡)</text>
+<text x="365" y="348" fill="#475569" font-size="8.5">vCPU: 1500 · 内存: 6TB · 存储: 80TB</text>
+<text x="365" y="364" fill="#475569" font-size="8.5">LTC: TMS · 渠道管理 · 本地电商</text>
+<text x="365" y="380" fill="#475569" font-size="8.5">覆盖: 新加坡 · 马来西亚 · 泰国 · 印尼</text>
+<text x="365" y="396" fill="#475569" font-size="8.5">延迟: 区域内部 &lt;10ms</text>
+<text x="365" y="412" fill="#475569" font-size="8.5">容器: K8s 80 Node</text>
+<text x="365" y="428" fill="#475569" font-size="8.5">网络: 30Gbps × 2 出口</text>
+<text x="365" y="444" fill="#475569" font-size="8.5">数据备份: 日备+RPO&lt;1h</text>
+
+<!-- LATAM -->
+<rect x="640" y="312" width="270" height="140" rx="5" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.12)" stroke-width="1"/>
+<rect x="640" y="312" width="270" height="22" rx="5" fill="rgba(59,130,246,0.1)"/>
+<text x="775" y="328" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">拉美 LATAM (圣保罗)</text>
+<text x="655" y="348" fill="#475569" font-size="8.5">vCPU: 1000 · 内存: 4TB · 存储: 60TB</text>
+<text x="655" y="364" fill="#475569" font-size="8.5">LTC: 海外OMS · 本地支付</text>
+<text x="655" y="380" fill="#475569" font-size="8.5">覆盖: 巴西 · 墨西哥 · 智利</text>
+<text x="655" y="396" fill="#475569" font-size="8.5">合规: LGPD · 税收本地化</text>
+<text x="655" y="412" fill="#475569" font-size="8.5">容器: K8s 50 Node</text>
+<text x="655" y="428" fill="#475569" font-size="8.5">网络: 20Gbps × 2 出口</text>
+<text x="655" y="444" fill="#475569" font-size="8.5">中心互联: 跨境专线</text>
+
+<!-- Key Spec -->
+<rect x="930" y="312" width="310" height="140" rx="5" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+<rect x="930" y="312" width="310" height="22" rx="5" fill="rgba(59,130,246,0.12)"/>
+<text x="1085" y="328" text-anchor="middle" fill="#1e40af" font-size="10" font-weight="600">区域云关键指标</text>
+<text x="950" y="350" fill="#0f172a" font-size="9" font-weight="600">总规模:</text>
+<text x="950" y="368" fill="#475569" font-size="8.5">vCPU 4500+ · 内存 18TB+</text>
+<text x="950" y="386" fill="#0f172a" font-size="9" font-weight="600">存储总量: 240TB+ (各区域)</text>
+<text x="950" y="404" fill="#0f172a" font-size="9" font-weight="600">互联: SD-WAN + 跨境专线</text>
+<text x="950" y="422" fill="#475569" font-size="8.5">中心-区域延迟: 50-200ms</text>
+<text x="950" y="440" fill="#475569" font-size="8.5">合规: GDPR · LGPD · 数据主权</text>
+
+<!-- Connector -->
+<path d="M 650 464 L 650 480" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== TIER 3: 边缘云 ===== -->
+<rect x="40" y="488" width="1220" height="180" rx="8" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.15)" stroke-width="1.5"/>
+<rect x="40" y="488" width="1220" height="28" rx="8" fill="rgba(245,158,11,0.08)"/>
+<text x="650" y="507" text-anchor="middle" fill="#92400e" font-size="13" font-weight="600">三级：边缘云 (智能工厂) — 东莞 · 郑州 · 印度 · 巴西 · 越南</text>
+
+<!-- Factory 1 -->
+<rect x="60" y="526" width="220" height="130" rx="5" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<rect x="60" y="526" width="220" height="22" rx="5" fill="rgba(245,158,11,0.1)"/>
+<text x="170" y="542" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">东莞旗舰工厂</text>
+<text x="75" y="560" fill="#475569" font-size="8">vCPU: 500 · 内存: 2TB</text>
+<text x="75" y="575" fill="#475569" font-size="8">存储: 20TB NVMe</text>
+<text x="75" y="590" fill="#475569" font-size="8">K3s 20 Node</text>
+<text x="75" y="605" fill="#475569" font-size="8">LTC: 产线MES · 质检AI</text>
+<text x="75" y="620" fill="#475569" font-size="8">IoT Hub · 实时分析</text>
+<text x="75" y="635" fill="#475569" font-size="8">延迟: &lt;1ms 本地</text>
+<text x="75" y="650" fill="#475569" font-size="8">上行: 10Gbps 专线</text>
+
+<!-- Factory 2 -->
+<rect x="300" y="526" width="220" height="130" rx="5" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<rect x="300" y="526" width="220" height="22" rx="5" fill="rgba(245,158,11,0.1)"/>
+<text x="410" y="542" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">郑州工厂</text>
+<text x="315" y="560" fill="#475569" font-size="8">vCPU: 300 · 内存: 1TB</text>
+<text x="315" y="575" fill="#475569" font-size="8">存储: 10TB NVMe</text>
+<text x="315" y="590" fill="#475569" font-size="8">K3s 12 Node</text>
+<text x="315" y="605" fill="#475569" font-size="8">LTC: 组装MES</text>
+<text x="315" y="620" fill="#475569" font-size="8">仓储WMS · 物流调度</text>
+<text x="315" y="635" fill="#475569" font-size="8">延迟: &lt;2ms 本地</text>
+<text x="315" y="650" fill="#475569" font-size="8">上行: 5Gbps VPN</text>
+
+<!-- Factory 3 -->
+<rect x="540" y="526" width="220" height="130" rx="5" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<rect x="540" y="526" width="220" height="22" rx="5" fill="rgba(245,158,11,0.1)"/>
+<text x="650" y="542" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">印度工厂</text>
+<text x="555" y="560" fill="#475569" font-size="8">vCPU: 200 · 内存: 0.8TB</text>
+<text x="555" y="575" fill="#475569" font-size="8">存储: 8TB NVMe</text>
+<text x="555" y="590" fill="#475569" font-size="8">K3s 8 Node</text>
+<text x="555" y="605" fill="#475569" font-size="8">LTC: 产线MES</text>
+<text x="555" y="620" fill="#475569" font-size="8">本地质检</text>
+<text x="555" y="635" fill="#475569" font-size="8">延迟: &lt;3ms 本地</text>
+<text x="555" y="650" fill="#475569" font-size="8">上行: 2Gbps VPN</text>
+
+<!-- Factory 4 -->
+<rect x="780" y="526" width="220" height="130" rx="5" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<rect x="780" y="526" width="220" height="22" rx="5" fill="rgba(245,158,11,0.1)"/>
+<text x="890" y="542" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">巴西工厂</text>
+<text x="795" y="560" fill="#475569" font-size="8">vCPU: 150 · 内存: 0.5TB</text>
+<text x="795" y="575" fill="#475569" font-size="8">存储: 5TB NVMe</text>
+<text x="795" y="590" fill="#475569" font-size="8">K3s 6 Node</text>
+<text x="795" y="605" fill="#475569" font-size="8">LTC: 组装MES</text>
+<text x="795" y="620" fill="#475569" font-size="8">本地仓储</text>
+<text x="795" y="635" fill="#475569" font-size="8">延迟: &lt;3ms 本地</text>
+<text x="795" y="650" fill="#475569" font-size="8">上行: 1Gbps VPN</text>
+
+<!-- Factory 5 -->
+<rect x="1020" y="526" width="220" height="130" rx="5" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<rect x="1020" y="526" width="220" height="22" rx="5" fill="rgba(245,158,11,0.1)"/>
+<text x="1130" y="542" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">越南工厂 (2025规划)</text>
+<text x="1035" y="560" fill="#475569" font-size="8">vCPU: 100 · 内存: 0.5TB</text>
+<text x="1035" y="575" fill="#475569" font-size="8">存储: 5TB NVMe</text>
+<text x="1035" y="590" fill="#475569" font-size="8">K3s 5 Node</text>
+<text x="1035" y="605" fill="#475569" font-size="8">LTC: 产线MES</text>
+<text x="1035" y="620" fill="#475569" font-size="8">本地质检</text>
+<text x="1035" y="635" fill="#475569" font-size="8">延迟: &lt;5ms 本地</text>
+<text x="1035" y="650" fill="#475569" font-size="8">上行: 1Gbps</text>
+
+<!-- ===== Bottom Summary Bar ===== -->
+<rect x="40" y="686" width="1220" height="44" rx="6" fill="rgba(99,102,241,0.05)" stroke="rgba(99,102,241,0.12)" stroke-width="1"/>
+<text x="60" y="714" fill="#0f172a" font-size="10" font-weight="600">三级互联: </text>
+<rect x="180" y="698" width="90" height="20" rx="3" fill="rgba(16,185,129,0.1)"/>
+<text x="225" y="712" text-anchor="middle" fill="#065f46" font-size="8" font-weight="500">中心 ↔ 区域: SD-WAN专线</text>
+<rect x="340" y="698" width="90" height="20" rx="3" fill="rgba(59,130,246,0.1)"/>
+<text x="385" y="712" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="500">区域 ↔ 边缘: VPN/IPSec</text>
+<rect x="500" y="698" width="80" height="20" rx="3" fill="rgba(245,158,11,0.1)"/>
+<text x="540" y="712" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">边缘处理: 本地实时</text>
+<text x="660" y="714" fill="#475569" font-size="9">总规模: vCPU 10000+ · 内存 40TB+ · 存储 2PB+ · 覆盖全球6区域+5工厂</text>
+
+<!-- Legend -->
+<rect x="40" y="740" width="1220" height="30" rx="4" fill="rgba(99,102,241,0.03)" stroke="rgba(99,102,241,0.08)" stroke-width="0.8"/>
+<rect x="60" y="748" width="10" height="10" rx="2" fill="rgba(16,185,129,0.25)"/>
+<text x="74" y="757" fill="#475569" font-size="8">中心云(双AZ)</text>
+<rect x="200" y="748" width="10" height="10" rx="2" fill="rgba(59,130,246,0.25)"/>
+<text x="214" y="757" fill="#475569" font-size="8">区域云</text>
+<rect x="320" y="748" width="10" height="10" rx="2" fill="rgba(245,158,11,0.25)"/>
+<text x="334" y="757" fill="#475569" font-size="8">边缘云(工厂)</text>
+<text x="450" y="757" fill="#475569" font-size="8">所有LTC系统按"核心→区域→边缘"三级部署，数据本地化 + 云边协同</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-2_基础设施架构.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-2_基础设施架构.pdf');});}
+</script>
+</body>
+</html>

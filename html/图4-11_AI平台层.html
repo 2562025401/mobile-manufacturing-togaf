@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图4-11 AI平台层与智能应用架构</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','SF Mono','Consolas',monospace;padding:20px;color:#1e293b}
+#toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+#toolbar .t-title{font-size:14px;font-weight:600;color:#0f172a;margin-right:16px}
+#toolbar button{background:#ffffff;border:1px solid #e2e8f0;border-radius:6px;padding:7px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#1e293b;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+#toolbar button:hover{background:#f1f5f9;border-color:#94a3b8}
+#toolbar button:active{background:#e2e8f0}
+#toolbar .sep{width:1px;height:24px;background:#e2e8f0;margin:0 4px}
+#diagram-container{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+#diagram-container svg{display:block;width:100%;height:auto}
+.status-msg{font-size:11px;color:#64748b;margin-left:8px}
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span class="t-title">图4-11 AI平台层与智能应用架构</span>
+  <div class="sep"></div>
+  <button onclick="copySVG()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    Copy
+  </button>
+  <button onclick="exportPNG()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    PNG
+  </button>
+  <button onclick="exportPDF()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    PDF
+  </button>
+  <span id="status" class="status-msg"></span>
+</div>
+
+<div id="diagram-container">
+<svg viewBox="0 0 1300 800" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','SF Mono','Consolas',monospace">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow-up" viewBox="0 0 10 10" refX="5" refY="2" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 10 L 5 2 L 10 10" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-right" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 8 5 L 0 10" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-right-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 8 5 L 0 10" fill="#3b82f6"/>
+    </marker>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <!-- Grid Background -->
+  <rect width="1300" height="800" fill="url(#grid)"/>
+  <rect width="1300" height="800" fill="#ffffff" opacity="0.85"/>
+
+  <!-- Title Section -->
+  <text x="650" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a">AI平台层与智能应用架构</text>
+  <text x="650" y="58" text-anchor="middle" font-size="12" font-weight="400" fill="#64748b">AI Platform · 拆回4A · 模型服务/推理/知识库</text>
+  <line x1="490" y1="66" x2="810" y2="66" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ======================================================================== -->
+  <!-- SECTION 1: AI落点澄清 -->
+  <!-- ======================================================================== -->
+  <rect x="40" y="85" width="1220" height="88" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2" filter="url(#shadow)"/>
+
+  <rect x="40" y="85" width="200" height="88" rx="10" fill="rgba(59,130,246,0.10)"/>
+  <text x="140" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">AI落点澄清</text>
+  <text x="140" y="145" text-anchor="middle" font-size="11" font-weight="500" fill="#3b82f6">AI不另立第5个A</text>
+
+  <line x1="245" y1="95" x2="245" y2="163" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Mapping 1 -->
+  <rect x="265" y="97" width="300" height="32" rx="6" fill="rgba(139,92,246,0.06)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="285" y="118" font-size="11" fill="#0f172a">算力</text>
+  <line x1="335" y1="106" x2="395" y2="106" stroke="#94a3b8" stroke-width="0.8"/>
+  <path d="M 387 102 L 395 106 L 387 110" fill="none" stroke="#94a3b8" stroke-width="0.8"/>
+  <text x="405" y="118" font-size="11" font-weight="500" fill="#5b21b6">技术架构</text>
+  <text x="285" y="138" font-size="9" fill="#64748b">AI算力纳入基础设施规划</text>
+
+  <!-- Mapping 2 -->
+  <rect x="590" y="97" width="310" height="32" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="610" y="118" font-size="11" fill="#0f172a">大模型底座</text>
+  <line x1="700" y1="106" x2="740" y2="106" stroke="#94a3b8" stroke-width="0.8"/>
+  <path d="M 732 102 L 740 106 L 732 110" fill="none" stroke="#94a3b8" stroke-width="0.8"/>
+  <text x="750" y="118" font-size="11" font-weight="500" fill="#166534">应用平台层</text>
+  <text x="610" y="138" font-size="9" fill="#64748b">大模型作为平台能力提供</text>
+
+  <!-- Mapping 3 -->
+  <rect x="925" y="97" width="310" height="32" rx="6" fill="rgba(245,158,11,0.06)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="945" y="118" font-size="11" fill="#0f172a">多模态数据</text>
+  <line x1="1035" y1="106" x2="1075" y2="106" stroke="#94a3b8" stroke-width="0.8"/>
+  <path d="M 1067 102 L 1075 106 L 1067 110" fill="none" stroke="#94a3b8" stroke-width="0.8"/>
+  <text x="1085" y="118" font-size="11" font-weight="500" fill="#92400e">数据架构</text>
+  <text x="945" y="138" font-size="9" fill="#64748b">多模态数据归入数据治理</text>
+
+  <!-- ======================================================================== -->
+  <!-- SECTION 2: AI平台层架构 -->
+  <!-- ======================================================================== -->
+
+  <!-- Section label -->
+  <text x="650" y="202" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">AI平台层架构</text>
+  <text x="650" y="218" text-anchor="middle" font-size="10" fill="#64748b">AI Platform Layer Architecture</text>
+
+  <!-- Layer 4: 智能应用层 (top) -->
+  <rect x="100" y="235" width="540" height="70" rx="8" fill="rgba(59,130,246,0.08)" stroke="#93c5fd" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="100" y="235" width="160" height="70" rx="8" fill="rgba(59,130,246,0.15)"/>
+  <text x="180" y="270" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">智能应用层</text>
+  <text x="180" y="288" text-anchor="middle" font-size="9" fill="#3b82f6">AI Application</text>
+  <text x="280" y="264" font-size="10" fill="#334155">智能客服</text>
+  <text x="280" y="282" font-size="10" fill="#334155">知识助手</text>
+  <text x="410" y="264" font-size="10" fill="#334155">营销智能体</text>
+  <text x="410" y="282" font-size="10" fill="#334155">视觉质检</text>
+  <text x="540" y="264" font-size="10" fill="#334155">语音助手</text>
+  <text x="540" y="282" font-size="10" fill="#334155">供应链预测</text>
+
+  <!-- Arrow up between layers -->
+  <line x1="160" y1="310" x2="160" y2="340" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-up)"/>
+
+  <!-- Layer 3: 知识层 -->
+  <rect x="100" y="345" width="540" height="70" rx="8" fill="rgba(139,92,246,0.08)" stroke="#c4b5fd" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="100" y="345" width="160" height="70" rx="8" fill="rgba(139,92,246,0.15)"/>
+  <text x="180" y="380" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">知识层</text>
+  <text x="180" y="398" text-anchor="middle" font-size="9" fill="#8b5cf6">Knowledge Layer</text>
+  <rect x="280" y="358" width="100" height="22" rx="4" fill="rgba(139,92,246,0.10)" stroke="#ddd6fe" stroke-width="0.5"/>
+  <text x="330" y="373" text-anchor="middle" font-size="9" fill="#5b21b6">知识库RAG</text>
+  <rect x="390" y="358" width="100" height="22" rx="4" fill="rgba(139,92,246,0.10)" stroke="#ddd6fe" stroke-width="0.5"/>
+  <text x="440" y="373" text-anchor="middle" font-size="9" fill="#5b21b6">向量数据库</text>
+  <rect x="500" y="358" width="100" height="22" rx="4" fill="rgba(139,92,246,0.10)" stroke="#ddd6fe" stroke-width="0.5"/>
+  <text x="550" y="373" text-anchor="middle" font-size="9" fill="#5b21b6">Prompt管理</text>
+  <text x="280" y="400" font-size="9" fill="#7c3aed">Embedding · 向量检索 · 上下文管理</text>
+
+  <!-- Arrow -->
+  <line x1="160" y1="420" x2="160" y2="450" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-up)"/>
+
+  <!-- Layer 2: 模型服务层 -->
+  <rect x="100" y="455" width="540" height="70" rx="8" fill="rgba(34,197,94,0.08)" stroke="#86efac" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="100" y="455" width="160" height="70" rx="8" fill="rgba(34,197,94,0.15)"/>
+  <text x="180" y="490" text-anchor="middle" font-size="13" font-weight="600" fill="#166534">模型服务层</text>
+  <text x="180" y="508" text-anchor="middle" font-size="9" fill="#22c55e">Model Service</text>
+  <rect x="280" y="468" width="100" height="22" rx="4" fill="rgba(34,197,94,0.10)" stroke="#bbf7d0" stroke-width="0.5"/>
+  <text x="330" y="483" text-anchor="middle" font-size="9" fill="#166534">模型训练</text>
+  <rect x="390" y="468" width="100" height="22" rx="4" fill="rgba(34,197,94,0.10)" stroke="#bbf7d0" stroke-width="0.5"/>
+  <text x="440" y="483" text-anchor="middle" font-size="9" fill="#166534">推理引擎</text>
+  <rect x="500" y="468" width="100" height="22" rx="4" fill="rgba(34,197,94,0.10)" stroke="#bbf7d0" stroke-width="0.5"/>
+  <text x="550" y="483" text-anchor="middle" font-size="9" fill="#166534">模型注册</text>
+  <text x="280" y="510" font-size="9" fill="#16a34a">MLOps · 模型版本管理 · A/B评估</text>
+
+  <!-- Arrow -->
+  <line x1="160" y1="530" x2="160" y2="560" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow-up)"/>
+
+  <!-- Layer 1: 基础设施层 (bottom) -->
+  <rect x="100" y="565" width="540" height="65" rx="8" fill="rgba(100,116,139,0.08)" stroke="#cbd5e1" stroke-width="1.2" filter="url(#shadow)"/>
+  <rect x="100" y="565" width="160" height="65" rx="8" fill="rgba(100,116,139,0.15)"/>
+  <text x="180" y="598" text-anchor="middle" font-size="13" font-weight="600" fill="#334155">基础设施层</text>
+  <text x="180" y="616" text-anchor="middle" font-size="9" fill="#64748b">Infrastructure</text>
+  <rect x="280" y="577" width="100" height="22" rx="4" fill="rgba(100,116,139,0.10)" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="330" y="592" text-anchor="middle" font-size="9" fill="#334155">GPU算力池</text>
+  <rect x="390" y="577" width="100" height="22" rx="4" fill="rgba(100,116,139,0.10)" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="440" y="592" text-anchor="middle" font-size="9" fill="#334155">NPU算力池</text>
+  <rect x="500" y="577" width="100" height="22" rx="4" fill="rgba(100,116,139,0.10)" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="550" y="592" text-anchor="middle" font-size="9" fill="#334155">分布式存储</text>
+  <text x="280" y="615" font-size="9" fill="#64748b">Kubernetes · 弹性调度 · RDMA · 高速网络</text>
+
+  <!-- Right side: AI platform details -->
+  <rect x="680" y="235" width="580" height="395" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+
+  <text x="970" y="262" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">AI平台关键能力</text>
+  <line x1="700" y1="272" x2="1240" y2="272" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Capability: 模型训练 -->
+  <rect x="700" y="285" width="260" height="75" rx="6" fill="rgba(34,197,94,0.06)" stroke="#bbf7d0" stroke-width="0.8"/>
+  <text x="715" y="305" font-size="10" font-weight="600" fill="#166534">模型训练</text>
+  <text x="715" y="322" font-size="8" fill="#475569">分布式训练框架</text>
+  <text x="715" y="337" font-size="8" fill="#475569">AutoML · 超参调优</text>
+  <text x="715" y="352" font-size="8" fill="#475569">模型压缩 · 蒸馏</text>
+
+  <!-- Capability: 推理引擎 -->
+  <rect x="980" y="285" width="260" height="75" rx="6" fill="rgba(59,130,246,0.06)" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="995" y="305" font-size="10" font-weight="600" fill="#1e40af">推理引擎</text>
+  <text x="995" y="322" font-size="8" fill="#475569">TensorRT · ONNX Runtime</text>
+  <text x="995" y="337" font-size="8" fill="#475569">动态批处理 · 缓存</text>
+  <text x="995" y="352" font-size="8" fill="#475569">A/B部署 · 灰度</text>
+
+  <!-- Capability: RAG -->
+  <rect x="700" y="375" width="260" height="75" rx="6" fill="rgba(139,92,246,0.06)" stroke="#ddd6fe" stroke-width="0.8"/>
+  <text x="715" y="395" font-size="10" font-weight="600" fill="#5b21b6">RAG知识库</text>
+  <text x="715" y="412" font-size="8" fill="#475569">文档解析 · 分块</text>
+  <text x="715" y="427" font-size="8" fill="#475569">向量化 · 混合检索</text>
+  <text x="715" y="442" font-size="8" fill="#475569">重排序 · 引用溯源</text>
+
+  <!-- Capability: MLOps -->
+  <rect x="980" y="375" width="260" height="75" rx="6" fill="rgba(245,158,11,0.06)" stroke="#fde68a" stroke-width="0.8"/>
+  <text x="995" y="395" font-size="10" font-weight="600" fill="#92400e">MLOps平台</text>
+  <text x="995" y="412" font-size="8" fill="#475569">实验追踪 · 模型注册</text>
+  <text x="995" y="427" font-size="8" fill="#475569">流水线 · 监控告警</text>
+  <text x="995" y="442" font-size="8" fill="#475569">数据标注 · 评估</text>
+
+  <!-- Capability: Prompt管理 -->
+  <rect x="700" y="465" width="260" height="75" rx="6" fill="rgba(6,182,212,0.06)" stroke="#67e8f9" stroke-width="0.8"/>
+  <text x="715" y="485" font-size="10" font-weight="600" fill="#0e7490">Prompt管理</text>
+  <text x="715" y="502" font-size="8" fill="#475569">模板管理 · 版本</text>
+  <text x="715" y="517" font-size="8" fill="#475569">效果评估 · 优化</text>
+  <text x="715" y="532" font-size="8" fill="#475569">安全护栏</text>
+
+  <!-- Capability: 算力调度 -->
+  <rect x="980" y="465" width="260" height="75" rx="6" fill="rgba(100,116,139,0.06)" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="995" y="485" font-size="10" font-weight="600" fill="#334155">算力调度</text>
+  <text x="995" y="502" font-size="8" fill="#475569">GPU/NPU统一调度</text>
+  <text x="995" y="517" font-size="8" fill="#475569">弹性伸缩 · 配额</text>
+  <text x="995" y="532" font-size="8" fill="#475569">成本优化 · 监控</text>
+
+  <!-- ======================================================================== -->
+  <!-- SECTION 3: 智能应用场景 -->
+  <!-- ======================================================================== -->
+
+  <text x="650" y="660" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">智能应用场景</text>
+  <text x="650" y="676" text-anchor="middle" font-size="10" fill="#64748b">AI Application Scenarios for Smartphone OEM</text>
+
+  <!-- Scenario cards row -->
+  <g filter="url(#shadow)">
+    <!-- Card 1 -->
+    <rect x="40" y="692" width="230" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="40" y="692" width="230" height="28" rx="8" fill="rgba(59,130,246,0.10)"/>
+    <text x="155" y="712" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">影像算法IDE+训练</text>
+    <text x="55" y="734" font-size="9" fill="#475569">模型训练 → 端侧部署</text>
+    <text x="55" y="752" font-size="9" fill="#475569">→ OTA推送升级</text>
+
+    <!-- Card 2 -->
+    <rect x="290" y="692" width="230" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="290" y="692" width="230" height="28" rx="8" fill="rgba(34,197,94,0.10)"/>
+    <text x="405" y="712" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">语音助手</text>
+    <text x="305" y="734" font-size="9" fill="#475569">NLU语义理解</text>
+    <text x="305" y="752" font-size="9" fill="#475569">→ TTS语音合成</text>
+
+    <!-- Card 3 -->
+    <rect x="540" y="692" width="230" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="540" y="692" width="230" height="28" rx="8" fill="rgba(245,158,11,0.10)"/>
+    <text x="655" y="712" text-anchor="middle" font-size="10" font-weight="600" fill="#92400e">营销智能体</text>
+    <text x="555" y="734" font-size="9" fill="#475569">自动生成营销文案</text>
+    <text x="555" y="752" font-size="9" fill="#475569">多渠道A/B投放</text>
+
+    <!-- Card 4 -->
+    <rect x="790" y="692" width="230" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="790" y="692" width="230" height="28" rx="8" fill="rgba(139,92,246,0.10)"/>
+    <text x="905" y="712" text-anchor="middle" font-size="10" font-weight="600" fill="#5b21b6">研发知识助手</text>
+    <text x="805" y="734" font-size="9" fill="#475569">RAG技术文档检索</text>
+    <text x="805" y="752" font-size="9" fill="#475569">问答 · 代码生成</text>
+
+    <!-- Card 5 -->
+    <rect x="1040" y="692" width="230" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="1040" y="692" width="230" height="28" rx="8" fill="rgba(244,63,94,0.10)"/>
+    <text x="1155" y="712" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">供应链预测</text>
+    <text x="1055" y="734" font-size="9" fill="#475569">需求预测</text>
+    <text x="1055" y="752" font-size="9" fill="#475569">库存优化 · 排产</text>
+  </g>
+
+</svg>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<script>
+const container = document.getElementById('diagram-container');
+const status = document.getElementById('status');
+let msgTimeout;
+
+function showMsg(msg, isErr) {
+  clearTimeout(msgTimeout);
+  status.textContent = msg;
+  status.style.color = isErr ? '#ef4444' : '#64748b';
+  if (!isErr) msgTimeout = setTimeout(() => { status.textContent = ''; }, 3000);
+}
+
+function copySVG() {
+  const svgEl = container.querySelector('svg');
+  const cloned = svgEl.cloneNode(true);
+  cloned.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  const serializer = new XMLSerializer();
+  const svgStr = serializer.serializeToString(cloned);
+  navigator.clipboard.writeText(svgStr).then(() => {
+    showMsg('SVG copied to clipboard');
+  }).catch(() => {
+    showMsg('Copy failed', true);
+  });
+}
+
+function exportPNG() {
+  showMsg('Generating PNG...');
+  html2canvas(container, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = '图4-11_AI平台层.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showMsg('PNG exported');
+  }).catch(e => {
+    showMsg('PNG export failed', true);
+    console.error(e);
+  });
+}
+
+function exportPDF() {
+  showMsg('Generating PDF...');
+  html2canvas(container, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false
+  }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4');
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图4-11_AI平台层.pdf');
+    showMsg('PDF exported');
+  }).catch(e => {
+    showMsg('PDF export failed', true);
+    console.error(e);
+  });
+}
+</script>
+</body>
+</html>

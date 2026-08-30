@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-6 MDM架构</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 24px; min-height: 100vh; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-self: flex-end; }
+.toolbar button { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.container { position: relative; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); overflow: hidden; }
+.container svg { display: block; }
+.status-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; margin-top: 8px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div style="width:100%;max-width:1310px;display:flex;flex-direction:column;align-items:center;">
+<div class="toolbar">
+  <button onclick="copyAsImage()">复制</button>
+  <button onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+</div>
+<div class="container" id="diagram">
+<svg viewBox="0 0 1250 780" xmlns="http://www.w3.org/2000/svg" style="width:1250px;height:780px;">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5" opacity="0.5"/>
+  </pattern>
+  <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+  </filter>
+  <filter id="shadow-md" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+  </marker>
+  <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#10b981"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="1250" height="780" fill="#ffffff"/>
+<rect width="1250" height="780" fill="url(#grid)"/>
+
+<!-- Title -->
+<text x="625" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a" letter-spacing="2">主数据管理架构（MDM）</text>
+<text x="625" y="56" text-anchor="middle" font-size="12" fill="#64748b" letter-spacing="1">四层架构 · 九类主数据 · 全生命周期</text>
+<line x1="40" y1="66" x2="1210" y2="66" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- ===================== L1: 源系统层 ===================== -->
+<rect x="35" y="80" width="795" height="26" rx="4" fill="rgba(59,130,246,0.06)"/>
+<text x="432" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">L1 源系统层</text>
+
+<!-- 6 source systems -->
+<g>
+  <rect x="50" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="50" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="50" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="109" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">PLM</text>
+  <text x="109" y="153" text-anchor="middle" font-size="9" fill="#475569">产品生命周期</text>
+
+  <rect x="180" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="180" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="180" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="239" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">CRM</text>
+  <text x="239" y="153" text-anchor="middle" font-size="9" fill="#475569">客户关系</text>
+
+  <rect x="310" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="310" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="310" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="369" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">SRM</text>
+  <text x="369" y="153" text-anchor="middle" font-size="9" fill="#475569">供应商关系</text>
+
+  <rect x="440" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="440" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="440" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="499" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">HR</text>
+  <text x="499" y="153" text-anchor="middle" font-size="9" fill="#475569">人力资源</text>
+
+  <rect x="570" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="570" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="570" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="629" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">IoT</text>
+  <text x="629" y="153" text-anchor="middle" font-size="9" fill="#475569">设备物联</text>
+
+  <rect x="700" y="115" width="118" height="50" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="700" y="115" width="118" height="18" rx="6" fill="rgba(59,130,246,0.1)"/>
+  <rect x="700" y="127" width="118" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="759" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">UserCenter</text>
+  <text x="759" y="153" text-anchor="middle" font-size="9" fill="#475569">用户中心</text>
+</g>
+
+<!-- Arrow L1→L2 -->
+<line x1="432" y1="175" x2="432" y2="193" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===================== L2: MDM核心引擎 ===================== -->
+<rect x="35" y="196" width="795" height="160" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow-md)"/>
+<rect x="35" y="196" width="795" height="28" rx="6" fill="rgba(16,185,129,0.1)"/>
+<rect x="35" y="218" width="795" height="6" fill="rgba(16,185,129,0.1)"/>
+<text x="432" y="215" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">L2 MDM核心引擎</text>
+
+<!-- 引擎组件流程条 -->
+<!-- Horizontal pipeline -->
+<line x1="70" y1="256" x2="795" y2="256" stroke="#e2e8f0" stroke-width="1.5"/>
+<!-- 6 engine components -->
+<g>
+  <!-- 数据校验 -->
+  <rect x="50" y="238" width="112" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="106" y="260" text-anchor="middle" font-size="10" font-weight="500" fill="#1e293b">数据校验</text>
+  <line x1="162" y1="256" x2="185" y2="256" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="188" y="238" width="112" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="244" y="260" text-anchor="middle" font-size="10" font-weight="500" fill="#1e293b">编码生成</text>
+  <line x1="300" y1="256" x2="323" y2="256" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="326" y="238" width="112" height="36" rx="18" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="382" y="260" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">匹配与合并</text>
+  <line x1="438" y1="256" x2="461" y2="256" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="464" y="238" width="112" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="520" y="260" text-anchor="middle" font-size="10" font-weight="500" fill="#1e293b">审批工作流</text>
+  <line x1="576" y1="256" x2="599" y2="256" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="602" y="238" width="112" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="658" y="260" text-anchor="middle" font-size="10" font-weight="500" fill="#1e293b">版本管理</text>
+  <line x1="714" y1="256" x2="737" y2="256" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <rect x="740" y="238" width="112" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="796" y="260" text-anchor="middle" font-size="10" font-weight="500" fill="#1e293b">分发订阅</text>
+</g>
+
+<!-- 去重合并突出说明 -->
+<rect x="326" y="290" width="190" height="24" rx="4" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="3,2"/>
+<text x="421" y="306" text-anchor="middle" font-size="9" fill="#d97706">★ 核心：匹配与合并引擎</text>
+
+<!-- MDM核心能力描述 -->
+<text x="60" y="336" font-size="10" fill="#475569">核心能力：</text>
+<text x="130" y="336" font-size="10" fill="#1e293b">数据校验规则引擎 · 统一编码生成器 · 相似度匹配算法 · 多级审批工作流 · 版本比对与回滚 · 分发订阅管理</text>
+
+<!-- Arrow L2→L3 -->
+<line x1="432" y1="356" x2="432" y2="378" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===================== L3: 数据服务层 ===================== -->
+<rect x="35" y="381" width="795" height="26" rx="4" fill="rgba(139,92,246,0.06)"/>
+<text x="432" y="398" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">L3 数据服务层</text>
+
+<!-- 3 distribution methods -->
+<g>
+  <rect x="60" y="417" width="200" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="60" y="417" width="200" height="18" rx="8" fill="rgba(139,92,246,0.08)"/>
+  <rect x="60" y="429" width="200" height="6" fill="rgba(139,92,246,0.08)"/>
+  <text x="160" y="431" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">REST API</text>
+  <text x="160" y="452" text-anchor="middle" font-size="9" fill="#475569">实时接口 · 同步调用</text>
+
+  <rect x="320" y="417" width="200" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="320" y="417" width="200" height="18" rx="8" fill="rgba(139,92,246,0.08)"/>
+  <rect x="320" y="429" width="200" height="6" fill="rgba(139,92,246,0.08)"/>
+  <text x="420" y="431" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">消息队列 Kafka</text>
+  <text x="420" y="452" text-anchor="middle" font-size="9" fill="#475569">异步事件 · 高吞吐</text>
+
+  <rect x="580" y="417" width="200" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="580" y="417" width="200" height="18" rx="8" fill="rgba(139,92,246,0.08)"/>
+  <rect x="580" y="429" width="200" height="6" fill="rgba(139,92,246,0.08)"/>
+  <text x="680" y="431" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">批量文件 CSV</text>
+  <text x="680" y="452" text-anchor="middle" font-size="9" fill="#475569">离线分发 · 全量同步</text>
+</g>
+
+<!-- Arrow L3→L4 -->
+<line x1="432" y1="477" x2="432" y2="497" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===================== L4: 消费层 ===================== -->
+<rect x="35" y="500" width="795" height="26" rx="4" fill="rgba(239,68,68,0.06)"/>
+<text x="432" y="517" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">L4 消费层</text>
+
+<!-- 7 consumer systems -->
+<g>
+  <rect x="45" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="45" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="45" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="95" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">ERP</text>
+  <text x="95" y="572" text-anchor="middle" font-size="9" fill="#475569">企业资源</text>
+
+  <rect x="158" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="158" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="158" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="208" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">MES</text>
+  <text x="208" y="572" text-anchor="middle" font-size="9" fill="#475569">制造执行</text>
+
+  <rect x="271" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="271" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="271" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="321" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">电商</text>
+  <text x="321" y="572" text-anchor="middle" font-size="9" fill="#475569">在线商城</text>
+
+  <rect x="384" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="384" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="384" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="434" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">CRM</text>
+  <text x="434" y="572" text-anchor="middle" font-size="9" fill="#475569">客户关系</text>
+
+  <rect x="497" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="497" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="497" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="547" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">WMS</text>
+  <text x="547" y="572" text-anchor="middle" font-size="9" fill="#475569">仓储管理</text>
+
+  <rect x="610" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="610" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="610" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="660" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">财务</text>
+  <text x="660" y="572" text-anchor="middle" font-size="9" fill="#475569">财务核算</text>
+
+  <rect x="723" y="536" width="100" height="46" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="723" y="536" width="100" height="18" rx="6" fill="rgba(239,68,68,0.08)"/>
+  <rect x="723" y="548" width="100" height="6" fill="rgba(239,68,68,0.08)"/>
+  <text x="773" y="550" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">售后</text>
+  <text x="773" y="572" text-anchor="middle" font-size="9" fill="#475569">售后服务</text>
+</g>
+
+<!-- ===================== RIGHT PANEL: 九类主数据 ===================== -->
+<rect x="850" y="80" width="365" height="26" rx="4" fill="rgba(245,158,11,0.06)"/>
+<text x="1032" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">九类主数据</text>
+
+<!-- 3x3 grid of master data cards -->
+<!-- Row 1 -->
+<g>
+  <rect x="865" y="120" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="865" y="120" width="105" height="22" rx="8" fill="rgba(59,130,246,0.1)"/>
+  <rect x="865" y="136" width="105" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="917" y="136" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">产品</text>
+  <text x="917" y="160" text-anchor="middle" font-size="9" fill="#475569">80万</text>
+  <text x="917" y="178" text-anchor="middle" font-size="8" fill="#94a3b8">产品主数据</text>
+
+  <rect x="985" y="120" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="985" y="120" width="105" height="22" rx="8" fill="rgba(59,130,246,0.1)"/>
+  <rect x="985" y="136" width="105" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="1037" y="136" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">物料</text>
+  <text x="1037" y="160" text-anchor="middle" font-size="9" fill="#475569">500万</text>
+  <text x="1037" y="178" text-anchor="middle" font-size="8" fill="#94a3b8">物料主数据</text>
+
+  <rect x="1105" y="120" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="1105" y="120" width="105" height="22" rx="8" fill="rgba(59,130,246,0.1)"/>
+  <rect x="1105" y="136" width="105" height="6" fill="rgba(59,130,246,0.1)"/>
+  <text x="1157" y="136" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">供应商</text>
+  <text x="1157" y="160" text-anchor="middle" font-size="9" fill="#475569">5万</text>
+  <text x="1157" y="178" text-anchor="middle" font-size="8" fill="#94a3b8">供应商主数据</text>
+</g>
+
+<!-- Row 2 -->
+<g>
+  <rect x="865" y="225" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="865" y="225" width="105" height="22" rx="8" fill="rgba(16,185,129,0.1)"/>
+  <rect x="865" y="241" width="105" height="6" fill="rgba(16,185,129,0.1)"/>
+  <text x="917" y="241" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">客户</text>
+  <text x="917" y="265" text-anchor="middle" font-size="9" fill="#475569">2000万</text>
+  <text x="917" y="283" text-anchor="middle" font-size="8" fill="#94a3b8">客户主数据</text>
+
+  <rect x="985" y="225" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="985" y="225" width="105" height="22" rx="8" fill="rgba(16,185,129,0.1)"/>
+  <rect x="985" y="241" width="105" height="6" fill="rgba(16,185,129,0.1)"/>
+  <text x="1037" y="241" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">用户</text>
+  <text x="1037" y="265" text-anchor="middle" font-size="9" fill="#475569">1.5亿</text>
+  <text x="1037" y="283" text-anchor="middle" font-size="8" fill="#94a3b8">用户主数据</text>
+
+  <rect x="1105" y="225" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="1105" y="225" width="105" height="22" rx="8" fill="rgba(16,185,129,0.1)"/>
+  <rect x="1105" y="241" width="105" height="6" fill="rgba(16,185,129,0.1)"/>
+  <text x="1157" y="241" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">门店</text>
+  <text x="1157" y="265" text-anchor="middle" font-size="9" fill="#475569">2万</text>
+  <text x="1157" y="283" text-anchor="middle" font-size="8" fill="#94a3b8">门店主数据</text>
+</g>
+
+<!-- Row 3 -->
+<g>
+  <rect x="865" y="330" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="865" y="330" width="105" height="22" rx="8" fill="rgba(245,158,11,0.1)"/>
+  <rect x="865" y="346" width="105" height="6" fill="rgba(245,158,11,0.1)"/>
+  <text x="917" y="346" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">组织</text>
+  <text x="917" y="370" text-anchor="middle" font-size="9" fill="#475569">500</text>
+  <text x="917" y="388" text-anchor="middle" font-size="8" fill="#94a3b8">组织主数据</text>
+
+  <rect x="985" y="330" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="985" y="330" width="105" height="22" rx="8" fill="rgba(245,158,11,0.1)"/>
+  <rect x="985" y="346" width="105" height="6" fill="rgba(245,158,11,0.1)"/>
+  <text x="1037" y="346" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">设备</text>
+  <text x="1037" y="370" text-anchor="middle" font-size="9" fill="#475569">10万</text>
+  <text x="1037" y="388" text-anchor="middle" font-size="8" fill="#94a3b8">设备主数据</text>
+
+  <rect x="1105" y="330" width="105" height="85" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="1105" y="330" width="105" height="22" rx="8" fill="rgba(245,158,11,0.1)"/>
+  <rect x="1105" y="346" width="105" height="6" fill="rgba(245,158,11,0.1)"/>
+  <text x="1157" y="346" text-anchor="middle" font-size="10" font-weight="600" fill="#1e293b">科目</text>
+  <text x="1157" y="370" text-anchor="middle" font-size="9" fill="#475569">3000</text>
+  <text x="1157" y="388" text-anchor="middle" font-size="8" fill="#94a3b8">科目主数据</text>
+</g>
+
+<!-- ===================== BOTTOM: 主数据生命周期 ===================== -->
+<line x1="40" y1="600" x2="1210" y2="600" stroke="#e2e8f0" stroke-width="1"/>
+
+<rect x="35" y="608" width="1180" height="26" rx="4" fill="rgba(16,185,129,0.06)"/>
+<text x="625" y="625" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">主数据生命周期</text>
+
+<!-- Lifecycle flow -->
+<g>
+  <!-- 创建 -->
+  <rect x="90" y="655" width="200" height="50" rx="25" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="190" y="676" text-anchor="middle" font-size="12" font-weight="600" fill="#2563eb">创建</text>
+  <text x="190" y="694" text-anchor="middle" font-size="9" fill="#475569">主数据注册与编码</text>
+
+  <line x1="290" y1="680" x2="345" y2="680" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 变更 -->
+  <rect x="350" y="655" width="200" height="50" rx="25" fill="rgba(245,158,11,0.08)" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="450" y="676" text-anchor="middle" font-size="12" font-weight="600" fill="#d97706">变更</text>
+  <text x="450" y="694" text-anchor="middle" font-size="9" fill="#475569">属性变更与版本更新</text>
+
+  <line x1="550" y1="680" x2="605" y2="680" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 冻结 -->
+  <rect x="610" y="655" width="200" height="50" rx="25" fill="rgba(239,68,68,0.08)" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="710" y="676" text-anchor="middle" font-size="12" font-weight="600" fill="#dc2626">冻结</text>
+  <text x="710" y="694" text-anchor="middle" font-size="9" fill="#475569">停用不再更新</text>
+
+  <line x1="810" y1="680" x2="865" y2="680" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- 退役 -->
+  <rect x="870" y="655" width="200" height="50" rx="25" fill="rgba(100,116,139,0.1)" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="970" y="676" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">退役</text>
+  <text x="970" y="694" text-anchor="middle" font-size="9" fill="#475569">归档或物理删除</text>
+</g>
+
+</svg>
+</div>
+<div class="status-msg" id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script>
+function showStatus(msg) {
+  document.getElementById('status').textContent = msg;
+  setTimeout(function(){ document.getElementById('status').textContent = ''; }, 3000);
+}
+async function copyAsImage() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showStatus('已复制到剪贴板');
+  } catch(e) { showStatus('复制失败: ' + e.message); }
+}
+async function downloadPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var link = document.createElement('a');
+    link.download = '图3-6_MDM架构.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showStatus('PNG已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+async function downloadPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width/2, canvas.height/2] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width/2, canvas.height/2);
+    pdf.save('图3-6_MDM架构.pdf');
+    showStatus('PDF已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+</script>
+</body>
+</html>

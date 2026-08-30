@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图4-14 LTC阶段活动-应用-数据-API明细矩阵</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f8fafc;color:#1e293b;font-family:'Inter','Microsoft YaHei',Arial,sans-serif;padding:24px}
+.container{max-width:1580px;margin:0 auto}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.title{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:.2px}
+.subtitle{margin-top:6px;color:#64748b;font-size:13px;line-height:1.6;max-width:1120px}
+.badge{display:inline-flex;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap}
+.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(15,23,42,.05);overflow:auto}
+.section-title{font-size:16px;font-weight:800;color:#0f172a;margin:18px 0 10px}
+.note{font-size:12px;color:#64748b;line-height:1.5;margin:8px 0 14px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.legend span{font-size:12px;border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:5px 9px}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.domain{border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:12px;min-height:160px}
+.domain.core{border-color:#bae6fd;background:#f0f9ff}
+.domain.ops{border-color:#ddd6fe;background:#faf5ff}
+.domain.guard{border-color:#fecdd3;background:#fff7f7}
+.domain-title{font-size:14px;font-weight:800;color:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.domain-code{font-size:11px;color:#64748b;font-weight:700}
+.group{border-left:3px solid #38bdf8;padding-left:8px;margin:8px 0}
+.group-name{font-size:12px;font-weight:800;color:#334155;margin-bottom:5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;line-height:1.35;border:1px solid #e2e8f0;background:#fff;border-radius:7px;padding:4px 6px;color:#334155}
+.chip.master{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.tx{border-color:#bfdbfe;background:#eff6ff;color:#1e40af}
+.chip.rule{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.chip.api{border-color:#c7d2fe;background:#eef2ff;color:#3730a3}
+.chip.app{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+.lane{display:grid;grid-template-columns:170px repeat(7,minmax(130px,1fr));border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;min-width:1180px}
+.lane div{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:9px;font-size:12px;line-height:1.45;background:#fff}
+.lane .head{font-weight:800;background:#f1f5f9;color:#0f172a;text-align:center}
+.lane .rowhead{font-weight:800;background:#f8fafc;color:#0f172a}
+.lane div:nth-child(8n){border-right:0}
+.mini{font-size:11px;color:#64748b}
+.stack{display:flex;flex-direction:column;gap:6px}
+.flow-svg{width:100%;height:auto;min-width:1220px}
+.node-title{font-size:13px;font-weight:800;fill:#0f172a}
+.node-sub{font-size:10px;fill:#475569}
+.edge-label{font-size:10px;fill:#334155;font-weight:700}
+.footer{margin-top:14px;color:#64748b;font-size:11px;text-align:right}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;min-width:1100px}
+th,td{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:8px;vertical-align:top;line-height:1.45}
+th{background:#f1f5f9;color:#0f172a;font-weight:800;text-align:left;position:sticky;top:0}
+td:first-child,th:first-child{border-left:1px solid #e2e8f0}
+tr:first-child th{border-top:1px solid #e2e8f0}
+tr:first-child th:first-child{border-top-left-radius:8px}
+tr:first-child th:last-child{border-top-right-radius:8px}
+@media(max-width:1100px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.header{flex-direction:column}.title{font-size:20px}}
+</style>
+
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <div class="title">图4-14 LTC阶段活动-应用-数据-API明细矩阵</div>
+      <div class="subtitle">按阶段活动展开业务组件、读写数据、应用系统和API接口，是LTC穿透分析的明细视图。</div>
+    </div>
+    <div class="badge">LTC穿透矩阵</div>
+  </div>
+  <div class="diagram-card"><div class='section-title'>LTC-S01 市场与商机</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>品牌策略与目标人群定义</b><br><span class='mini'>基于年度产品节奏和区域策略，明确目标用户、卖点、价格带和传播主张。</span></td><td>定义目标用户、价格带、卖点和传播主张<br>产品卖点</td><td>产品<br>SKU<br>用户标签<br>历史销量<br>竞品信息</td><td>Campaign<br>目标人群<br>产品</td><td>CRM客户与渠道管理 / GET /users/{id}/profile<br>PLM产品生命周期管理 / GET /skus/{sku_id}</td></tr><tr><td><b>Campaign策划与预算分配</b><br><span class='mini'>拆解传播主题、渠道组合、预算、素材节奏和投放KPI，形成可执行活动方案。</span></td><td>预算分配</td><td>产品<br>SKU<br>预算<br>渠道伙伴<br>媒介资源</td><td>Campaign<br>营销内容<br>媒介投放</td><td>CRM客户与渠道管理 / GET /users/{id}/profile<br>GRC法务合规平台 / POST /compliance/privacy-check</td></tr><tr><td><b>线索采集与用户授权</b><br><span class='mini'>通过官网、电商、门店、社媒、运营商等触点采集用户线索，并完成隐私授权与来源标记。</span></td><td>线索采集<br>隐私授权</td><td>Campaign<br>营销内容<br>隐私授权<br>触点信息</td><td>营销线索<br>隐私授权<br>用户行为日志</td><td>GRC法务合规平台 / POST /compliance/privacy-check<br>CRM客户与渠道管理 / GET /customers/{id}</td></tr><tr><td><b>线索评分与MQL移交</b><br><span class='mini'>按人群画像、互动行为、购买意向、渠道价值进行评分，达到阈值后移交销售/渠道。</span></td><td>线索评分<br>提高线索转化判断准确性</td><td>营销线索<br>用户标签<br>用户行为日志<br>客户<br>用户账号</td><td>MQL<br>线索评分记录<br>营销归因</td><td>CRM客户与渠道管理 / GET /users/{id}/profile</td></tr></table><div class='section-title'>LTC-S02 销售与下单</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>渠道价格与促销校验</b><br><span class='mini'>校验SKU、区域、渠道、价格政策、促销资格和补贴规则，避免串货和价盘冲突。</span></td><td>渠道准入<br>价格体系</td><td>客户<br>渠道伙伴<br>门店<br>SKU<br>价格政策<br>促销活动</td><td>有效报价<br>促销资格校验记录</td><td>CRM客户与渠道管理 / GET /customers/{id}<br>PLM产品生命周期管理 / GET /skus/{sku_id}<br>OMS全渠道订单管理 / POST /pricing/calculate<br>OMS全渠道订单管理 / POST /promotions/validate</td></tr><tr><td><b>订单创建与客户确认</b><br><span class='mini'>用户或渠道提交订单，完成客户、SKU、数量、地址、支付方式、发票等核心信息确认。</span></td><td>订单审核<br>保证订单主体和渠道归属准确</td><td>客户<br>用户账号<br>门店<br>SKU<br>有效报价<br>收货地址</td><td>销售订单<br>订单行<br>购物车快照</td><td>OMS全渠道订单管理 / POST /orders<br>CRM客户与渠道管理 / GET /customers/{id}<br>PLM产品生命周期管理 / GET /skus/{sku_id}</td></tr><tr><td><b>信用/库存/合规检查</b><br><span class='mini'>对渠道信用额度、可承诺库存、区域合规和风险名单进行自动检查。</span></td><td>判断订单是否可以承诺履约<br>应收<br>防止违规交易</td><td>销售订单<br>库存水位<br>信用额度<br>区域法规<br>风险名单</td><td>库存预占<br>信用校验结果<br>合规校验结果<br>异常单</td><td>WMS仓储管理系统 / POST /inventory/atp-query<br>WMS仓储管理系统 / POST /inventory/reservations<br>GRC法务合规平台 / POST /compliance/trade-check<br>ERP企业资源计划 / POST /receivables/confirm</td></tr></table><div class='section-title'>LTC-S03 计划与供应</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>需求汇总与S&amp;OP平衡</b><br><span class='mini'>汇总销售预测、渠道库存、Campaign计划和产能约束，形成供需平衡方案。</span></td><td>把市场需求和销售预测转成供应计划<br>支撑供需缺口识别<br>应收</td><td>销售预测<br>销售订单<br>渠道库存<br>Campaign<br>产能<br>预算</td><td>S&amp;OP计划<br>供需缺口<br>计划版本</td><td>供应链计划APS / POST /plans/sop-balance<br>WMS仓储管理系统 / POST /inventory/atp-query</td></tr><tr><td><b>MRP运算与采购需求生成</b><br><span class='mini'>基于MPS、BOM、库存、在途和安全库存生成物料净需求和采购申请。</span></td><td>提供MRP运算的产品数据源<br>采购申请</td><td>S&amp;OP计划<br>MPS<br>BOM<br>物料<br>库存策略<br>在途ASN</td><td>采购申请<br>物料<br>库存补货建议</td><td>供应链计划APS / POST /plans/mrp-run<br>PLM产品生命周期管理 / GET /boms/{sku_id}/effective</td></tr><tr><td><b>供应商交期确认与风险预警</b><br><span class='mini'>供应商确认交期、数量和价格，对长周期/受限物料触发风险预警和替代方案。</span></td><td>供应商绩效<br>识别受限物料和供应商风险</td><td>采购申请<br>供应商<br>框架协议<br>采购订单<br>供应商</td><td>采购订单<br>交期承诺<br>风险预警<br>替代料建议</td><td>SRM供应商协同平台 / POST /purchase-orders<br>SRM供应商协同平台 / POST /purchase-orders<br>SRM供应商协同平台 / POST /suppliers/{id}/risk-check</td></tr></table><div class='section-title'>LTC-S04 生产制造</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>主生产计划与详细排产</b><br><span class='mini'>将供需平衡结果转换为工厂、产线、班次和工单级排产计划。</span></td><td>详细排产<br>校验排产可行性</td><td>S&amp;OP计划<br>采购交期<br>库存策略<br>产线<br>设备<br>工艺路线</td><td>MPS<br>详细排产<br>生产工单</td><td>供应链计划APS / POST /plans/sop-balance<br>MES制造执行系统 / POST /work-orders</td></tr><tr><td><b>工单开工与物料齐套</b><br><span class='mini'>MES校验BOM、工艺、设备、人员和物料齐套，生成产线开工条件。</span></td><td>工艺路线<br>车间执行</td><td>生产工单<br>BOM<br>物料<br>设备<br>人员</td><td>开工许可<br>领料记录<br>上料校验记录</td><td>MES制造执行系统 / POST /work-orders<br>PLM产品生命周期管理 / GET /boms/{sku_id}/effective</td></tr><tr><td><b>SMT/组装/测试执行</b><br><span class='mini'>按工艺路线执行贴片、组装、功能测试、老化测试和包装，并记录工序质量数据。</span></td><td>车间执行<br>质量追溯</td><td>生产工单<br>工艺路线<br>设备<br>物料<br>人员</td><td>工序记录<br>质量检测记录<br>IMEI/SN履历<br>IMEI/SN履历<br>完工入库</td><td>MES制造执行系统 / POST /operations/records<br>QMS质量管理系统 / GET /trace/{imei}</td></tr><tr><td><b>质量异常与CAPA闭环</b><br><span class='mini'>对AOI/功能测试/售后回流的问题进行原因分析、纠正预防和研发/供应商责任分派。</span></td><td>质量追溯<br>把质量问题回流研发变更</td><td>质量检测记录<br>IMEI/SN履历<br>IMEI/SN履历<br>故障代码<br>BOM<br>工艺路线</td><td>质量异常<br>CAPA<br>ECN建议<br>供应商</td><td>QMS质量管理系统 / POST /quality/capa<br>PLM产品生命周期管理 / GET /boms/{sku_id}/effective</td></tr></table><div class='section-title'>LTC-S05 物流交付</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>订单履约路由</b><br><span class='mini'>根据库存、距离、渠道承诺、成本和SLA，在中心仓、区域仓、门店之间选择履约节点。</span></td><td>驱动履约任务生成<br>选择可履约库存<br>仓店路由</td><td>销售订单<br>库存水位<br>门店<br>仓库<br>物流SLA<br>区域规则</td><td>履约路由结果<br>库存预占<br>配送任务</td><td>OMS全渠道订单管理 / POST /orders<br>WMS仓储管理系统 / POST /inventory/atp-query<br>WMS仓储管理系统 / POST /inventory/reservations</td></tr><tr><td><b>拣货复核与出库</b><br><span class='mini'>WMS生成波次任务，完成拣货、复核、IMEI绑定、打包、出库交接。</span></td><td>完成实物出库<br>质量追溯</td><td>配送任务<br>库存策略<br>SKU<br>IMEI/SN履历<br>ASN到货通知<br>渠道码</td><td>拣货记录<br>出库单<br>物流单<br>IMEI绑定记录</td><td>WMS仓储管理系统 / POST /inventory/release<br>QMS质量管理系统 / GET /trace/{imei}</td></tr><tr><td><b>运输在途与签收确认</b><br><span class='mini'>跟踪物流轨迹、异常拦截、电子签收和签收回传，触发收入确认或售后期开始。</span></td><td>完成交付闭环<br>应收</td><td>出库单<br>物流单<br>承运商轨迹<br>客户</td><td>在途轨迹<br>签收记录<br>异常记录</td><td>OMS全渠道订单管理 / POST /orders<br>ERP企业资源计划 / POST /receivables/confirm</td></tr></table><div class='section-title'>LTC-S06 客户服务</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>报修受理与保修校验</b><br><span class='mini'>用户通过App/门店/热线报修，系统校验IMEI、保修、延保和服务政策。</span></td><td>服务工单<br>判断服务权益</td><td>用户账号<br>销售订单<br>IMEI/SN履历<br>IMEI/SN履历<br>保修政策<br>会员权益</td><td>服务工单<br>保修校验结果<br>预约记录</td><td>CRM客户与渠道管理 / POST /service-tickets<br>OMS全渠道订单管理 / POST /orders<br>QMS质量管理系统 / GET /trace/{imei}</td></tr><tr><td><b>检测诊断与维修执行</b><br><span class='mini'>维修工程师诊断故障、确认报价、领用备件并完成维修/换机/退机。</span></td><td>服务工单<br>备件库存<br>质量追溯</td><td>服务工单<br>IMEI/SN履历<br>IMEI/SN履历<br>故障代码<br>备件<br>维修知识库</td><td>维修单<br>备件<br>维修记录<br>旧件记录</td><td>QMS质量管理系统 / GET /trace/{imei}<br>WMS仓储管理系统 / POST /inventory/atp-query<br>售后服务管理平台 / POST /repairs/{id}/complete</td></tr><tr><td><b>服务回访与质量回流</b><br><span class='mini'>完成NPS回访和故障代码沉淀，将高频质量问题回流研发和制造。</span></td><td>服务工单<br>质量追溯</td><td>维修记录<br>NPS评价<br>故障代码<br>客户投诉<br>质量检测记录</td><td>NPS反馈<br>质量问题单<br>CAPA<br>产品</td><td>售后服务管理平台 / POST /repairs/{id}/complete<br>QMS质量管理系统 / POST /quality/capa</td></tr></table><div class='section-title'>LTC-S07 财务回款</div><table><tr><th>阶段活动</th><th>业务组件/能力</th><th>依赖数据</th><th>产生/更新数据</th><th>应用/API支撑</th></tr><tr><td><b>应收确认与对账</b><br><span class='mini'>基于订单、出库、签收和渠道政策生成应收，完成平台/渠道/经销商对账。</span></td><td>应收<br>提供对账依据<br>保证结算金额准确</td><td>销售订单<br>签收记录<br>价格政策<br>促销活动<br>客户<br>渠道伙伴</td><td>应收单<br>发票<br>对账单<br>收入确认记录</td><td>ERP企业资源计划 / POST /receivables/confirm<br>OMS全渠道订单管理 / POST /orders<br>OMS全渠道订单管理 / POST /pricing/calculate</td></tr><tr><td><b>回款核销与返利结算</b><br><span class='mini'>匹配回款流水、核销应收，并按政策计算渠道返利、补贴和费用。</span></td><td>应收<br>确定返利对象和政策<br>保证结算合规可审计</td><td>应收单<br>银行流水<br>渠道政策<br>促销补贴<br>合同</td><td>回款核销记录<br>返利结算单<br>账龄分析</td><td>ERP企业资源计划 / POST /payments/match<br>OMS全渠道订单管理 / POST /promotions/validate</td></tr></table></div>
+  <div class="footer">Generated from enterprise architecture metadata · html/图4-14 LTC阶段活动-应用-数据-API明细矩阵 · Light architecture diagram style</div>
+</div>
+</body>
+</html>

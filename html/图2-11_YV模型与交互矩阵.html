@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-11 业务架构 Y/V 模型与四类交互矩阵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', sans-serif; color: #1e293b; padding: 24px; display: flex; justify-content: center; }
+.diagram-container { max-width: 1340px; width: 100%; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px 32px 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+.toolbar button { font-family: 'JetBrains Mono', 'PingFang SC', sans-serif; font-size: 13px; padding: 7px 16px; border: 1px solid #e2e8f0; background: #ffffff; border-radius: 6px; color: #475569; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.toolbar button svg { width: 16px; height: 16px; flex-shrink: 0; }
+.toolbar .spacer { flex: 1; }
+.toolbar .badge { font-size: 11px; color: #94a3b8; }
+.title-section { margin-bottom: 16px; }
+.title-section h1 { font-size: 20px; font-weight: 600; color: #0f172a; letter-spacing: 0.5px; }
+.title-section p { font-size: 13px; color: #64748b; margin-top: 4px; }
+#svg-wrapper { width: 100%; overflow-x: auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; }
+#svg-wrapper svg { display: block; width: 100%; height: auto; }
+.cards-row { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.info-card { flex: 1; min-width: 280px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; }
+.info-card h3 { font-size: 13px; font-weight: 600; color: #0f172a; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.info-card p { font-size: 12px; color: #475569; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="diagram" class="diagram-container">
+  <div class="toolbar">
+    <button onclick="copyPNG()" title="复制为PNG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg> 复制</button>
+    <button onclick="downloadPNG()" title="下载为PNG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PNG</button>
+    <button onclick="downloadPDF()" title="下载为PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> PDF</button>
+    <span class="spacer"></span>
+    <span class="badge">图2-11 · Y/V模型与交互矩阵</span>
+  </div>
+
+  <div class="title-section">
+    <h1>业务架构 Y/V 模型与四类交互矩阵</h1>
+    <p>Y Model · V Model · 4 Interaction Matrices</p>
+  </div>
+
+  <div id="svg-wrapper">
+    <svg id="mainSvg" viewBox="0 0 1300 900" xmlns="http://www.w3.org/2000/svg" style="background:#ffffff;">
+      <defs>
+        <filter id="shadow1"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/></filter>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/></pattern>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3b82f6"/></marker>
+        <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#94a3b8"/></marker>
+      </defs>
+      <rect width="1300" height="900" fill="url(#grid)"/>
+      <g id="diagram-content"></g>
+    </svg>
+  </div>
+
+  <div class="cards-row">
+    <div class="info-card">
+      <h3>🔀 Y模型双线聚合</h3>
+      <p>以价值流为主干，左分支收敛业务能力与组件，右分支收敛业务流程与编排，双线在解决方案层汇合，实现业务与IT的完整映射。</p>
+    </div>
+    <div class="info-card">
+      <h3>🔽 V模型业务→IT映射</h3>
+      <p>左侧逐层将业务组件→应用组件、业务能力→API、流程→服务编排完成技术映射；右侧自底向上验证，确保系统交付符合业务价值。</p>
+    </div>
+    <div class="info-card">
+      <h3>📊 四类矩阵验证问题</h3>
+      <p>组件交互矩阵检查耦合度；CRUD矩阵验证数据权限完整性；流程交互矩阵确认角色职责分配；功能-组件矩阵识别覆盖盲区。</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" integrity="sha384-ZSs6LKr2GoUPDyHrN+rCQgyHL1yUyok5xMniSrgeRG7rUvA6vTmxronM1eZOfjgz" crossorigin="anonymous"></script>
+<script>
+// ============== SVG RENDERER ==============
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const mainG = document.getElementById('diagram-content');
+
+function el(name, attrs, ...children) {
+  const e = document.createElementNS(SVG_NS, name);
+  if (attrs) Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, String(v)));
+  children.forEach(ch => { if (ch) e.appendChild(typeof ch === 'string' ? document.createTextNode(ch) : ch); });
+  return e;
+}
+
+function box(x, y, w, h, label, fill, textColor, attrs) {
+  const g = document.createElementNS(SVG_NS, 'g');
+  const a = {x, y, width:w, height:h, rx:6, fill:fill || '#ffffff', stroke:'#e2e8f0', 'stroke-width':1, ...(attrs||{})};
+  g.appendChild(el('rect', a));
+  if (label) {
+    const lines = label.split('\n');
+    const ly = y + h/2 - (lines.length-1)*8;
+    lines.forEach((l, li) => {
+      g.appendChild(el('text', {x:x+w/2, y:ly+li*16+5, 'text-anchor':'middle', 'font-size':'10px', 'font-weight':'500', fill:textColor||'#1e293b', 'font-family':"'JetBrains Mono',sans-serif"}, l));
+    });
+  }
+  return g;
+}
+
+function link(x1,y1,x2,y2,color, width, dash) {
+  return el('line', {x1,y1,x2,y2, stroke:color||'#94a3b8', 'stroke-width':width||1.5, 'stroke-dasharray':dash||'', 'marker-end':'url(#arrowGray)'});
+}
+
+function render() {
+  mainG.innerHTML = '';
+
+  // ---- Title ----
+  mainG.appendChild(el('text', {x:20, y:24, 'font-size':'14px', 'font-weight':'600', fill:'#0f172a', 'font-family':"'JetBrains Mono',sans-serif"}, '业务架构 Y/V 模型与四类交互矩阵'));
+
+  // ============================================================
+  // TOP LEFT: Y MODEL
+  // ============================================================
+  const YX = 20, YY = 50, YW = 620, YH = 370;
+  mainG.appendChild(el('rect', {x:YX, y:YY, width:YW, height:YH, rx:8, fill:'#f8fafc', stroke:'#e2e8f0', 'stroke-width':1}));
+  mainG.appendChild(el('text', {x:YX+YW/2, y:YY+22, 'text-anchor':'middle', 'font-size':'12px', 'font-weight':'600', fill:'#0f172a', 'font-family':"'JetBrains Mono',sans-serif"}, 'Y 模型 — 价值流驱动双线聚合'));
+
+  const cy = YY + 50; // center y for the Y trunk top
+
+  // Value Stream (trunk) - vertical
+  const trunkX = YX + 260;
+  const trunkTopY = YY + 40;
+  const trunkBotY = YY + YH - 30;
+
+  // Y split point
+  const splitY = trunkTopY + 100;
+
+  // Trunk line (top to split)
+  mainG.appendChild(el('line', {x1:trunkX, y1:trunkTopY, x2:trunkX, y2:splitY, stroke:'#3b82f6', 'stroke-width':3, 'marker-end':'url(#arrowGray)'}));
+
+  // Value Stream node (top)
+  const vsNode = box(trunkX-60, trunkTopY-12, 120, 28, '企业价值流\nValue Stream', '#eff6ff', '#1e40af', {stroke:'#bfdbfe'});
+  mainG.appendChild(vsNode);
+
+  // Left branch: Capability side
+  const leftEndX = YX + 50;
+  const leftEndY = trunkBotY;
+  mainG.appendChild(el('line', {x1:trunkX, y1:splitY+5, x2:leftEndX, y2:trunkBotY-40, stroke:'#059669', 'stroke-width':2, 'marker-end':'url(#arrowGray)'}));
+
+  // Right branch: Process side
+  const rightEndX = YX + YW - 50;
+  const rightEndY = trunkBotY;
+  mainG.appendChild(el('line', {x1:trunkX, y1:splitY+5, x2:rightEndX, y2:trunkBotY-40, stroke:'#8b5cf6', 'stroke-width':2, 'marker-end':'url(#arrowGray)'}));
+
+  // Left branch nodes (Capability lineage)
+  const capNodes = [
+    {label:'业务能力\ nCapability', y:YY+115, fill:'#f0fdf4', tc:'#065f46', sc:'#bbf7d0'},
+    {label:'业务组件\nComponent', y:YY+175, fill:'#f0fdf4', tc:'#065f46', sc:'#bbf7d0'},
+    {label:'应用服务/API\nApplication API', y:YY+235, fill:'#f0fdf4', tc:'#065f46', sc:'#bbf7d0'},
+    {label:'应用组件\nApp Component', y:YY+295, fill:'#ecfdf5', tc:'#065f46', sc:'#a7f3d0'}
+  ];
+
+  let capX = (trunkX + leftEndX) / 2 + 15;
+  capNodes.forEach((n, i) => {
+    const nx = capX - 55;
+    mainG.appendChild(box(nx, n.y, 110, 30, n.label, n.fill, n.tc, {stroke:n.sc}));
+    if (i < capNodes.length - 1) {
+      mainG.appendChild(el('line', {x1:capX, y1:n.y+30, x2:capX, y2:n.y+30+10, stroke:'#059669', 'stroke-width':1.5, 'marker-end':'url(#arrowGray)'}));
+    }
+  });
+
+  // Right branch nodes (Process lineage)
+  const procNodes = [
+    {label:'业务流程\nProcess', y:YY+115, fill:'#f5f3ff', tc:'#5b21b6', sc:'#ddd6fe'},
+    {label:'流程活动\nActivity', y:YY+175, fill:'#f5f3ff', tc:'#5b21b6', sc:'#ddd6fe'},
+    {label:'组件编排\nOrchestration', y:YY+235, fill:'#f5f3ff', tc:'#5b21b6', sc:'#ddd6fe'},
+    {label:'服务编排\nService Choreo', y:YY+295, fill:'#ede9fe', tc:'#5b21b6', sc:'#c4b5fd'}
+  ];
+
+  let procX = (trunkX + rightEndX) / 2 - 15;
+  procNodes.forEach((n, i) => {
+    const nx = procX - 55;
+    mainG.appendChild(box(nx, n.y, 110, 30, n.label, n.fill, n.tc, {stroke:n.sc}));
+    if (i < procNodes.length - 1) {
+      mainG.appendChild(el('line', {x1:procX, y1:n.y+30, x2:procX, y2:n.y+30+10, stroke:'#8b5cf6', 'stroke-width':1.5, 'marker-end':'url(#arrowGray)'}));
+    }
+  });
+
+  // Bottom convergence
+  const convergeY = YY + YH - 60;
+  mainG.appendChild(el('line', {x1:leftEndX, y1:trunkBotY-30, x2:trunkX, y2:convergeY, stroke:'#059669', 'stroke-width':1.5, 'stroke-dasharray':'4,3'}));
+  mainG.appendChild(el('line', {x1:rightEndX, y1:trunkBotY-30, x2:trunkX, y2:convergeY, stroke:'#8b5cf6', 'stroke-width':1.5, 'stroke-dasharray':'4,3'}));
+  mainG.appendChild(box(trunkX-70, convergeY-15, 140, 30, '端到端解决方案\nE2E Solution', '#fefce8', '#854d0e', {stroke:'#fde68a'}));
+
+  // Convergence label
+  mainG.appendChild(el('text', {x:trunkX, y:convergeY+18, 'text-anchor':'middle', 'font-size':'9px', fill:'#64748b', 'font-family':"'JetBrains Mono',sans-serif"}, '双线汇合'));
+
+  // Branch label annotations
+  mainG.appendChild(el('text', {x:leftEndX-10, y:YY+95, 'font-size':'9px', 'font-weight':'600', fill:'#059669', 'font-family':"'JetBrains Mono',sans-serif", transform:'rotate(-90,'+(leftEndX-10)+','+(YY+95)+')'}, '左分支：能力线'));
+  mainG.appendChild(el('text', {x:rightEndX+10, y:YY+95, 'font-size':'9px', 'font-weight':'600', fill:'#8b5cf6', 'font-family':"'JetBrains Mono',sans-serif", transform:'rotate(90,'+(rightEndX+10)+','+(YY+95)+')'}, '右分支：流程线'));
+
+  // ============================================================
+  // TOP RIGHT: V MODEL
+  // ============================================================
+  const VX = 660, VY = 50, VW = 620, VH = 370;
+  mainG.appendChild(el('rect', {x:VX, y:VY, width:VW, height:VH, rx:8, fill:'#f8fafc', stroke:'#e2e8f0', 'stroke-width':1}));
+  mainG.appendChild(el('text', {x:VX+VW/2, y:VY+22, 'text-anchor':'middle', 'font-size':'12px', 'font-weight':'600', fill:'#0f172a', 'font-family':"'JetBrains Mono',sans-serif"}, 'V 模型 — 业务到IT的映射与验证'));
+
+  const vMidX = VX + VW/2;
+  const vTopY = VY + 50;
+  const vBotY = VY + VH - 30;
+
+  // Diagonal lines forming V
+  mainG.appendChild(el('line', {x1:vMidX-20, y1:vTopY, x2:VX+30, y2:vBotY, stroke:'#3b82f6', 'stroke-width':2}));
+  mainG.appendChild(el('line', {x1:vMidX+20, y1:vTopY, x2:VX+VW-30, y2:vBotY, stroke:'#f97316', 'stroke-width':2}));
+
+  // Left arm (Business → IT mapping) - descending
+  const leftArmNodes = [
+    {label:'业务组件\nBusiness Component', y:vTopY+40, x:VX+70, fill:'#eff6ff', tc:'#1e40af', sc:'#bfdbfe'},
+    {label:'↓', y:0},
+    {label:'应用组件\nApplication Component', y:vTopY+90, x:VX+90, fill:'#dbeafe', tc:'#1e3a5f', sc:'#93c5fd'},
+    {label:'业务能力\nBusiness Capability', y:vTopY+140, x:VX+70, fill:'#f0fdf4', tc:'#065f46', sc:'#bbf7d0'},
+    {label:'↓', y:0},
+    {label:'应用服务/API\nApplication API', y:vTopY+190, x:VX+90, fill:'#dcfce7', tc:'#166534', sc:'#86efac'},
+    {label:'业务流程\nBusiness Process', y:vTopY+240, x:VX+70, fill:'#f5f3ff', tc:'#5b21b6', sc:'#ddd6fe'},
+    {label:'↓', y:0},
+    {label:'服务编排\nService Orchestration', y:vTopY+290, x:VX+90, fill:'#ede9fe', tc:'#5b21b6', sc:'#c4b5fd'}
+  ];
+
+  // Draw left arm nodes
+  for (let i = 0; i < leftArmNodes.length; i++) {
+    const n = leftArmNodes[i];
+    if (n.label === '↓') continue;
+    mainG.appendChild(box(n.x-55, n.y-12, 110, 26, n.label, n.fill, n.tc, {stroke:n.sc}));
+    // Arrow to next
+    for (let j = i+1; j < leftArmNodes.length; j++) {
+      if (leftArmNodes[j].label === '↓') continue;
+      mainG.appendChild(el('line', {x1:n.x, y1:n.y+14, x2:leftArmNodes[j].x, y2:leftArmNodes[j].y-12, stroke:'#3b82f6', 'stroke-width':1.2, 'marker-end':'url(#arrowBlue)'}));
+      break;
+    }
+  }
+
+  // Right arm (IT → Business verification) - ascending
+  const rightArmNodes = [
+    {label:'系统验证\nSystem Verify', y:vTopY+290, x:VX+VW-90, fill:'#fff7ed', tc:'#9a3412', sc:'#fed7aa'},
+    {label:'↑', y:0},
+    {label:'集成测试\nIntegration Test', y:vTopY+240, x:VX+VW-105, fill:'#ffedd5', tc:'#c2410c', sc:'#fed7aa'},
+    {label:'↑', y:0},
+    {label:'用户验收(UAT)\nUser Acceptance', y:vTopY+190, x:VX+VW-105, fill:'#fef3c7', tc:'#92400e', sc:'#fde68a'},
+    {label:'↑', y:0},
+    {label:'业务验证\nBusiness Validation', y:vTopY+140, x:VX+VW-90, fill:'#fefce8', tc:'#713f12', sc:'#fde68a'},
+    {label:'↑', y:0},
+    {label:'业务价值确认\nValue Confirmation', y:vTopY+90, x:VX+VW-105, fill:'#ecfdf5', tc:'#065f46', sc:'#a7f3d0'}
+  ];
+
+  for (let i = 0; i < rightArmNodes.length; i++) {
+    const n = rightArmNodes[i];
+    if (n.label === '↑') continue;
+    mainG.appendChild(box(n.x-60, n.y-12, 120, 26, n.label, n.fill, n.tc, {stroke:n.sc}));
+    for (let j = i+1; j < rightArmNodes.length; j++) {
+      if (rightArmNodes[j].label === '↑') continue;
+      mainG.appendChild(el('line', {x1:n.x, y1:n.y-12, x2:rightArmNodes[j].x, y2:rightArmNodes[j].y+14, stroke:'#f97316', 'stroke-width':1.2, 'marker-end':'url(#arrowGray)'}));
+      break;
+    }
+  }
+
+  // Bottom annotation
+  mainG.appendChild(el('text', {x:VX+30, y:vBotY-5, 'font-size':'8px', fill:'#3b82f6', 'font-family':"'JetBrains Mono',sans-serif"}, '← 业务→IT映射'));
+  mainG.appendChild(el('text', {x:VX+VW-30, y:vBotY-5, 'text-anchor':'end', 'font-size':'8px', fill:'#f97316', 'font-family':"'JetBrains Mono',sans-serif"}, 'IT→业务验证 →'));
+
+  // V model center label
+  mainG.appendChild(el('text', {x:vMidX, y:vBotY+16, 'text-anchor':'middle', 'font-size':'9px', fill:'#64748b', 'font-family':"'JetBrains Mono',sans-serif"}, '端到端流程靠应用编排 / 服务编排映射'));
+
+  // ============================================================
+  // BOTTOM: 4 MINI MATRICES (2×2 grid)
+  // ============================================================
+  const MX = 20, MY = 440;
+  const MW = 620, MH = 210;
+  const MGAP = 20;
+
+  function drawMiniMatrix(offsetX, offsetY, w, h, title, headers, rowLabels, data, cellRender, legendItems) {
+    const g = document.createElementNS(SVG_NS, 'g');
+    g.appendChild(el('rect', {x:offsetX, y:offsetY, width:w, height:h, rx:8, fill:'#fcfcfc', stroke:'#e2e8f0', 'stroke-width':1}));
+    g.appendChild(el('text', {x:offsetX+12, y:offsetY+18, 'font-size':'11px', 'font-weight':'600', fill:'#0f172a', 'font-family':"'JetBrains Mono',sans-serif"}, title));
+
+    const cols = headers.length;
+    const rows = rowLabels.length;
+
+    const tableX = offsetX + 90;
+    const tableY = offsetY + 32;
+    const cellW = Math.min(52, (w - 110) / cols);
+    const cellH = Math.min(22, (h - 70) / rows);
+
+    // Column headers
+    headers.forEach((hdr, ci) => {
+      g.appendChild(el('text', {x:tableX+ci*cellW+cellW/2, y:tableY-8, 'text-anchor':'middle', 'font-size':'7px', 'font-weight':'500', fill:'#475569', 'font-family':"'JetBrains Mono',sans-serif"}, hdr));
+    });
+
+    // Rows
+    rowLabels.forEach((rl, ri) => {
+      g.appendChild(el('text', {x:tableX-5, y:tableY+ri*cellH+cellH/2+3, 'text-anchor':'end', 'font-size':'7px', fill:'#1e293b', 'font-family':"'JetBrains Mono',sans-serif"}, rl));
+      headers.forEach((_, ci) => {
+        const cx = tableX + ci * cellW;
+        const cy = tableY + ri * cellH;
+        const val = data[ri] ? data[ri][ci] : null;
+        const render = cellRender(val, ri, ci);
+
+        if (render.bg) {
+          g.appendChild(el('rect', {x:cx+1, y:cy+1, width:cellW-2, height:cellH-2, rx:2, fill:render.bg, stroke:render.border||'#e2e8f0', 'stroke-width':0.5}));
+        } else {
+          g.appendChild(el('rect', {x:cx+1, y:cy+1, width:cellW-2, height:cellH-2, rx:2, fill:'#ffffff', stroke:'#e2e8f0', 'stroke-width':0.5}));
+        }
+        if (render.text) {
+          g.appendChild(el('text', {x:cx+cellW/2, y:cy+cellH/2+3, 'text-anchor':'middle', 'font-size':'8px', 'font-weight':'600', fill:render.color||'#1e293b', 'font-family':"'JetBrains Mono',sans-serif"}, render.text));
+        }
+      });
+    });
+
+    // Legend
+    if (legendItems) {
+      let legX = offsetX + 12;
+      legendItems.forEach((li, i) => {
+        g.appendChild(el('rect', {x:legX, y:offsetY+h-20, width:10, height:10, rx:2, fill:li.fill, stroke:li.border||'#e2e8f0', 'stroke-width':0.5}));
+        g.appendChild(el('text', {x:legX+14, y:offsetY+h-11, 'font-size':'7px', fill:'#475569', 'font-family':"'JetBrains Mono',sans-serif"}, li.label));
+        legX += li.label.length * 9 + 24;
+      });
+    }
+
+    return g;
+  }
+
+  // ---- Matrix 1: 业务组件交互矩阵 (Component × Component) ----
+  const m1Headers = ['CRM','OMS','WMS','MES','PLM'];
+  const m1Rows = ['CRM','OMS','WMS','MES','PLM'];
+  // Density: H=high, M=medium, L=low, -=none
+  const m1Data = [
+    ['-', 'H', 'L', '-', 'M'],
+    ['H', '-', 'M', 'H', 'L'],
+    ['L', 'M', '-', 'H', '-'],
+    ['-', 'H', 'H', '-', 'M'],
+    ['M', 'L', '-', 'M', '-']
+  ];
+  const densityColors = { H:'#3b82f6', M:'#93c5fd', L:'#e0e7ff', '-':null };
+
+  function renderM1(val) {
+    if (!val || val === '-') return {bg:null, text:val};
+    const c = densityColors[val];
+    return {bg:c+'20', text:val, color:c, border:c+'40'};
+  }
+
+  mainG.appendChild(drawMiniMatrix(MX, MY, MW, MH,
+    '① 业务组件交互矩阵 (Component × Component)',
+    m1Headers, m1Rows, m1Data, renderM1,
+    [{fill:densityColors.H+'40', label:'高', border:densityColors.H+'60'},
+     {fill:densityColors.M+'40', label:'中', border:densityColors.M+'60'},
+     {fill:densityColors.L+'40', label:'低', border:densityColors.L+'60'}]
+  ));
+
+  // ---- Matrix 2: CRUD矩阵 (Component × Business Entity) ----
+  const m2X = MX + MW + MGAP;
+  const m2Headers = ['客户', '订单', '物料', '产品', '库存'];
+  const m2Rows = ['CRM','OMS','PLM','MES','WMS'];
+  const m2Data = [
+    ['C,R,U','R','R','R','-'],
+    ['R','C,R,U','R','C','R'],
+    ['R','R','C,R,U','C,R','-'],
+    ['R','-','R','R,U','R,U'],
+    ['R','R','R','-','R,U']
+  ];
+
+  const crudColors = { C:'#3b82f6', R:'#10b981', U:'#f59e0b', D:'#ef4444' };
+  function renderM2(val) {
+    if (!val || val === '-') return {bg:'#f8fafc', text:''};
+    const ops = val.split(',');
+    let mainOp = ops[0];
+    return {bg:crudColors[mainOp]+'15', text:val, color:crudColors[mainOp], border:crudColors[mainOp]+'30'};
+  }
+
+  mainG.appendChild(drawMiniMatrix(m2X, MY, MW, MH,
+    '② CRUD矩阵 (Component × Business Entity)',
+    m2Headers, m2Rows, m2Data, renderM2,
+    [{fill:crudColors.C+'40', label:'C=创建', border:crudColors.C+'60'},
+     {fill:crudColors.R+'40', label:'R=读取', border:crudColors.R+'60'},
+     {fill:crudColors.U+'40', label:'U=更新', border:crudColors.U+'60'},
+     {fill:crudColors.D+'40', label:'D=删除', border:crudColors.D+'60'}]
+  ));
+
+  // ---- Matrix 3: 流程交互矩阵 (Process × Organization) ----
+  const m3Y = MY + MH + MGAP;
+  const m3Headers = ['销售部','市场部','研发部','供应链','售后部'];
+  const m3Rows = ['线索管理','需求评审','方案报价','合同签订','订单处理','生产交付'];
+  const m3Data = [
+    ['R','C','I','-','-'],
+    ['A','R','C','-','-'],
+    ['R','-','C','I','-'],
+    ['R','I','A','C','-'],
+    ['R','-','I','C','I'],
+    ['-','-','I','R','C']
+  ];
+
+  const raciMiniColors = {
+    R: {bg:'#fef2f2', text:'#dc2626', border:'#fecaca'},
+    A: {bg:'#eff6ff', text:'#2563eb', border:'#bfdbfe'},
+    C: {bg:'#f0fdf4', text:'#16a34a', border:'#bbf7d0'},
+    I: {bg:'#f8fafc', text:'#64748b', border:'#e2e8f0'}
+  };
+
+  function renderM3(val) {
+    if (!val || val === '-') return {bg:'#f8fafc'};
+    const s = raciMiniColors[val];
+    return {bg:s.bg, text:val, color:s.text, border:s.border};
+  }
+
+  mainG.appendChild(drawMiniMatrix(MX, m3Y, MW, MH,
+    '③ 流程交互矩阵 (Process × Organization, RACI)',
+    m3Headers, m3Rows, m3Data, renderM3,
+    [{fill:raciMiniColors.R.bg, label:'R=执行', border:raciMiniColors.R.border},
+     {fill:raciMiniColors.A.bg, label:'A=审批', border:raciMiniColors.A.border},
+     {fill:raciMiniColors.C.bg, label:'C=咨询', border:raciMiniColors.C.border},
+     {fill:raciMiniColors.I.bg, label:'I=知会', border:raciMiniColors.I.border}]
+  ));
+
+  // ---- Matrix 4: 功能-组件矩阵 (Function × Application) ----
+  const m4X = MX + MW + MGAP;
+  const m4Headers = ['CRM','OMS','PLM','WMS','BI'];
+  const m4Rows = ['客户管理','订单管理','产品设计','库存管理','数据分析'];
+  const m4Data = [
+    ['F','-','-','-','-'],
+    ['P','F','P','-','-'],
+    ['-','-','F','-','P'],
+    ['-','P','-','F','-'],
+    ['P','-','-','-','F']
+  ];
+  // Coverage: F=full, P=partial, -=none
+  const covColors = { F:'#059669', P:'#f59e0b' };
+
+  function renderM4(val) {
+    if (!val || val === '-') return {bg:'#f8fafc'};
+    return {bg:covColors[val]+'18', text:val, color:covColors[val], border:covColors[val]+'35'};
+  }
+
+  mainG.appendChild(drawMiniMatrix(m4X, m3Y, MW, MH,
+    '④ 功能-组件矩阵 (Function × Application, 覆盖度)',
+    m4Headers, m4Rows, m4Data, renderM4,
+    [{fill:covColors.F+'40', label:'F=全部覆盖', border:covColors.F+'60'},
+     {fill:covColors.P+'40', label:'P=部分覆盖', border:covColors.P+'60'}]
+  ));
+}
+
+render();
+
+// ============== EXPORT ==============
+async function getCanvas() {
+  const el = document.getElementById('diagram');
+  return await html2canvas(el, {
+    scale: 2,
+    backgroundColor: '#f8fafc',
+    useCORS: true,
+    logging: false,
+    width: el.scrollWidth,
+    height: el.scrollHeight,
+    windowWidth: el.scrollWidth,
+    windowHeight: el.scrollHeight
+  });
+}
+
+async function copyPNG() {
+  try {
+    const canvas = await getCanvas();
+    canvas.toBlob(async blob => {
+      try { await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]); }
+      catch {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = '图2-11_YV模型与交互矩阵.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      }
+    });
+  } catch(e) { alert('复制失败: '+e.message); }
+}
+
+async function downloadPNG() {
+  try {
+    const canvas = await getCanvas();
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = '图2-11_YV模型与交互矩阵.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } catch(e) { alert('下载失败: '+e.message); }
+}
+
+async function downloadPDF() {
+  try {
+    const canvas = await getCanvas();
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4');
+    const w = pdf.internal.pageSize.getWidth();
+    const h = pdf.internal.pageSize.getHeight();
+    const ratio = canvas.width / canvas.height;
+    let pw = w - 16, ph = pw / ratio;
+    if (ph > h - 16) { ph = h - 16; pw = ph * ratio; }
+    pdf.addImage(imgData, 'PNG', (w-pw)/2, (h-ph)/2, pw, ph);
+    pdf.save('图2-11_YV模型与交互矩阵.pdf');
+  } catch(e) { alert('PDF导出失败: '+e.message); }
+}
+</script>
+</body>
+</html>

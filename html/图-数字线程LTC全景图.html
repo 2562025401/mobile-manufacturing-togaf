@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>数字线程 - LTC端到端全景图</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:20px}
+.container{max-width:1500px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:4px;font-size:18px}
+.subtitle{text-align:center;color:#666;margin-bottom:20px;font-size:12px}
+</style></head>
+<body>
+<div class="container">
+<h1>数字线程(Digital Thread) — LTC端到端全景视图</h1>
+<p class="subtitle">市场洞察→产品定义→BOM→生产→IMEI→订单→物流→签收→服务→现金 全链路追溯</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 900">
+  <defs>
+    <linearGradient id="flowGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2B579A"/><stop offset="50%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#FF9800"/></linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1480" height="900" fill="#F5F5F0"/>
+
+  <!-- Timeline bar -->
+  <rect x="20" y="15" width="1440" height="8" rx="4" fill="url(#flowGrad)"/>
+  <text x="740" y="40" text-anchor="middle" fill="#2B579A" font-size="14" font-weight="bold">LTC数字线程 — 从市场洞察到现金回款</text>
+
+  <!-- Phase markers -->
+  <g font-size="10" fill="#2B579A" font-weight="bold">
+    <text x="80" y="60" text-anchor="middle">阶段1:<tspan fill="#E65100">市场与商机</tspan></text>
+    <text x="270" y="60" text-anchor="middle">阶段2:<tspan fill="#E65100">销售与下单</tspan></text>
+    <text x="470" y="60" text-anchor="middle">阶段3:<tspan fill="#E65100">计划与供应</tspan></text>
+    <text x="670" y="60" text-anchor="middle">阶段4:<tspan fill="#E65100">生产制造</tspan></text>
+    <text x="870" y="60" text-anchor="middle">阶段5:<tspan fill="#E65100">物流交付</tspan></text>
+    <text x="1070" y="60" text-anchor="middle">阶段6:<tspan fill="#E65100">客户服务</tspan></text>
+    <text x="1270" y="60" text-anchor="middle">阶段7:<tspan fill="#E65100">财务回款</tspan></text>
+  </g>
+
+  <!-- Phase 1: 市场与商机 -->
+  <g transform="translate(15, 70)">
+    <rect x="0" y="0" width="185" height="140" rx="6" fill="#FFF3E0" stroke="#FF9800" stroke-width="1.5"/>
+    <rect x="0" y="0" width="185" height="22" rx="6" fill="#FF9800"/>
+    <text x="92" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">1. 市场与商机(M2L)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">品牌策略→Campaign→线索采集(MQL)</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">CDP/MA/PLM/GRC/CRM</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#E65100">→Campaign, 营销线索, 隐私授权, MQL</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">LeadCaptured→MQLQualified</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <path d="M210,140 L240,140" fill="none" stroke="#FF9800" stroke-width="2.5" marker-end="url(#arO)"/>
+  <defs><marker id="arO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#FF9800"/></marker></defs>
+
+  <!-- Phase 2: 销售与下单 -->
+  <g transform="translate(225, 70)">
+    <rect x="0" y="0" width="200" height="140" rx="6" fill="#FFF3E0" stroke="#FF9800" stroke-width="1.5"/>
+    <rect x="0" y="0" width="200" height="22" rx="6" fill="#FF9800"/>
+    <text x="100" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">2. 销售与下单(L2O)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">价格校验→订单创建→信用/库存/合规检查</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">CRM/OMS/库存中心/价格中心/GRC</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#E65100">→销售订单, 订单行, 库存预占, 信用校验</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">OrderCreated→StockReserved→OrderApproved</text>
+  </g>
+
+  <path d="M435,140 L465,140" fill="none" stroke="#FF9800" stroke-width="2.5" marker-end="url(#arO)"/>
+
+  <!-- Phase 3 -->
+  <g transform="translate(450, 70)">
+    <rect x="0" y="0" width="200" height="140" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5"/>
+    <rect x="0" y="0" width="200" height="22" rx="6" fill="#4CAF50"/>
+    <text x="100" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">3. 计划与供应(P2P)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">S&OP平衡→MRP→采购需求→供应商交期确认</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">APS/SRM/ERP/PLM(BOM)/WMS(库存)</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#2E7D32">→S&OP计划, 采购申请, PO, 交期承诺</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">SOPPublished→MRPCompleted→POConfirmed</text>
+  </g>
+
+  <path d="M660,140 L690,140" fill="none" stroke="#4CAF50" stroke-width="2.5" marker-end="url(#arG)"/>
+  <defs><marker id="arG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#4CAF50"/></marker></defs>
+
+  <!-- Phase 4 -->
+  <g transform="translate(670, 70)">
+    <rect x="0" y="0" width="200" height="140" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5"/>
+    <rect x="0" y="0" width="200" height="22" rx="6" fill="#4CAF50"/>
+    <text x="100" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">4. 生产制造(P2M)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">MPS排产→齐套校验→SMT→组装→测试→IMEI绑定</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">MES/QMS/PLM(BOM)/WMS(物料)/APS</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#2E7D32">→工单, 工序记录, IMEI履历, 质量检测</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">WO Created→Started→IMEIBound→CAPA</text>
+  </g>
+
+  <path d="M880,140 L910,140" fill="none" stroke="#2196F3" stroke-width="2.5" marker-end="url(#arB)"/>
+  <defs><marker id="arB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2196F3"/></marker></defs>
+
+  <!-- Phase 5 -->
+  <g transform="translate(890, 70)">
+    <rect x="0" y="0" width="200" height="140" rx="6" fill="#E3F2FD" stroke="#2196F3" stroke-width="1.5"/>
+    <rect x="0" y="0" width="200" height="22" rx="6" fill="#2196F3"/>
+    <text x="100" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">5. 物流交付(D2C)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">履约路由→拣货复核→IMEI出库→运输→签收</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">OMS/WMS/TMS/ERP(应收)/库存中心</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#1565C0">→路由结果, 出库单, 签收记录, IMEI清单</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">ShipmentRouted→OrderShipped→PODSigned</text>
+  </g>
+
+  <path d="M1100,140 L1130,140" fill="none" stroke="#2196F3" stroke-width="2.5" marker-end="url(#arB)"/>
+
+  <!-- Phase 6 -->
+  <g transform="translate(1110, 70)">
+    <rect x="0" y="0" width="185" height="140" rx="6" fill="#E3F2FD" stroke="#2196F3" stroke-width="1.5"/>
+    <rect x="0" y="0" width="185" height="22" rx="6" fill="#2196F3"/>
+    <text x="92" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">6. 客户服务(I2R)</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">报修→IMEI保修校验→维修→NPS→质量回流</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">售后平台/QMS/CRM/备件WMS</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#1565C0">→服务工单, 维修单, NPS, CAPA</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">TicketCreated→RepairDone→NPS→QualityFeedback</text>
+  </g>
+
+  <path d="M1305,140 L1335,140" fill="none" stroke="#9C27B0" stroke-width="2.5" marker-end="url(#arP)"/>
+  <defs><marker id="arP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9C27B0"/></marker></defs>
+
+  <!-- Phase 7 -->
+  <g transform="translate(1315, 70)">
+    <rect x="0" y="0" width="155" height="140" rx="6" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="155" height="22" rx="6" fill="#9C27B0"/>
+    <text x="77" y="15" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">7. 财务回款</text>
+    <text x="8" y="40" font-size="8.5" fill="#333" font-weight="bold">活动:</text>
+    <text x="8" y="54" font-size="8" fill="#555">应收→对账→回款核销→返利结算</text>
+    <text x="8" y="72" font-size="8.5" fill="#333" font-weight="bold">系统:</text>
+    <text x="8" y="86" font-size="8" fill="#555">ERP/财务共享/CRM/银行</text>
+    <text x="8" y="104" font-size="8.5" fill="#333" font-weight="bold">数据对象:</text>
+    <text x="8" y="118" font-size="8" fill="#6A1B9A">→应收单, 对账单, 核销, 返利结算</text>
+    <text x="8" y="134" font-size="8.5" fill="#333" font-weight="bold">事件:</text>
+    <text x="8" y="136" font-size="7.5" fill="#888">ReceivableConfirmed→PaymentMatched→RebateSettled</text>
+  </g>
+
+  <!-- ===== Digital Thread data flow (middle section) ===== -->
+  <!-- Core data objects flowing through the value stream -->
+  <g transform="translate(15, 230)">
+    <rect x="0" y="0" width="1455" height="24" rx="4" fill="#37474F"/>
+    <text x="730" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">数字线程核心数据流转: 每一阶段产生的关键数据对象, 及其向下游的传递关系</text>
+  </g>
+
+  <!-- Data flow arrows with labels -->
+  <g transform="translate(15, 265)">
+    <!-- Product/SKU/BOM line -->
+    <rect x="0" y="0" width="1455" height="50" rx="5" fill="#E8F5E9"/>
+    <text x="10" y="17" font-size="9" fill="#2E7D32" font-weight="bold">产品数据流:</text>
+    <rect x="100" y="5" width="140" height="20" rx="4" fill="#4CAF50"/><text x="170" y="19" text-anchor="middle" fill="#fff" font-size="8.5">产品/Charter</text>
+    <path d="M245,15 L275,15" fill="none" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="280" y="5" width="140" height="20" rx="4" fill="#4CAF50"/><text x="350" y="19" text-anchor="middle" fill="#fff" font-size="8.5">SKU/BOM/配置</text>
+    <path d="M425,15 L455,15" fill="none" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="460" y="5" width="140" height="20" rx="4" fill="#4CAF50"/><text x="530" y="19" text-anchor="middle" fill="#fff" font-size="8.5">MBOM/工艺路线</text>
+    <path d="M605,15 L635,15" fill="none" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="640" y="5" width="140" height="20" rx="4" fill="#4CAF50"/><text x="710" y="19" text-anchor="middle" fill="#fff" font-size="8.5">成品SKU/IMEI</text>
+    <path d="M785,15 L815,15" fill="none" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrowG)"/>
+    <rect x="820" y="5" width="140" height="20" rx="4" fill="#4CAF50"/><text x="890" y="19" text-anchor="middle" fill="#fff" font-size="8.5">售后备件/BOM</text>
+    <text x="1000" y="17" font-size="8" fill="#666">PLM(MDM)→ERP→MES→WMS→售后</text>
+    <text x="10" y="43" font-size="8.5" fill="#2E7D32">Owner: 产品研发 | 权威源: PLM → MDM分发 | 涉及系统: PLM/APS/ERP/MES/WMS/售后</text>
+  </g>
+
+  <defs><marker id="arrowG" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4 Z" fill="#4CAF50"/></marker></defs>
+
+  <g transform="translate(15, 325)">
+    <!-- Order/Customer flow -->
+    <rect x="0" y="0" width="1455" height="50" rx="5" fill="#FFF3E0"/>
+    <text x="10" y="17" font-size="9" fill="#E65100" font-weight="bold">订单数据流:</text>
+    <rect x="100" y="5" width="120" height="20" rx="4" fill="#FF9800"/><text x="160" y="19" text-anchor="middle" fill="#fff" font-size="8.5">线索/MQL</text>
+    <path d="M225,15 L250,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="255" y="5" width="120" height="20" rx="4" fill="#FF9800"/><text x="315" y="19" text-anchor="middle" fill="#fff" font-size="8.5">销售订单</text>
+    <path d="M380,15 L405,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="410" y="5" width="130" height="20" rx="4" fill="#FF9800"/><text x="475" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单(已审核)</text>
+    <path d="M545,15 L570,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="575" y="5" width="130" height="20" rx="4" fill="#FF9800"/><text x="640" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单(生产)</text>
+    <path d="M710,15 L735,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="740" y="5" width="130" height="20" rx="4" fill="#FF9800"/><text x="805" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单(已出库)</text>
+    <path d="M875,15 L900,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="905" y="5" width="130" height="20" rx="4" fill="#FF9800"/><text x="970" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单(已签收)</text>
+    <path d="M1040,15 L1065,15" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrowO)"/>
+    <rect x="1070" y="5" width="140" height="20" rx="4" fill="#FF9800"/><text x="1140" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单(已回款)</text>
+    <text x="1230" y="17" font-size="8" fill="#666">CRM→OMS→APS→MES→WMS→TMS→ERP</text>
+    <text x="10" y="43" font-size="8.5" fill="#E65100">Owner: 销售与渠道 | 权威源: OMS(订单中心) | 状态机: 创建→审核→履约→出库→签收→回款</text>
+  </g>
+  <defs><marker id="arrowO" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4 Z" fill="#FF9800"/></marker></defs>
+
+  <g transform="translate(15, 385)">
+    <!-- IMEI traceability -->
+    <rect x="0" y="0" width="1455" height="50" rx="5" fill="#E3F2FD"/>
+    <text x="10" y="17" font-size="9" fill="#1565C0" font-weight="bold">IMEI追溯流:</text>
+    <rect x="100" y="5" width="100" height="20" rx="4" fill="#2196F3"/><text x="150" y="19" text-anchor="middle" fill="#fff" font-size="8.5">工单号</text>
+    <path d="M205,15 L230,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="235" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="295" y="19" text-anchor="middle" fill="#fff" font-size="8.5">物料批次</text>
+    <path d="M360,15 L385,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="390" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="450" y="19" text-anchor="middle" fill="#fff" font-size="8.5">IMEI写入</text>
+    <path d="M515,15 L540,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="545" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="605" y="19" text-anchor="middle" fill="#fff" font-size="8.5">出厂检测</text>
+    <path d="M670,15 L695,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="700" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="760" y="19" text-anchor="middle" fill="#fff" font-size="8.5">渠道码绑定</text>
+    <path d="M825,15 L855,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="860" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="920" y="19" text-anchor="middle" fill="#fff" font-size="8.5">激活/签收</text>
+    <path d="M985,15 L1015,15" fill="none" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrowB)"/>
+    <rect x="1020" y="5" width="120" height="20" rx="4" fill="#2196F3"/><text x="1080" y="19" text-anchor="middle" fill="#fff" font-size="8.5">维修记录</text>
+    <text x="1160" y="17" font-size="8" fill="#666">MES→QMS→WMS→售后</text>
+    <text x="10" y="43" font-size="8.5" fill="#1565C0">Owner: 生产制造 | 全生命周期: 工单→物料批次→IMEI→检测→出厂→渠道→激活→售后→召回</text>
+  </g>
+  <defs><marker id="arrowB" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4 Z" fill="#2196F3"/></marker></defs>
+
+  <g transform="translate(15, 445)">
+    <!-- Financial flow -->
+    <rect x="0" y="0" width="1455" height="50" rx="5" fill="#F3E5F5"/>
+    <text x="10" y="17" font-size="9" fill="#6A1B9A" font-weight="bold">财务数据流:</text>
+    <rect x="100" y="5" width="100" height="20" rx="4" fill="#9C27B0"/><text x="150" y="19" text-anchor="middle" fill="#fff" font-size="8.5">价格政策</text>
+    <path d="M205,15 L230,15" fill="none" stroke="#9C27B0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+    <rect x="235" y="5" width="100" height="20" rx="4" fill="#9C27B0"/><text x="285" y="19" text-anchor="middle" fill="#fff" font-size="8.5">订单金额</text>
+    <path d="M340,15 L365,15" fill="none" stroke="#9C27B0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+    <rect x="370" y="5" width="100" height="20" rx="4" fill="#9C27B0"/><text x="420" y="19" text-anchor="middle" fill="#fff" font-size="8.5">出库成本</text>
+    <path d="M475,15 L500,15" fill="none" stroke="#9C27B0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+    <rect x="505" y="5" width="120" height="20" rx="4" fill="#9C27B0"/><text x="565" y="19" text-anchor="middle" fill="#fff" font-size="8.5">签收→应收</text>
+    <path d="M630,15 L660,15" fill="none" stroke="#9C27B0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+    <rect x="665" y="5" width="120" height="20" rx="4" fill="#9C27B0"/><text x="725" y="19" text-anchor="middle" fill="#fff" font-size="8.5">回款→核销</text>
+    <path d="M790,15 L820,15" fill="none" stroke="#9C27B0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+    <rect x="825" y="5" width="120" height="20" rx="4" fill="#9C27B0"/><text x="885" y="19" text-anchor="middle" fill="#fff" font-size="8.5">返利结算</text>
+    <text x="970" y="17" font-size="8" fill="#666">价格中心→OMS→WMS→TMS→ERP→银行→CRM</text>
+    <text x="10" y="43" font-size="8.5" fill="#6A1B9A">Owner: 财务管理 | LTC现金闭环: 价格→订单→成本→签收→应收→回款→核销→返利</text>
+  </g>
+  <defs><marker id="arrowP" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4 Z" fill="#9C27B0"/></marker></defs>
+
+  <!-- Bottom section: KPI metrics per phase -->
+  <g transform="translate(15, 515)">
+    <rect x="0" y="0" width="1455" height="26" rx="4" fill="#37474F"/>
+    <text x="730" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">各阶段核心度量指标与SLA</text>
+  </g>
+
+  <g transform="translate(15, 550)" font-size="9" fill="#333">
+    <rect x="0" y="0" width="205" height="95" rx="5" fill="#FFF8E1" stroke="#FFB300" stroke-width="1"/>
+    <text x="102" y="16" text-anchor="middle" font-weight="bold">阶段1: 市场与商机</text>
+    <text x="8" y="32" font-size="8.5">指标: 线索转化率/MQL质量</text>
+    <text x="8" y="48" font-size="8.5">SLA: 画像查询&lt;50ms</text>
+    <text x="8" y="64" font-size="8.5">系统: CDP/MA/CRM/GRC</text>
+    <text x="8" y="80" font-size="8.5">可用性: 99.9%</text>
+
+    <rect x="215" y="0" width="220" height="95" rx="5" fill="#FFF8E1" stroke="#FFB300" stroke-width="1"/>
+    <text x="325" y="16" text-anchor="middle" font-weight="bold">阶段2: 销售与下单</text>
+    <text x="223" y="32" font-size="8.5">指标: 订单接入成功率/超卖率</text>
+    <text x="223" y="48" font-size="8.5">SLA: 下单&lt;200ms/ATP&lt;50ms</text>
+    <text x="223" y="64" font-size="8.5">系统: CRM/OMS/库存中心/GRC</text>
+    <text x="223" y="80" font-size="8.5">可用性: 99.99% (T0核心交易)</text>
+
+    <rect x="445" y="0" width="220" height="95" rx="5" fill="#E8F5E9" stroke="#66BB6A" stroke-width="1"/>
+    <text x="555" y="16" text-anchor="middle" font-weight="bold">阶段3: 计划与供应</text>
+    <text x="453" y="32" font-size="8.5">指标: 预测准确率(MAPE)</text>
+    <text x="453" y="48" font-size="8.5">SLA: S&OP&lt;5min/MRP&lt;10min</text>
+    <text x="453" y="64" font-size="8.5">系统: APS/SRM/ERP/PLM</text>
+    <text x="453" y="80" font-size="8.5">可用性: 99.9%</text>
+
+    <rect x="675" y="0" width="220" height="95" rx="5" fill="#E8F5E9" stroke="#66BB6A" stroke-width="1"/>
+    <text x="785" y="16" text-anchor="middle" font-weight="bold">阶段4: 生产制造</text>
+    <text x="683" y="32" font-size="8.5">指标: 直通率/OEE/追溯时效</text>
+    <text x="683" y="48" font-size="8.5">SLA: 采集&lt;100ms/追溯&lt;1s</text>
+    <text x="683" y="64" font-size="8.5">系统: MES/QMS/PLM/WMS</text>
+    <text x="683" y="80" font-size="8.5">可用性: 99.95% (含离线自治)</text>
+
+    <rect x="905" y="0" width="205" height="95" rx="5" fill="#E3F2FD" stroke="#42A5F5" stroke-width="1"/>
+    <text x="1007" y="16" text-anchor="middle" font-weight="bold">阶段5: 物流交付</text>
+    <text x="913" y="32" font-size="8.5">指标: 准时发货率/签收率</text>
+    <text x="913" y="48" font-size="8.5">SLA: 路由&lt;100ms/出库&lt;2s</text>
+    <text x="913" y="64" font-size="8.5">系统: OMS/WMS/TMS/ERP</text>
+    <text x="913" y="80" font-size="8.5">可用性: 99.95%</text>
+
+    <rect x="1120" y="0" width="185" height="95" rx="5" fill="#E3F2FD" stroke="#42A5F5" stroke-width="1"/>
+    <text x="1212" y="16" text-anchor="middle" font-weight="bold">阶段6: 客户服务</text>
+    <text x="1128" y="32" font-size="8.5">指标: 一次修复率/NPS</text>
+    <text x="1128" y="48" font-size="8.5">SLA: 受理&lt;3min/维修&lt;5min</text>
+    <text x="1128" y="64" font-size="8.5">系统: 售后/QMS/备件WMS</text>
+    <text x="1128" y="80" font-size="8.5">可用性: 99.95%</text>
+
+    <rect x="1315" y="0" width="140" height="95" rx="5" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1"/>
+    <text x="1385" y="16" text-anchor="middle" font-weight="bold">阶段7: 财务回款</text>
+    <text x="1323" y="32" font-size="8.5">指标: DSO/核销率</text>
+    <text x="1323" y="48" font-size="8.5">SLA: 应收&lt;5min/核销&lt;10min</text>
+    <text x="1323" y="64" font-size="8.5">系统: ERP/财务共享/银行</text>
+    <text x="1323" y="80" font-size="8.5">可用性: 99.99% (T0)</text>
+  </g>
+
+  <!-- Digital thread summary -->
+  <g transform="translate(15, 660)">
+    <rect x="0" y="0" width="1455" height="70" rx="6" fill="#263238"/>
+    <text x="730" y="20" text-anchor="middle" fill="#FFD54F" font-size="12" font-weight="bold">数字线程四大追溯主干 + 关键度量</text>
+    <text x="60" y="42" fill="#A5D6A7" font-size="9.5">产品数据线: Charter→BOM→EBOM→MBOM→IMEI→备件BOM</text>
+    <text x="550" y="42" fill="#FFCC80" font-size="9.5">订单状态线: MQL→订单创建→审核→生产→出库→签收→回款</text>
+    <text x="60" y="58" fill="#90CAF9" font-size="9.5">IMEI追溯线: 工单→物料批次→测试→渠道→激活→维修→召回</text>
+    <text x="550" y="58" fill="#CE93D8" font-size="9.5">财务闭环线: 价格→订单金额→成本→应收→回款→核销→返利→DSO</text>
+    <text x="1100" y="50" fill="#fff" font-size="9">全程覆盖7阶段24活动, 4条主干, 100+数据对象, 27+事件</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(15, 745)">
+    <rect x="0" y="0" width="1455" height="50" rx="6" fill="#ECEFF1"/>
+    <text x="730" y="20" text-anchor="middle" fill="#37474F" font-size="11" font-weight="bold">数字线程视图用途: 回答"IT如何支撑LTC端到端流程" — 每个阶段、每个活动, 有哪些系统参与, 产生什么数据, 触发什么事件</text>
+    <text x="730" y="40" text-anchor="middle" fill="#78909C" font-size="9">战略KPI: TTM 11月(产品线) | 库存周转 32天(订单/库存线) | DSO 38天(财务线) | NPS 45(IMEI/服务线) | 准交率 96%(订单/物流线)</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>

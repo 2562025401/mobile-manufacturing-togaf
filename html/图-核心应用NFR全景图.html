@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>核心应用NFR全景图</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:8px;font-size:20px}
+.subtitle{text-align:center;color:#666;margin-bottom:20px;font-size:12px}
+.header-row{font-weight:bold;font-size:10px}
+</style></head>
+<body>
+<div class="container">
+<h1>核心应用非功能需求(NFR)全景图</h1>
+<p class="subtitle">13个核心应用 × 峰值QPS/TPS × 响应时间P99 × 可用性SLA × 数据增长 × 弹性伸缩 × 特殊要求</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 850">
+  <rect x="0" y="0" width="1400" height="850" fill="#F5F5F0"/>
+
+  <!-- Row 1: OMS + APS + PLM -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="450" height="195" rx="8" fill="#FFEBEE" stroke="#EF5350" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="26" rx="8" fill="#EF5350"/>
+    <text x="225" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">OMS全渠道订单管理 (T0-核心交易 | 可用性:99.99%)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">核心场景:</text><text x="100" y="45" fill="#555" font-size="9">大促峰值下单/订单审核/履约路由/异常处理</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">峰值性能:</text><text x="100" y="62" fill="#C62828" font-size="9">写3000QPS 读12000QPS</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">响应时间:</text><text x="100" y="79" fill="#555" font-size="9">P99写&lt;200ms 读&lt;50ms | 常态3x/大促5x弹性</text>
+    <text x="12" y="96" fill="#333" font-size="9" font-weight="bold">数据增长:</text><text x="100" y="96" fill="#555" font-size="9">5亿订单/年 DB热数据2TB/年 | &lt;5min/年停机</text>
+    <text x="12" y="118" fill="#333" font-size="9" font-weight="bold">架构决策:</text>
+    <text x="12" y="135" fill="#666" font-size="8.5">• 大促弹性扩容(提前2周)→HPA自动+消息削峰+缓存预热</text>
+    <text x="12" y="150" fill="#666" font-size="8.5">• 订单幂等(OrderId唯一键)→热点SKU缓存→异步削峰→多活</text>
+    <text x="12" y="167" fill="#666" font-size="8.5">• 数据库:分布式6节点 32C/128Gi/双AZ三副本 • Redis 6主6从512Gi</text>
+  </g>
+
+  <g transform="translate(470, 10)">
+    <rect x="0" y="0" width="450" height="195" rx="8" fill="#E8F5E9" stroke="#66BB6A" stroke-width="2"/>
+    <rect x="0" y="0" width="450" height="26" rx="8" fill="#66BB6A"/>
+    <text x="225" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">APS供应链计划 + PLM产品生命周期 (T1-核心运营)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">APS:</text><text x="60" y="45" fill="#555" font-size="9">S&OP&lt;5min MRP&lt;10min | 可用99.9% | 500GB/年</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">PLM:</text><text x="60" y="62" fill="#555" font-size="9">ECN并发100 BOM查询500QPS&lt;200ms | 99.95% | 5TB/年</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">架构决策:</text>
+    <text x="12" y="96" fill="#666" font-size="8.5">• BOM三态(设计→工艺→制造)版本贯通→下游MRP/MES统一消费</text>
+    <text x="12" y="111" fill="#666" font-size="8.5">• 计划版本历史保留(复盘追溯)→S&OP多场景模拟</text>
+    <text x="12" y="126" fill="#666" font-size="8.5">• PLM-MDM-ERP-MES BOM实时同步, ECN变更30min内传递</text>
+    <text x="12" y="148" fill="#333" font-size="9" font-weight="bold">NFR→架构决策:</text>
+    <text x="12" y="163" fill="#666" font-size="8.5">• 数据一致性:EBOM↔PBOM↔MBOM三态同步,版本生效期强制校验</text>
+    <text x="12" y="178" fill="#666" font-size="8.5">• 全球单一数据源:PLM为产品/BOM/SKU权威源,全球统一</text>
+  </g>
+
+  <g transform="translate(930, 10)">
+    <rect x="0" y="0" width="460" height="195" rx="8" fill="#E3F2FD" stroke="#42A5F5" stroke-width="2"/>
+    <rect x="0" y="0" width="460" height="26" rx="8" fill="#42A5F5"/>
+    <text x="230" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ERP企业资源计划 (T0/T1混合 | 可用:99.99%核心/99.95%运营)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">核心场景:</text><text x="100" y="45" fill="#555" font-size="9">财务凭证1000TPS | 采购+库存+成本核算+应收应付+报表</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">性能要求:</text><text x="100" y="62" fill="#555" font-size="9">凭证&lt;500ms 报表&lt;5s | 10TB/年 | RTO&lt;15min核心交易</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">特殊NFR:</text>
+    <text x="12" y="96" fill="#666" font-size="8.5">• 多组织多币种(集团+区域法人+海外)同套系统实例独立账簿</text>
+    <text x="12" y="111" fill="#666" font-size="8.5">• 审计追溯10年(凭证不可变)→月结/年结性能(SLA&lt;8h月结)</text>
+    <text x="12" y="126" fill="#666" font-size="8.5">• 财务合规(SOX/GAAP/IFRS)→四眼原则→变更审批双人复核</text>
+    <text x="12" y="143" fill="#666" font-size="8.5">• 与OMS/库存/制造/应付多系统集成(API+事件+对账三重保障)</text>
+    <text x="12" y="165" fill="#333" font-size="9" font-weight="bold">稳态要求:</text>
+    <text x="12" y="180" fill="#666" font-size="8.5">• 核心账务不容器化(虚拟化+HA) 财务模块可渐进微服务化(费控/报销)</text>
+  </g>
+
+  <!-- Row 2: MES + WMS + CRM/CDP -->
+  <g transform="translate(10, 215)">
+    <rect x="0" y="0" width="340" height="195" rx="8" fill="#E8F5E9" stroke="#66BB6A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="26" rx="8" fill="#66BB6A"/>
+    <text x="170" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">MES制造执行 (T1核心运营 | 99.95%)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">峰值:工序采集5000条/s+检测1000条/s</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">延迟:采集&lt;100ms 检测&lt;500ms</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">数据:20TB/年(工序/检测/设备)</text>
+    <text x="12" y="100" fill="#333" font-size="9" font-weight="bold">特殊要求:</text>
+    <text x="12" y="117" fill="#666" font-size="8.5">• 离线自治:断网可运行4h,恢复后增量同步</text>
+    <text x="12" y="132" fill="#666" font-size="8.5">• OT/IT隔离:工业防火墙,PLC&lt;50ms延迟</text>
+    <text x="12" y="147" fill="#666" font-size="8.5">• 边缘K3s:工厂本地Pod,设备MQTT协议</text>
+    <text x="12" y="162" fill="#666" font-size="8.5">• 单机追溯:IMEI全生命周期+物料批次</text>
+    <text x="12" y="177" fill="#666" font-size="8.5">• IEC 62443工业安全+RTO&lt;30min/月</text>
+  </g>
+
+  <g transform="translate(360, 215)">
+    <rect x="0" y="0" width="340" height="195" rx="8" fill="#E3F2FD" stroke="#42A5F5" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="26" rx="8" fill="#42A5F5"/>
+    <text x="170" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">WMS仓储+TMS运输 (99.95%+99.9%)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">WMS:出入库1000次/h 拣货500次/h</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">出库&lt;2s 库存查询&lt;100ms 1.5x弹性</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">TMS:轨迹跟踪 签收回传&lt;30s</text>
+    <text x="12" y="100" fill="#333" font-size="9" font-weight="bold">特殊要求:</text>
+    <text x="12" y="117" fill="#666" font-size="8.5">• PDA/扫描枪低延迟+离线拣货能力</text>
+    <text x="12" y="132" fill="#666" font-size="8.5">• IMEI出库绑定防错+批次FIFO管理</text>
+    <text x="12" y="147" fill="#666" font-size="8.5">• 承运商EDI/API双模式集成</text>
+    <text x="12" y="162" fill="#666" font-size="8.5">• 全球多仓联动+区域库存数据驻留</text>
+    <text x="12" y="177" fill="#666" font-size="8.5">• 签收→应收自动触发(三重匹配)</text>
+  </g>
+
+  <g transform="translate(710, 215)">
+    <rect x="0" y="0" width="340" height="195" rx="8" fill="#FFF3E0" stroke="#FF9800" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="26" rx="8" fill="#FF9800"/>
+    <text x="170" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">CRM+CDP+MA (营销技术栈 99.9%)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">CRM:客户查询5000QPS&lt;50ms 商机创建500QPS</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">CDP:画像查询5000QPS&lt;50ms 标签1万条/s</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">MA:触达1万条/s Campaign查询1000QPS</text>
+    <text x="12" y="100" fill="#333" font-size="9" font-weight="bold">特殊要求:</text>
+    <text x="12" y="117" fill="#666" font-size="8.5">• 用户行为50TB/年:热90天+冷1年分层</text>
+    <text x="12" y="132" fill="#666" font-size="8.5">• 隐私合规:授权校验(PII加密+脱敏)</text>
+    <text x="12" y="147" fill="#666" font-size="8.5">• 实时+批量双模式:ID-Mapping+画像</text>
+    <text x="12" y="162" fill="#666" font-size="8.5">• 大促弹性3x:CDP/MA/CRM联动弹性</text>
+    <text x="12" y="177" fill="#666" font-size="8.5">• 触达频控:短信/推送/邮件多通道</text>
+  </g>
+
+  <g transform="translate(1060, 215)">
+    <rect x="0" y="0" width="330" height="195" rx="8" fill="#F3E5F5" stroke="#AB47BC" stroke-width="2"/>
+    <rect x="0" y="0" width="330" height="26" rx="8" fill="#AB47BC"/>
+    <text x="165" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">QMS+售后+SRM (核心业务链)</text>
+    <text x="12" y="45" fill="#333" font-size="9" font-weight="bold">QMS:检测1000条/s&lt;500ms 3TB/年</text>
+    <text x="12" y="62" fill="#333" font-size="9" font-weight="bold">售后:工单500QPS&lt;500ms 2x弹性</text>
+    <text x="12" y="79" fill="#333" font-size="9" font-weight="bold">SRM:PO确认&lt;2s 协同消息5000条/h</text>
+    <text x="12" y="100" fill="#333" font-size="9" font-weight="bold">特殊要求:</text>
+    <text x="12" y="117" fill="#666" font-size="8.5">• QMS:IMEI追溯&lt;1s+CAPA闭环&lt;7天</text>
+    <text x="12" y="132" fill="#666" font-size="8.5">• 售后:保修校验+备件多级库存</text>
+    <text x="12" y="147" fill="#666" font-size="8.5">• SRM:多语言门户+供应商绩效自动化</text>
+    <text x="12" y="162" fill="#666" font-size="8.5">• 关键物料风险预警+多源供应方案</text>
+    <text x="12" y="177" fill="#666" font-size="8.5">• 质量闭环:售后→QMS→PLM→SRM</text>
+  </g>
+
+  <!-- Row 3: Strategic + GRC + ITSM -->
+  <g transform="translate(10, 420)">
+    <rect x="0" y="0" width="300" height="140" rx="8" fill="#ECEFF1" stroke="#78909C" stroke-width="1.5"/>
+    <rect x="0" y="0" width="300" height="26" rx="8" fill="#78909C"/>
+    <text x="150" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">战略经营平台 (99.9% T2)</text>
+    <text x="12" y="45" fill="#555" font-size="9">看板查询500QPS&lt;2s</text>
+    <text x="12" y="62" fill="#555" font-size="9">数据刷新T+0/T+1 | 500GB/年</text>
+    <text x="12" y="82" fill="#666" font-size="8.5">• CEO/CFO/VP驾驶舱</text>
+    <text x="12" y="97" fill="#666" font-size="8.5">• 指标口径统一(指标中心)</text>
+    <text x="12" y="112" fill="#666" font-size="8.5">• 支持逐级下钻至订单明细</text>
+    <text x="12" y="127" fill="#666" font-size="8.5">• 移动端适配</text>
+  </g>
+
+  <g transform="translate(320, 420)">
+    <rect x="0" y="0" width="300" height="140" rx="8" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1.5"/>
+    <rect x="0" y="0" width="300" height="26" rx="8" fill="#AB47BC"/>
+    <text x="150" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">GRC/IAM/ITSM (99.9% T2)</text>
+    <text x="12" y="45" fill="#555" font-size="9">IAM:10000次认证/s&lt;200ms</text>
+    <text x="12" y="62" fill="#555" font-size="9">GRC:合同/隐私/合规审批</text>
+    <text x="12" y="82" fill="#666" font-size="8.5">• 合规门禁:隐私/禁限售/制裁</text>
+    <text x="12" y="97" fill="#666" font-size="8.5">• 安全事件响应+漏洞闭环</text>
+    <text x="12" y="112" fill="#666" font-size="8.5">• ITSM变更/事件/问题管理</text>
+    <text x="12" y="127" fill="#666" font-size="8.5">• 架构决策记录+EA资产库</text>
+  </g>
+
+  <g transform="translate(630, 420)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#E8F5E9" stroke="#66BB6A" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="26" rx="8" fill="#66BB6A"/>
+    <text x="130" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">HR数字化 (SaaS/采购)</text>
+    <text x="12" y="48" fill="#555" font-size="9">组织/岗位/人员/招聘</text>
+    <text x="12" y="66" fill="#555" font-size="9">绩效/薪酬/培训/员工服务</text>
+    <text x="12" y="86" fill="#666" font-size="8.5">• 与MDM人员主数据双向同步</text>
+    <text x="12" y="101" fill="#666" font-size="8.5">• 与IAM身份认证SSO集成</text>
+    <text x="12" y="116" fill="#666" font-size="8.5">• 薪酬数据高敏感(PII加密)</text>
+  </g>
+
+  <g transform="translate(900, 420)">
+    <rect x="0" y="0" width="240" height="140" rx="8" fill="#FFF3E0" stroke="#FF9800" stroke-width="1.5"/>
+    <rect x="0" y="0" width="240" height="26" rx="8" fill="#FF9800"/>
+    <text x="120" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">生态运营平台</text>
+    <text x="12" y="48" fill="#555" font-size="9">账号/会员/IoT设备/应用商店</text>
+    <text x="12" y="66" fill="#555" font-size="9">订阅计费/分成结算/开放平台</text>
+    <text x="12" y="86" fill="#666" font-size="8.5">• 统一账号(手机+IoT+服务)</text>
+    <text x="12" y="101" fill="#666" font-size="8.5">• IoT设备影子+场景编排</text>
+    <text x="12" y="116" fill="#666" font-size="8.5">• 开发者门户+沙箱测试</text>
+  </g>
+
+  <g transform="translate(1150, 420)">
+    <rect x="0" y="0" width="240" height="140" rx="8" fill="#ECEFF1" stroke="#78909C" stroke-width="1.5"/>
+    <rect x="0" y="0" width="240" height="26" rx="8" fill="#78909C"/>
+    <text x="120" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">行政设施服务</text>
+    <text x="12" y="48" fill="#555" font-size="9">园区/工位/资产/行政采购</text>
+    <text x="12" y="66" fill="#555" font-size="9">差旅/访客/行政服务</text>
+    <text x="12" y="86" fill="#666" font-size="8.5">• 低代码平台(长尾表单)</text>
+    <text x="12" y="101" fill="#666" font-size="8.5">• SaaS/采购(差旅/报销)</text>
+    <text x="12" y="116" fill="#666" font-size="8.5">• 与HR/财务系统集成</text>
+  </g>
+
+  <!-- Summary section -->
+  <g transform="translate(10, 570)">
+    <rect x="0" y="0" width="1380" height="28" rx="6" fill="#37474F"/>
+    <text x="690" y="19" text-anchor="middle" fill="#FFD54F" font-size="12" font-weight="bold">NFR对架构决策的约束: 可用性→容灾策略 | 延迟→缓存/异步 | 弹性→HPA/消息削峰 | 合规→数据驻留/加密 | 安全→零信任/审计</text>
+  </g>
+
+  <g transform="translate(10, 608)">
+    <rect x="0" y="0" width="680" height="120" rx="6" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1"/>
+    <text x="340" y="22" text-anchor="middle" fill="#2B579A" font-size="11" font-weight="bold">关键架构决策(ADR风格)</text>
+    <text x="15" y="42" fill="#D32F2F" font-size="9" font-weight="bold">ADR-01: OMS自研(非采购) — 订单全渠道差异化强,采购产品定制成本高,自研可控核心交易链路</text>
+    <text x="15" y="58" fill="#E65100" font-size="9" font-weight="bold">ADR-02: 库存中心独立于WMS — 统一ATP/预占/释放能力,支撑OLTP路由+OLAP分析双场景</text>
+    <text x="15" y="74" fill="#1565C0" font-size="9" font-weight="bold">ADR-03: ERP保留财务核心+渐进微服务化 — 账务核心稳态不变(虚拟化+HA),前端费控/报销渐进容器化</text>
+    <text x="15" y="90" fill="#2E7D32" font-size="9" font-weight="bold">ADR-04: MES边缘K3s+离线自治 — 工厂网络不稳定,边缘部署保障产线连续性,断网4h自治+恢复增量同步</text>
+    <text x="15" y="106" fill="#6A1B9A" font-size="9" font-weight="bold">ADR-05: CDP/MA/CRM营销技术栈统一采购(非自研) — 成熟SaaS产品,聚焦集成和数据闭环,不重复造轮子</text>
+  </g>
+
+  <g transform="translate(700, 608)">
+    <rect x="0" y="0" width="690" height="120" rx="6" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1"/>
+    <text x="345" y="22" text-anchor="middle" fill="#2B579A" font-size="11" font-weight="bold">NFR基线对比: 现状→Y3目标</text>
+    <text x="15" y="45" fill="#555" font-size="9">OMS可用性: 现状99.5%(单机房裸金属) → Y3: 99.99%(双AZ+K8s+多活) | 弹性: 人工扩容2月→自动5x 30min</text>
+    <text x="15" y="62" fill="#555" font-size="9">MES延迟: 现状500ms(中心部署) → Y3: &lt;100ms(边缘K3s+本地缓存) | 离线: 不支持→4h自治</text>
+    <text x="15" y="79" fill="#555" font-size="9">CDP画像: 现状T+1批处理 → Y3: 实时+批量双模式 查询&lt;50ms | 数据量: 10TB→50TB/年</text>
+    <text x="15" y="96" fill="#555" font-size="9">ERP月结: 现状3天(手工+Excel) → Y3: &lt;8h(自动化+系统对账) | 多组织: 单组织→50+法人实体统一</text>
+    <text x="15" y="113" fill="#888" font-size="8.5">NFR达成路径: 容量模型建立→压测校准→SLA基线→架构优化→持续度量(每季度复盘NFR达标率)</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>

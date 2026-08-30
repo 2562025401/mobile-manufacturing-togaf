@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-2 商业模式画布</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" integrity="sha384-ZSs6LKr2GoUPDyHrN+rCQgyHL1yUyok5xMniSrgeRG7rUvA6vTmxronM1eZOfjgz" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','Courier New',monospace;padding:20px;color:#1e293b}
+.container{max-width:1260px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;position:relative}
+.diagram-title{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:2px;letter-spacing:1px}
+.diagram-subtitle{font-size:12px;color:#475569;margin-bottom:16px;letter-spacing:0.5px}
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.toolbar button{background:#ffffff;border:1px solid #e2e8f0;border-radius:6px;padding:6px 14px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#475569;cursor:pointer;transition:all .15s}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}
+svg{display:block;width:100%;height:auto;background:#ffffff;border-radius:8px;border:1px solid #e2e8f0}
+g text{font-family:'JetBrains Mono','Courier New',monospace}
+.canvas-cell{transition:filter .2s}
+.canvas-cell:hover{filter:drop-shadow(0 2px 6px rgba(0,0,0,0.08))}
+.info-card{cursor:default;transition:transform .2s}
+.info-card:hover{transform:translateY(-2px)}
+</style>
+</head>
+<body>
+
+<div class="container" id="diagram-container">
+  <div class="toolbar">
+    <button onclick="copySVG()">📋 Copy SVG</button>
+    <button onclick="exportPNG()">🖼 Export PNG</button>
+    <button onclick="exportPDF()">📄 Export PDF</button>
+  </div>
+  <div class="diagram-title">商业模式画布 (Business Model Canvas)</div>
+  <div class="diagram-subtitle">九要素 · 手机厂商价值创造逻辑 · 硬件获客→软件粘客→生态变现</div>
+
+  <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" id="main-svg">
+    <defs>
+      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <filter id="shadowS"><feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#64748b" flood-opacity="0.1"/></filter>
+      <filter id="shadowM"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#64748b" flood-opacity="0.15"/></filter>
+      <filter id="shadowL"><feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#64748b" flood-opacity="0.2"/></filter>
+    </defs>
+    <rect width="1200" height="720" fill="#ffffff"/>
+    <rect width="1200" height="720" fill="url(#grid)"/>
+
+    <!-- 顶部标注 -->
+    <g>
+      <rect x="1030" y="10" width="160" height="28" rx="6" fill="rgba(100,116,139,0.08)" stroke="rgba(100,116,139,0.2)" stroke-width="0.5"/>
+      <text x="1110" y="24" text-anchor="middle" fill="#64748b" font-size="8">TOGAF Phase B · 价值侧分析</text>
+      <text x="1110" y="35" text-anchor="middle" fill="#64748b" font-size="7">Business Model Canvas v9</text>
+    </g>
+
+    <!-- ========================= -->
+    <!-- 九宫格画布 (4 + 1 + 4 + 2 底部) -->
+    <!-- ========================= -->
+
+    <!--
+      行 1: 重要伙伴(左)  |  关键业务(中左)  |  核心资源(中右)  |  价值主张(右)
+      行 2: 客户关系(左)  |  渠道通路(中左)  |  客户细分(中右)  |  价值主张(跨行)
+      行 3 (底部横跨): 成本结构 (左) |  收入来源 (右)
+    -->
+
+    <!-- ===== 行 1: 左侧三列 (供给侧) ===== -->
+
+    <!-- 重要伙伴 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="30" y="60" width="220" height="190" rx="8" fill="rgba(100,116,139,0.06)" stroke="#64748b" stroke-width="1.2"/>
+      <rect x="30" y="60" width="220" height="26" rx="8" fill="rgba(100,116,139,0.12)"/>
+      <text x="140" y="77" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">重要伙伴</text>
+      <text x="140" y="92" text-anchor="middle" fill="#64748b" font-size="7">KEY PARTNERS</text>
+      <line x1="30" y1="98" x2="250" y2="98" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="50" cy="116" r="3" fill="#64748b"/>
+      <text x="60" y="119" fill="#1e293b" font-size="9">芯片供应商 (SoC/modem)</text>
+      <circle cx="50" cy="136" r="3" fill="#64748b"/>
+      <text x="60" y="139" fill="#1e293b" font-size="9">面板 &amp; 存储供应商</text>
+      <circle cx="50" cy="156" r="3" fill="#64748b"/>
+      <text x="60" y="159" fill="#1e293b" font-size="9">ODM/OEM 代工厂</text>
+      <circle cx="50" cy="176" r="3" fill="#64748b"/>
+      <text x="60" y="179" fill="#1e293b" font-size="9">OS/软件生态伙伴 (GMS/HS)</text>
+      <circle cx="50" cy="196" r="3" fill="#64748b"/>
+      <text x="60" y="199" fill="#1e293b" font-size="9">电信运营商 &amp; 渠道商</text>
+    </g>
+
+    <!-- 关键业务 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="270" y="60" width="220" height="190" rx="8" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2"/>
+      <rect x="270" y="60" width="220" height="26" rx="8" fill="rgba(5,150,105,0.12)"/>
+      <text x="380" y="77" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">关键业务</text>
+      <text x="380" y="92" text-anchor="middle" fill="#64748b" font-size="7">KEY ACTIVITIES</text>
+      <line x1="270" y1="98" x2="490" y2="98" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="290" cy="116" r="3" fill="#059669"/>
+      <text x="300" y="119" fill="#1e293b" font-size="9">产品规划 &amp; 工业设计</text>
+      <circle cx="290" cy="136" r="3" fill="#059669"/>
+      <text x="300" y="139" fill="#1e293b" font-size="9">供应链 &amp; 智能制造</text>
+      <circle cx="290" cy="156" r="3" fill="#059669"/>
+      <text x="300" y="159" fill="#1e293b" font-size="9">渠道分销 &amp; 零售运营</text>
+      <circle cx="290" cy="176" r="3" fill="#059669"/>
+      <text x="300" y="179" fill="#1e293b" font-size="9">用户运营 &amp; 售后服务</text>
+      <circle cx="290" cy="196" r="3" fill="#059669"/>
+      <text x="300" y="199" fill="#1e293b" font-size="9">IoT 生态建设 &amp; 云服务</text>
+    </g>
+
+    <!-- 核心资源 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="510" y="60" width="220" height="190" rx="8" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1.2"/>
+      <rect x="510" y="60" width="220" height="26" rx="8" fill="rgba(59,130,246,0.12)"/>
+      <text x="620" y="77" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">核心资源</text>
+      <text x="620" y="92" text-anchor="middle" fill="#64748b" font-size="7">KEY RESOURCES</text>
+      <line x1="510" y1="98" x2="730" y2="98" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="530" cy="116" r="3" fill="#3b82f6"/>
+      <text x="540" y="119" fill="#1e293b" font-size="9">研发技术 &amp; 专利组合</text>
+      <circle cx="530" cy="136" r="3" fill="#3b82f6"/>
+      <text x="540" y="139" fill="#1e293b" font-size="9">品牌资产 &amp; 用户心智</text>
+      <circle cx="530" cy="156" r="3" fill="#3b82f6"/>
+      <text x="540" y="159" fill="#1e293b" font-size="9">制造产能 &amp; 品控体系</text>
+      <circle cx="530" cy="176" r="3" fill="#3b82f6"/>
+      <text x="540" y="179" fill="#1e293b" font-size="9">渠道网络 &amp; 线下门店</text>
+      <circle cx="530" cy="196" r="3" fill="#3b82f6"/>
+      <text x="540" y="199" fill="#1e293b" font-size="9">用户数据 &amp; AI 能力</text>
+    </g>
+
+    <!-- 价值主张 (跨行, 右列, 两行合并) -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="750" y="60" width="420" height="400" rx="8" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="1.2"/>
+      <rect x="750" y="60" width="420" height="26" rx="8" fill="rgba(249,115,22,0.12)"/>
+      <text x="960" y="77" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">价值主张</text>
+      <text x="960" y="92" text-anchor="middle" fill="#64748b" font-size="7">VALUE PROPOSITIONS</text>
+      <line x1="750" y1="98" x2="1170" y2="98" stroke="#e2e8f0" stroke-width="0.5"/>
+
+      <!-- 左侧子项 -->
+      <rect x="770" y="110" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="862" y="130" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">硬件获客</text>
+      <text x="862" y="146" text-anchor="middle" fill="#475569" font-size="7">旗舰性能 · 影像系统</text>
+
+      <rect x="965" y="110" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="1057" y="130" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">软件粘客</text>
+      <text x="1057" y="146" text-anchor="middle" fill="#475569" font-size="7">MIUI/ColorOS · 应用生态</text>
+
+      <rect x="770" y="172" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="862" y="192" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">生态变现</text>
+      <text x="862" y="208" text-anchor="middle" fill="#475569" font-size="7">IoT 互联 · 互联网服务</text>
+
+      <rect x="965" y="172" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="1057" y="192" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">全球化</text>
+      <text x="1057" y="208" text-anchor="middle" fill="#475569" font-size="7">本地化 · 多区域合规</text>
+
+      <rect x="770" y="234" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="862" y="254" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">AI 差异化</text>
+      <text x="862" y="270" text-anchor="middle" fill="#475569" font-size="7">端侧 LLM · 智能助手</text>
+
+      <rect x="965" y="234" width="185" height="50" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.8"/>
+      <text x="1057" y="254" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="500">可持续性</text>
+      <text x="1057" y="270" text-anchor="middle" fill="#475569" font-size="7">碳中和 · 回收计划</text>
+
+      <!-- 价值主张内部连接箭头 -->
+      <path d="M862 160 L862 172" stroke="#f97316" stroke-width="0.8" marker-end="url(#arrowSm)"/>
+      <path d="M1057 160 L1057 172" stroke="#f97316" stroke-width="0.8" marker-end="url(#arrowSm)"/>
+      <defs>
+        <marker id="arrowSm" markerWidth="6" markerHeight="4" refX="3" refY="4" orient="auto">
+          <path d="M0 0 L3 4 L6 0" fill="#f97316" opacity="0.5"/>
+        </marker>
+      </defs>
+
+      <!-- 价值创造飞轮 -->
+      <g>
+        <text x="960" y="310" text-anchor="middle" fill="#0f172a" font-size="9" font-weight="600">价值创造飞轮</text>
+        <path d="M 820 330 A 50 30 0 0 1 900 330" stroke="#f97316" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowSm)"/>
+        <text x="860" y="320" text-anchor="middle" fill="#475569" font-size="7">硬件</text>
+        <path d="M 900 330 A 50 30 0 0 1 980 330" stroke="#f97316" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowSm)"/>
+        <text x="940" y="320" text-anchor="middle" fill="#475569" font-size="7">软件</text>
+        <path d="M 980 330 A 50 30 0 0 1 1060 330" stroke="#f97316" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowSm)"/>
+        <text x="1020" y="320" text-anchor="middle" fill="#475569" font-size="7">生态</text>
+        <text x="960" y="358" text-anchor="middle" fill="#94a3b8" font-size="7">硬件薄利 → 软件增值 → 生态高利润</text>
+      </g>
+    </g>
+
+    <!-- ===== 行 2: 左侧三列 (客户侧) ===== -->
+
+    <!-- 客户关系 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="30" y="270" width="220" height="190" rx="8" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="1.2"/>
+      <rect x="30" y="270" width="220" height="26" rx="8" fill="rgba(139,92,246,0.12)"/>
+      <text x="140" y="287" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">客户关系</text>
+      <text x="140" y="302" text-anchor="middle" fill="#64748b" font-size="7">CUSTOMER RELATIONSHIPS</text>
+      <line x1="30" y1="308" x2="250" y2="308" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="50" cy="326" r="3" fill="#8b5cf6"/>
+      <text x="60" y="329" fill="#1e293b" font-size="9">会员体系 &amp; 积分</text>
+      <circle cx="50" cy="346" r="3" fill="#8b5cf6"/>
+      <text x="60" y="349" fill="#1e293b" font-size="9">社区运营 &amp; 米粉/花粉</text>
+      <circle cx="50" cy="366" r="3" fill="#8b5cf6"/>
+      <text x="60" y="369" fill="#1e293b" font-size="9">售后 &amp; 以旧换新</text>
+      <circle cx="50" cy="386" r="3" fill="#8b5cf6"/>
+      <text x="60" y="389" fill="#1e293b" font-size="9">个性化推荐 &amp; 推送</text>
+      <circle cx="50" cy="406" r="3" fill="#8b5cf6"/>
+      <text x="60" y="409" fill="#1e293b" font-size="9">NPS 调研 &amp; 口碑管理</text>
+    </g>
+
+    <!-- 渠道通路 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="270" y="270" width="220" height="190" rx="8" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1.2"/>
+      <rect x="270" y="270" width="220" height="26" rx="8" fill="rgba(59,130,246,0.12)"/>
+      <text x="380" y="287" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">渠道通路</text>
+      <text x="380" y="302" text-anchor="middle" fill="#64748b" font-size="7">CHANNELS</text>
+      <line x1="270" y1="308" x2="490" y2="308" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="290" cy="326" r="3" fill="#3b82f6"/>
+      <text x="300" y="329" fill="#1e293b" font-size="9">线上官方商城</text>
+      <circle cx="290" cy="346" r="3" fill="#3b82f6"/>
+      <text x="300" y="349" fill="#1e293b" font-size="9">电商平台 (JD/Tmall)</text>
+      <circle cx="290" cy="366" r="3" fill="#3b82f6"/>
+      <text x="300" y="369" fill="#1e293b" font-size="9">线下直营 &amp; 授权店</text>
+      <circle cx="290" cy="386" r="3" fill="#3b82f6"/>
+      <text x="300" y="389" fill="#1e293b" font-size="9">运营商定制 &amp; 政企</text>
+      <circle cx="290" cy="406" r="3" fill="#3b82f6"/>
+      <text x="300" y="409" fill="#1e293b" font-size="9">海外分销 &amp; 跨境</text>
+    </g>
+
+    <!-- 客户细分 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="510" y="270" width="220" height="190" rx="8" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2"/>
+      <rect x="510" y="270" width="220" height="26" rx="8" fill="rgba(5,150,105,0.12)"/>
+      <text x="620" y="287" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">客户细分</text>
+      <text x="620" y="302" text-anchor="middle" fill="#64748b" font-size="7">CUSTOMER SEGMENTS</text>
+      <line x1="510" y1="308" x2="730" y2="308" stroke="#e2e8f0" stroke-width="0.5"/>
+      <circle cx="530" cy="326" r="3" fill="#059669"/>
+      <text x="540" y="329" fill="#1e293b" font-size="9">旗舰消费人群 (高端)</text>
+      <circle cx="530" cy="346" r="3" fill="#059669"/>
+      <text x="540" y="349" fill="#1e293b" font-size="9">性价比用户 (中端)</text>
+      <circle cx="530" cy="366" r="3" fill="#059669"/>
+      <text x="540" y="369" fill="#1e293b" font-size="9">游戏/性能爱好者</text>
+      <circle cx="530" cy="386" r="3" fill="#059669"/>
+      <text x="540" y="389" fill="#1e293b" font-size="9">影像/创作者群体</text>
+      <circle cx="530" cy="406" r="3" fill="#059669"/>
+      <text x="540" y="409" fill="#1e293b" font-size="9">海外新兴市场用户</text>
+    </g>
+
+    <!-- ===== 行 3: 底部两列 (财务) ===== -->
+
+    <!-- 成本结构 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="30" y="480" width="460" height="140" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2"/>
+      <rect x="30" y="480" width="460" height="26" rx="8" fill="rgba(239,68,68,0.12)"/>
+      <text x="260" y="497" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">成本结构</text>
+      <text x="260" y="512" text-anchor="middle" fill="#64748b" font-size="7">COST STRUCTURE</text>
+      <line x1="30" y1="518" x2="490" y2="518" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="55" y="536" fill="#1e293b" font-size="8">· BOM 成本 (SoC/面板/存储/摄像头)</text>
+      <text x="55" y="552" fill="#1e293b" font-size="8">· 研发投入 (R&amp;D 占营收 6-8%)</text>
+      <text x="55" y="568" fill="#1e293b" font-size="8">· 渠道 &amp; 营销费用</text>
+      <text x="55" y="584" fill="#1e293b" font-size="8">· 制造 &amp; 物流履约成本</text>
+      <text x="55" y="600" fill="#1e293b" font-size="8">· 售后 &amp; 客户支持</text>
+    </g>
+
+    <!-- 收入来源 -->
+    <g class="canvas-cell" filter="url(#shadowS)">
+      <rect x="510" y="480" width="460" height="140" rx="8" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2"/>
+      <rect x="510" y="480" width="460" height="26" rx="8" fill="rgba(5,150,105,0.12)"/>
+      <text x="740" y="497" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="700">收入来源</text>
+      <text x="740" y="512" text-anchor="middle" fill="#64748b" font-size="7">REVENUE STREAMS</text>
+      <line x1="510" y1="518" x2="970" y2="518" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="535" y="536" fill="#1e293b" font-size="8">· 硬件销售 (手机/IoT/平板)</text>
+      <text x="535" y="552" fill="#1e293b" font-size="8">· 互联网服务 (广告/应用分发/云存储)</text>
+      <text x="535" y="568" fill="#1e293b" font-size="8">· 配件 &amp; 耗材 (充电器/壳膜/穿戴)</text>
+      <text x="535" y="584" fill="#1e293b" font-size="8">· 金融 &amp; 保险服务</text>
+      <text x="535" y="600" fill="#1e293b" font-size="8">· 企业级 / B2B 解决方案</text>
+    </g>
+
+    <!-- 右侧信息卡片区域 -->
+    <g>
+      <!-- 收入结构演进 -->
+      <g class="info-card" filter="url(#shadowS)">
+        <rect x="1000" y="480" width="175" height="65" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <rect x="1000" y="480" width="175" height="20" rx="6" fill="rgba(59,130,246,0.1)"/>
+        <text x="1087" y="494" text-anchor="middle" fill="#0f172a" font-size="8" font-weight="600">收入结构演进</text>
+        <text x="1010" y="514" fill="#475569" font-size="7">2024 硬件占比65% 服务18%</text>
+        <text x="1010" y="528" fill="#475569" font-size="7">2028 硬件占比50% 服务28%</text>
+        <text x="1010" y="542" fill="#475569" font-size="7">目标: 服务收入5年CAGR 22%+</text>
+      </g>
+
+      <!-- 核心能力对标 -->
+      <g class="info-card" filter="url(#shadowS)">
+        <rect x="1000" y="555" width="175" height="65" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <rect x="1000" y="555" width="175" height="20" rx="6" fill="rgba(5,150,105,0.1)"/>
+        <text x="1087" y="569" text-anchor="middle" fill="#0f172a" font-size="8" font-weight="600">核心能力对标</text>
+        <text x="1010" y="589" fill="#475569" font-size="7">自研芯片 + OS 双自研</text>
+        <text x="1010" y="603" fill="#475569" font-size="7">AI 端侧大模型全栈覆盖</text>
+        <text x="1010" y="617" fill="#475569" font-size="7">全球 5G+ 专利前五</text>
+      </g>
+    </g>
+
+    <!-- 列标题装饰（左侧三列共用） -->
+    <g>
+      <rect x="30" y="36" width="700" height="18" rx="4" fill="rgba(100,116,139,0.06)" stroke="rgba(100,116,139,0.15)" stroke-width="0.5"/>
+      <text x="380" y="49" text-anchor="middle" fill="#64748b" font-size="8" letter-spacing="4">供给侧 · 价值创造基础设施</text>
+    </g>
+    <g>
+      <rect x="30" y="246" width="700" height="18" rx="4" fill="rgba(100,116,139,0.06)" stroke="rgba(100,116,139,0.15)" stroke-width="0.5"/>
+      <text x="380" y="259" text-anchor="middle" fill="#64748b" font-size="8" letter-spacing="4">客户侧 · 市场与关系</text>
+    </g>
+
+    <!-- 底部标注 -->
+    <g>
+      <text x="600" y="695" text-anchor="middle" fill="#94a3b8" font-size="7">© 手机厂商商业模式画布 · 硬件获客 → 软件粘客 → 生态变现 · Strategyzer 框架适配</text>
+    </g>
+  </svg>
+</div>
+
+<script>
+function getSVGBlob() {
+  const svg = document.getElementById('main-svg');
+  const clone = svg.cloneNode(true);
+  const serializer = new XMLSerializer();
+  return new Blob([serializer.serializeToString(clone)], {type: 'image/svg+xml;charset=utf-8'});
+}
+
+function copySVG() {
+  const svg = document.getElementById('main-svg');
+  const serializer = new XMLSerializer();
+  const svgStr = serializer.serializeToString(svg);
+  navigator.clipboard.writeText(svgStr).then(() => {
+    showToast('SVG copied to clipboard');
+  }).catch(() => {
+    showToast('Copy failed');
+  });
+}
+
+function exportPNG() {
+  const el = document.getElementById('diagram-container');
+  html2canvas(el, {
+    scale: 2.5,
+    backgroundColor: '#ffffff',
+    logging: false,
+    windowWidth: el.scrollWidth,
+    windowHeight: el.scrollHeight
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = '图2-2_商业模式画布.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG exported');
+  }).catch(() => {
+    showToast('PNG export failed');
+  });
+}
+
+function exportPDF() {
+  const el = document.getElementById('diagram-container');
+  html2canvas(el, {
+    scale: 2.5,
+    backgroundColor: '#ffffff',
+    logging: false,
+    windowWidth: el.scrollWidth,
+    windowHeight: el.scrollHeight
+  }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation: 'landscape', unit: 'px', format: [el.offsetWidth, el.offsetHeight]});
+    pdf.addImage(imgData, 'PNG', 0, 0, el.offsetWidth, el.offsetHeight);
+    pdf.save('图2-2_商业模式画布.pdf');
+    showToast('PDF exported');
+  }).catch(() => {
+    showToast('PDF export failed');
+  });
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {
+    position:'fixed', bottom:'30px', left:'50%', transform:'translateX(-50%)',
+    background:'#1e293b', color:'#ffffff', padding:'8px 20px', borderRadius:'8px',
+    fontFamily:'JetBrains Mono, monospace', fontSize:'12px', zIndex:'9999',
+    boxShadow:'0 4px 12px rgba(0,0,0,0.15)', transition:'opacity 0.3s'
+  });
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 1500);
+}
+</script>
+</body>
+</html>

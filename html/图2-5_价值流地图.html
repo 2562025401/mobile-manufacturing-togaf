@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-5 — 价值流地图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#f8fafc;
+  font-family:'JetBrains Mono',monospace;
+  color:#1e293b;
+  padding:24px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.container{max-width:1360px;width:100%;}
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:14px;gap:12px;
+}
+.title-group h1{
+  font-size:18px;font-weight:700;color:#0f172a;
+  letter-spacing:0.3px;line-height:1.3;
+}
+.title-group .subtitle{
+  font-size:11px;color:#475569;margin-top:2px;
+  font-weight:400;
+}
+.toolbar{display:flex;gap:6px;flex-shrink:0;padding-top:2px;}
+.toolbar button{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:5px 12px;border:1px solid #e2e8f0;border-radius:5px;
+  background:#ffffff;color:#475569;cursor:pointer;
+  transition:all 0.15s;letter-spacing:0.3px;
+}
+.toolbar button:hover{
+  background:#f1f5f9;border-color:#3b82f6;color:#3b82f6;
+}
+.diagram-wrapper{
+  background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;
+  padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.diagram-wrapper svg{display:block;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>端到端价值流地图 — LTC为主线的四流全景</h1>
+      <div class="subtitle">Value Stream Map · VF1 LTC商机→交付 · VF2 IPD概念→上市 · VF3 SSR问题→解决</div>
+    </div>
+    <div class="toolbar">
+      <button onclick="copyDiagram()">复制</button>
+      <button onclick="exportPNG()">PNG</button>
+      <button onclick="exportPDF()">PDF</button>
+    </div>
+  </div>
+  <div class="diagram-wrapper" id="diagram">
+    <svg viewBox="0 0 1300 750" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family:'JetBrains Mono',monospace;">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+        </pattern>
+        <marker id="arrowBlue" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 Z" fill="#3b82f6"/>
+        </marker>
+        <marker id="arrowGray" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+        </marker>
+        <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+        </filter>
+      </defs>
+      <rect width="1300" height="750" fill="url(#grid)"/>
+      <rect width="1300" height="750" fill="#ffffff" opacity="0.92"/>
+
+      <!-- ===== TITLE HEADER ===== -->
+      <text x="40" y="38" font-size="13" font-weight="700" fill="#0f172a" letter-spacing="0.5">价值流总览 VALUE STREAM LANDSCAPE</text>
+      <text x="40" y="56" font-size="9" fill="#475569">端到端流程 · LTC为主线 · IPD/SSR为辅 · 跨域协同</text>
+
+      <!-- Domain touchpoint legend -->
+      <rect x="40" y="68" width="450" height="24" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="52" y="84" font-size="7" fill="#64748b" font-weight="600">域:</text>
+      <rect x="76" y="74" width="6" height="6" rx="1" fill="#3b82f6" opacity="0.6"/>
+      <text x="86" y="83" font-size="7" fill="#64748b">营销</text>
+      <rect x="120" y="74" width="6" height="6" rx="1" fill="#059669" opacity="0.6"/>
+      <text x="130" y="83" font-size="7" fill="#64748b">销售</text>
+      <rect x="164" y="74" width="6" height="6" rx="1" fill="#8b5cf6" opacity="0.6"/>
+      <text x="174" y="83" font-size="7" fill="#64748b">供应链</text>
+      <rect x="222" y="74" width="6" height="6" rx="1" fill="#f97316" opacity="0.6"/>
+      <text x="232" y="83" font-size="7" fill="#64748b">制造</text>
+      <rect x="270" y="74" width="6" height="6" rx="1" fill="#0891b2" opacity="0.6"/>
+      <text x="280" y="83" font-size="7" fill="#64748b">物流</text>
+      <rect x="314" y="74" width="6" height="6" rx="1" fill="#ef4444" opacity="0.6"/>
+      <text x="324" y="83" font-size="7" fill="#64748b">财务</text>
+      <rect x="358" y="74" width="6" height="6" rx="1" fill="#8b5cf6" opacity="0.6"/>
+      <text x="368" y="83" font-size="7" fill="#64748b">服务</text>
+      <text x="408" y="83" font-size="7" fill="#94a3b8">|</text>
+      <text x="418" y="83" font-size="7" fill="#94a3b8">⚠ 痛点标注</text>
+
+      <!-- ======================================================================= -->
+      <!-- VF1: LTC 价值流 (主流程) -->
+      <!-- ======================================================================= -->
+      <rect x="30" y="108" width="840" height="28" rx="5" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="1"/>
+      <text x="40" y="127" font-size="10" font-weight="700" fill="#3b82f6">VF1 LTC 商机→交付 (主价值流)</text>
+      <text x="830" y="127" text-anchor="end" font-size="8" fill="#94a3b8">6 L2 阶段 · 10 关键步骤</text>
+
+      <!-- LTC Stage definitions: 6 stages, each 140px wide, starting at x=30 -->
+      <!-- Stage 1: 商机洞察 -->
+      <rect x="30" y="140" width="140" height="200" rx="6" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="30" y="140" width="140" height="28" rx="6" fill="#3b82f6" opacity="0.85"/>
+      <rect x="30" y="158" width="140" height="10" fill="#3b82f6" opacity="0.85"/>
+      <text x="100" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">商机洞察</text>
+      <text x="100" y="182" text-anchor="middle" font-size="7" fill="#3b82f6" font-weight="500">L2 Stage 1</text>
+      <!-- Steps -->
+      <rect x="40" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="100" y="208" text-anchor="middle" font-size="8" fill="#1e293b">市场商机识别</text>
+      <rect x="40" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#3b82f6" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="100" y="234" text-anchor="middle" font-size="8" fill="#1e293b">需求洞察分析</text>
+      <!-- Touchpoints -->
+      <text x="40" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="56" y="256" width="30" height="14" rx="3" fill="rgba(59,130,246,0.12)" stroke="none"/>
+      <text x="71" y="266" text-anchor="middle" font-size="6.5" fill="#3b82f6">营销</text>
+      <rect x="90" y="256" width="30" height="14" rx="3" fill="rgba(5,150,105,0.12)" stroke="none"/>
+      <text x="105" y="266" text-anchor="middle" font-size="6.5" fill="#059669">销售</text>
+
+      <!-- Arrow 1->2 + Pain point -->
+      <text x="177" y="222" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="500">⚠</text>
+      <text x="177" y="238" text-anchor="middle" font-size="6.5" fill="#ef4444">商机质量</text>
+      <text x="177" y="250" text-anchor="middle" font-size="6.5" fill="#ef4444">参差不齐</text>
+      <line x1="170" y1="240" x2="170" y2="340" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.3"/>
+      <line x1="170" y1="140" x2="170" y2="145" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+
+      <!-- Stage 2: 线索管理 -->
+      <rect x="170" y="140" width="140" height="200" rx="6" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="170" y="140" width="140" height="28" rx="6" fill="#0891b2" opacity="0.85"/>
+      <rect x="170" y="158" width="140" height="10" fill="#0891b2" opacity="0.85"/>
+      <text x="240" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">线索管理</text>
+      <text x="240" y="182" text-anchor="middle" font-size="7" fill="#0891b2" font-weight="500">L2 Stage 2</text>
+      <rect x="180" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#0891b2" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="240" y="208" text-anchor="middle" font-size="8" fill="#1e293b">线索获取分发</text>
+      <rect x="180" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#0891b2" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="240" y="234" text-anchor="middle" font-size="8" fill="#1e293b">客户跟进转化</text>
+      <text x="180" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="196" y="256" width="30" height="14" rx="3" fill="rgba(5,150,105,0.12)" stroke="none"/>
+      <text x="211" y="266" text-anchor="middle" font-size="6.5" fill="#059669">销售</text>
+      <rect x="230" y="256" width="30" height="14" rx="3" fill="rgba(59,130,246,0.12)" stroke="none"/>
+      <text x="245" y="266" text-anchor="middle" font-size="6.5" fill="#3b82f6">营销</text>
+
+      <!-- Arrow 2->3 + Pain point -->
+      <text x="317" y="222" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="500">⚠</text>
+      <text x="317" y="238" text-anchor="middle" font-size="6.5" fill="#ef4444">线索转化率</text>
+      <text x="317" y="250" text-anchor="middle" font-size="6.5" fill="#ef4444">波动大</text>
+      <line x1="310" y1="240" x2="310" y2="340" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.3"/>
+
+      <!-- Stage 3: 订单计划 -->
+      <rect x="310" y="140" width="140" height="200" rx="6" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="310" y="140" width="140" height="28" rx="6" fill="#059669" opacity="0.85"/>
+      <rect x="310" y="158" width="140" height="10" fill="#059669" opacity="0.85"/>
+      <text x="380" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">订单计划</text>
+      <text x="380" y="182" text-anchor="middle" font-size="7" fill="#059669" font-weight="500">L2 Stage 3</text>
+      <rect x="320" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#059669" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="380" y="208" text-anchor="middle" font-size="8" fill="#1e293b">订单确认处理</text>
+      <rect x="320" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#059669" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="380" y="234" text-anchor="middle" font-size="8" fill="#1e293b">S&amp;OP 排产</text>
+      <text x="310" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="326" y="256" width="30" height="14" rx="3" fill="rgba(5,150,105,0.12)" stroke="none"/>
+      <text x="341" y="266" text-anchor="middle" font-size="6.5" fill="#059669">销售</text>
+      <rect x="360" y="256" width="34" height="14" rx="3" fill="rgba(139,92,246,0.12)" stroke="none"/>
+      <text x="377" y="266" text-anchor="middle" font-size="6.5" fill="#8b5cf6">供应链</text>
+      <rect x="398" y="256" width="30" height="14" rx="3" fill="rgba(239,68,68,0.12)" stroke="none"/>
+      <text x="413" y="266" text-anchor="middle" font-size="6.5" fill="#ef4444">财务</text>
+
+      <!-- Arrow 3->4 + Pain point -->
+      <text x="457" y="222" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="500">⚠</text>
+      <text x="457" y="238" text-anchor="middle" font-size="6.5" fill="#ef4444">订单变更</text>
+      <text x="457" y="250" text-anchor="middle" font-size="6.5" fill="#ef4444">频繁</text>
+      <line x1="450" y1="240" x2="450" y2="340" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.3"/>
+
+      <!-- Stage 4: 采购制造 -->
+      <rect x="450" y="140" width="140" height="200" rx="6" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="450" y="140" width="140" height="28" rx="6" fill="#8b5cf6" opacity="0.85"/>
+      <rect x="450" y="158" width="140" height="10" fill="#8b5cf6" opacity="0.85"/>
+      <text x="520" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">采购制造</text>
+      <text x="520" y="182" text-anchor="middle" font-size="7" fill="#8b5cf6" font-weight="500">L2 Stage 4</text>
+      <rect x="460" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="520" y="208" text-anchor="middle" font-size="8" fill="#1e293b">战略采购备料</text>
+      <rect x="460" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="520" y="234" text-anchor="middle" font-size="8" fill="#1e293b">生产制造执行</text>
+      <text x="450" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="466" y="256" width="34" height="14" rx="3" fill="rgba(139,92,246,0.12)" stroke="none"/>
+      <text x="483" y="266" text-anchor="middle" font-size="6.5" fill="#8b5cf6">供应链</text>
+      <rect x="504" y="256" width="30" height="14" rx="3" fill="rgba(249,115,22,0.12)" stroke="none"/>
+      <text x="519" y="266" text-anchor="middle" font-size="6.5" fill="#f97316">制造</text>
+
+      <!-- Arrow 4->5 + Pain point -->
+      <text x="597" y="222" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="500">⚠</text>
+      <text x="597" y="238" text-anchor="middle" font-size="6.5" fill="#ef4444">产能瓶颈</text>
+      <text x="597" y="250" text-anchor="middle" font-size="6.5" fill="#ef4444">制约交付</text>
+      <line x1="590" y1="240" x2="590" y2="340" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.3"/>
+
+      <!-- Stage 5: 物流交付 -->
+      <rect x="590" y="140" width="140" height="200" rx="6" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="590" y="140" width="140" height="28" rx="6" fill="#f97316" opacity="0.85"/>
+      <rect x="590" y="158" width="140" height="10" fill="#f97316" opacity="0.85"/>
+      <text x="660" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">物流交付</text>
+      <text x="660" y="182" text-anchor="middle" font-size="7" fill="#f97316" font-weight="500">L2 Stage 5</text>
+      <rect x="600" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#f97316" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="660" y="208" text-anchor="middle" font-size="8" fill="#1e293b">成品仓储物流</text>
+      <rect x="600" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#f97316" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="660" y="234" text-anchor="middle" font-size="8" fill="#1e293b">渠道交付配送</text>
+      <text x="590" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="606" y="256" width="30" height="14" rx="3" fill="rgba(8,145,178,0.12)" stroke="none"/>
+      <text x="621" y="266" text-anchor="middle" font-size="6.5" fill="#0891b2">物流</text>
+      <rect x="640" y="256" width="34" height="14" rx="3" fill="rgba(139,92,246,0.12)" stroke="none"/>
+      <text x="657" y="266" text-anchor="middle" font-size="6.5" fill="#8b5cf6">供应链</text>
+
+      <!-- Arrow 5->6 + Pain point -->
+      <text x="737" y="222" text-anchor="middle" font-size="8" fill="#ef4444" font-weight="500">⚠</text>
+      <text x="737" y="238" text-anchor="middle" font-size="6.5" fill="#ef4444">交付时效</text>
+      <text x="737" y="250" text-anchor="middle" font-size="6.5" fill="#ef4444">波动</text>
+      <line x1="730" y1="240" x2="730" y2="340" stroke="#ef4444" stroke-width="0.5" stroke-dasharray="3,2" opacity="0.3"/>
+
+      <!-- Stage 6: 回款服务 -->
+      <rect x="730" y="140" width="140" height="200" rx="6" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="730" y="140" width="140" height="28" rx="6" fill="#ef4444" opacity="0.85"/>
+      <rect x="730" y="158" width="140" height="10" fill="#ef4444" opacity="0.85"/>
+      <text x="800" y="159" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">回款服务</text>
+      <text x="800" y="182" text-anchor="middle" font-size="7" fill="#ef4444" font-weight="500">L2 Stage 6</text>
+      <rect x="740" y="194" width="120" height="20" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="800" y="208" text-anchor="middle" font-size="8" fill="#1e293b">回款核销管理</text>
+      <rect x="740" y="220" width="120" height="20" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="0.8" stroke-opacity="0.4"/>
+      <text x="800" y="234" text-anchor="middle" font-size="8" fill="#1e293b">售后服务体系</text>
+      <text x="730" y="265" font-size="6.5" fill="#64748b">触:</text>
+      <rect x="746" y="256" width="30" height="14" rx="3" fill="rgba(239,68,68,0.12)" stroke="none"/>
+      <text x="761" y="266" text-anchor="middle" font-size="6.5" fill="#ef4444">财务</text>
+      <rect x="780" y="256" width="30" height="14" rx="3" fill="rgba(139,92,246,0.12)" stroke="none"/>
+      <text x="795" y="266" text-anchor="middle" font-size="6.5" fill="#8b5cf6">服务</text>
+
+      <!-- LTC flow arrow overlay (bottom of LTC) -->
+      <line x1="40" y1="348" x2="80" y2="348" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+      <text x="85" y="352" font-size="7" fill="#3b82f6">LTC 10步端到端 →</text>
+
+      <!-- LTC KPI summary bar -->
+      <rect x="30" y="358" width="840" height="20" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="40" y="372" font-size="7" fill="#475569">LTC关键指标:</text>
+      <text x="135" y="372" font-size="7" fill="#3b82f6">商机转化率 32%</text>
+      <text x="270" y="372" font-size="7" fill="#0891b2">线索跟进时效 &lt;2h</text>
+      <text x="405" y="372" font-size="7" fill="#059669">订单准时交付率 87%</text>
+      <text x="545" y="372" font-size="7" fill="#8b5cf6">采购周期 45天</text>
+      <text x="665" y="372" font-size="7" fill="#f97316">物流破损率 0.8%</text>
+      <text x="790" y="372" font-size="7" fill="#ef4444">回款周期 60天</text>
+
+      <!-- ======================================================================= -->
+      <!-- VF2: IPD 价值流 (研发) -->
+      <!-- ======================================================================= -->
+      <rect x="30" y="396" width="840" height="24" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="40" y="413" font-size="10" font-weight="700" fill="#8b5cf6">VF2 IPD 概念→上市 (产品研发)</text>
+      <text x="830" y="413" text-anchor="end" font-size="8" fill="#94a3b8">6 阶段 · 5 DCP 门控</text>
+
+      <!-- IPD 6 phases -->
+      <g transform="translate(0, 424)">
+        <!-- 概念 -->
+        <rect x="30" width="140" height="38" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+        <rect x="30" width="140" height="18" rx="5" fill="#8b5cf6" opacity="0.7"/>
+        <text x="100" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">概念 CONCEPT</text>
+        <text x="100" y="30" text-anchor="middle" font-size="7" fill="#475569">需求定义 · 可行性</text>
+        <!-- DCP1 -->
+        <polygon points="177,19 185,10 193,19 185,28" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="185" y="46" text-anchor="middle" font-size="6" fill="#ef4444" font-weight="600">DCP1</text>
+
+        <!-- 计划 -->
+        <rect x="200" width="140" height="38" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+        <rect x="200" width="140" height="18" rx="5" fill="#8b5cf6" opacity="0.7"/>
+        <text x="270" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">计划 PLAN</text>
+        <text x="270" y="30" text-anchor="middle" font-size="7" fill="#475569">方案设计 · 分解</text>
+        <!-- DCP2 -->
+        <polygon points="347,19 355,10 363,19 355,28" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="355" y="46" text-anchor="middle" font-size="6" fill="#ef4444" font-weight="600">DCP2</text>
+
+        <!-- 开发 -->
+        <rect x="370" width="140" height="38" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+        <rect x="370" width="140" height="18" rx="5" fill="#8b5cf6" opacity="0.7"/>
+        <text x="440" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">开发 DEVELOP</text>
+        <text x="440" y="30" text-anchor="middle" font-size="7" fill="#475569">硬/软/测试开发</text>
+        <!-- DCP3 -->
+        <polygon points="517,19 525,10 533,19 525,28" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="525" y="46" text-anchor="middle" font-size="6" fill="#ef4444" font-weight="600">DCP3</text>
+
+        <!-- 验证 -->
+        <rect x="540" width="140" height="38" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+        <rect x="540" width="140" height="18" rx="5" fill="#8b5cf6" opacity="0.7"/>
+        <text x="610" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">验证 VERIFY</text>
+        <text x="610" y="30" text-anchor="middle" font-size="7" fill="#475569">集成测试 · 认证</text>
+        <!-- DCP4 -->
+        <polygon points="687,19 695,10 703,19 695,28" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="695" y="46" text-anchor="middle" font-size="6" fill="#ef4444" font-weight="600">DCP4</text>
+
+        <!-- 发布 -->
+        <rect x="710" width="140" height="38" rx="5" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="1"/>
+        <rect x="710" width="140" height="18" rx="5" fill="#8b5cf6" opacity="0.7"/>
+        <text x="780" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">发布 LAUNCH</text>
+        <text x="780" y="30" text-anchor="middle" font-size="7" fill="#475569">上市 · 量产爬坡</text>
+      </g>
+
+      <!-- ======================================================================= -->
+      <!-- VF3: SSR 价值流 (服务) -->
+      <!-- ======================================================================= -->
+      <rect x="30" y="478" width="840" height="24" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+      <text x="40" y="495" font-size="10" font-weight="700" fill="#059669">VF3 SSR 问题→解决 (服务闭环)</text>
+      <text x="830" y="495" text-anchor="end" font-size="8" fill="#94a3b8">5 步闭环 · 持续改进</text>
+
+      <!-- SSR 5 steps -->
+      <!-- Width per step: 840/5 = 168px -->
+      <g transform="translate(0, 506)">
+        <!-- 报修 -->
+        <rect x="30" width="168" height="38" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+        <rect x="30" width="168" height="18" rx="5" fill="#059669" opacity="0.7"/>
+        <text x="114" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">报修 REPORT</text>
+        <text x="114" y="30" text-anchor="middle" font-size="7" fill="#475569">客户报修 · 工单创建</text>
+        <line x1="198" y1="8" x2="198" y2="34" stroke="#94a3b8" stroke-width="0.8"/>
+
+        <!-- 诊断 -->
+        <rect x="210" width="168" height="38" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+        <rect x="210" width="168" height="18" rx="5" fill="#059669" opacity="0.7"/>
+        <text x="294" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">诊断 DIAGNOSE</text>
+        <text x="294" y="30" text-anchor="middle" font-size="7" fill="#475569">远程/现场故障诊断</text>
+        <line x1="378" y1="8" x2="378" y2="34" stroke="#94a3b8" stroke-width="0.8"/>
+
+        <!-- 维修 -->
+        <rect x="390" width="168" height="38" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+        <rect x="390" width="168" height="18" rx="5" fill="#059669" opacity="0.7"/>
+        <text x="474" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">维修 REPAIR</text>
+        <text x="474" y="30" text-anchor="middle" font-size="7" fill="#475569">备件更换 · 维修执行</text>
+        <line x1="558" y1="8" x2="558" y2="34" stroke="#94a3b8" stroke-width="0.8"/>
+
+        <!-- 回访 -->
+        <rect x="570" width="168" height="38" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+        <rect x="570" width="168" height="18" rx="5" fill="#059669" opacity="0.7"/>
+        <text x="654" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">回访 FOLLOW-UP</text>
+        <text x="654" y="30" text-anchor="middle" font-size="7" fill="#475569">满意度回访 · 闭环</text>
+        <line x1="738" y1="8" x2="738" y2="34" stroke="#94a3b8" stroke-width="0.8"/>
+
+        <!-- 改进 -->
+        <rect x="750" width="120" height="38" rx="5" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1"/>
+        <rect x="750" width="120" height="18" rx="5" fill="#059669" opacity="0.7"/>
+        <text x="810" y="13" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">改进 IMPROVE</text>
+        <text x="810" y="30" text-anchor="middle" font-size="7" fill="#475569">数据驱动改进</text>
+      </g>
+
+      <!-- Value stream connecting arrows (vertical: LTC -> IPD -> SSR) -->
+      <path d="M 450,380 L 450,396" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowGray)"/>
+      <path d="M 450,466 L 450,478" fill="none" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowGray)"/>
+
+      <!-- Cross-value-stream dependency markers -->
+      <line x1="530" y1="340" x2="530" y2="396" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <text x="533" y="370" font-size="6" fill="#94a3b8" transform="rotate(-90,533,370)">LTC→IPD 需求联动</text>
+
+      <line x1="800" y1="340" x2="800" y2="478" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <text x="803" y="410" font-size="6" fill="#94a3b8" transform="rotate(-90,803,410)">LTC→SSR 服务闭环</text>
+
+      <!-- ======================================================================= -->
+      <!-- RIGHT INFO CARDS -->
+      <!-- ======================================================================= -->
+
+      <!-- Card 1: LTC 价值流详析 -->
+      <rect x="900" y="108" width="370" height="252" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="900" y="108" width="370" height="34" rx="8" fill="rgba(59,130,246,0.08)"/>
+      <rect x="900" y="132" width="370" height="10" fill="rgba(59,130,246,0.08)"/>
+      <text x="1085" y="131" text-anchor="middle" font-size="12" font-weight="700" fill="#0f172a">LTC 价值流详析</text>
+
+      <text x="916" y="162" font-size="8" font-weight="600" fill="#3b82f6">流程全景</text>
+      <text x="916" y="176" font-size="7.5" fill="#475569">LTC (Lead to Cash) 端到端价值流覆盖从商机</text>
+      <text x="916" y="189" font-size="7.5" fill="#475569">获取到回款服务的完整业务闭环，涵盖10个</text>
+      <text x="916" y="202" font-size="7.5" fill="#475569">关键步骤，横跨6个L2阶段。</text>
+
+      <line x1="916" y1="212" x2="1255" y2="212" stroke="#e2e8f0" stroke-width="0.5"/>
+
+      <text x="916" y="228" font-size="8" font-weight="600" fill="#3b82f6">六阶段概览</text>
+      <text x="916" y="242" font-size="7" fill="#475569">S1 商机洞察 → S2 线索管理 → S3 订单计划</text>
+      <text x="916" y="255" font-size="7" fill="#475569">S4 采购制造 → S5 物流交付 → S6 回款服务</text>
+
+      <line x1="916" y1="264" x2="1255" y2="264" stroke="#e2e8f0" stroke-width="0.5"/>
+
+      <text x="916" y="280" font-size="8" font-weight="600" fill="#3b82f6">关键价值指标</text>
+      <text x="916" y="294" font-size="7" fill="#475569">• 商机-订单转化率: 目标 35%+</text>
+      <text x="916" y="307" font-size="7" fill="#475569">• 订单准时交付率: 目标 95%+</text>
+      <text x="916" y="320" font-size="7" fill="#475569">• 端到端交付周期: 目标 &lt;72h</text>
+      <text x="916" y="333" font-size="7" fill="#475569">• 客户满意度 NPS: 目标 65+</text>
+      <text x="916" y="348" font-size="7" fill="#475569">• 回款周期 (DSO): 目标 &lt;45天</text>
+
+      <!-- Card 2: IPD 阶段门控 -->
+      <rect x="900" y="390" width="370" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="900" y="390" width="370" height="26" rx="8" fill="rgba(139,92,246,0.08)"/>
+      <rect x="900" y="408" width="370" height="8" fill="rgba(139,92,246,0.08)"/>
+      <text x="1085" y="408" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">IPD 阶段门控决策评审</text>
+
+      <text x="916" y="436" font-size="7.5" fill="#475569">IPD集成产品开发: 概念→计划→开发→验证→发布→生命周期</text>
+      <text x="916" y="452" font-size="7.5" fill="#475569">DCP决策评审点: DCP1概念决策 → DCP2计划决策 → DCP3开发决策 → DCP4发布决策</text>
+      <text x="916" y="468" font-size="7" fill="#94a3b8">跨职能团队(PDT)共同决策, 阶段门控确保投资质量</text>
+
+      <!-- Card 3: 服务闭环 -->
+      <rect x="900" y="490" width="370" height="82" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="900" y="490" width="370" height="26" rx="8" fill="rgba(5,150,105,0.08)"/>
+      <rect x="900" y="508" width="370" height="8" fill="rgba(5,150,105,0.08)"/>
+      <text x="1085" y="508" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">SSR 服务闭环管理</text>
+
+      <text x="916" y="536" font-size="7.5" fill="#475569">SSR(Service-to-Solution)闭环: 报修→诊断→维修→回访→改进</text>
+      <text x="916" y="552" font-size="7.5" fill="#475569">以客户问题为驱动, 服务数据反哺产品改进, 形成持续优化</text>
+      <text x="916" y="565" font-size="7" fill="#94a3b8">关键指标: 一次性修复率 92% · 平均维修时长 &lt;3h · 满意度 4.8/5</text>
+
+      <!-- Bottom footer -->
+      <text x="550" y="740" text-anchor="middle" font-size="7.5" fill="#94a3b8">注: VF1 LTC为主价值流, VF2 IPD和VF3 SSR为支撑价值流, ⚠标注处为关键痛点和改进机会</text>
+    </svg>
+  </div>
+</div>
+
+<script>
+async function getCanvas() {
+  return await html2canvas(document.getElementById('diagram'), {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    width: document.getElementById('diagram').scrollWidth,
+    height: document.getElementById('diagram').scrollHeight,
+    windowWidth: document.getElementById('diagram').scrollWidth,
+    windowHeight: document.getElementById('diagram').scrollHeight,
+  });
+}
+
+async function exportPNG() {
+  try {
+    const canvas = await getCanvas();
+    const link = document.createElement('a');
+    link.download = '图2-5_价值流地图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('导出PNG失败: ' + e.message);
+  }
+}
+
+async function exportPDF() {
+  try {
+    const canvas = await getCanvas();
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'l', unit:'mm', format:'a4'});
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图2-5_价值流地图.pdf');
+  } catch(e) {
+    alert('导出PDF失败: ' + e.message);
+  }
+}
+
+async function copyDiagram() {
+  try {
+    const canvas = await getCanvas();
+    canvas.toBlob(async function(blob) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      } catch(e) {
+        const url = URL.createObjectURL(blob);
+        const img = document.createElement('img');
+        img.src = url;
+        const sel = window.getSelection();
+        const range = document.createRange();
+        document.body.appendChild(img);
+        range.selectNodeContents(img);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        document.body.removeChild(img);
+        URL.revokeObjectURL(url);
+      }
+    });
+  } catch(e) {
+    alert('复制失败: ' + e.message);
+  }
+}
+</script>
+</body>
+</html>

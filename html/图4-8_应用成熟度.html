@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图4-8 应用成熟度评估与演进路线</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif;padding:30px 20px 60px;color:#1e293b}
+.toolbar{position:sticky;top:0;z-index:100;background:#ffffffdd;backdrop-filter:blur(8px);border:1px solid #e2e8f0;border-radius:12px;padding:10px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;max-width:1440px;margin-left:auto;margin-right:auto}
+.toolbar .label{font-size:13px;color:#475569;font-weight:500;margin-right:8px}
+.toolbar button{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif;padding:7px 18px;border:1px solid #e2e8f0;border-radius:8px;background:#ffffff;color:#1e293b;font-size:13px;cursor:pointer;transition:all .15s;font-weight:500}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8}
+.toolbar button.primary{background:#1e293b;color:#ffffff;border-color:#1e293b}
+.toolbar button.primary:hover{background:#0f172a}
+.container{max-width:1440px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;padding:30px 30px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.diagram-title{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:4px;text-align:center}
+.diagram-subtitle{font-size:13px;color:#475569;text-align:center;margin-bottom:20px;letter-spacing:.3px}
+svg{display:block;margin:0 auto;width:100%;height:auto;max-width:1300px}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="label">图4-8</span>
+  <button onclick="copyAsImage()">Copy</button>
+  <button class="primary" onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+  <span style="flex:1"></span>
+  <span style="font-size:11px;color:#94a3b8">应用成熟度</span>
+</div>
+
+<div class="container" id="capture">
+  <div class="diagram-title">应用成熟度评估与演进路线</div>
+  <div class="diagram-subtitle">Application Maturity · 五维评估 · 迁移策略 · 三阶段演进</div>
+
+  <svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif">
+    <defs>
+      <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1300" height="780" fill="#ffffff"/>
+    <rect width="1300" height="780" fill="url(#grid)"/>
+
+    <!-- ===== LEFT: FIVE-DIMENSION MATURITY MODEL ===== -->
+    <rect x="20" y="55" width="370" height="45" rx="8" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.15)" stroke-width="1"/>
+    <text x="205" y="83" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700">五维成熟度评估模型</text>
+    <text x="205" y="96" text-anchor="middle" fill="#64748b" font-size="9">Five-Dimension Maturity Assessment</text>
+
+    <!-- Dimension 1: 功能覆盖 -->
+    <text x="40" y="131" fill="#1e293b" font-size="11">功能覆盖</text>
+    <text x="40" y="143" fill="#94a3b8" font-size="8">Function Coverage</text>
+    <rect x="150" y="125" width="180" height="20" rx="4" fill="#f1f5f9"/>
+    <rect x="150" y="125" width="162" height="20" rx="4" fill="rgba(59,130,246,.2)"/>
+    <rect x="150" y="125" width="162" height="20" rx="4" fill="none" stroke="#3b82f6" stroke-width="0.5"/>
+    <text x="348" y="140" fill="#2563eb" font-size="12" font-weight="700">4.5</text>
+
+    <!-- Dimension 2: 集成度 -->
+    <text x="40" y="166" fill="#1e293b" font-size="11">集成度</text>
+    <text x="40" y="178" fill="#94a3b8" font-size="8">Integration Level</text>
+    <rect x="150" y="160" width="180" height="20" rx="4" fill="#f1f5f9"/>
+    <rect x="150" y="160" width="126" height="20" rx="4" fill="rgba(139,92,246,.2)"/>
+    <rect x="150" y="160" width="126" height="20" rx="4" fill="none" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="348" y="175" fill="#7c3aed" font-size="12" font-weight="700">3.5</text>
+
+    <!-- Dimension 3: 架构合理性 -->
+    <text x="40" y="201" fill="#1e293b" font-size="11">架构合理性</text>
+    <text x="40" y="213" fill="#94a3b8" font-size="8">Architecture</text>
+    <rect x="150" y="195" width="180" height="20" rx="4" fill="#f1f5f9"/>
+    <rect x="150" y="195" width="119" height="20" rx="4" fill="rgba(16,185,129,.2)"/>
+    <rect x="150" y="195" width="119" height="20" rx="4" fill="none" stroke="#14b8a6" stroke-width="0.5"/>
+    <text x="348" y="210" fill="#059669" font-size="12" font-weight="700">3.3</text>
+
+    <!-- Dimension 4: 可维护性 -->
+    <text x="40" y="236" fill="#1e293b" font-size="11">可维护性</text>
+    <text x="40" y="248" fill="#94a3b8" font-size="8">Maintainability</text>
+    <rect x="150" y="230" width="180" height="20" rx="4" fill="#f1f5f9"/>
+    <rect x="150" y="230" width="108" height="20" rx="4" fill="rgba(245,158,11,.2)"/>
+    <rect x="150" y="230" width="108" height="20" rx="4" fill="none" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="348" y="245" fill="#d97706" font-size="12" font-weight="700">3.0</text>
+
+    <!-- Dimension 5: 云原生成熟度 -->
+    <text x="40" y="271" fill="#1e293b" font-size="11">云原生成熟度</text>
+    <text x="40" y="283" fill="#94a3b8" font-size="8">Cloud Native</text>
+    <rect x="150" y="265" width="180" height="20" rx="4" fill="#f1f5f9"/>
+    <rect x="150" y="265" width="72" height="20" rx="4" fill="rgba(239,68,68,.2)"/>
+    <rect x="150" y="265" width="72" height="20" rx="4" fill="none" stroke="#ef4444" stroke-width="0.5"/>
+    <text x="348" y="280" fill="#ef4444" font-size="12" font-weight="700">2.0</text>
+
+    <!-- Average score -->
+    <rect x="40" y="300" width="340" height="28" rx="6" fill="rgba(241,245,249,.6)" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="100" y="319" fill="#475569" font-size="10">综合成熟度</text>
+    <text x="270" y="319" text-anchor="end" fill="#0f172a" font-size="12" font-weight="700">3.26 / 5.0</text>
+    <text x="278" y="319" fill="#64748b" font-size="9">(中等 · 需提升)</text>
+
+    <!-- ===== CENTER: MATRIX TABLE ===== -->
+    <rect x="410" y="55" width="490" height="45" rx="8" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.15)" stroke-width="1"/>
+    <text x="655" y="83" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700">系统成熟度矩阵</text>
+    <text x="655" y="96" text-anchor="middle" fill="#64748b" font-size="9">Application Maturity Matrix</text>
+
+    <!-- Header -->
+    <rect x="410" y="105" width="490" height="24" rx="4" fill="#1e293b"/>
+    <text x="440" y="122" fill="#ffffff" font-size="9" font-weight="600">系统</text>
+    <text x="510" y="122" fill="#ffffff" font-size="8">功能覆盖</text>
+    <text x="570" y="122" fill="#ffffff" font-size="8">集成度</text>
+    <text x="630" y="122" fill="#ffffff" font-size="8">架构</text>
+    <text x="690" y="122" fill="#ffffff" font-size="8">可维护</text>
+    <text x="755" y="122" fill="#ffffff" font-size="8">云原生</text>
+    <text x="820" y="122" fill="#ffffff" font-size="8">总分</text>
+    <text x="880" y="122" fill="#ffffff" font-size="8">评级</text>
+
+    <!-- Helper: maturity bar fill -->
+    <!-- Score to bar width: score/5 * 35 = width -->
+    <!-- Row 1: PLM - 4,3,4,3,2 => 16, C级 -->
+    <rect x="410" y="129" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="145" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">PLM</text>
+    <rect x="500" y="134" width="28" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="134" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="134" width="28" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="134" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="134" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="145" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">16</text>
+    <rect x="860" y="134" width="28" height="12" rx="6" fill="#f59e0b"/>
+    <text x="874" y="144" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">C</text>
+
+    <!-- Row 2: ERP - 5,3,3,2,2 => 15, C级 -->
+    <rect x="410" y="151" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="167" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">ERP</text>
+    <rect x="500" y="156" width="35" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="156" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="156" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="156" width="14" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="156" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="167" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">15</text>
+    <rect x="860" y="156" width="28" height="12" rx="6" fill="#f59e0b"/>
+    <text x="874" y="166" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">C</text>
+
+    <!-- Row 3: APS - 3,3,3,3,2 => 14, D级 -->
+    <rect x="410" y="173" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="189" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">APS</text>
+    <rect x="500" y="178" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="178" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="178" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="178" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="178" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="189" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">14</text>
+    <rect x="860" y="178" width="28" height="12" rx="6" fill="#ef4444"/>
+    <text x="874" y="188" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">D</text>
+
+    <!-- Row 4: SRM - 3,3,3,3,2 => 14, D级 -->
+    <rect x="410" y="195" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="211" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">SRM</text>
+    <rect x="500" y="200" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="200" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="200" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="200" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="200" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="211" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">14</text>
+    <rect x="860" y="200" width="28" height="12" rx="6" fill="#ef4444"/>
+    <text x="874" y="210" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">D</text>
+
+    <!-- Row 5: MES - 4,3,3,3,2 => 15, C级 -->
+    <rect x="410" y="217" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="233" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">MES</text>
+    <rect x="500" y="222" width="28" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="222" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="222" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="222" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="222" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="233" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">15</text>
+    <rect x="860" y="222" width="28" height="12" rx="6" fill="#f59e0b"/>
+    <text x="874" y="232" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">C</text>
+
+    <!-- Row 6: OMS - 4,4,4,4,3 => 19, B级 -->
+    <rect x="410" y="239" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="255" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">OMS</text>
+    <rect x="500" y="244" width="28" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="244" width="28" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="244" width="28" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="244" width="28" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="244" width="21" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="255" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">19</text>
+    <rect x="860" y="244" width="28" height="12" rx="6" fill="#3b82f6"/>
+    <text x="874" y="254" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">B</text>
+
+    <!-- Row 7: WMS - 3,3,3,3,2 => 14, D级 -->
+    <rect x="410" y="261" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="277" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">WMS</text>
+    <rect x="500" y="266" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="266" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="266" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="266" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="266" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="277" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">14</text>
+    <rect x="860" y="266" width="28" height="12" rx="6" fill="#ef4444"/>
+    <text x="874" y="276" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">D</text>
+
+    <!-- Row 8: TMS - 3,3,3,3,2 => 14, D级 -->
+    <rect x="410" y="283" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="299" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">TMS</text>
+    <rect x="500" y="288" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="288" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="288" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="288" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="288" width="14" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="299" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">14</text>
+    <rect x="860" y="288" width="28" height="12" rx="6" fill="#ef4444"/>
+    <text x="874" y="298" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">D</text>
+
+    <!-- Row 9: MDM - 3,4,4,4,3 => 18, B级 -->
+    <rect x="410" y="305" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="321" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">MDM</text>
+    <rect x="500" y="310" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="310" width="28" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="310" width="28" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="310" width="28" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="310" width="21" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="321" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">18</text>
+    <rect x="860" y="310" width="28" height="12" rx="6" fill="#3b82f6"/>
+    <text x="874" y="320" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">B</text>
+
+    <!-- Row 10: CRM - 4,4,4,4,4 => 20, A级 -->
+    <rect x="410" y="327" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="343" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">CRM</text>
+    <rect x="500" y="332" width="28" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="332" width="28" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="332" width="28" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="332" width="28" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="332" width="28" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="343" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">20</text>
+    <rect x="860" y="332" width="28" height="12" rx="6" fill="#10b981"/>
+    <text x="874" y="342" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">A</text>
+
+    <!-- Row 11: QMS - 2,2,3,3,1 => 11, D级 -->
+    <rect x="410" y="349" width="490" height="22" fill="#ffffff"/>
+    <text x="435" y="365" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">QMS</text>
+    <rect x="500" y="354" width="14" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="354" width="14" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="354" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="354" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="354" width="7" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="365" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">11</text>
+    <rect x="860" y="354" width="28" height="12" rx="6" fill="#ef4444"/>
+    <text x="874" y="364" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">D</text>
+
+    <!-- Row 12: BI - 3,3,3,3,3 => 15, C级 -->
+    <rect x="410" y="371" width="490" height="22" fill="#f8fafc"/>
+    <text x="435" y="387" text-anchor="middle" fill="#1e293b" font-size="10" font-weight="600">BI</text>
+    <rect x="500" y="376" width="21" height="12" rx="2" fill="rgba(59,130,246,.2)"/>
+    <rect x="548" y="376" width="21" height="12" rx="2" fill="rgba(139,92,246,.2)"/>
+    <rect x="598" y="376" width="21" height="12" rx="2" fill="rgba(16,185,129,.2)"/>
+    <rect x="648" y="376" width="21" height="12" rx="2" fill="rgba(245,158,11,.2)"/>
+    <rect x="698" y="376" width="21" height="12" rx="2" fill="rgba(239,68,68,.2)"/>
+    <text x="830" y="387" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">15</text>
+    <rect x="860" y="376" width="28" height="12" rx="6" fill="#f59e0b"/>
+    <text x="874" y="386" text-anchor="middle" fill="#ffffff" font-size="7" font-weight="600">C</text>
+
+    <!-- Score legend -->
+    <rect x="410" y="402" width="490" height="24" rx="4" fill="rgba(241,245,249,.5)"/>
+    <rect x="420" y="407" width="12" height="12" rx="6" fill="#10b981"/>
+    <text x="436" y="417" fill="#475569" font-size="9">A(20-25)</text>
+    <rect x="490" y="407" width="12" height="12" rx="6" fill="#3b82f6"/>
+    <text x="506" y="417" fill="#475569" font-size="9">B(16-19)</text>
+    <rect x="560" y="407" width="12" height="12" rx="6" fill="#f59e0b"/>
+    <text x="576" y="417" fill="#475569" font-size="9">C(12-15)</text>
+    <rect x="630" y="407" width="12" height="12" rx="6" fill="#ef4444"/>
+    <text x="646" y="417" fill="#475569" font-size="9">D(&lt;12)</text>
+
+    <!-- ===== RIGHT: MIGRATION STRATEGY ===== -->
+    <rect x="920" y="55" width="360" height="45" rx="8" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.15)" stroke-width="1"/>
+    <text x="1100" y="83" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700">迁移策略分类</text>
+    <text x="1100" y="96" text-anchor="middle" fill="#64748b" font-size="9">Migration Strategy</text>
+
+    <!-- Strategy 1: 保留 -->
+    <rect x="940" y="120" width="320" height="40" rx="6" fill="rgba(16,185,129,.06)" stroke="rgba(16,185,129,.25)" stroke-width="1"/>
+    <rect x="950" y="130" width="24" height="20" rx="4" fill="#10b981"/>
+    <text x="962" y="144" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">3</text>
+    <text x="990" y="137" fill="#0f172a" font-size="11" font-weight="600">保留 (Retain)</text>
+    <text x="990" y="152" fill="#64748b" font-size="9">ERP, PLM, TMS — 功能成熟, 维持现状</text>
+
+    <!-- Strategy 2: 重构上云 -->
+    <rect x="940" y="168" width="320" height="40" rx="6" fill="rgba(59,130,246,.06)" stroke="rgba(59,130,246,.25)" stroke-width="1"/>
+    <rect x="950" y="178" width="24" height="20" rx="4" fill="#3b82f6"/>
+    <text x="962" y="192" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">2</text>
+    <text x="990" y="185" fill="#0f172a" font-size="11" font-weight="600">重构上云 (Refactor)</text>
+    <text x="990" y="200" fill="#64748b" font-size="9">CRM, MDM — 微服务拆分, 容器化部署</text>
+
+    <!-- Strategy 3: 替换 -->
+    <rect x="940" y="216" width="320" height="40" rx="6" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.25)" stroke-width="1"/>
+    <rect x="950" y="226" width="24" height="20" rx="4" fill="#f59e0b"/>
+    <text x="962" y="240" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">2</text>
+    <text x="990" y="233" fill="#0f172a" font-size="11" font-weight="600">替换 (Replace)</text>
+    <text x="990" y="248" fill="#64748b" font-size="9">QMS, BI — 功能老旧, 选型替换</text>
+
+    <!-- Strategy 4: 合并 -->
+    <rect x="940" y="264" width="320" height="40" rx="6" fill="rgba(139,92,246,.06)" stroke="rgba(139,92,246,.25)" stroke-width="1"/>
+    <rect x="950" y="274" width="24" height="20" rx="4" fill="#8b5cf6"/>
+    <text x="962" y="288" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">2</text>
+    <text x="990" y="281" fill="#0f172a" font-size="11" font-weight="600">合并 (Merge)</text>
+    <text x="990" y="296" fill="#64748b" font-size="9">WMS, SRM — 整合进业务中台</text>
+
+    <!-- Strategy 5: 下线 -->
+    <rect x="940" y="312" width="320" height="40" rx="6" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.25)" stroke-width="1"/>
+    <rect x="950" y="322" width="24" height="20" rx="4" fill="#ef4444"/>
+    <text x="962" y="336" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700">1</text>
+    <text x="990" y="329" fill="#0f172a" font-size="11" font-weight="600">下线 (Decommission)</text>
+    <text x="990" y="344" fill="#64748b" font-size="9">遗留系统 — 数据迁移后关停</text>
+
+    <!-- Stacked bar showing distribution -->
+    <rect x="940" y="370" width="320" height="20" rx="10" fill="#f1f5f9"/>
+    <rect x="940" y="370" width="96" height="20" rx="10" fill="#10b981"/>
+    <rect x="1036" y="370" width="64" height="20" rx="0" fill="#3b82f6"/>
+    <rect x="1100" y="370" width="64" height="20" rx="0" fill="#f59e0b"/>
+    <rect x="1164" y="370" width="64" height="20" rx="0" fill="#8b5cf6"/>
+    <rect x="1228" y="370" width="32" height="20" rx="10" fill="#ef4444"/>
+    <text x="1100" y="385" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="600">10个系统迁移分布</text>
+
+    <!-- ===== BOTTOM: THREE-PHASE EVOLUTION ===== -->
+    <rect x="20" y="445" width="1260" height="45" rx="8" fill="rgba(99,102,241,.06)" stroke="rgba(99,102,241,.15)" stroke-width="1"/>
+    <text x="650" y="473" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="700">三阶段演进路线 / Three-Phase Evolution Roadmap</text>
+
+    <!-- Timeline bar -->
+    <line x1="40" y1="530" x2="1260" y2="530" stroke="#e2e8f0" stroke-width="3"/>
+    <circle cx="40" cy="530" r="5" fill="#94a3b8"/>
+    <circle cx="1260" cy="530" r="5" fill="#94a3b8"/>
+
+    <!-- Phase 1: Y1 奠基 -->
+    <rect x="50" y="510" width="16" height="16" rx="8" fill="#3b82f6"/>
+    <text x="58" y="523" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="700">1</text>
+
+    <rect x="80" y="555" width="360" height="80" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="80" y="555" width="360" height="22" rx="8" fill="rgba(59,130,246,.08)"/>
+    <rect x="80" y="571" width="360" height="6" fill="rgba(59,130,246,.08)"/>
+    <text x="95" y="571" fill="#2563eb" font-size="12" font-weight="700">Y1 奠基年 — 基础夯实</text>
+    <circle cx="95" cy="591" r="3" fill="#3b82f6"/>
+    <text x="105" y="595" fill="#1e293b" font-size="10">MDM主数据平台升级</text>
+    <circle cx="95" cy="609" r="3" fill="#3b82f6"/>
+    <text x="105" y="613" fill="#1e293b" font-size="10">OMS订单系统现代化</text>
+    <circle cx="95" cy="627" r="3" fill="#3b82f6"/>
+    <text x="105" y="631" fill="#1e293b" font-size="10">ERP核心模块重构</text>
+
+    <!-- Phase 2: Y2 突破 -->
+    <rect x="490" y="510" width="16" height="16" rx="8" fill="#10b981"/>
+    <text x="498" y="523" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="700">2</text>
+
+    <rect x="520" y="555" width="360" height="80" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="520" y="555" width="360" height="22" rx="8" fill="rgba(16,185,129,.08)"/>
+    <rect x="520" y="571" width="360" height="6" fill="rgba(16,185,129,.08)"/>
+    <text x="535" y="571" fill="#059669" font-size="12" font-weight="700">Y2 突破年 — 能力扩展</text>
+    <circle cx="535" cy="591" r="3" fill="#10b981"/>
+    <text x="545" y="595" fill="#1e293b" font-size="10">业务中台建设 (CRM/SRM整合)</text>
+    <circle cx="535" cy="609" r="3" fill="#10b981"/>
+    <text x="545" y="613" fill="#1e293b" font-size="10">MES精益制造全国推广</text>
+    <circle cx="535" cy="627" r="3" fill="#10b981"/>
+    <text x="545" y="631" fill="#1e293b" font-size="10">API统一网关全面上线</text>
+
+    <!-- Phase 3: Y3 跃迁 -->
+    <rect x="940" y="510" width="16" height="16" rx="8" fill="#8b5cf6"/>
+    <text x="948" y="523" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="700">3</text>
+
+    <rect x="970" y="555" width="280" height="80" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="970" y="555" width="280" height="22" rx="8" fill="rgba(139,92,246,.08)"/>
+    <rect x="970" y="571" width="280" height="6" fill="rgba(139,92,246,.08)"/>
+    <text x="985" y="571" fill="#7c3aed" font-size="12" font-weight="700">Y3 跃迁年 — 智能升级</text>
+    <circle cx="985" cy="591" r="3" fill="#8b5cf6"/>
+    <text x="995" y="595" fill="#1e293b" font-size="10">AI平台: 需求预测/质检</text>
+    <circle cx="985" cy="609" r="3" fill="#8b5cf6"/>
+    <text x="995" y="613" fill="#1e293b" font-size="10">全面云原生 (K8s/Istio)</text>
+    <circle cx="985" cy="627" r="3" fill="#8b5cf6"/>
+    <text x="995" y="631" fill="#1e293b" font-size="10">低代码平台建设</text>
+
+    <!-- Connector arrows between phases -->
+    <path d="M 410 565 L 520 565" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowG)"/>
+    <path d="M 860 565 L 970 565" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowG)"/>
+
+    <!-- Bottom summary -->
+    <rect x="50" y="660" width="1200" height="30" rx="6" fill="rgba(241,245,249,.5)" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="650" y="680" text-anchor="middle" fill="#475569" font-size="10">目标: 3年内完成全部核心系统现代化改造, 应用成熟度从 3.26 提升至 4.5+</text>
+
+    <!-- Rating legend -->
+    <rect x="50" y="700" width="1200" height="22" rx="4" fill="rgba(241,245,249,.3)"/>
+    <text x="650" y="716" text-anchor="middle" fill="#94a3b8" font-size="9">评级标准: A(20-25)领先 · B(16-19)良好 · C(12-15)需提升 · D(&lt;12)薄弱</text>
+  </svg>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+
+<script>
+function getCaptureElement(){return document.getElementById('capture')}
+function copyAsImage(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    canvas.toBlob(blob=>{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(()=>{
+      const btn=event&&event.target?event.target:document.querySelector('.toolbar button:first-child');
+      if(btn){const o=btn.textContent;btn.textContent='Copied!';btn.style.background='#d1fae5';btn.style.borderColor='#34d399';setTimeout(()=>{btn.textContent=o;btn.style.background='';btn.style.borderColor=''},2000)}
+    }).catch(()=>alert('Copy failed.'))})
+  })
+}
+function downloadPNG(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    const link=document.createElement('a');link.download='图4-8_应用成熟度.png';link.href=canvas.toDataURL('image/png');link.click()
+  })
+}
+function downloadPDF(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    const imgData=canvas.toDataURL('image/png');
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF('l','mm','a3');
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=canvas.height*pdfW/canvas.width;
+    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+    pdf.save('图4-8_应用成熟度.pdf')
+  })
+}
+</script>
+</body>
+</html>

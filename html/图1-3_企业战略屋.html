@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-3 企业战略屋 — 手机厂商战略蓝图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f8fafc;
+    font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', monospace;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    max-width: 1160px;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 36px 30px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  .toolbar {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .toolbar button {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .toolbar button:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #94a3b8;
+  }
+  .header {
+    margin-bottom: 20px;
+    padding-right: 200px;
+  }
+  .header .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.3px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 5px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+  .header .label-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+    background: #475569;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    background: #ffffff;
+  }
+  .cards-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .info-card {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: box-shadow 0.15s;
+  }
+  .info-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .info-card .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-card .card-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .info-card .card-item {
+    font-size: 11.5px;
+    color: #475569;
+    line-height: 1.6;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .info-card .card-item::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 8px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #94a3b8;
+  }
+  .info-card .card-en {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: 2px;
+  }
+  .cards-row .card-violet .card-title .dot { background: #7c3aed; }
+  .cards-row .card-emerald .card-title .dot { background: #059669; }
+  .cards-row .card-cyan .card-title .dot { background: #0891b2; }
+
+  @media (max-width: 800px) {
+    .container { padding: 18px 14px; }
+    .header { padding-right: 0; }
+    .header .title { font-size: 16px; }
+    .toolbar { position: static; justify-content: flex-end; margin-bottom: 10px; }
+    .cards-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="diagram-container">
+  <div class="toolbar">
+    <button onclick="copySVG()">复制</button>
+    <button onclick="exportPNG()">PNG</button>
+    <button onclick="exportPDF()">PDF</button>
+  </div>
+
+  <div class="header">
+    <div class="title">
+      <span class="label-tag">图1-3</span>
+      企业战略屋 (Strategy House) — 手机厂商战略蓝图
+    </div>
+    <div class="subtitle">屋顶 · 支柱 · 地基 — 从愿景到落地能力的战略分解</div>
+  </div>
+
+  <svg viewBox="0 0 1100 680" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace">
+    <defs>
+      <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1e293b"/>
+        <stop offset="100%" stop-color="#334155"/>
+      </linearGradient>
+      <linearGradient id="pillar1Grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgba(217,119,6,0.12)"/>
+        <stop offset="100%" stop-color="rgba(217,119,6,0.06)"/>
+      </linearGradient>
+      <linearGradient id="pillar2Grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgba(8,145,178,0.12)"/>
+        <stop offset="100%" stop-color="rgba(8,145,178,0.06)"/>
+      </linearGradient>
+      <linearGradient id="pillar3Grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="rgba(5,150,105,0.12)"/>
+        <stop offset="100%" stop-color="rgba(5,150,105,0.06)"/>
+      </linearGradient>
+      <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.10"/>
+      </filter>
+      <filter id="shadowLight" x="-4%" y="-4%" width="108%" height="112%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#1e293b" flood-opacity="0.06"/>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1100" height="680" fill="#ffffff"/>
+    <rect width="1100" height="680" fill="url(#grid)"/>
+
+    <!-- ==================== ROOF (屋顶) ==================== -->
+    <g filter="url(#shadow)">
+      <!-- Roof trapezoid -->
+      <polygon points="240,15 860,15 1000,105 100,105" fill="url(#roofGrad)" stroke="#0f172a" stroke-width="1.5"/>
+      <!-- Roof ridge line -->
+      <line x1="240" y1="15" x2="860" y2="15" stroke="#475569" stroke-width="2"/>
+      <!-- Inner highlight -->
+      <polygon points="260,20 840,20 970,100 130,100" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+
+      <!-- Vision text -->
+      <text x="550" y="50" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle" letter-spacing="1">成为以用户导向与设计驱动、全球领先的科技品牌</text>
+      <text x="550" y="72" font-size="10" font-weight="400" fill="#94a3b8" text-anchor="middle" letter-spacing="0.5">To be a user-centric, design-driven, globally leading technology brand</text>
+      <!-- Decorative line under vision -->
+      <line x1="350" y1="85" x2="750" y2="85" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    </g>
+
+    <!-- Roof label -->
+    <rect x="480" y="94" width="140" height="20" rx="4" fill="#0f172a"/>
+    <text x="550" y="108" font-size="10" font-weight="600" fill="#f8fafc" text-anchor="middle">战略愿景 Strategic Vision</text>
+
+    <!-- ==================== PILLAR LABELS (above pillars) ==================== -->
+    <!-- Downward arrows from roof to pillars -->
+    <polygon points="270,116 240,130 300,130" fill="#d97706" opacity="0.7"/>
+    <polygon points="550,116 520,130 580,130" fill="#0891b2" opacity="0.7"/>
+    <polygon points="830,116 800,130 860,130" fill="#059669" opacity="0.7"/>
+
+    <!-- ==================== PILLAR 1: 高端突破 ==================== -->
+    <g transform="translate(120, 135)" filter="url(#shadowLight)">
+      <!-- Pillar body -->
+      <rect x="0" y="0" width="260" height="325" rx="8" fill="url(#pillar1Grad)" stroke="#d97706" stroke-width="1.5"/>
+      <!-- Pillar capital -->
+      <rect x="0" y="0" width="260" height="44" rx="8" fill="rgba(217,119,6,0.18)"/>
+      <rect x="0" y="30" width="260" height="14" fill="rgba(217,119,6,0.18)"/>
+      <text x="130" y="18" font-size="13" font-weight="700" fill="#92400e" text-anchor="middle">高端突破</text>
+      <text x="130" y="33" font-size="9" font-weight="400" fill="#b45309" text-anchor="middle">Premium Breakthrough</text>
+
+      <!-- Divider -->
+      <line x1="16" y1="48" x2="244" y2="48" stroke="#d97706" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+      <!-- Goal -->
+      <rect x="16" y="58" width="228" height="32" rx="5" fill="rgba(217,119,6,0.06)" stroke="rgba(217,119,6,0.2)" stroke-width="0.8"/>
+      <text x="130" y="72" font-size="11" font-weight="600" fill="#92400e" text-anchor="middle">$600+ 份额翻倍 · ASP 年增 8–10%</text>
+      <text x="130" y="84" font-size="8.5" fill="#b45309" text-anchor="middle">Double market share · ASP +8–10% YoY</text>
+
+      <!-- Metric items -->
+      <g transform="translate(16, 106)">
+        <circle cx="6" cy="6" r="4" fill="#d97706"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">旗舰影像系统</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">计算摄影 · 多摄融合 · 自研 ISP</text>
+      </g>
+      <g transform="translate(16, 150)">
+        <circle cx="6" cy="6" r="4" fill="#d97706"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">折叠屏旗舰</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">轻薄折叠 · 铰链创新 · UTG 玻璃</text>
+      </g>
+      <g transform="translate(16, 194)">
+        <circle cx="6" cy="6" r="4" fill="#d97706"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">端侧 AI 差异化</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">On-device LLM · AI 摄影 · 智能交互</text>
+      </g>
+      <g transform="translate(16, 238)">
+        <circle cx="6" cy="6" r="4" fill="#d97706"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">品牌高端化</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">品牌溢价 · 全球营销 · 高端渠道</text>
+      </g>
+
+      <!-- Bottom indicator -->
+      <rect x="80" y="290" width="100" height="20" rx="10" fill="rgba(217,119,6,0.12)"/>
+      <text x="130" y="304" font-size="9" font-weight="500" fill="#92400e" text-anchor="middle">战略支柱一</text>
+    </g>
+
+    <!-- ==================== PILLAR 2: 全球扩张 ==================== -->
+    <g transform="translate(420, 135)" filter="url(#shadowLight)">
+      <!-- Pillar body -->
+      <rect x="0" y="0" width="260" height="325" rx="8" fill="url(#pillar2Grad)" stroke="#0891b2" stroke-width="1.5"/>
+      <!-- Pillar capital -->
+      <rect x="0" y="0" width="260" height="44" rx="8" fill="rgba(8,145,178,0.18)"/>
+      <rect x="0" y="30" width="260" height="14" fill="rgba(8,145,178,0.18)"/>
+      <text x="130" y="18" font-size="13" font-weight="700" fill="#155e75" text-anchor="middle">全球扩张</text>
+      <text x="130" y="33" font-size="9" font-weight="400" fill="#0891b2" text-anchor="middle">Global Expansion</text>
+
+      <!-- Divider -->
+      <line x1="16" y1="48" x2="244" y2="48" stroke="#0891b2" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+      <!-- Goal -->
+      <rect x="16" y="58" width="228" height="32" rx="5" fill="rgba(8,145,178,0.06)" stroke="rgba(8,145,178,0.2)" stroke-width="0.8"/>
+      <text x="130" y="72" font-size="11" font-weight="600" fill="#155e75" text-anchor="middle">海外营收占比 35% → 50%</text>
+      <text x="130" y="84" font-size="8.5" fill="#0891b2" text-anchor="middle">Overseas revenue: 35% → 50% of total</text>
+
+      <!-- Metric items -->
+      <g transform="translate(16, 106)">
+        <circle cx="6" cy="6" r="4" fill="#0891b2"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">欧洲高端突破</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">运营商渠道 · 高端品牌认知建设</text>
+      </g>
+      <g transform="translate(16, 150)">
+        <circle cx="6" cy="6" r="4" fill="#0891b2"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">东南亚市场深耕</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">线上线下融合 · 本地化营销</text>
+      </g>
+      <g transform="translate(16, 194)">
+        <circle cx="6" cy="6" r="4" fill="#0891b2"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">拉美新兴覆盖</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">本地制造合作 · 入门到中端布局</text>
+      </g>
+      <g transform="translate(16, 238)">
+        <circle cx="6" cy="6" r="4" fill="#0891b2"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">本地化合规运营</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">数据驻留 · 当地团队 · 合规体系</text>
+      </g>
+
+      <!-- Bottom indicator -->
+      <rect x="80" y="290" width="100" height="20" rx="10" fill="rgba(8,145,178,0.12)"/>
+      <text x="130" y="304" font-size="9" font-weight="500" fill="#155e75" text-anchor="middle">战略支柱二</text>
+    </g>
+
+    <!-- ==================== PILLAR 3: 生态变现 ==================== -->
+    <g transform="translate(720, 135)" filter="url(#shadowLight)">
+      <!-- Pillar body -->
+      <rect x="0" y="0" width="260" height="325" rx="8" fill="url(#pillar3Grad)" stroke="#059669" stroke-width="1.5"/>
+      <!-- Pillar capital -->
+      <rect x="0" y="0" width="260" height="44" rx="8" fill="rgba(5,150,105,0.18)"/>
+      <rect x="0" y="30" width="260" height="14" fill="rgba(5,150,105,0.18)"/>
+      <text x="130" y="18" font-size="13" font-weight="700" fill="#065f46" text-anchor="middle">生态变现</text>
+      <text x="130" y="33" font-size="9" font-weight="400" fill="#059669" text-anchor="middle">Ecosystem Monetization</text>
+
+      <!-- Divider -->
+      <line x1="16" y1="48" x2="244" y2="48" stroke="#059669" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+      <!-- Goal -->
+      <rect x="16" y="58" width="228" height="32" rx="5" fill="rgba(5,150,105,0.06)" stroke="rgba(5,150,105,0.2)" stroke-width="0.8"/>
+      <text x="130" y="72" font-size="11" font-weight="600" fill="#065f46" text-anchor="middle">互联网服务收入 6% → 15%</text>
+      <text x="130" y="84" font-size="8.5" fill="#059669" text-anchor="middle">Internet services: 6% → 15% of revenue</text>
+
+      <!-- Metric items -->
+      <g transform="translate(16, 106)">
+        <circle cx="6" cy="6" r="4" fill="#059669"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">IoT 智能设备生态</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">活跃设备 &gt;5000 万 · 多品类覆盖</text>
+      </g>
+      <g transform="translate(16, 150)">
+        <circle cx="6" cy="6" r="4" fill="#059669"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">统一账号+跨端协同</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">无缝连接 · 数据互通 · 场景联动</text>
+      </g>
+      <g transform="translate(16, 194)">
+        <circle cx="6" cy="6" r="4" fill="#059669"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">内容与服务订阅</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">云服务 · 应用分发 · 内容付费</text>
+      </g>
+      <g transform="translate(16, 238)">
+        <circle cx="6" cy="6" r="4" fill="#059669"/>
+        <text x="16" y="10" font-size="11" font-weight="500" fill="#1e293b">用户社区+会员运营</text>
+        <text x="16" y="24" font-size="9" fill="#64748b">私域流量 · 品牌忠诚 · 复购提升</text>
+      </g>
+
+      <!-- Bottom indicator -->
+      <rect x="80" y="290" width="100" height="20" rx="10" fill="rgba(5,150,105,0.12)"/>
+      <text x="130" y="304" font-size="9" font-weight="500" fill="#065f46" text-anchor="middle">战略支柱三</text>
+    </g>
+
+    <!-- ==================== FOUNDATION TITLE ==================== -->
+    <g transform="translate(400, 468)">
+      <rect x="0" y="0" width="300" height="24" rx="4" fill="#475569"/>
+      <text x="150" y="16" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">地基能力 Foundation Capabilities</text>
+    </g>
+
+    <!-- ==================== FOUNDATION BLOCKS ==================== -->
+    <!-- Block 1: 研发协同 -->
+    <g transform="translate(90, 500)" filter="url(#shadowLight)">
+      <rect x="0" y="0" width="176" height="90" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+      <rect x="6" y="6" width="164" height="78" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <!-- Icon placeholder -->
+      <circle cx="88" cy="24" r="12" fill="rgba(255,255,255,0.08)"/>
+      <text x="88" y="28" font-size="10" fill="#94a3b8" text-anchor="middle">IPD</text>
+      <text x="88" y="52" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">研发协同</text>
+      <text x="88" y="70" font-size="9" fill="#94a3b8" text-anchor="middle">IPD + PLM</text>
+    </g>
+
+    <!-- Block 2: 数字供应链 -->
+    <g transform="translate(286, 500)" filter="url(#shadowLight)">
+      <rect x="0" y="0" width="176" height="90" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+      <rect x="6" y="6" width="164" height="78" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <circle cx="88" cy="24" r="12" fill="rgba(255,255,255,0.08)"/>
+      <text x="88" y="28" font-size="10" fill="#94a3b8" text-anchor="middle">SC</text>
+      <text x="88" y="52" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">数字供应链</text>
+      <text x="88" y="70" font-size="9" fill="#94a3b8" text-anchor="middle">S&amp;OP + MES</text>
+    </g>
+
+    <!-- Block 3: 全渠道中台 -->
+    <g transform="translate(482, 500)" filter="url(#shadowLight)">
+      <rect x="0" y="0" width="176" height="90" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+      <rect x="6" y="6" width="164" height="78" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <circle cx="88" cy="24" r="12" fill="rgba(255,255,255,0.08)"/>
+      <text x="88" y="28" font-size="10" fill="#94a3b8" text-anchor="middle">O2O</text>
+      <text x="88" y="52" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">全渠道中台</text>
+      <text x="88" y="70" font-size="9" fill="#94a3b8" text-anchor="middle">O2O + 会员</text>
+    </g>
+
+    <!-- Block 4: 数据中台 -->
+    <g transform="translate(678, 500)" filter="url(#shadowLight)">
+      <rect x="0" y="0" width="176" height="90" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+      <rect x="6" y="6" width="164" height="78" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <circle cx="88" cy="24" r="12" fill="rgba(255,255,255,0.08)"/>
+      <text x="88" y="28" font-size="10" fill="#94a3b8" text-anchor="middle">AI</text>
+      <text x="88" y="52" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">数据中台</text>
+      <text x="88" y="70" font-size="9" fill="#94a3b8" text-anchor="middle">全域入湖 + AI</text>
+    </g>
+
+    <!-- Block 5: 全球化IT -->
+    <g transform="translate(874, 500)" filter="url(#shadowLight)">
+      <rect x="0" y="0" width="176" height="90" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.2"/>
+      <rect x="6" y="6" width="164" height="78" rx="4" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <circle cx="88" cy="24" r="12" fill="rgba(255,255,255,0.08)"/>
+      <text x="88" y="28" font-size="10" fill="#94a3b8" text-anchor="middle">IT</text>
+      <text x="88" y="52" font-size="12" font-weight="600" fill="#f1f5f9" text-anchor="middle">全球化 IT</text>
+      <text x="88" y="70" font-size="9" fill="#94a3b8" text-anchor="middle">混合云 + 合规</text>
+    </g>
+
+    <!-- ==================== CONNECTING ELEMENTS ==================== -->
+
+    <!-- Vertical lines from roof to foundation (pillar edges) -->
+    <!-- Left edge -->
+    <line x1="120" y1="105" x2="120" y2="500" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.5"/>
+    <line x1="380" y1="105" x2="380" y2="500" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.5"/>
+    <!-- Right edge of foundation -->
+    <line x1="1050" y1="105" x2="1050" y2="500" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.5"/>
+
+    <!-- Arrows from pillars to foundation -->
+    <g opacity="0.6">
+      <!-- Arrow 1: under pillar 1 -->
+      <polygon points="250,462 240,472 260,472" fill="#d97706"/>
+      <!-- Arrow 2: under pillar 2 -->
+      <polygon points="550,462 540,472 560,472" fill="#0891b2"/>
+      <!-- Arrow 3: under pillar 3 -->
+      <polygon points="850,462 840,472 860,472" fill="#059669"/>
+    </g>
+
+    <!-- Pillar base lines -->
+    <line x1="120" y1="462" x2="380" y2="462" stroke="#d97706" stroke-width="1" opacity="0.3"/>
+    <line x1="420" y1="462" x2="680" y2="462" stroke="#0891b2" stroke-width="1" opacity="0.3"/>
+    <line x1="720" y1="462" x2="980" y2="462" stroke="#059669" stroke-width="1" opacity="0.3"/>
+
+    <!-- Foundation connectors -->
+    <line x1="266" y1="500" x2="266" y2="508" stroke="#475569" stroke-width="1.5"/>
+    <line x1="462" y1="500" x2="462" y2="508" stroke="#475569" stroke-width="1.5"/>
+    <line x1="658" y1="500" x2="658" y2="508" stroke="#475569" stroke-width="1.5"/>
+    <line x1="854" y1="500" x2="854" y2="508" stroke="#475569" stroke-width="1.5"/>
+
+    <!-- Ground line -->
+    <line x1="50" y1="597" x2="1050" y2="597" stroke="#475569" stroke-width="2"/>
+    <line x1="50" y1="603" x2="1050" y2="603" stroke="#cbd5e1" stroke-width="1.5"/>
+  </svg>
+
+  <!-- Info Cards -->
+  <div class="cards-row">
+    <div class="info-card card-violet">
+      <div class="card-title"><span class="dot"></span>三大战略支柱 <span class="card-en">Three Strategic Pillars</span></div>
+      <div class="card-item">高端突破：$600+ 份额翻倍，ASP 年增 8–10%</div>
+      <div class="card-item">全球扩张：海外营收占比 35%→50%，三区布局</div>
+      <div class="card-item">生态变现：互联网服务收入 6%→15%，IoT 设备 &gt;5000万</div>
+      <div class="card-item">三大支柱相互支撑，形成战略闭环</div>
+    </div>
+    <div class="info-card card-emerald">
+      <div class="card-title"><span class="dot"></span>差异化竞争锚点 <span class="card-en">Differentiation Anchors</span></div>
+      <div class="card-item">影像算法平台 — 计算摄影+自研 ISP 构建壁垒</div>
+      <div class="card-item">渠道中台 + 门店数字化 — O2O 全链路数字化</div>
+      <div class="card-item">S&amp;OP 柔性供应链 — 需求驱动+快速响应</div>
+      <div class="card-item">用户社区 + 会员运营 — 私域流量高粘性</div>
+    </div>
+    <div class="info-card card-cyan">
+      <div class="card-title"><span class="dot"></span>地基能力建设 <span class="card-en">Foundation Capabilities</span></div>
+      <div class="card-item">主数据统一 MDM — 全业务域数据标准化</div>
+      <div class="card-item">IPD 全流程数字化 — 研发效率与质量提升</div>
+      <div class="card-item">混合云 + 容器化 — 弹性扩展与全球化部署</div>
+      <div class="card-item">零信任安全体系 — 全球化合规与数据防护</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const container = document.getElementById('diagram-container');
+
+async function copySVG() {
+  try {
+    const svg = container.querySelector('svg');
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    const html = new XMLSerializer().serializeToString(clone);
+    await navigator.clipboard.writeText(html);
+    showToast('SVG copied to clipboard');
+  } catch(e) {
+    showToast('Copy failed: ' + e.message);
+  }
+}
+
+async function exportPNG() {
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const link = document.createElement('a');
+    link.download = '图1-3_企业战略屋.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG exported');
+  } catch(e) {
+    showToast('PNG export failed: ' + e.message);
+  }
+}
+
+async function exportPDF() {
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4');
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图1-3_企业战略屋.pdf');
+    showToast('PDF exported');
+  } catch(e) {
+    showToast('PDF export failed: ' + e.message);
+  }
+}
+
+function showToast(msg) {
+  let t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {
+    position: 'fixed', bottom: '30px', left: '50%', transform: 'translateX(-50%)',
+    background: '#1e293b', color: '#fff', padding: '10px 22px', borderRadius: '8px',
+    fontFamily: "'JetBrains Mono',monospace", fontSize: '13px', zIndex: '999',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)', opacity: '0', transition: 'opacity 0.3s'
+  });
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity = '1'; });
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2000);
+}
+</script>
+</body>
+</html>

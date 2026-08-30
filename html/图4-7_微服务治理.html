@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图4-7 微服务与API治理</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif;padding:30px 20px 60px;color:#1e293b}
+.toolbar{position:sticky;top:0;z-index:100;background:#ffffffdd;backdrop-filter:blur(8px);border:1px solid #e2e8f0;border-radius:12px;padding:10px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;max-width:1440px;margin-left:auto;margin-right:auto}
+.toolbar .label{font-size:13px;color:#475569;font-weight:500;margin-right:8px}
+.toolbar button{font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif;padding:7px 18px;border:1px solid #e2e8f0;border-radius:8px;background:#ffffff;color:#1e293b;font-size:13px;cursor:pointer;transition:all .15s;font-weight:500}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8}
+.toolbar button.primary{background:#1e293b;color:#ffffff;border-color:#1e293b}
+.toolbar button.primary:hover{background:#0f172a}
+.container{max-width:1440px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;padding:30px 30px 20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.diagram-title{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:4px;text-align:center}
+.diagram-subtitle{font-size:13px;color:#475569;text-align:center;margin-bottom:20px;letter-spacing:.3px}
+svg{display:block;margin:0 auto;width:100%;height:auto;max-width:1250px}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="label">图4-7</span>
+  <button onclick="copyAsImage()">Copy</button>
+  <button class="primary" onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+  <span style="flex:1"></span>
+  <span style="font-size:11px;color:#94a3b8">微服务治理</span>
+</div>
+
+<div class="container" id="capture">
+  <div class="diagram-title">微服务与API治理</div>
+  <div class="diagram-subtitle">Service Mesh · API Catalog · 服务全生命周期治理</div>
+
+  <svg viewBox="0 0 1250 750" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',system-ui,sans-serif">
+    <defs>
+      <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+      </marker>
+      <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/>
+      </filter>
+      <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="100%" stop-color="#f8fafc"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1250" height="750" fill="#ffffff"/>
+    <rect width="1250" height="750" fill="url(#grid)"/>
+
+    <!-- ===== SECTION 1: 微服务治理全景 ===== -->
+    <!-- Section background -->
+    <rect x="25" y="60" width="1200" height="160" rx="10" fill="rgba(59,130,246,.03)" stroke="rgba(59,130,246,.12)" stroke-width="1" stroke-dasharray="6,3"/>
+    <text x="625" y="48" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">微服务治理全景 / Service Mesh Governance</text>
+
+    <!-- Box 1: 服务注册发现 -->
+    <rect x="45" y="85" width="175" height="70" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="55" y="95" width="24" height="24" rx="4" fill="rgba(59,130,246,.1)"/>
+    <text x="67" y="112" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="700">SD</text>
+    <text x="88" y="107" fill="#1e293b" font-size="11" font-weight="600">服务注册发现</text>
+    <text x="88" y="122" fill="#64748b" font-size="9">Consul / Nacos</text>
+    <text x="88" y="135" fill="#94a3b8" font-size="8">健康检查 · 负载均衡</text>
+
+    <!-- Box 2: 配置中心 -->
+    <rect x="240" y="85" width="175" height="70" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="250" y="95" width="24" height="24" rx="4" fill="rgba(139,92,246,.1)"/>
+    <text x="262" y="112" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="700">CF</text>
+    <text x="283" y="107" fill="#1e293b" font-size="11" font-weight="600">配置中心</text>
+    <text x="283" y="122" fill="#64748b" font-size="9">Apollo / Nacos</text>
+    <text x="283" y="135" fill="#94a3b8" font-size="8">动态配置 · 热更新</text>
+
+    <!-- Box 3: 熔断限流 -->
+    <rect x="435" y="85" width="175" height="70" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="445" y="95" width="24" height="24" rx="4" fill="rgba(239,68,68,.1)"/>
+    <text x="457" y="112" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">CB</text>
+    <text x="478" y="107" fill="#1e293b" font-size="11" font-weight="600">熔断限流</text>
+    <text x="478" y="122" fill="#64748b" font-size="9">Sentinel / Hystrix</text>
+    <text x="478" y="135" fill="#94a3b8" font-size="8">流量控制 · 降级熔断</text>
+
+    <!-- Box 4: 链路追踪 -->
+    <rect x="630" y="85" width="175" height="70" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="640" y="95" width="24" height="24" rx="4" fill="rgba(245,158,11,.1)"/>
+    <text x="652" y="112" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="700">AP</text>
+    <text x="673" y="107" fill="#1e293b" font-size="11" font-weight="600">链路追踪</text>
+    <text x="673" y="122" fill="#64748b" font-size="9">SkyWalking / Jaeger</text>
+    <text x="673" y="135" fill="#94a3b8" font-size="8">分布式追踪 · 拓扑</text>
+
+    <!-- Box 5: 灰度发布 -->
+    <rect x="825" y="85" width="175" height="70" rx="8" fill="#ffffff" stroke="#14b8a6" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="835" y="95" width="24" height="24" rx="4" fill="rgba(20,184,166,.1)"/>
+    <text x="847" y="112" text-anchor="middle" fill="#14b8a6" font-size="12" font-weight="700">GR</text>
+    <text x="868" y="107" fill="#1e293b" font-size="11" font-weight="600">灰度发布</text>
+    <text x="868" y="122" fill="#64748b" font-size="9">Istio / Envoy</text>
+    <text x="868" y="135" fill="#94a3b8" font-size="8">流量泳道 · 蓝绿</text>
+
+    <!-- Box 6: 日志聚合 -->
+    <rect x="1020" y="85" width="185" height="70" rx="8" fill="#ffffff" stroke="#6366f1" stroke-width="1.2" filter="url(#shadow)"/>
+    <rect x="1030" y="95" width="24" height="24" rx="4" fill="rgba(99,102,241,.1)"/>
+    <text x="1042" y="112" text-anchor="middle" fill="#6366f1" font-size="12" font-weight="700">LG</text>
+    <text x="1063" y="107" fill="#1e293b" font-size="11" font-weight="600">日志聚合</text>
+    <text x="1063" y="122" fill="#64748b" font-size="9">ELK / Loki</text>
+    <text x="1063" y="135" fill="#94a3b8" font-size="8">全文检索 · 告警</text>
+
+    <!-- ===== SECTION 2: API全生命周期 ===== -->
+    <rect x="25" y="240" width="1200" height="130" rx="10" fill="rgba(16,185,129,.03)" stroke="rgba(16,185,129,.12)" stroke-width="1" stroke-dasharray="6,3"/>
+    <text x="625" y="258" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">API全生命周期 / Full Lifecycle</text>
+
+    <!-- Stage boxes in a pipeline -->
+    <!-- Stage 1: 设计 -->
+    <rect x="35" y="280" width="130" height="50" rx="8" fill="rgba(59,130,246,.08)" stroke="#3b82f6" stroke-width="1.2"/>
+    <text x="100" y="300" text-anchor="middle" fill="#2563eb" font-size="11" font-weight="600">设计</text>
+    <text x="100" y="316" text-anchor="middle" fill="#64748b" font-size="9">OpenAPI 3.0</text>
+    <path d="M 165 305 L 185 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 2: 注册 -->
+    <rect x="195" y="280" width="130" height="50" rx="8" fill="rgba(139,92,246,.08)" stroke="#8b5cf6" stroke-width="1.2"/>
+    <text x="260" y="300" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="600">注册</text>
+    <text x="260" y="316" text-anchor="middle" fill="#64748b" font-size="9">API Catalog</text>
+    <path d="M 325 305 L 345 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 3: 发布 -->
+    <rect x="355" y="280" width="130" height="50" rx="8" fill="rgba(16,185,129,.08)" stroke="#14b8a6" stroke-width="1.2"/>
+    <text x="420" y="300" text-anchor="middle" fill="#059669" font-size="11" font-weight="600">发布</text>
+    <text x="420" y="316" text-anchor="middle" fill="#64748b" font-size="9">API Gateway</text>
+    <path d="M 485 305 L 505 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 4: 订阅 -->
+    <rect x="515" y="280" width="130" height="50" rx="8" fill="rgba(245,158,11,.08)" stroke="#f59e0b" stroke-width="1.2"/>
+    <text x="580" y="300" text-anchor="middle" fill="#d97706" font-size="11" font-weight="600">订阅</text>
+    <text x="580" y="316" text-anchor="middle" fill="#64748b" font-size="9">AppKey授权</text>
+    <path d="M 645 305 L 665 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 5: 监控 -->
+    <rect x="675" y="280" width="130" height="50" rx="8" fill="rgba(239,68,68,.08)" stroke="#ef4444" stroke-width="1.2"/>
+    <text x="740" y="300" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="600">监控</text>
+    <text x="740" y="316" text-anchor="middle" fill="#64748b" font-size="9">SLA · 调用量</text>
+    <path d="M 805 305 L 825 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 6: 版本管理 -->
+    <rect x="835" y="280" width="145" height="50" rx="8" fill="rgba(99,102,241,.08)" stroke="#6366f1" stroke-width="1.2"/>
+    <text x="907" y="300" text-anchor="middle" fill="#6366f1" font-size="11" font-weight="600">版本管理</text>
+    <text x="907" y="316" text-anchor="middle" fill="#64748b" font-size="9">版本化·兼容</text>
+    <path d="M 980 305 L 1000 305" fill="none" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- Stage 7: 退役 -->
+    <rect x="1010" y="280" width="130" height="50" rx="8" fill="rgba(100,116,139,.08)" stroke="#64748b" stroke-width="1.2"/>
+    <text x="1075" y="300" text-anchor="middle" fill="#475569" font-size="11" font-weight="600">退役</text>
+    <text x="1075" y="316" text-anchor="middle" fill="#64748b" font-size="9">下架·迁移</text>
+
+    <!-- Lifecycle feedback loop arrow back from 版本管理 to 设计 -->
+    <path d="M 980 295 C 1000 240, 50 240, 75 295" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrowG)"/>
+    <text x="540" y="244" text-anchor="middle" fill="#94a3b8" font-size="9">持续迭代反馈闭环</text>
+
+    <!-- ===== SECTION 3: API目录门户 ===== -->
+    <rect x="25" y="390" width="1200" height="330" rx="10" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.12)" stroke-width="1" stroke-dasharray="6,3"/>
+    <text x="625" y="408" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700">API目录门户 / API Catalog Portal</text>
+
+    <!-- Mock browser frame -->
+    <rect x="50" y="425" width="1150" height="275" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#shadow)"/>
+
+    <!-- Browser title bar -->
+    <rect x="50" y="425" width="1150" height="30" rx="8" fill="#f1f5f9"/>
+    <rect x="50" y="445" width="1150" height="10" fill="#f1f5f9"/>
+    <circle cx="72" cy="440" r="5" fill="#ef4444"/>
+    <circle cx="88" cy="440" r="5" fill="#f59e0b"/>
+    <circle cx="104" cy="440" r="5" fill="#10b981"/>
+    <text x="625" y="444" text-anchor="middle" fill="#64748b" font-size="10">API Catalog · 企业内部API市场</text>
+
+    <!-- Search bar -->
+    <rect x="70" y="468" width="500" height="30" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="82" y="489" fill="#94a3b8" font-size="10">搜索API名称、标签、描述...</text>
+
+    <!-- Category tabs -->
+    <rect x="70" y="508" width="110" height="28" rx="6" fill="rgba(59,130,246,.08)" stroke="rgba(59,130,246,.2)" stroke-width="1"/>
+    <text x="125" y="527" text-anchor="middle" fill="#2563eb" font-size="10" font-weight="600">业务服务</text>
+
+    <rect x="190" y="508" width="110" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="245" y="527" text-anchor="middle" fill="#64748b" font-size="10">数据服务</text>
+
+    <rect x="310" y="508" width="110" height="28" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="365" y="527" text-anchor="middle" fill="#64748b" font-size="10">技术服务</text>
+
+    <!-- API list header -->
+    <rect x="70" y="546" width="1110" height="24" rx="4" fill="#f8fafc"/>
+    <text x="90" y="563" fill="#475569" font-size="9" font-weight="600">API名称</text>
+    <text x="260" y="563" fill="#475569" font-size="9" font-weight="600">分类</text>
+    <text x="400" y="563" fill="#475569" font-size="9" font-weight="600">提供方</text>
+    <text x="550" y="563" fill="#475569" font-size="9" font-weight="600">状态</text>
+    <text x="650" y="563" fill="#475569" font-size="9" font-weight="600">SLA</text>
+    <text x="780" y="563" fill="#475569" font-size="9" font-weight="600">调用量/日</text>
+    <text x="950" y="563" fill="#475569" font-size="9" font-weight="600">操作</text>
+
+    <!-- API Row 1 -->
+    <rect x="70" y="570" width="1110" height="28" fill="#ffffff"/>
+    <text x="90" y="589" fill="#1e293b" font-size="10">订单查询接口</text>
+    <text x="260" y="589" fill="#3b82f6" font-size="9">业务服务</text>
+    <text x="400" y="589" fill="#64748b" font-size="9">OMS中台</text>
+    <rect x="545" y="576" width="50" height="16" rx="4" fill="rgba(16,185,129,.1)"/>
+    <text x="570" y="588" text-anchor="middle" fill="#059669" font-size="8">已发布</text>
+    <text x="650" y="589" fill="#64748b" font-size="9">99.95%</text>
+    <text x="780" y="589" fill="#64748b" font-size="9">1,285,000</text>
+    <rect x="950" y="575" width="50" height="18" rx="4" fill="rgba(59,130,246,.08)" stroke="rgba(59,130,246,.2)" stroke-width="0.5"/>
+    <text x="975" y="588" text-anchor="middle" fill="#2563eb" font-size="8">订阅</text>
+
+    <!-- API Row 2 -->
+    <rect x="70" y="598" width="1110" height="28" fill="#f8fafc"/>
+    <text x="90" y="617" fill="#1e293b" font-size="10">库存实时查询</text>
+    <text x="260" y="617" fill="#3b82f6" font-size="9">业务服务</text>
+    <text x="400" y="617" fill="#64748b" font-size="9">WMS中台</text>
+    <rect x="545" y="604" width="50" height="16" rx="4" fill="rgba(16,185,129,.1)"/>
+    <text x="570" y="616" text-anchor="middle" fill="#059669" font-size="8">已发布</text>
+    <text x="650" y="617" fill="#64748b" font-size="9">99.99%</text>
+    <text x="780" y="617" fill="#64748b" font-size="9">3,450,000</text>
+    <rect x="950" y="603" width="50" height="18" rx="4" fill="rgba(59,130,246,.08)" stroke="rgba(59,130,246,.2)" stroke-width="0.5"/>
+    <text x="975" y="616" text-anchor="middle" fill="#2563eb" font-size="8">订阅</text>
+
+    <!-- API Row 3 -->
+    <rect x="70" y="626" width="1110" height="28" fill="#ffffff"/>
+    <text x="90" y="645" fill="#1e293b" font-size="10">BOM主数据同步</text>
+    <text x="260" y="645" fill="#8b5cf6" font-size="9">数据服务</text>
+    <text x="400" y="645" fill="#64748b" font-size="9">PLM</text>
+    <rect x="545" y="632" width="50" height="16" rx="4" fill="rgba(16,185,129,.1)"/>
+    <text x="570" y="644" text-anchor="middle" fill="#059669" font-size="8">已发布</text>
+    <text x="650" y="645" fill="#64748b" font-size="9">99.90%</text>
+    <text x="780" y="645" fill="#64748b" font-size="9">86,000</text>
+    <rect x="950" y="631" width="50" height="18" rx="4" fill="rgba(16,185,129,.08)" stroke="rgba(16,185,129,.2)" stroke-width="0.5"/>
+    <text x="975" y="644" text-anchor="middle" fill="#059669" font-size="8">已订阅</text>
+
+    <!-- API Row 4 -->
+    <rect x="70" y="654" width="1110" height="28" fill="#f8fafc"/>
+    <text x="90" y="673" fill="#1e293b" font-size="10">物流轨迹推送</text>
+    <text x="260" y="673" fill="#ec4899" font-size="9">技术服务</text>
+    <text x="400" y="673" fill="#64748b" font-size="9">TMS</text>
+    <rect x="545" y="660" width="50" height="16" rx="4" fill="rgba(16,185,129,.1)"/>
+    <text x="570" y="672" text-anchor="middle" fill="#059669" font-size="8">已发布</text>
+    <text x="650" y="673" fill="#64748b" font-size="9">99.80%</text>
+    <text x="780" y="673" fill="#64748b" font-size="9">520,000</text>
+    <rect x="950" y="659" width="50" height="18" rx="4" fill="rgba(59,130,246,.08)" stroke="rgba(59,130,246,.2)" stroke-width="0.5"/>
+    <text x="975" y="672" text-anchor="middle" fill="#2563eb" font-size="8">订阅</text>
+
+    <!-- Pagination -->
+    <rect x="70" y="690" width="1110" height="1" fill="#e2e8f0"/>
+    <text x="625" y="680" text-anchor="middle" fill="#94a3b8" font-size="9">共 42 个API · 第1/5页 &lt; 1 2 3 4 5 &gt;</text>
+  </svg>
+
+  <!-- Legend -->
+  <div style="display:flex;justify-content:center;gap:28px;margin-top:10px;flex-wrap:wrap">
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#475569">
+      <span style="width:12px;height:12px;border-radius:3px;background:rgba(59,130,246,.1);border:1px solid #3b82f6"></span> 治理组件
+    </span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#475569">
+      <span style="width:12px;height:12px;border-radius:3px;background:rgba(16,185,129,.08);border:1px solid #14b8a6"></span> API生命周期
+    </span>
+    <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#475569">
+      <span style="width:12px;height:12px;border-radius:3px;background:rgba(99,102,241,.08);border:1px solid #6366f1"></span> API门户
+    </span>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+
+<script>
+function getCaptureElement(){return document.getElementById('capture')}
+function copyAsImage(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    canvas.toBlob(blob=>{navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(()=>{
+      const btn=event&&event.target?event.target:document.querySelector('.toolbar button:first-child');
+      if(btn){const o=btn.textContent;btn.textContent='Copied!';btn.style.background='#d1fae5';btn.style.borderColor='#34d399';setTimeout(()=>{btn.textContent=o;btn.style.background='';btn.style.borderColor=''},2000)}
+    }).catch(()=>alert('Copy failed.'))})
+  })
+}
+function downloadPNG(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    const link=document.createElement('a');link.download='图4-7_微服务治理.png';link.href=canvas.toDataURL('image/png');link.click()
+  })
+}
+function downloadPDF(){
+  html2canvas(getCaptureElement(),{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(canvas=>{
+    const imgData=canvas.toDataURL('image/png');
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF('l','mm','a3');
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=canvas.height*pdfW/canvas.width;
+    pdf.addImage(imgData,'PNG',0,0,pdfW,pdfH);
+    pdf.save('图4-7_微服务治理.pdf')
+  })
+}
+</script>
+</body>
+</html>

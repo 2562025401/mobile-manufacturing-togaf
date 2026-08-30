@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图6-2 项目优先级</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">项目组合优先级矩阵 — 战略价值 × 实施可行性 · 气泡大小=投资规模</div>
+<svg viewBox="0 0 1200 750" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+</defs>
+<rect width="1200" height="750" fill="#f8fafc"/><rect width="1200" height="750" fill="url(#grid)"/>
+
+<!-- Quadrant labeling -->
+<text x="100" y="60" fill="#475569" font-size="14" font-weight="700">战略价值</text>
+<text x="100" y="80" fill="#94a3b8" font-size="10">Strategic Value</text>
+<text x="60" y="370" fill="#475569" font-size="14" font-weight="700" transform="rotate(-90,60,370)">实施可行性</text>
+<text x="60" y="385" fill="#94a3b8" font-size="10" transform="rotate(-90,60,385)">Implementation Feasibility</text>
+
+<!-- Quadrant backgrounds -->
+<rect x="100" y="100" width="500" height="300" fill="rgba(16,185,129,.03)" rx="4"/>
+<rect x="600" y="100" width="500" height="300" fill="rgba(59,130,246,.03)" rx="4"/>
+<rect x="100" y="400" width="500" height="300" fill="rgba(245,158,11,.03)" rx="4"/>
+<rect x="600" y="400" width="500" height="300" fill="rgba(239,68,68,.03)" rx="4"/>
+
+<!-- Quadrant labels -->
+<text x="350" y="120" text-anchor="middle" fill="#94a3b8" font-size="10">(保留/观察)</text>
+<text x="850" y="120" text-anchor="middle" fill="#94a3b8" font-size="10">(重点项目)</text>
+<text x="350" y="420" text-anchor="middle" fill="#94a3b8" font-size="10">(低优先)</text>
+<text x="850" y="420" text-anchor="middle" fill="#94a3b8" font-size="10">(快速取胜)</text>
+
+<!-- Axis lines -->
+<line x1="100" y1="400" x2="1100" y2="400" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
+<line x1="600" y1="100" x2="600" y2="700" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
+
+<!-- ===== P0 Projects (Red) ===== -->
+<!-- K8s: high-high, large -->
+<circle cx="750" cy="230" r="32" fill="rgba(239,68,68,.2)" stroke="rgba(239,68,68,.5)" stroke-width="1.5"/>
+<circle cx="750" cy="230" r="18" fill="rgba(239,68,68,.35)"/>
+<text x="750" y="228" text-anchor="middle" fill="#b91c1c" font-size="7" font-weight="600">K8s</text>
+<text x="750" y="240" text-anchor="middle" fill="#b91c1c" font-size="6">平台</text>
+
+<!-- DevOps: high-high, large -->
+<circle cx="800" cy="280" r="28" fill="rgba(239,68,68,.2)" stroke="rgba(239,68,68,.5)" stroke-width="1.5"/>
+<circle cx="800" cy="280" r="16" fill="rgba(239,68,68,.35)"/>
+<text x="800" y="278" text-anchor="middle" fill="#b91c1c" font-size="7" font-weight="600">DevOps</text>
+<text x="800" y="290" text-anchor="middle" fill="#b91c1c" font-size="6">CI/CD</text>
+
+<!-- ERP: high-high, large -->
+<circle cx="820" cy="160" r="35" fill="rgba(239,68,68,.2)" stroke="rgba(239,68,68,.5)" stroke-width="1.5"/>
+<circle cx="820" cy="160" r="20" fill="rgba(239,68,68,.35)"/>
+<text x="820" y="158" text-anchor="middle" fill="#b91c1c" font-size="7" font-weight="600">ERP</text>
+<text x="820" y="170" text-anchor="middle" fill="#b91c1c" font-size="6">升级</text>
+
+<!-- 同城双活: high-high, medium -->
+<circle cx="700" cy="190" r="24" fill="rgba(239,68,68,.2)" stroke="rgba(239,68,68,.5)" stroke-width="1.5"/>
+<circle cx="700" cy="190" r="14" fill="rgba(239,68,68,.35)"/>
+<text x="700" y="188" text-anchor="middle" fill="#b91c1c" font-size="6" font-weight="600">双活</text>
+<text x="700" y="200" text-anchor="middle" fill="#b91c1c" font-size="5">容灾</text>
+
+<!-- ===== P1 Projects (Yellow) ===== -->
+<!-- 安全: medium-high, medium -->
+<circle cx="650" cy="310" r="26" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="650" cy="310" r="15" fill="rgba(245,158,11,.35)"/>
+<text x="650" y="308" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">安全</text>
+<text x="650" y="320" text-anchor="middle" fill="#92400e" font-size="5">体系</text>
+
+<!-- 混合云: medium-high, medium -->
+<circle cx="700" cy="350" r="22" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="700" cy="350" r="12" fill="rgba(245,158,11,.35)"/>
+<text x="700" y="347" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">混合</text>
+<text x="700" y="358" text-anchor="middle" fill="#92400e" font-size="5">云</text>
+
+<!-- 微服务: high-high, large -->
+<circle cx="850" cy="240" r="30" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="850" cy="240" r="17" fill="rgba(245,158,11,.35)"/>
+<text x="850" y="238" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">微服务</text>
+<text x="850" y="250" text-anchor="middle" fill="#92400e" font-size="5">治理</text>
+
+<!-- 海外OMS: medium-high, medium -->
+<circle cx="660" cy="270" r="20" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="660" cy="270" r="11" fill="rgba(245,158,11,.35)"/>
+<text x="660" y="267" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">海外</text>
+<text x="660" y="279" text-anchor="middle" fill="#92400e" font-size="5">OMS</text>
+
+<!-- 数据平台: medium-high, large -->
+<circle cx="740" cy="370" r="28" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="740" cy="370" r="16" fill="rgba(245,158,11,.35)"/>
+<text x="740" y="368" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">数据</text>
+<text x="740" y="380" text-anchor="middle" fill="#92400e" font-size="5">平台</text>
+
+<!-- 中台PaaS: high-medium, large -->
+<circle cx="870" cy="310" r="28" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="870" cy="310" r="16" fill="rgba(245,158,11,.35)"/>
+<text x="870" y="308" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">中台</text>
+<text x="870" y="320" text-anchor="middle" fill="#92400e" font-size="5">PaaS</text>
+
+<!-- 边缘MES: low-high, medium -->
+<circle cx="630" cy="450" r="22" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="630" cy="450" r="12" fill="rgba(245,158,11,.35)"/>
+<text x="630" y="447" text-anchor="middle" fill="#92400e" font-size="6" font-weight="600">边缘</text>
+<text x="630" y="459" text-anchor="middle" fill="#92400e" font-size="5">MES</text>
+
+<!-- 技术选型: medium-high, small -->
+<circle cx="680" cy="420" r="16" fill="rgba(245,158,11,.2)" stroke="rgba(245,158,11,.5)" stroke-width="1.5"/>
+<circle cx="680" cy="420" r="9" fill="rgba(245,158,11,.35)"/>
+<text x="680" y="418" text-anchor="middle" fill="#92400e" font-size="5" font-weight="600">技术</text>
+<text x="680" y="428" text-anchor="middle" fill="#92400e" font-size="5">治理</text>
+
+<!-- ===== P2 Projects (Blue) ===== -->
+<!-- CRM: low-high, medium -->
+<circle cx="750" cy="480" r="20" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="750" cy="480" r="11" fill="rgba(59,130,246,.35)"/>
+<text x="750" y="477" text-anchor="middle" fill="#1e40af" font-size="6" font-weight="600">CRM</text>
+<text x="750" y="489" text-anchor="middle" fill="#1e40af" font-size="5">升级</text>
+
+<!-- PLM: low-medium, medium -->
+<circle cx="700" cy="520" r="22" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="700" cy="520" r="12" fill="rgba(59,130,246,.35)"/>
+<text x="700" y="517" text-anchor="middle" fill="#1e40af" font-size="6" font-weight="600">PLM</text>
+<text x="700" y="529" text-anchor="middle" fill="#1e40af" font-size="5">升级</text>
+
+<!-- 组织转型: medium-low, medium -->
+<circle cx="620" cy="530" r="20" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="620" cy="530" r="11" fill="rgba(59,130,246,.35)"/>
+<text x="620" y="527" text-anchor="middle" fill="#1e40af" font-size="6" font-weight="600">组织</text>
+<text x="620" y="539" text-anchor="middle" fill="#1e40af" font-size="5">转型</text>
+
+<!-- 工厂复制: low, medium -->
+<circle cx="650" cy="580" r="18" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="650" cy="580" r="10" fill="rgba(59,130,246,.35)"/>
+<text x="650" y="577" text-anchor="middle" fill="#1e40af" font-size="5" font-weight="600">工厂</text>
+<text x="650" y="588" text-anchor="middle" fill="#1e40af" font-size="5">复制</text>
+
+<!-- AI平台: medium-low, large -->
+<circle cx="800" cy="550" r="26" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="800" cy="550" r="14" fill="rgba(59,130,246,.35)"/>
+<text x="800" y="547" text-anchor="middle" fill="#1e40af" font-size="6" font-weight="600">AI/ML</text>
+<text x="800" y="559" text-anchor="middle" fill="#1e40af" font-size="5">平台</text>
+
+<!-- 合规认证: low-low, small -->
+<circle cx="550" cy="580" r="14" fill="rgba(59,130,246,.2)" stroke="rgba(59,130,246,.5)" stroke-width="1.5"/>
+<circle cx="550" cy="580" r="8" fill="rgba(59,130,246,.35)"/>
+<text x="550" y="577" text-anchor="middle" fill="#1e40af" font-size="5" font-weight="600">合规</text>
+<text x="550" y="588" text-anchor="middle" fill="#1e40af" font-size="5">认证</text>
+
+<!-- ===== Legend ===== -->
+<rect x="40" y="650" width="1120" height="48" rx="6" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width="1"/>
+<text x="600" y="672" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">项目优先级矩阵解读</text>
+<circle cx="100" cy="690" r="10" fill="rgba(239,68,68,.3)" stroke="rgba(239,68,68,.5)" stroke-width="1"/><text x="115" y="694" fill="#b91c1c" font-size="8.5" font-weight="600">P0 (5个)</text><text x="170" y="694" fill="#475569" font-size="8">必须完成·高战略价值·高可行性</text>
+<circle cx="430" cy="690" r="10" fill="rgba(245,158,11,.3)" stroke="rgba(245,158,11,.5)" stroke-width="1"/><text x="445" y="694" fill="#92400e" font-size="8.5" font-weight="600">P1 (7个)</text><text x="500" y="694" fill="#475569" font-size="8">重要·中高价值·需逐步推进</text>
+<circle cx="760" cy="690" r="10" fill="rgba(59,130,246,.3)" stroke="rgba(59,130,246,.5)" stroke-width="1"/><text x="775" y="694" fill="#1e40af" font-size="8.5" font-weight="600">P2 (6个)</text><text x="830" y="694" fill="#475569" font-size="8">期望·中低价值·Y2/Y3启动</text>
+
+<rect x="40" y="708" width="1120" height="18" rx="4" fill="rgba(99,102,241,.02)" stroke="rgba(99,102,241,.05)" stroke-width=".5"/>
+<text x="600" y="721" text-anchor="middle" fill="#475569" font-size="8">气泡大小=投资规模(大=¥3000万+ · 中=¥1500-3000万 · 小=&lt;¥1500万) · 总投资预估: ¥3.5亿</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图6-2_项目优先级.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图6-2_项目优先级.pdf');});}
+</script>
+</body>
+</html>

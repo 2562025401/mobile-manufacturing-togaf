@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-5 数据治理组织与流程</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 24px; min-height: 100vh; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-self: flex-end; }
+.toolbar button { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.container { position: relative; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); overflow: hidden; }
+.container svg { display: block; }
+.status-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; margin-top: 8px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div style="width:100%;max-width:1310px;display:flex;flex-direction:column;align-items:center;">
+<div class="toolbar">
+  <button onclick="copyAsImage()">复制</button>
+  <button onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+</div>
+<div class="container" id="diagram">
+<svg viewBox="0 0 1250 740" xmlns="http://www.w3.org/2000/svg" style="width:1250px;height:740px;">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5" opacity="0.5"/>
+  </pattern>
+  <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+  </filter>
+  <filter id="shadow-md" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+  </marker>
+  <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#3b82f6"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="1250" height="740" fill="#ffffff"/>
+<rect width="1250" height="740" fill="url(#grid)"/>
+
+<!-- Title -->
+<text x="625" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a" letter-spacing="2">数据治理组织与流程</text>
+<text x="625" y="56" text-anchor="middle" font-size="12" fill="#64748b" letter-spacing="1">三级组织 · 四类流程 · 五维质量</text>
+<line x1="40" y1="66" x2="1210" y2="66" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- ===================== LEFT PANEL: 三级组织架构 ===================== -->
+<rect x="30" y="75" width="550" height="26" rx="4" fill="rgba(59,130,246,0.06)"/>
+<text x="305" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">三级组织架构</text>
+
+<!-- L1: 数据治理委员会 -->
+<rect x="55" y="115" width="500" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="55" y="115" width="500" height="28" rx="8" fill="rgba(59,130,246,0.12)"/>
+<rect x="55" y="135" width="500" height="8" fill="rgba(59,130,246,0.12)"/>
+<text x="305" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">L1 数据治理委员会</text>
+<text x="305" y="158" text-anchor="middle" font-size="11" fill="#475569">CIO（主持） · VP委员 · 季度会议</text>
+<text x="305" y="178" text-anchor="middle" font-size="11" fill="#475569">战略规划审批 · 数据标准审批 · 数据投资审批</text>
+
+<line x1="305" y1="195" x2="305" y2="220" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- L2: 数据Owner -->
+<rect x="55" y="224" width="500" height="140" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="55" y="224" width="500" height="28" rx="8" fill="rgba(16,185,129,0.12)"/>
+<rect x="55" y="244" width="500" height="8" fill="rgba(16,185,129,0.12)"/>
+<text x="305" y="242" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">L2 数据Owner（10个数据域各1名·月度评审）</text>
+<text x="75" y="276" font-size="11" fill="#475569">职责范围：</text>
+<text x="145" y="276" font-size="11" fill="#1e293b">数据定义 · 质量管理 · 安全管理 · 生命周期管理</text>
+<text x="75" y="301" font-size="11" fill="#475569">10个数据域：</text>
+<text x="160" y="301" font-size="11" fill="#1e293b">产品 / 物料 / 供应商 / 客户 / 用户 / 门店 / 组织 / 设备 / 财务 / 科目</text>
+<text x="75" y="330" font-size="11" fill="#475569">评审机制：</text>
+<text x="145" y="330" font-size="11" fill="#1e293b">月度数据质量评审会议 · 数据问题跟踪与改进</text>
+
+<line x1="305" y1="364" x2="305" y2="389" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- L3: 数据管家 -->
+<rect x="55" y="393" width="500" height="130" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="55" y="393" width="500" height="28" rx="8" fill="rgba(245,158,11,0.12)"/>
+<rect x="55" y="413" width="500" height="8" fill="rgba(245,158,11,0.12)"/>
+<text x="305" y="411" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">L3 数据管家（每数据域1-2名）</text>
+<text x="75" y="444" font-size="11" fill="#475569">日常执行角色</text>
+<text x="75" y="468" font-size="11" fill="#1e293b">资产目录维护 · 数据质量检核 · 数据共享审批</text>
+<text x="75" y="492" font-size="11" fill="#1e293b">异常数据上报 · 数据标准落实 · 元数据采集</text>
+
+<!-- ===================== RIGHT PANEL: 四类流程 ===================== -->
+<rect x="610" y="75" width="610" height="26" rx="4" fill="rgba(245,158,11,0.06)"/>
+<text x="915" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">四类流程</text>
+
+<!-- Left-side vertical pipeline track -->
+<line x1="645" y1="118" x2="645" y2="468" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,4"/>
+
+<!-- P1: 标准管理 -->
+<rect x="676" y="115" width="514" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="676" y="115" width="514" height="70" rx="8" fill="rgba(59,130,246,0.04)"/>
+<circle cx="645" cy="150" r="15" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+<text x="645" y="155" text-anchor="middle" font-size="12" font-weight="600" fill="#2563eb">1</text>
+<text x="705" y="144" font-size="14" font-weight="600" fill="#1e293b">标准管理</text>
+<text x="705" y="167" font-size="11" fill="#475569">数据标准制定、评审、发布与版本管理的全流程管控</text>
+
+<line x1="645" y1="185" x2="645" y2="208" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- P2: 质量监控 -->
+<rect x="676" y="212" width="514" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="676" y="212" width="514" height="70" rx="8" fill="rgba(245,158,11,0.04)"/>
+<circle cx="645" cy="247" r="15" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+<text x="645" y="252" text-anchor="middle" font-size="12" font-weight="600" fill="#d97706">2</text>
+<text x="705" y="241" font-size="14" font-weight="600" fill="#1e293b">质量监控</text>
+<text x="705" y="264" font-size="11" fill="#475569">质量规则配置、自动检核、问题跟踪与持续改进</text>
+
+<line x1="645" y1="282" x2="645" y2="305" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- P3: 资产上线 -->
+<rect x="676" y="309" width="514" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="676" y="309" width="514" height="70" rx="8" fill="rgba(16,185,129,0.04)"/>
+<circle cx="645" cy="344" r="15" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+<text x="645" y="349" text-anchor="middle" font-size="12" font-weight="600" fill="#059669">3</text>
+<text x="705" y="338" font-size="14" font-weight="600" fill="#1e293b">资产上线</text>
+<text x="705" y="361" font-size="11" fill="#475569">数据资产注册、审核、发布上线及变更管控</text>
+
+<line x1="645" y1="379" x2="645" y2="402" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+<!-- P4: 争议仲裁 -->
+<rect x="676" y="406" width="514" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="676" y="406" width="514" height="70" rx="8" fill="rgba(239,68,68,0.04)"/>
+<circle cx="645" cy="441" r="15" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+<text x="645" y="446" text-anchor="middle" font-size="12" font-weight="600" fill="#dc2626">4</text>
+<text x="705" y="435" font-size="14" font-weight="600" fill="#1e293b">争议仲裁</text>
+<text x="705" y="458" font-size="11" fill="#475569">数据权责争议受理、调查取证、仲裁裁决与结果反馈</text>
+
+<!-- ===================== BOTTOM: 五维质量标准 ===================== -->
+<line x1="40" y1="540" x2="1210" y2="540" stroke="#e2e8f0" stroke-width="1"/>
+
+<rect x="30" y="548" width="1190" height="26" rx="4" fill="rgba(139,92,246,0.06)"/>
+<text x="625" y="565" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">五维质量标准（LTC端到端场景示例）</text>
+
+<!-- Table header -->
+<rect x="55" y="582" width="1140" height="30" rx="4" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="602" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">维度</text>
+<line x1="295" y1="582" x2="295" y2="612" stroke="#e2e8f0" stroke-width="1"/>
+<text x="510" y="602" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">定义</text>
+<line x1="725" y1="582" x2="725" y2="612" stroke="#e2e8f0" stroke-width="1"/>
+<text x="930" y="602" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">LTC端到端场景示例</text>
+
+<!-- Row 1: 完整性 -->
+<rect x="55" y="612" width="1140" height="22" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="627" text-anchor="middle" font-size="11" fill="#1e293b">完整性</text>
+<line x1="295" y1="612" x2="295" y2="634" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="510" y="627" text-anchor="middle" font-size="11" fill="#475569">数据无缺失，必填字段完整</text>
+<line x1="725" y1="612" x2="725" y2="634" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="930" y="627" text-anchor="middle" font-size="11" fill="#475569">LTC全链路字段完整率 > 99.9%</text>
+
+<!-- Row 2: 准确性 -->
+<rect x="55" y="634" width="1140" height="22" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="649" text-anchor="middle" font-size="11" fill="#1e293b">准确性</text>
+<line x1="295" y1="634" x2="295" y2="656" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="510" y="649" text-anchor="middle" font-size="11" fill="#475569">数据精确反映真实业务</text>
+<line x1="725" y1="634" x2="725" y2="656" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="930" y="649" text-anchor="middle" font-size="11" fill="#475569">订单金额与ERP实收一致率 100%</text>
+
+<!-- Row 3: 一致性 -->
+<rect x="55" y="656" width="1140" height="22" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="671" text-anchor="middle" font-size="11" fill="#1e293b">一致性</text>
+<line x1="295" y1="656" x2="295" y2="678" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="510" y="671" text-anchor="middle" font-size="11" fill="#475569">跨系统数据值统一无冲突</text>
+<line x1="725" y1="656" x2="725" y2="678" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="930" y="671" text-anchor="middle" font-size="11" fill="#475569">客户编码CRM与MDM主数据一致</text>
+
+<!-- Row 4: 及时性 -->
+<rect x="55" y="678" width="1140" height="22" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="693" text-anchor="middle" font-size="11" fill="#1e293b">及时性</text>
+<line x1="295" y1="678" x2="295" y2="700" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="510" y="693" text-anchor="middle" font-size="11" fill="#475569">数据时效满足业务SLA</text>
+<line x1="725" y1="678" x2="725" y2="700" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="930" y="693" text-anchor="middle" font-size="11" fill="#475569">订单变更实时同步Kafka延迟 < 5s（99.9%）</text>
+
+<!-- Row 5: 唯一性 -->
+<rect x="55" y="700" width="1140" height="22" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="175" y="715" text-anchor="middle" font-size="11" fill="#1e293b">唯一性</text>
+<line x1="295" y1="700" x2="295" y2="722" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="510" y="715" text-anchor="middle" font-size="11" fill="#475569">数据无重复、标识唯一</text>
+<line x1="725" y1="700" x2="725" y2="722" stroke="#e2e8f0" stroke-width="0.5"/>
+<text x="930" y="715" text-anchor="middle" font-size="11" fill="#475569">物料编码全局唯一，重复识别准确率 100%</text>
+
+</svg>
+</div>
+<div class="status-msg" id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script>
+function showStatus(msg) {
+  document.getElementById('status').textContent = msg;
+  setTimeout(function(){ document.getElementById('status').textContent = ''; }, 3000);
+}
+async function copyAsImage() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showStatus('已复制到剪贴板');
+  } catch(e) { showStatus('复制失败: ' + e.message); }
+}
+async function downloadPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var link = document.createElement('a');
+    link.download = '图3-5_数据治理组织.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showStatus('PNG已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+async function downloadPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width/2, canvas.height/2] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width/2, canvas.height/2);
+    pdf.save('图3-5_数据治理组织.pdf');
+    showStatus('PDF已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+</script>
+</body>
+</html>

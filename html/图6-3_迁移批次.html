@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图6-3 迁移批次</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">迁移批次与过渡架构 — Wave1→Wave4 · 过渡状态 · 共存策略</div>
+<svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+</defs>
+<rect width="1300" height="780" fill="#f8fafc"/><rect width="1300" height="780" fill="url(#grid)"/>
+<text x="650" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">迁移批次与过渡架构 — 4 Waves · 过渡状态(T0→T1→T2→T3) · 系统共存策略</text>
+
+<!-- ===== WAVE 1 ===== -->
+<rect x="40" y="50" width="1220" height="150" rx="8" fill="rgba(239,68,68,.03)" stroke="rgba(239,68,68,.15)" stroke-width="1.5"/>
+<rect x="40" y="50" width="220" height="150" rx="8" fill="rgba(239,68,68,.08)"/>
+<text x="150" y="80" text-anchor="middle" fill="#b91c1c" font-size="14" font-weight="700">Wave 1</text>
+<text x="150" y="100" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="500">基础平台建设</text>
+<text x="150" y="116" text-anchor="middle" fill="#b91c1c" font-size="9">Y1-Q1~Q3</text>
+<text x="150" y="140" text-anchor="middle" fill="#475569" font-size="7.5">优先级: P0</text>
+<text x="150" y="156" text-anchor="middle" fill="#475569" font-size="7.5">投资: ¥5000万</text>
+
+<rect x="280" y="62" width="220" height="50" rx="4" fill="rgba(239,68,68,.04)" stroke="rgba(239,68,68,.1)" stroke-width=".8"/>
+<text x="390" y="78" text-anchor="middle" fill="#b91c1c" font-size="8" font-weight="600">K8s容器平台</text>
+<text x="390" y="96" text-anchor="middle" fill="#475569" font-size="7">集群建设·存储·网络</text>
+
+<rect x="520" y="62" width="220" height="50" rx="4" fill="rgba(239,68,68,.04)" stroke="rgba(239,68,68,.1)" stroke-width=".8"/>
+<text x="630" y="78" text-anchor="middle" fill="#b91c1c" font-size="8" font-weight="600">DevOps CI/CD</text>
+<text x="630" y="96" text-anchor="middle" fill="#475569" font-size="7">GitLab+Jenkins+ArgoCD</text>
+
+<rect x="760" y="62" width="220" height="50" rx="4" fill="rgba(239,68,68,.04)" stroke="rgba(239,68,68,.1)" stroke-width=".8"/>
+<text x="870" y="78" text-anchor="middle" fill="#b91c1c" font-size="8" font-weight="600">私有云扩容</text>
+<text x="870" y="96" text-anchor="middle" fill="#475569" font-size="7">双AZ·存储·网络升级</text>
+
+<rect x="1000" y="62" width="220" height="50" rx="4" fill="rgba(239,68,68,.04)" stroke="rgba(239,68,68,.1)" stroke-width=".8"/>
+<text x="1110" y="78" text-anchor="middle" fill="#b91c1c" font-size="8" font-weight="600">迁移目标(T0→T1)</text>
+<text x="1110" y="96" text-anchor="middle" fill="#475569" font-size="7">基础平台就绪</text>
+
+<!-- Coexistence -->
+<rect x="280" y="124" width="940" height="28" rx="4" fill="rgba(239,68,68,.02)" stroke="rgba(239,68,68,.06)" stroke-width=".5"/>
+<text x="750" y="143" text-anchor="middle" fill="#475569" font-size="7.5">共存策略: Wave1期间新老系统并存 · 新平台承载POC应用 · 老系统继续运行核心业务</text>
+
+<!-- Arrow -->
+<path d="M 650 200 L 650 216" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="650" y="212" text-anchor="middle" fill="#64748b" font-size="8">过渡架构 T0 → T1</text>
+
+<!-- ===== WAVE 2 ===== -->
+<rect x="40" y="224" width="1220" height="150" rx="8" fill="rgba(245,158,11,.03)" stroke="rgba(245,158,11,.15)" stroke-width="1.5"/>
+<rect x="40" y="224" width="220" height="150" rx="8" fill="rgba(245,158,11,.08)"/>
+<text x="150" y="254" text-anchor="middle" fill="#92400e" font-size="14" font-weight="700">Wave 2</text>
+<text x="150" y="274" text-anchor="middle" fill="#92400e" font-size="9" font-weight="500">核心系统迁移</text>
+<text x="150" y="290" text-anchor="middle" fill="#92400e" font-size="9">Y1-Q4~Y2-Q2</text>
+<text x="150" y="314" text-anchor="middle" fill="#475569" font-size="7.5">优先级: P0</text>
+<text x="150" y="330" text-anchor="middle" fill="#475569" font-size="7.5">投资: ¥8000万</text>
+
+<rect x="280" y="236" width="160" height="48" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="360" y="252" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">ERP S/4HANA</text>
+<text x="360" y="270" text-anchor="middle" fill="#475569" font-size="7">升级+数据迁移</text>
+
+<rect x="460" y="236" width="160" height="48" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="540" y="252" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">微服务治理</text>
+<text x="540" y="270" text-anchor="middle" fill="#475569" font-size="7">Istio·Nacos·Apollo</text>
+
+<rect x="640" y="236" width="160" height="48" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="720" y="252" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">同城双活</text>
+<text x="720" y="270" text-anchor="middle" fill="#475569" font-size="7">双AZ·数据同步</text>
+
+<rect x="820" y="236" width="160" height="48" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="900" y="252" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">安全基础建设</text>
+<text x="900" y="270" text-anchor="middle" fill="#475569" font-size="7">WAF·HIDS·DLP</text>
+
+<rect x="1000" y="236" width="220" height="48" rx="4" fill="rgba(245,158,11,.04)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="1110" y="252" text-anchor="middle" fill="#92400e" font-size="8" font-weight="600">迁移目标(T1→T2)</text>
+<text x="1110" y="270" text-anchor="middle" fill="#475569" font-size="7">核心系统云原生化</text>
+
+<rect x="280" y="296" width="940" height="28" rx="4" fill="rgba(245,158,11,.02)" stroke="rgba(245,158,11,.06)" stroke-width=".5"/>
+<text x="750" y="315" text-anchor="middle" fill="#475569" font-size="7.5">共存策略: ERP迁移期间SAP ECC与S/4HANA并行运行 · 双写策略 · 数据校验保障一致性</text>
+
+<!-- Arrow -->
+<path d="M 650 374 L 650 392" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="650" y="388" text-anchor="middle" fill="#64748b" font-size="8">过渡架构 T1 → T2</text>
+
+<!-- ===== WAVE 3 ===== -->
+<rect x="40" y="400" width="1220" height="150" rx="8" fill="rgba(59,130,246,.03)" stroke="rgba(59,130,246,.15)" stroke-width="1.5"/>
+<rect x="40" y="400" width="220" height="150" rx="8" fill="rgba(59,130,246,.08)"/>
+<text x="150" y="430" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="700">Wave 3</text>
+<text x="150" y="450" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="500">能力扩展</text>
+<text x="150" y="466" text-anchor="middle" fill="#1e40af" font-size="9">Y2-Q3~Y3-Q2</text>
+<text x="150" y="490" text-anchor="middle" fill="#475569" font-size="7.5">优先级: P1</text>
+<text x="150" y="506" text-anchor="middle" fill="#475569" font-size="7.5">投资: ¥6000万</text>
+
+<rect x="280" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="350" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">零信任</text>
+<text x="350" y="446" text-anchor="middle" fill="#475569" font-size="7">ZTNA·微隔离</text>
+
+<rect x="440" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="510" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">混合云</text>
+<text x="510" y="446" text-anchor="middle" fill="#475569" font-size="7">AWS/阿里云集成</text>
+
+<rect x="600" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="670" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">海外OMS</text>
+<text x="670" y="446" text-anchor="middle" fill="#475569" font-size="7">EKS部署</text>
+
+<rect x="760" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="830" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">数据平台</text>
+<text x="830" y="446" text-anchor="middle" fill="#475569" font-size="7">数仓·数据湖·BI</text>
+
+<rect x="920" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="990" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">边缘MES</text>
+<text x="990" y="446" text-anchor="middle" fill="#475569" font-size="7">工厂试点</text>
+
+<rect x="1080" y="412" width="140" height="48" rx="4" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<text x="1150" y="428" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="600">迁移目标(T2→T3)</text>
+<text x="1150" y="446" text-anchor="middle" fill="#475569" font-size="7">能力平台化</text>
+
+<rect x="280" y="472" width="940" height="28" rx="4" fill="rgba(59,130,246,.02)" stroke="rgba(59,130,246,.06)" stroke-width=".5"/>
+<text x="750" y="491" text-anchor="middle" fill="#475569" font-size="7.5">共存策略: 海外OMS新系统上线后老系统逐步下线 · 数据平台双跑(新旧并行)3个月</text>
+
+<!-- Arrow -->
+<path d="M 650 550 L 650 568" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="650" y="564" text-anchor="middle" fill="#64748b" font-size="8">过渡架构 T2 → T3</text>
+
+<!-- ===== WAVE 4 ===== -->
+<rect x="40" y="576" width="1220" height="90" rx="8" fill="rgba(16,185,129,.03)" stroke="rgba(16,185,129,.15)" stroke-width="1.5"/>
+<rect x="40" y="576" width="220" height="90" rx="8" fill="rgba(16,185,129,.08)"/>
+<text x="150" y="606" text-anchor="middle" fill="#065f46" font-size="14" font-weight="700">Wave 4</text>
+<text x="150" y="626" text-anchor="middle" fill="#065f46" font-size="9" font-weight="500">优化与推广</text>
+<text x="150" y="642" text-anchor="middle" fill="#065f46" font-size="9">Y3-Q3~持续</text>
+
+<rect x="280" y="588" width="130" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="345" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">CRM升级</text>
+<text x="345" y="620" text-anchor="middle" fill="#475569" font-size="7">Salesforce</text>
+
+<rect x="430" y="588" width="130" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="495" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">PLM升级</text>
+<text x="495" y="620" text-anchor="middle" fill="#475569" font-size="7">Teamcenter</text>
+
+<rect x="580" y="588" width="130" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="645" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">组织转型</text>
+<text x="645" y="620" text-anchor="middle" fill="#475569" font-size="7">敏捷推广</text>
+
+<rect x="730" y="588" width="130" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="795" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">AI/ML平台</text>
+<text x="795" y="620" text-anchor="middle" fill="#475569" font-size="7">场景孵化</text>
+
+<rect x="880" y="588" width="130" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="945" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">工厂复制</text>
+<text x="945" y="620" text-anchor="middle" fill="#475569" font-size="7">全球推广</text>
+
+<rect x="1030" y="588" width="190" height="40" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<text x="1125" y="604" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">目标架构(T3→T4)</text>
+<text x="1125" y="620" text-anchor="middle" fill="#475569" font-size="7">全面云原生化</text>
+
+<!-- Bottom bar -->
+<rect x="40" y="684" width="1220" height="52" rx="6" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width="1"/>
+<text x="650" y="704" text-anchor="middle" fill="#0f172a" font-size="11" font-weight="600">过渡架构演进: T0(现状) → T1(平台就绪) → T2(核心迁移) → T3(能力扩展) → T4(目标架构)</text>
+<text x="650" y="724" text-anchor="middle" fill="#475569" font-size="9">迁移原则: 增量演进 · 风险可控 · 新旧共存 · 数据一致 · 业务不中断 · 可回滚</text>
+
+<!-- Legend -->
+<rect x="40" y="748" width="1220" height="22" rx="4" fill="rgba(99,102,241,.02)" stroke="rgba(99,102,241,.05)" stroke-width=".5"/>
+<rect x="60" y="753" width="8" height="8" rx="2" fill="rgba(239,68,68,.25)"/><text x="72" y="761" fill="#475569" font-size="7.5">Wave1:基础平台</text>
+<rect x="230" y="753" width="8" height="8" rx="2" fill="rgba(245,158,11,.25)"/><text x="242" y="761" fill="#475569" font-size="7.5">Wave2:核心迁移</text>
+<rect x="390" y="753" width="8" height="8" rx="2" fill="rgba(59,130,246,.25)"/><text x="402" y="761" fill="#475569" font-size="7.5">Wave3:能力扩展</text>
+<rect x="550" y="753" width="8" height="8" rx="2" fill="rgba(16,185,129,.25)"/><text x="562" y="761" fill="#475569" font-size="7.5">Wave4:优化推广</text>
+<text x="700" y="761" fill="#475569" font-size="7.5">T0→T4: 过渡架构 · 每阶段有明确的共存策略 · 新老系统无缝切换</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图6-3_迁移批次.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图6-3_迁移批次.pdf');});}
+</script>
+</body>
+</html>

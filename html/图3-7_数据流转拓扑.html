@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-7 数据流转与集成拓扑</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 24px; min-height: 100vh; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-self: flex-end; }
+.toolbar button { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.container { position: relative; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); overflow: hidden; }
+.container svg { display: block; }
+.status-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; margin-top: 8px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div style="width:100%;max-width:1460px;display:flex;flex-direction:column;align-items:center;">
+<div class="toolbar">
+  <button onclick="copyAsImage()">复制</button>
+  <button onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+</div>
+<div class="container" id="diagram">
+<svg viewBox="0 0 1400 840" xmlns="http://www.w3.org/2000/svg" style="width:1400px;height:840px;">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5" opacity="0.5"/>
+  </pattern>
+  <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+  </marker>
+  <marker id="arrowDown" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M 0 0 L 10 0 L 5 10 Z" fill="#94a3b8"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="1400" height="840" fill="#ffffff"/>
+<rect width="1400" height="840" fill="url(#grid)"/>
+
+<!-- Title -->
+<text x="700" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a" letter-spacing="2">数据流转与集成拓扑 — LTC全链路</text>
+<text x="700" y="56" text-anchor="middle" font-size="12" fill="#64748b" letter-spacing="1">5-Segment Data Pipeline · CDC → Kafka → Flink → 数据中台 → 服务</text>
+<line x1="40" y1="65" x2="1360" y2="65" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- ===================== 5 SEGMENTS ===================== -->
+<!-- Segment positions: S1:x=40, S2:x=310, S3:x=580, S4:x=850, S5:x=1120, w=240 -->
+
+<!-- ===================== S1: 营销数据流 ===================== -->
+<g>
+  <rect x="40" y="75" width="240" height="35" rx="6" fill="rgba(249,115,22,0.12)"/>
+  <rect x="40" y="75" width="6" height="35" rx="3" fill="#f97316"/>
+  <text x="160" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#9a3412">S1 营销数据流</text>
+
+  <line x1="140" y1="110" x2="140" y2="375" stroke="#f97316" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <!-- Step boxes -->
+  <rect x="60" y="115" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="133" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="130" font-size="10" font-weight="500" fill="#1e293b">App / SDK</text>
+  <text x="220" y="130" font-size="9" fill="#475569">数据采集</text>
+
+  <rect x="60" y="159" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="177" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="174" font-size="10" font-weight="500" fill="#1e293b">Kafka</text>
+  <text x="220" y="174" font-size="9" fill="#475569">实时消息</text>
+
+  <rect x="60" y="203" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="221" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="218" font-size="10" font-weight="500" fill="#1e293b">Flink</text>
+  <text x="220" y="218" font-size="9" fill="#475569">实时计算</text>
+
+  <rect x="60" y="247" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="265" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="262" font-size="10" font-weight="500" fill="#1e293b">CDP 标签</text>
+  <text x="220" y="262" font-size="9" fill="#475569">用户标签</text>
+
+  <rect x="60" y="291" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="309" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="306" font-size="10" font-weight="500" fill="#1e293b">User360</text>
+  <text x="220" y="306" font-size="9" fill="#475569">用户画像</text>
+
+  <rect x="60" y="335" width="200" height="36" rx="6" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="75" cy="353" r="6" fill="#f97316" opacity="0.6"/>
+  <text x="90" y="350" font-size="10" font-weight="500" fill="#1e293b">MA 触达</text>
+  <text x="220" y="350" font-size="9" fill="#475569">营销触达</text>
+
+  <rect x="80" y="383" width="160" height="20" rx="10" fill="rgba(249,115,22,0.12)"/>
+  <text x="160" y="397" text-anchor="middle" font-size="9" font-weight="600" fill="#c2410c">SLA &lt; 30s</text>
+</g>
+
+<!-- ===================== S2: 订单数据流 ===================== -->
+<g>
+  <rect x="310" y="75" width="240" height="35" rx="6" fill="rgba(239,68,68,0.12)"/>
+  <rect x="310" y="75" width="6" height="35" rx="3" fill="#ef4444"/>
+  <text x="430" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#991b1b">S2 订单数据流</text>
+
+  <line x1="410" y1="110" x2="410" y2="413" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <rect x="330" y="115" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="133" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="130" font-size="10" font-weight="500" fill="#1e293b">OMS</text>
+  <text x="490" y="130" font-size="9" fill="#475569">订单系统</text>
+
+  <rect x="330" y="159" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="177" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="174" font-size="10" font-weight="500" fill="#1e293b">CDC</text>
+  <text x="490" y="174" font-size="9" fill="#475569">变更捕获</text>
+
+  <rect x="330" y="203" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="221" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="218" font-size="10" font-weight="500" fill="#1e293b">Kafka</text>
+  <text x="490" y="218" font-size="9" fill="#475569">消息队列</text>
+
+  <rect x="330" y="247" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="265" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="262" font-size="10" font-weight="500" fill="#1e293b">ODS</text>
+  <text x="490" y="262" font-size="9" fill="#475569">操作数据层</text>
+
+  <rect x="330" y="291" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="309" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="306" font-size="10" font-weight="500" fill="#1e293b">DWD</text>
+  <text x="490" y="306" font-size="9" fill="#475569">订单明细宽表</text>
+
+  <rect x="330" y="335" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="353" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="350" font-size="10" font-weight="500" fill="#1e293b">DWS</text>
+  <text x="490" y="350" font-size="9" fill="#475569">汇总数据层</text>
+
+  <rect x="330" y="379" width="200" height="36" rx="6" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="345" cy="397" r="6" fill="#ef4444" opacity="0.6"/>
+  <text x="360" y="394" font-size="10" font-weight="500" fill="#1e293b">BI</text>
+  <text x="490" y="394" font-size="9" fill="#475569">分析报表</text>
+
+  <rect x="350" y="427" width="160" height="20" rx="10" fill="rgba(239,68,68,0.12)"/>
+  <text x="430" y="441" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">SLA &lt; 5s</text>
+</g>
+
+<!-- ===================== S3: 供应链数据流 ===================== -->
+<g>
+  <rect x="580" y="75" width="240" height="35" rx="6" fill="rgba(20,184,166,0.12)"/>
+  <rect x="580" y="75" width="6" height="35" rx="3" fill="#14b8a6"/>
+  <text x="700" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#115e59">S3 供应链数据流</text>
+
+  <line x1="680" y1="110" x2="680" y2="335" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <rect x="600" y="115" width="200" height="36" rx="6" fill="rgba(20,184,166,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="615" cy="133" r="6" fill="#14b8a6" opacity="0.6"/>
+  <text x="630" y="130" font-size="10" font-weight="500" fill="#1e293b">SRM / ERP</text>
+  <text x="760" y="130" font-size="9" fill="#475569">采购与计划</text>
+
+  <rect x="600" y="159" width="200" height="36" rx="6" fill="rgba(20,184,166,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="615" cy="177" r="6" fill="#14b8a6" opacity="0.6"/>
+  <text x="630" y="174" font-size="10" font-weight="500" fill="#1e293b">ETL + CDC</text>
+  <text x="760" y="174" font-size="9" fill="#475569">数据采集</text>
+
+  <rect x="600" y="203" width="200" height="36" rx="6" fill="rgba(20,184,166,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="615" cy="221" r="6" fill="#14b8a6" opacity="0.6"/>
+  <text x="630" y="218" font-size="10" font-weight="500" fill="#1e293b">数据中台</text>
+  <text x="760" y="218" font-size="9" fill="#475569">数据平台</text>
+
+  <rect x="600" y="247" width="200" height="36" rx="6" fill="rgba(20,184,166,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="615" cy="265" r="6" fill="#14b8a6" opacity="0.6"/>
+  <text x="630" y="262" font-size="10" font-weight="500" fill="#1e293b">库存 AI</text>
+  <text x="760" y="262" font-size="9" fill="#475569">智能预测</text>
+
+  <rect x="600" y="291" width="200" height="36" rx="6" fill="rgba(20,184,166,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="615" cy="309" r="6" fill="#14b8a6" opacity="0.6"/>
+  <text x="630" y="306" font-size="10" font-weight="500" fill="#1e293b">多级库存看板</text>
+  <text x="760" y="306" font-size="9" fill="#475569">可视化</text>
+
+  <rect x="600" y="343" width="200" height="20" rx="10" fill="rgba(20,184,166,0.12)"/>
+  <text x="700" y="357" text-anchor="middle" font-size="9" font-weight="600" fill="#0d9488">SLA PO&lt;1min/库存&lt;15min</text>
+</g>
+
+<!-- ===================== S4: 制造数据流 ===================== -->
+<g>
+  <rect x="850" y="75" width="240" height="35" rx="6" fill="rgba(34,197,94,0.12)"/>
+  <rect x="850" y="75" width="6" height="35" rx="3" fill="#22c55e"/>
+  <text x="970" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#166534">S4 制造数据流</text>
+
+  <line x1="950" y1="110" x2="950" y2="335" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <rect x="870" y="115" width="200" height="36" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="885" cy="133" r="6" fill="#22c55e" opacity="0.6"/>
+  <text x="900" y="130" font-size="10" font-weight="500" fill="#1e293b">MES / IIoT</text>
+  <text x="1030" y="130" font-size="9" fill="#475569">生产数据</text>
+
+  <rect x="870" y="159" width="200" height="36" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="885" cy="177" r="6" fill="#22c55e" opacity="0.6"/>
+  <text x="900" y="174" font-size="10" font-weight="500" fill="#1e293b">边缘 Kafka</text>
+  <text x="1030" y="174" font-size="9" fill="#475569">边缘计算</text>
+
+  <rect x="870" y="203" width="200" height="36" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="885" cy="221" r="6" fill="#22c55e" opacity="0.6"/>
+  <text x="900" y="218" font-size="10" font-weight="500" fill="#1e293b">区域 Kafka</text>
+  <text x="1030" y="218" font-size="9" fill="#475569">区域汇聚</text>
+
+  <rect x="870" y="247" width="200" height="36" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="885" cy="265" r="6" fill="#22c55e" opacity="0.6"/>
+  <text x="900" y="262" font-size="10" font-weight="500" fill="#1e293b">Flink</text>
+  <text x="1030" y="262" font-size="9" fill="#475569">流计算</text>
+
+  <rect x="870" y="291" width="200" height="36" rx="6" fill="rgba(34,197,94,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="885" cy="309" r="6" fill="#22c55e" opacity="0.6"/>
+  <text x="895" y="306" font-size="10" font-weight="500" fill="#1e293b">质量看板+数据湖</text>
+  <text x="1030" y="306" font-size="9" fill="#475569">分析</text>
+
+  <rect x="890" y="343" width="160" height="20" rx="10" fill="rgba(34,197,94,0.12)"/>
+  <text x="970" y="357" text-anchor="middle" font-size="9" font-weight="600" fill="#16a34a">SLA AOI&lt;3s</text>
+</g>
+
+<!-- ===================== S5: 物流数据流 ===================== -->
+<g>
+  <rect x="1120" y="75" width="240" height="35" rx="6" fill="rgba(168,85,247,0.12)"/>
+  <rect x="1120" y="75" width="6" height="35" rx="3" fill="#a855f7"/>
+  <text x="1240" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#581c87">S5 物流数据流</text>
+
+  <line x1="1220" y1="110" x2="1220" y2="295" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <rect x="1140" y="115" width="200" height="36" rx="6" fill="rgba(168,85,247,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="1155" cy="133" r="6" fill="#a855f7" opacity="0.6"/>
+  <text x="1170" y="130" font-size="10" font-weight="500" fill="#1e293b">TMS / WMS</text>
+  <text x="1300" y="130" font-size="9" fill="#475569">物流仓储</text>
+
+  <rect x="1140" y="159" width="200" height="36" rx="6" fill="rgba(168,85,247,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="1155" cy="177" r="6" fill="#a855f7" opacity="0.6"/>
+  <text x="1170" y="174" font-size="10" font-weight="500" fill="#1e293b">API + CDC</text>
+  <text x="1300" y="174" font-size="9" fill="#475569">数据接入</text>
+
+  <rect x="1140" y="203" width="200" height="36" rx="6" fill="rgba(168,85,247,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="1155" cy="221" r="6" fill="#a855f7" opacity="0.6"/>
+  <text x="1170" y="218" font-size="10" font-weight="500" fill="#1e293b">Kafka</text>
+  <text x="1300" y="218" font-size="9" fill="#475569">消息路由</text>
+
+  <rect x="1140" y="247" width="200" height="36" rx="6" fill="rgba(168,85,247,0.06)" stroke="#e2e8f0" stroke-width="0.8" filter="url(#shadow)"/>
+  <circle cx="1155" cy="265" r="6" fill="#a855f7" opacity="0.6"/>
+  <text x="1170" y="262" font-size="10" font-weight="500" fill="#1e293b">客户 App 查询</text>
+  <text x="1300" y="262" font-size="9" fill="#475569">终端查询</text>
+
+  <rect x="1140" y="301" width="200" height="20" rx="10" fill="rgba(168,85,247,0.12)"/>
+  <text x="1240" y="315" text-anchor="middle" font-size="9" font-weight="600" fill="#9333ea">SLA 轨迹&lt;15min/签收&lt;1min</text>
+</g>
+
+<!-- ===================== CONNECTORS TO CENTRAL BUS ===================== -->
+<!-- Lines from each segment down to bus -->
+<line x1="160" y1="415" x2="160" y2="468" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+<circle cx="160" cy="468" r="4" fill="#94a3b8"/>
+
+<line x1="430" y1="455" x2="430" y2="468" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+<circle cx="430" cy="468" r="4" fill="#94a3b8"/>
+
+<line x1="700" y1="375" x2="700" y2="468" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+<circle cx="700" cy="468" r="4" fill="#94a3b8"/>
+
+<line x1="970" y1="375" x2="970" y2="468" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+<circle cx="970" cy="468" r="4" fill="#94a3b8"/>
+
+<line x1="1240" y1="333" x2="1240" y2="468" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3"/>
+<circle cx="1240" cy="468" r="4" fill="#94a3b8"/>
+
+<!-- ===================== CENTRAL INTEGRATION BUS ===================== -->
+<g>
+  <rect x="40" y="478" width="1320" height="70" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="40" y="478" width="1320" height="70" rx="10" fill="rgba(99,102,241,0.04)"/>
+
+  <!-- Bus label -->
+  <rect x="60" y="490" width="160" height="24" rx="4" fill="rgba(99,102,241,0.12)"/>
+  <text x="140" y="507" text-anchor="middle" font-size="11" font-weight="600" fill="#4338ca">Central Integration Bus</text>
+
+  <!-- Bus components -->
+  <rect x="250" y="494" width="200" height="16" rx="8" fill="rgba(249,115,22,0.1)"/>
+  <text x="350" y="506" text-anchor="middle" font-size="9" font-weight="500" fill="#c2410c">Kafka 消息总线</text>
+
+  <text x="475" y="506" font-size="12" fill="#94a3b8">+</text>
+
+  <rect x="500" y="494" width="200" height="16" rx="8" fill="rgba(139,92,246,0.1)"/>
+  <text x="600" y="506" text-anchor="middle" font-size="9" font-weight="500" fill="#7c3aed">Debezium CDC 捕获</text>
+
+  <text x="725" y="506" font-size="12" fill="#94a3b8">+</text>
+
+  <rect x="750" y="494" width="200" height="16" rx="8" fill="rgba(16,185,129,0.1)"/>
+  <text x="850" y="506" text-anchor="middle" font-size="9" font-weight="500" fill="#059669">Airflow / Flink 编排</text>
+
+  <!-- Connection indicator -->
+  <text x="140" y="535" text-anchor="middle" font-size="9" fill="#64748b">↑ 横向贯穿所有5个数据域，统一集成总线</text>
+</g>
+
+<!-- ===================== BOTTOM: 批流一体 ===================== -->
+<line x1="40" y1="568" x2="1360" y2="568" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- 批流一体说明 -->
+<g>
+  <rect x="40" y="578" width="1320" height="30" rx="4" fill="rgba(99,102,241,0.06)"/>
+  <text x="700" y="598" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">批流一体数据处理</text>
+
+  <!-- 实时流 - Left -->
+  <rect x="60" y="620" width="620" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="60" y="620" width="5" height="80" rx="2" fill="#3b82f6"/>
+  <text x="80" y="642" font-size="12" font-weight="600" fill="#1e293b">实时流处理（Stream Processing）</text>
+  <text x="80" y="665" font-size="10" fill="#475569">• Kafka 实时消息 → Flink 流计算 → 实时指标看板</text>
+  <text x="80" y="685" font-size="10" fill="#475569">• 适用场景：订单实时同步（&lt;5s）、设备状态监控（&lt;3s）、营销实时触达</text>
+
+  <!-- 批量处理 - Right -->
+  <rect x="720" y="620" width="640" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="720" y="620" width="5" height="80" rx="2" fill="#10b981"/>
+  <text x="740" y="642" font-size="12" font-weight="600" fill="#1e293b">批量处理（Batch Processing）</text>
+  <text x="740" y="665" font-size="10" fill="#475569">• 数据湖 → Spark 离线ETL → T+1 报表与多维分析</text>
+  <text x="740" y="685" font-size="10" fill="#475569">• 适用场景：日销售汇总报表、月度供应链绩效分析、年度审计数据</text>
+
+  <!-- CDC - Full width -->
+  <rect x="60" y="712" width="1300" height="36" rx="8" fill="rgba(139,92,246,0.06)" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="85" cy="730" r="6" fill="#a855f7" opacity="0.7"/>
+  <text x="100" y="735" font-size="11" font-weight="500" fill="#1e293b">CDC 变更数据捕获：</text>
+  <text x="255" y="735" font-size="11" fill="#475569">Debezium 实时捕获源库变更 → Kafka 持久化 → Flink/消费者按需消费 · 适用于订单/库存/主数据实时同步</text>
+</g>
+
+</svg>
+</div>
+<div class="status-msg" id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script>
+function showStatus(msg) {
+  document.getElementById('status').textContent = msg;
+  setTimeout(function(){ document.getElementById('status').textContent = ''; }, 3000);
+}
+async function copyAsImage() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showStatus('已复制到剪贴板');
+  } catch(e) { showStatus('复制失败: ' + e.message); }
+}
+async function downloadPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var link = document.createElement('a');
+    link.download = '图3-7_数据流转拓扑.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showStatus('PNG已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+async function downloadPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width/2, canvas.height/2] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width/2, canvas.height/2);
+    pdf.save('图3-7_数据流转拓扑.pdf');
+    showStatus('PDF已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+</script>
+</body>
+</html>

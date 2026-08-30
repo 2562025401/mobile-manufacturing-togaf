@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-7 EA知识体系与架构分类澄清</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  font-family: 'JetBrains Mono', 'Microsoft YaHei', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+#toolbar {
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+#toolbar button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#toolbar button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+#toolbar button:active {
+  background: #e2e8f0;
+}
+#capture {
+  width: 1220px;
+  background: #f8fafc;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.svg-wrap {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.info-cards {
+  display: flex;
+  gap: 16px;
+  padding: 16px 10px 10px;
+}
+.card {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot.cyan { background: #06b6d4; }
+.dot.violet { background: #8b5cf6; }
+.dot.emerald { background: #10b981; }
+.card p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #475569;
+}
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <button onclick="copySVG()">📋 Copy</button>
+  <button onclick="downloadPNG()">🖼️ PNG</button>
+  <button onclick="downloadPDF()">📄 PDF</button>
+</div>
+
+<div id="capture">
+
+<div class="svg-wrap">
+<svg viewBox="0 0 1200 850" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', 'Microsoft YaHei', monospace">
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#ffffff"/>
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <filter id="cardShadow" x="-2%" y="-4%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+    </filter>
+    <filter id="cardShadowLg" x="-2%" y="-4%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <linearGradient id="gBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="gViolet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="gEmerald" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="hubGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="50%" stop-color="#faf5ff"/>
+      <stop offset="100%" stop-color="#fce7f3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Grid -->
+  <rect width="1200" height="850" fill="url(#grid)"/>
+
+  <!-- ===== TITLE ===== -->
+  <text x="600" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">EA 知识体系与架构分类澄清</text>
+  <text x="600" y="52" text-anchor="middle" font-size="12" fill="#475569">Enterprise Architecture Knowledge Framework · 城市规划 → 片区改造 → 盖楼 三层级比喻</text>
+
+  <!-- ===== SECTION 1: Three Architecture Levels ===== -->
+  <text x="60" y="80" font-size="13" font-weight="600" fill="#0f172a">一、架构三层级分类 (Three Architecture Levels)</text>
+  <line x1="60" y1="86" x2="1140" y2="86" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Card 1: EA -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="96" width="1080" height="56" rx="8" fill="url(#gBlue)" stroke="#bfdbfe" stroke-width="1"/>
+    <rect x="60" y="96" width="6" height="56" rx="3" fill="#3b82f6"/>
+    <text x="80" y="118" font-size="14" font-weight="700" fill="#1e293b">企业架构 EA = 城市规划 (Urban Planning)</text>
+    <text x="410" y="114" font-size="11" fill="#475569">Level: Enterprise</text>
+    <text x="410" y="132" font-size="11" fill="#475569">Scope: 全企业4A (业务/数据/应用/技术)</text>
+    <text x="700" y="114" font-size="11" fill="#475569">Output: 架构骨架、原则、标准、治理</text>
+    <text x="700" y="132" font-size="10.5" fill="#64748b">Answers: WHAT to build, WHERE, with WHAT CONSTRAINTS</text>
+  </g>
+
+  <!-- Arrow 1 with label -->
+  <line x1="600" y1="152" x2="600" y2="170" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrBlue)"/>
+  <rect x="648" y="154" width="130" height="18" rx="9" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="713" y="166" text-anchor="middle" font-size="10" fill="#2563eb">承接战略 (Inherit Strategy)</text>
+
+  <!-- Card 2: SA -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="178" width="1080" height="56" rx="8" fill="url(#gViolet)" stroke="#ddd6fe" stroke-width="1"/>
+    <rect x="60" y="178" width="6" height="56" rx="3" fill="#8b5cf6"/>
+    <text x="80" y="200" font-size="14" font-weight="700" fill="#1e293b">解决方案架构 SA = 片区改造 (District Renovation)</text>
+    <text x="410" y="196" font-size="11" fill="#475569">Level: Solution/Domain</text>
+    <text x="410" y="214" font-size="11" fill="#475569">Scope: 跨多系统解决特定业务问题</text>
+    <text x="700" y="196" font-size="11" fill="#475569">Output: 解决方案概要SAD、集成方案、数据流</text>
+    <text x="700" y="214" font-size="10.5" fill="#64748b">Answers: HOW to integrate across systems for a specific business problem</text>
+  </g>
+
+  <!-- Arrow 2 with label -->
+  <line x1="600" y1="234" x2="600" y2="252" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrBlue)"/>
+  <rect x="648" y="236" width="130" height="18" rx="9" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="0.8"/>
+  <text x="713" y="248" text-anchor="middle" font-size="10" fill="#7c3aed">支撑落地 (Support Implementation)</text>
+
+  <!-- Card 3: System -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="260" width="1080" height="56" rx="8" fill="url(#gEmerald)" stroke="#a7f3d0" stroke-width="1"/>
+    <rect x="60" y="260" width="6" height="56" rx="3" fill="#10b981"/>
+    <text x="80" y="282" font-size="14" font-weight="700" fill="#1e293b">系统/软件架构 = 盖楼 (Building Construction)</text>
+    <text x="410" y="278" font-size="11" fill="#475569">Level: System/Software</text>
+    <text x="410" y="296" font-size="11" fill="#475569">Scope: 单个系统的模块、接口、部署</text>
+    <text x="700" y="278" font-size="11" fill="#475569">Output: 4+1视图、技术选型、接口规范</text>
+    <text x="700" y="296" font-size="10.5" fill="#64748b">Answers: HOW to build the system technically</text>
+  </g>
+
+  <!-- ===== SECTION 2: Three-Dimensional Knowledge Framework ===== -->
+  <text x="60" y="338" font-size="13" font-weight="600" fill="#0f172a">二、EA 知识体系三维框架 (Three-Dimensional Knowledge Framework)</text>
+  <line x1="60" y1="344" x2="1140" y2="344" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Column 1: Business -->
+  <g>
+    <rect x="60" y="356" width="320" height="30" rx="6" fill="#f59e0b" opacity="0.9"/>
+    <text x="220" y="376" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">业务维 (Business)</text>
+    <!-- Items -->
+    <rect x="70" y="396" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="412" font-size="11" fill="#92400e">BLM业务领先模型</text>
+    <rect x="70" y="422" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="438" font-size="11" fill="#92400e">商业模式画布</text>
+    <rect x="70" y="448" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="464" font-size="11" fill="#92400e">价值链分析</text>
+    <rect x="70" y="474" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="490" font-size="11" fill="#92400e">业务能力地图</text>
+    <rect x="70" y="500" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="516" font-size="11" fill="#92400e">价值流</text>
+    <rect x="70" y="526" width="300" height="22" rx="4" fill="#fffbeb" stroke="#fde68a" stroke-width="0.8"/>
+    <text x="84" y="542" font-size="11" fill="#92400e">业务流程</text>
+  </g>
+
+  <!-- Column 2: Technology -->
+  <g>
+    <rect x="440" y="356" width="320" height="30" rx="6" fill="#06b6d4" opacity="0.9"/>
+    <text x="600" y="376" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">技术维 (Technology)</text>
+    <rect x="450" y="396" width="300" height="22" rx="4" fill="#ecfeff" stroke="#a5f3fc" stroke-width="0.8"/>
+    <text x="464" y="412" font-size="11" fill="#155e75">云原生(容器+K8s+DevOps)</text>
+    <rect x="450" y="422" width="300" height="22" rx="4" fill="#ecfeff" stroke="#a5f3fc" stroke-width="0.8"/>
+    <text x="464" y="438" font-size="11" fill="#155e75">微服务/中台</text>
+    <rect x="450" y="448" width="300" height="22" rx="4" fill="#ecfeff" stroke="#a5f3fc" stroke-width="0.8"/>
+    <text x="464" y="464" font-size="11" fill="#155e75">AI/ML平台</text>
+    <rect x="450" y="474" width="300" height="22" rx="4" fill="#ecfeff" stroke="#a5f3fc" stroke-width="0.8"/>
+    <text x="464" y="490" font-size="11" fill="#155e75">数据中台/数据湖</text>
+    <rect x="450" y="500" width="300" height="22" rx="4" fill="#ecfeff" stroke="#a5f3fc" stroke-width="0.8"/>
+    <text x="464" y="516" font-size="11" fill="#155e75">零信任安全</text>
+  </g>
+
+  <!-- Column 3: Management -->
+  <g>
+    <rect x="820" y="356" width="320" height="30" rx="6" fill="#ec4899" opacity="0.9"/>
+    <text x="980" y="376" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">管理维 (Management)</text>
+    <rect x="830" y="396" width="300" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="844" y="412" font-size="11" fill="#831843">架构治理(委员会/ADR)</text>
+    <rect x="830" y="422" width="300" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="844" y="438" font-size="11" fill="#831843">CMMI成熟度</text>
+    <rect x="830" y="448" width="300" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="844" y="464" font-size="11" fill="#831843">敏捷/SAFe</text>
+    <rect x="830" y="474" width="300" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="844" y="490" font-size="11" fill="#831843">IPD集成研发</text>
+    <rect x="830" y="500" width="300" height="22" rx="4" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="0.8"/>
+    <text x="844" y="516" font-size="11" fill="#831843">数据治理(DAMA)</text>
+  </g>
+
+  <!-- Connecting Lines: Columns → Center Hub -->
+  <path d="M 220 550 Q 220 566 400 566 Q 600 566 600 570" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <path d="M 600 550 L 600 570" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <path d="M 980 550 Q 980 566 800 566 Q 600 566 600 570" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+
+  <!-- Center Hub -->
+  <g filter="url(#cardShadowLg)">
+    <rect x="280" y="570" width="640" height="50" rx="25" fill="url(#hubGrad)" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="600" y="592" text-anchor="middle" font-size="11" font-weight="500" fill="#334155">核心主线 (Core Thread)</text>
+    <text x="600" y="608" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">业务驱动IT → 数据驱动业务 → 架构落地</text>
+  </g>
+
+  <!-- ===== SECTION 3: Evolution Roadmap ===== -->
+  <text x="60" y="642" font-size="13" font-weight="600" fill="#0f172a">三、规划贯穿主线 (Evolution Roadmap)</text>
+  <line x1="60" y1="648" x2="1140" y2="648" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Flow Box 1: 信息化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="660" width="320" height="65" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="60" y="660" width="320" height="24" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="60" y="676" width="320" height="8" fill="#6366f1" opacity="0.85"/>
+    <text x="220" y="677" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">信息化 (Informatization)</text>
+    <text x="220" y="702" text-anchor="middle" font-size="11" fill="#475569">流程驱动，数据作为附属记录</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="380" y1="692" x2="420" y2="692" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- Flow Box 2: 数字化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="430" y="660" width="320" height="65" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="430" y="660" width="320" height="24" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="430" y="676" width="320" height="8" fill="#6366f1" opacity="0.85"/>
+    <text x="590" y="677" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">数字化 (Digitalization)</text>
+    <text x="590" y="702" text-anchor="middle" font-size="11" fill="#475569">数据驱动，数据中台实时反哺业务</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="750" y1="692" x2="790" y2="692" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- Flow Box 3: 智能化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="800" y="660" width="320" height="65" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="660" width="320" height="24" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="800" y="676" width="320" height="8" fill="#6366f1" opacity="0.85"/>
+    <text x="960" y="677" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">智能化 (Intelligentization)</text>
+    <text x="960" y="702" text-anchor="middle" font-size="11" fill="#475569">模型驱动，数据+算法+大模型自主推理</text>
+  </g>
+
+  <!-- Current position indicator -->
+  <rect x="390" y="718" width="120" height="18" rx="9" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.8"/>
+  <text x="450" y="730" text-anchor="middle" font-size="10" fill="#dc2626">← 我们在这里 (Current)</text>
+
+  <!-- TOGAF10 Note -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="750" width="1080" height="40" rx="8" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1"/>
+    <text x="600" y="765" text-anchor="middle" font-size="11" font-weight="500" fill="#0369a1">TOGAF10 适配说明</text>
+    <text x="600" y="780" text-anchor="middle" font-size="10.5" fill="#0c4a6e">战略/BLM正式纳入EA · SOA贯穿4A · 业务能力为枢纽 · 敏捷垂直场景迭代</text>
+  </g>
+
+</svg>
+</div>
+
+<!-- Info Cards -->
+<div class="info-cards">
+  <div class="card">
+    <div class="card-header"><span class="dot cyan"></span>架构三层级</div>
+    <p>EA企业架构=城市规划定骨架, Solution解决方案架构=片区改造整多系统, System软件架构=盖楼落地4+1视图</p>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="dot violet"></span>三维知识体系</div>
+    <p>上游BLM/商业模式/价值链, 下游云原生/CMMI/敏捷/IPD, 核心主线:业务驱动IT→数据驱动业务</p>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="dot emerald"></span>演进坐标</div>
+    <p>信息化→数字化→智能化三阶段, TOGAF10模块化洋葱式结构, SOA思想贯穿4A全域, 业务能力为架构枢纽</p>
+  </div>
+</div>
+
+</div><!-- /capture -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" crossorigin="anonymous"></script>
+<script>
+const captureEl = document.getElementById('capture');
+
+async function copySVG() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showToast('Copied to clipboard');
+  } catch(e) {
+    showToast('Copy failed: ' + e.message);
+  }
+}
+
+async function downloadPNG() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const link = document.createElement('a');
+    link.download = '图1-7_EA知识体系.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG downloaded');
+  } catch(e) {
+    showToast('PNG failed: ' + e.message);
+  }
+}
+
+async function downloadPDF() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('图1-7_EA知识体系.pdf');
+    showToast('PDF downloaded');
+  } catch(e) {
+    showToast('PDF failed: ' + e.message);
+  }
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if(!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font-family:JetBrains Mono,monospace;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.3s;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+</script>
+</body>
+</html>

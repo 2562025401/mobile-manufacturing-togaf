@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-8 智能时代EA范式重构 — 本体驱动的企业架构</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  font-family: 'JetBrains Mono', 'Microsoft YaHei', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+#toolbar {
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+#toolbar button {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#toolbar button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+#toolbar button:active {
+  background: #e2e8f0;
+}
+#capture {
+  width: 1220px;
+  background: #f8fafc;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.svg-wrap {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.info-cards {
+  display: flex;
+  gap: 16px;
+  padding: 16px 10px 10px;
+}
+.card {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot.amber { background: #f59e0b; }
+.dot.cyan { background: #06b6d4; }
+.dot.violet { background: #8b5cf6; }
+.card p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #475569;
+}
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <button onclick="copySVG()">📋 Copy</button>
+  <button onclick="downloadPNG()">🖼️ PNG</button>
+  <button onclick="downloadPDF()">📄 PDF</button>
+</div>
+
+<div id="capture">
+
+<div class="svg-wrap">
+<svg viewBox="0 0 1200 850" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono', 'Microsoft YaHei', monospace">
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#ffffff"/>
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <filter id="cardShadow" x="-2%" y="-4%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+    </filter>
+    <filter id="cardShadowLg" x="-2%" y="-4%" width="104%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- Grid -->
+  <rect width="1200" height="850" fill="url(#grid)"/>
+
+  <!-- ===== TITLE ===== -->
+  <text x="600" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">智能时代 EA 范式重构 — 本体驱动的企业架构</text>
+  <text x="600" y="52" text-anchor="middle" font-size="12" fill="#475569">Ontology-Driven EA · 信息化→数字化→智能化 · 四不足→三缺口→三方向</text>
+
+  <!-- ===== BAND 1: Three-Stage Evolution ===== -->
+  <text x="60" y="76" font-size="13" font-weight="600" fill="#0f172a">一、三阶段演进 (Three-Stage Evolution)</text>
+  <line x1="60" y1="82" x2="1140" y2="82" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Stage 1: 信息化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="94" width="320" height="62" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="60" y="94" width="320" height="22" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="60" y="110" width="320" height="6" fill="#6366f1" opacity="0.85"/>
+    <text x="220" y="109" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">信息化 (Informatization)</text>
+    <text x="220" y="136" text-anchor="middle" font-size="10.5" fill="#475569">流程驱动、数据作为附属记录</text>
+  </g>
+
+  <line x1="380" y1="125" x2="420" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- Stage 2: 数字化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="430" y="94" width="320" height="62" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="430" y="94" width="320" height="22" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="430" y="110" width="320" height="6" fill="#6366f1" opacity="0.85"/>
+    <text x="590" y="109" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">数字化 (Digitalization)</text>
+    <text x="590" y="136" text-anchor="middle" font-size="10.5" fill="#475569">数据驱动、数据中台实时反哺业务</text>
+  </g>
+
+  <line x1="750" y1="125" x2="790" y2="125" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- Stage 3: 智能化 -->
+  <g filter="url(#cardShadow)">
+    <rect x="800" y="94" width="320" height="62" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="94" width="320" height="22" rx="8" fill="#6366f1" opacity="0.85"/>
+    <rect x="800" y="110" width="320" height="6" fill="#6366f1" opacity="0.85"/>
+    <text x="960" y="109" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">智能化 (Intelligentization)</text>
+    <text x="960" y="136" text-anchor="middle" font-size="10.5" fill="#475569">模型驱动、数据+算法+大模型自主推理</text>
+  </g>
+
+  <!-- Current position indicator -->
+  <rect x="382" y="162" width="124" height="18" rx="9" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.8"/>
+  <text x="444" y="174" text-anchor="middle" font-size="10" fill="#dc2626">← 我们在这里 (Current)</text>
+
+  <!-- ===== BAND 2: AI Capability Placement ===== -->
+  <text x="60" y="200" font-size="13" font-weight="600" fill="#0f172a">二、AI落点澄清 (AI Capability Placement)</text>
+  <line x1="60" y1="206" x2="1140" y2="206" stroke="#e2e8f0" stroke-width="1"/>
+
+  <g filter="url(#cardShadowLg)">
+    <rect x="60" y="216" width="1080" height="112" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- Main header -->
+    <rect x="60" y="216" width="1080" height="28" rx="10" fill="#06b6d4" opacity="0.85"/>
+    <rect x="60" y="236" width="1080" height="8" fill="#06b6d4" opacity="0.85"/>
+    <text x="600" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">AI落点澄清: AI不另立第5个A → 能力拆回4A</text>
+
+    <!-- 4 sub-boxes -->
+    <!-- Sub 1 -->
+    <rect x="74" y="252" width="244" height="34" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="0.8"/>
+    <text x="196" y="273" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">算力(GPU/NPU)</text>
+    <line x1="196" y1="286" x2="196" y2="298" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrGray)"/>
+    <text x="196" y="312" text-anchor="middle" font-size="10" fill="#047857">→ 技术架构(第5章)</text>
+
+    <!-- Sub 2 -->
+    <rect x="332" y="252" width="244" height="34" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="0.8"/>
+    <text x="454" y="273" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">大模型底座/算法</text>
+    <line x1="454" y1="286" x2="454" y2="298" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrGray)"/>
+    <text x="454" y="312" text-anchor="middle" font-size="10" fill="#047857">→ 应用架构平台层(第4章)</text>
+
+    <!-- Sub 3 -->
+    <rect x="590" y="252" width="244" height="34" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="0.8"/>
+    <text x="712" y="273" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">非结构化/多模态数据</text>
+    <line x1="712" y1="286" x2="712" y2="298" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrGray)"/>
+    <text x="712" y="312" text-anchor="middle" font-size="10" fill="#047857">→ 数据架构扩展(第3章)</text>
+
+    <!-- Sub 4 -->
+    <rect x="848" y="252" width="244" height="34" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="0.8"/>
+    <text x="970" y="273" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">业务流程智能化</text>
+    <line x1="970" y1="286" x2="970" y2="298" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrGray)"/>
+    <text x="970" y="312" text-anchor="middle" font-size="10" fill="#047857">→ 业务架构能力升级(第2章)</text>
+  </g>
+
+  <!-- Key quote -->
+  <text x="600" y="345" text-anchor="middle" font-size="11" font-weight="600" fill="#0891b2" font-style="italic">"数据本身不能产生智能，知识才能"</text>
+
+  <!-- ===== BAND 3: Four Insufficiencies + Three Gaps ===== -->
+  <text x="60" y="368" font-size="13" font-weight="600" fill="#0f172a">三、EA四不足与三缺口 (Insufficiencies &amp; Gaps)</text>
+  <line x1="60" y1="374" x2="1140" y2="374" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Left: 四不足 -->
+  <text x="290" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#991b1b">传统EA四不足</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="404" width="440" height="36" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <rect x="60" y="404" width="4" height="36" rx="2" fill="#ef4444"/>
+    <text x="78" y="426" font-size="11" font-weight="500" fill="#991b1b">概念边界模糊</text>
+    <text x="414" y="426" text-anchor="end" font-size="10" fill="#b91c1c">(Boundary Blur)</text>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="448" width="440" height="36" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <rect x="60" y="448" width="4" height="36" rx="2" fill="#ef4444"/>
+    <text x="78" y="470" font-size="11" font-weight="500" fill="#991b1b">行为建模缺失</text>
+    <text x="414" y="470" text-anchor="end" font-size="10" fill="#b91c1c">(No Behavior Modeling)</text>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="492" width="440" height="36" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <rect x="60" y="492" width="4" height="36" rx="2" fill="#ef4444"/>
+    <text x="78" y="514" font-size="11" font-weight="500" fill="#991b1b">规则不可机器推理</text>
+    <text x="414" y="514" text-anchor="end" font-size="10" fill="#b91c1c">(Rules Not Machine-Readable)</text>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="60" y="536" width="440" height="36" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <rect x="60" y="536" width="4" height="36" rx="2" fill="#ef4444"/>
+    <text x="78" y="558" font-size="11" font-weight="500" fill="#991b1b">数据来龙去脉断裂</text>
+    <text x="414" y="558" text-anchor="end" font-size="10" fill="#b91c1c">(Lineage Broken)</text>
+  </g>
+
+  <!-- Connection arrows 四不足 → 三缺口 -->
+  <path d="M 500 422 Q 550 422 550 440 Q 550 458 640 458" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrRed)" opacity="0.6"/>
+  <path d="M 500 466 Q 550 466 550 484 Q 550 502 640 502" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrRed)" opacity="0.6"/>
+  <path d="M 500 510 Q 600 510 640 546" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrRed)" opacity="0.6"/>
+  <path d="M 500 554 Q 600 554 640 546" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrRed)" opacity="0.6"/>
+
+  <!-- Right: 三缺口 -->
+  <text x="900" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">三缺口</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="660" y="404" width="480" height="52" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <rect x="660" y="404" width="4" height="52" rx="2" fill="#3b82f6"/>
+    <text x="678" y="424" font-size="11" font-weight="600" fill="#1e40af">语义统一缺口</text>
+    <line x1="678" y1="432" x2="720" y2="432" stroke="#3b82f6" stroke-width="0.8"/>
+    <text x="678" y="446" font-size="10.5" fill="#1d4ed8">→ 本体(Ontology) — 统一语义模型与概念框架</text>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="660" y="466" width="480" height="52" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <rect x="660" y="466" width="4" height="52" rx="2" fill="#3b82f6"/>
+    <text x="678" y="486" font-size="11" font-weight="600" fill="#1e40af">过程保留缺口</text>
+    <line x1="678" y1="494" x2="720" y2="494" stroke="#3b82f6" stroke-width="0.8"/>
+    <text x="678" y="508" font-size="10.5" fill="#1d4ed8">→ 公理/约束/状态机 — 精准表达过程语义</text>
+  </g>
+
+  <g filter="url(#cardShadow)">
+    <rect x="660" y="528" width="480" height="52" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <rect x="660" y="528" width="4" height="52" rx="2" fill="#3b82f6"/>
+    <text x="678" y="548" font-size="11" font-weight="600" fill="#1e40af">动态推理缺口</text>
+    <line x1="678" y1="556" x2="720" y2="556" stroke="#3b82f6" stroke-width="0.8"/>
+    <text x="678" y="570" font-size="10.5" fill="#1d4ed8">→ 推理引擎推导影响链 — 自动化影响分析</text>
+  </g>
+
+  <!-- Mapping label -->
+  <text x="600" y="580" text-anchor="middle" font-size="10" fill="#ef4444" transform="rotate(-90,600,540)">映射到 →</text>
+
+  <!-- ===== BAND 4: Three Reconstruction Directions ===== -->
+  <text x="60" y="612" font-size="13" font-weight="600" fill="#0f172a">四、范式重构三方向 (Reconstruction Directions)</text>
+  <line x1="60" y1="618" x2="1140" y2="618" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Direction 1 -->
+  <g filter="url(#cardShadowLg)">
+    <rect x="60" y="630" width="340" height="110" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="60" y="630" width="340" height="24" rx="8" fill="#8b5cf6" opacity="0.85"/>
+    <rect x="60" y="648" width="340" height="6" fill="#8b5cf6" opacity="0.85"/>
+    <text x="230" y="647" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">方向1: 增设本体语义底座</text>
+    <text x="70" y="672" font-size="10.5" fill="#334155">4A之下增设本体语义底座</text>
+    <text x="70" y="690" font-size="10.5" fill="#475569">4层为其投影视图</text>
+    <text x="70" y="708" font-size="10.5" fill="#475569">语义冲突在底座层消除</text>
+    <text x="70" y="726" font-size="10" fill="#7c3aed">统一概念模型 · 消歧 · 对齐</text>
+  </g>
+
+  <!-- Direction 2 -->
+  <g filter="url(#cardShadowLg)">
+    <rect x="430" y="630" width="340" height="110" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="430" y="630" width="340" height="24" rx="8" fill="#8b5cf6" opacity="0.85"/>
+    <rect x="430" y="648" width="340" height="6" fill="#8b5cf6" opacity="0.85"/>
+    <text x="600" y="647" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">方向2: 双向建模</text>
+    <text x="440" y="672" font-size="10.5" fill="#334155">双向建模替代单向分解</text>
+    <text x="440" y="690" font-size="10.5" fill="#475569">自顶概念分解 + 自底实例归纳</text>
+    <text x="440" y="708" font-size="10.5" fill="#475569">汇聚于本体底座</text>
+    <text x="440" y="726" font-size="10" fill="#7c3aed">避免规划与真实脱节</text>
+  </g>
+
+  <!-- Direction 3 -->
+  <g filter="url(#cardShadowLg)">
+    <rect x="800" y="630" width="340" height="110" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="630" width="340" height="24" rx="8" fill="#8b5cf6" opacity="0.85"/>
+    <rect x="800" y="648" width="340" height="6" fill="#8b5cf6" opacity="0.85"/>
+    <text x="970" y="647" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">方向3: LLM+推理引擎</text>
+    <text x="810" y="672" font-size="10.5" fill="#334155">LLM+推理引擎替代人工影响分析</text>
+    <text x="810" y="690" font-size="10.5" fill="#475569">LLM抽取初始本体</text>
+    <text x="810" y="708" font-size="10.5" fill="#475569">推理引擎沿语义网络推导</text>
+    <text x="810" y="726" font-size="10" fill="#7c3aed">架构师转向维护活性知识库</text>
+  </g>
+
+  <!-- 架构师三大不可替代价值 -->
+  <g filter="url(#cardShadow)">
+    <rect x="180" y="765" width="840" height="34" rx="17" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+    <text x="600" y="787" text-anchor="middle" font-size="12" font-weight="600" fill="#6b21a8">架构师三大不可替代价值： 战略翻译 · 权衡决策 · 治理与共识</text>
+  </g>
+
+</svg>
+</div>
+
+<!-- Info Cards -->
+<div class="info-cards">
+  <div class="card">
+    <div class="card-header"><span class="dot amber"></span>演进阶段</div>
+    <p>信息化→数字化(当前):建设数据中台统一数据语言, 数字化→智能化(前瞻):本体语义底座+AI推理, "数据→信息→知识→智能"价值链</p>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="dot cyan"></span>AI正确落点</div>
+    <p>算力归技术架构, 大模型底座归应用平台层, 多模态数据扩展数据架构, 不另立第5个A避免架构域误设</p>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="dot violet"></span>重构方向</div>
+    <p>本体语义底座统一4A投影, 双向建模避免规划与真实脱节, LLM+推理引擎替代人工影响分析, 架构师转型维护活性知识库</p>
+  </div>
+</div>
+
+</div><!-- /capture -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" crossorigin="anonymous"></script>
+<script>
+const captureEl = document.getElementById('capture');
+
+async function copySVG() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showToast('Copied to clipboard');
+  } catch(e) {
+    showToast('Copy failed: ' + e.message);
+  }
+}
+
+async function downloadPNG() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const link = document.createElement('a');
+    link.download = '图1-8_本体驱动EA范式.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG downloaded');
+  } catch(e) {
+    showToast('PNG failed: ' + e.message);
+  }
+}
+
+async function downloadPDF() {
+  try {
+    const canvas = await html2canvas(captureEl, { scale: 2, backgroundColor: '#f8fafc', useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('图1-8_本体驱动EA范式.pdf');
+    showToast('PDF downloaded');
+  } catch(e) {
+    showToast('PDF failed: ' + e.message);
+  }
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if(!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font-family:JetBrains Mono,monospace;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.3s;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+</script>
+</body>
+</html>

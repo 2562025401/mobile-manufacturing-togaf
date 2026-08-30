@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>业务能力依赖网络图 - LTC核心链路</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:8px;font-size:20px}
+.subtitle{text-align:center;color:#666;margin-bottom:20px;font-size:12px}
+</style></head>
+<body>
+<div class="container">
+<h1>业务能力依赖网络图 — LTC核心链路依赖关系</h1>
+<p class="subtitle">LTC 7阶段 × 24个L4业务能力 × 硬依赖/软依赖/可选关系 | 标识关键瓶颈能力和先行建设项</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800">
+  <defs>
+    <marker id="hardDep" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#D32F2F"/></marker>
+    <marker id="softDep" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#FF9800"/></marker>
+    <marker id="optDep" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#2196F3"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1400" height="800" fill="#F5F5F0"/>
+
+  <!-- Phase 1: 市场与商机 -->
+  <text x="100" y="30" text-anchor="middle" fill="#E65100" font-size="13" font-weight="bold">1.市场与商机</text>
+  <rect x="25" y="40" width="150" height="28" rx="5" fill="#FF9800"/><text x="100" y="59" text-anchor="middle" fill="#fff" font-size="9">品牌定位</text>
+  <rect x="25" y="78" width="150" height="28" rx="5" fill="#FF9800"/><text x="100" y="97" text-anchor="middle" fill="#fff" font-size="9">线索采集</text>
+  <rect x="25" y="116" width="150" height="28" rx="5" fill="#FFB74D"/><text x="100" y="135" text-anchor="middle" fill="#fff" font-size="9">线索评分</text>
+
+  <path d="M100,68 L100,75" fill="none" stroke="#D32F2F" stroke-width="1.5" marker-end="url(#hardDep)"/>
+  <path d="M100,106 L100,113" fill="none" stroke="#D32F2F" stroke-width="1.5" marker-end="url(#hardDep)"/>
+  <path d="M175,90 L255,90" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <text x="210" y="85" text-anchor="middle" fill="#D32F2F" font-size="7">硬依赖</text>
+
+  <!-- Phase 2: 销售与下单 -->
+  <text x="380" y="30" text-anchor="middle" fill="#E65100" font-size="13" font-weight="bold">2.销售与下单</text>
+  <rect x="260" y="40" width="150" height="28" rx="5" fill="#FF9800"/><text x="335" y="59" text-anchor="middle" fill="#fff" font-size="9">渠道准入</text>
+  <rect x="260" y="78" width="150" height="28" rx="5" fill="#FF9800"/><text x="335" y="97" text-anchor="middle" fill="#fff" font-size="9">价格体系</text>
+  <rect x="260" y="116" width="150" height="28" rx="5" fill="#FF9800"/><text x="335" y="135" text-anchor="middle" fill="#fff" font-size="9">订单创建</text>
+  <rect x="260" y="154" width="150" height="28" rx="5" fill="#E65100" stroke="#D32F2F" stroke-width="2"/><text x="335" y="173" text-anchor="middle" fill="#fff" font-size="9">订单审核 ★瓶颈</text>
+
+  <path d="M335,68 L335,75" fill="none" stroke="#D32F2F" stroke-width="1.5" marker-end="url(#hardDep)"/>
+  <path d="M335,106 L335,113" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#softDep)"/>
+  <path d="M335,144 L335,151" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+
+  <!-- Phase 3: 计划与供应 -->
+  <text x="580" y="30" text-anchor="middle" fill="#2E7D32" font-size="13" font-weight="bold">3.计划与供应</text>
+  <rect x="470" y="40" width="150" height="28" rx="5" fill="#4CAF50"/><text x="545" y="59" text-anchor="middle" fill="#fff" font-size="9">需求预测</text>
+  <rect x="470" y="78" width="150" height="28" rx="5" fill="#4CAF50"/><text x="545" y="97" text-anchor="middle" fill="#fff" font-size="9">S&OP协同</text>
+  <rect x="470" y="116" width="150" height="28" rx="5" fill="#E65100" stroke="#D32F2F" stroke-width="2"/><text x="545" y="135" text-anchor="middle" fill="#fff" font-size="9">MRP运算 ★瓶颈</text>
+  <rect x="470" y="154" width="150" height="28" rx="5" fill="#4CAF50"/><text x="545" y="173" text-anchor="middle" fill="#fff" font-size="9">供应商交期确认</text>
+
+  <path d="M545,68 L545,75" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <path d="M545,106 L545,113" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <path d="M545,144 L545,151" fill="none" stroke="#D32F2F" stroke-width="1.5" marker-end="url(#hardDep)"/>
+
+  <!-- Phase 4: 生产制造 -->
+  <text x="730" y="30" text-anchor="middle" fill="#2E7D32" font-size="13" font-weight="bold">4.生产制造</text>
+  <rect x="650" y="40" width="150" height="28" rx="5" fill="#4CAF50"/><text x="725" y="59" text-anchor="middle" fill="#fff" font-size="9">MPS/排产</text>
+  <rect x="650" y="78" width="150" height="28" rx="5" fill="#4CAF50"/><text x="725" y="97" text-anchor="middle" fill="#fff" font-size="9">工单管理</text>
+  <rect x="650" y="116" width="150" height="28" rx="5" fill="#4CAF50"/><text x="725" y="135" text-anchor="middle" fill="#fff" font-size="9">SMT/组装执行</text>
+  <rect x="650" y="154" width="150" height="28" rx="5" fill="#E65100" stroke="#D32F2F" stroke-width="2"/><text x="725" y="173" text-anchor="middle" fill="#fff" font-size="9">IMEI质量追溯 ★瓶颈</text>
+
+  <path d="M725,68 L725,75" fill="none" stroke="#D32F2F" stroke-width="1.5" marker-end="url(#hardDep)"/>
+  <path d="M725,106 L725,113" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <path d="M725,144 L725,151" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+
+  <!-- Phase 5: 物流交付 -->
+  <text x="910" y="30" text-anchor="middle" fill="#1565C0" font-size="13" font-weight="bold">5.物流交付</text>
+  <rect x="830" y="40" width="150" height="28" rx="5" fill="#2196F3"/><text x="905" y="59" text-anchor="middle" fill="#fff" font-size="9">履约路由</text>
+  <rect x="830" y="78" width="150" height="28" rx="5" fill="#2196F3"/><text x="905" y="97" text-anchor="middle" fill="#fff" font-size="9">拣货复核/出库</text>
+  <rect x="830" y="116" width="150" height="28" rx="5" fill="#2196F3"/><text x="905" y="135" text-anchor="middle" fill="#fff" font-size="9">签收确认</text>
+
+  <path d="M905,68 L905,75" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <path d="M905,106 L905,113" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#softDep)"/>
+
+  <!-- Phase 6: 客户服务 -->
+  <text x="1090" y="30" text-anchor="middle" fill="#1565C0" font-size="13" font-weight="bold">6.客户服务</text>
+  <rect x="1010" y="40" width="150" height="28" rx="5" fill="#42A5F5"/><text x="1085" y="59" text-anchor="middle" fill="#fff" font-size="9">保修校验</text>
+  <rect x="1010" y="78" width="150" height="28" rx="5" fill="#42A5F5"/><text x="1085" y="97" text-anchor="middle" fill="#fff" font-size="9">维修执行</text>
+  <rect x="1010" y="116" width="150" height="28" rx="5" fill="#E65100" stroke="#D32F2F" stroke-width="2"/><text x="1085" y="135" text-anchor="middle" fill="#fff" font-size="9">质量回流 ★瓶颈</text>
+
+  <path d="M1085,68 L1085,75" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <path d="M1085,106 L1085,113" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+
+  <!-- Phase 7: 财务回款 -->
+  <text x="1280" y="30" text-anchor="middle" fill="#6A1B9A" font-size="13" font-weight="bold">7.财务回款</text>
+  <rect x="1200" y="40" width="150" height="28" rx="5" fill="#9C27B0"/><text x="1275" y="59" text-anchor="middle" fill="#fff" font-size="9">应收确认</text>
+  <rect x="1200" y="78" width="150" height="28" rx="5" fill="#9C27B0"/><text x="1275" y="97" text-anchor="middle" fill="#fff" font-size="9">返利结算</text>
+
+  <path d="M1275,68 L1275,75" fill="none" stroke="#F44336" stroke-width="2" marker-end="url(#hardDep)"/>
+
+  <!-- ===== Cross-phase dependency arrows ===== -->
+  <!-- Phase 1→2 -->
+  <path d="M175,65 L250,65" fill="none" stroke="#D32F2F" stroke-width="1.8" marker-end="url(#hardDep)"/>
+  <!-- Phase 2→3 -->
+  <path d="M410,168 L460,168" fill="none" stroke="#D32F2F" stroke-width="2.5" marker-end="url(#hardDep)"/>
+  <text x="435" y="162" text-anchor="middle" fill="#D32F2F" font-size="7">硬</text>
+  <!-- Phase 3→4 -->
+  <path d="M620,97 L640,97" fill="none" stroke="#D32F2F" stroke-width="2.5" marker-end="url(#hardDep)"/>
+  <!-- Phase 4→5 -->
+  <path d="M800,70 L820,70" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+  <!-- Phase 5→6 -->
+  <path d="M980,90 L1000,90" fill="none" stroke="#FF9800" stroke-width="1.5" marker-end="url(#softDep)"/>
+  <!-- Phase 6→7 -->
+  <path d="M1160,65 L1190,65" fill="none" stroke="#D32F2F" stroke-width="2" marker-end="url(#hardDep)"/>
+
+  <!-- Cross-domain dependencies (data flow) -->
+  <!-- BOM → MRP -->
+  <path d="M175,80 Q350,250 465,125" fill="none" stroke="#FF9800" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#softDep)"/>
+  <text x="320" y="210" fill="#FF9800" font-size="8">BOM(产品研发域)→MRP(供应链域) 软依赖</text>
+
+  <!-- 合规(法务域)→各阶段 -->
+  <path d="M25,124 Q10,280 -5,400" fill="none" stroke="#2196F3" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="5" y="300" fill="#2196F3" font-size="7" transform="rotate(-90,5,300)">合规约束贯穿全链</text>
+
+  <!-- Bottom: capability dependency network detail -->
+  <g transform="translate(20, 210)">
+    <rect x="0" y="0" width="1360" height="280" rx="6" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1"/>
+
+    <!-- Key dependency chains -->
+    <text x="680" y="20" text-anchor="middle" fill="#2B579A" font-size="12" font-weight="bold">7条关键能力依赖链(从上到下) + 先行建设项识别</text>
+
+    <!-- Chain 1 -->
+    <rect x="15" y="35" width="370" height="32" rx="4" fill="#E8F5E9"/><text x="200" y="55" text-anchor="middle" fill="#333" font-size="9">品牌定位→产品卖点→Campaign→线索采集(隐私)→评分→MQL</text>
+    <rect x="395" y="35" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="55" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:隐私授权(硬)</text>
+    <rect x="555" y="35" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="55" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:MDM+CDP+GRC</text>
+
+    <!-- Chain 2 -->
+    <rect x="15" y="75" width="370" height="32" rx="4" fill="#FFF3E0"/><text x="200" y="95" text-anchor="middle" fill="#333" font-size="9">渠道准入→价格体系→订单创建→ATP→信用→合规→审核</text>
+    <rect x="395" y="75" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="95" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:ATP库存承诺(硬)</text>
+    <rect x="555" y="75" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="95" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:库存中心+价格中心</text>
+
+    <!-- Chain 3 -->
+    <rect x="15" y="115" width="370" height="32" rx="4" fill="#E8F5E9"/><text x="200" y="135" text-anchor="middle" fill="#333" font-size="9">需求预测→S&OP→MRP(BOM)→采购→交期→风险预警</text>
+    <rect x="395" y="115" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="135" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:BOM单一可信源(硬)</text>
+    <rect x="555" y="115" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="135" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:PLM BOM+MDM</text>
+
+    <!-- Chain 4 -->
+    <rect x="15" y="155" width="370" height="32" rx="4" fill="#E8F5E9"/><text x="200" y="175" text-anchor="middle" fill="#333" font-size="9">MPS→工单→MBOM→齐套→SMT→测试→IMEI绑定</text>
+    <rect x="395" y="155" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="175" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:MBOM同步(硬)</text>
+    <rect x="555" y="155" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="175" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:PLM→MES同步</text>
+
+    <!-- Chain 5 -->
+    <rect x="15" y="195" width="370" height="32" rx="4" fill="#E3F2FD"/><text x="200" y="215" text-anchor="middle" fill="#333" font-size="9">ATP→履约路由→仓店→拣货→出库→IMEI→签收</text>
+    <rect x="395" y="195" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="215" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:实时库存+路由(硬)</text>
+    <rect x="555" y="195" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="215" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:库存中心+WMS</text>
+
+    <!-- Chain 6 -->
+    <rect x="15" y="235" width="370" height="32" rx="4" fill="#E3F2FD"/><text x="200" y="255" text-anchor="middle" fill="#333" font-size="9">报修→IMEI→保修→诊断→备件→维修→NPS→质量回流</text>
+    <rect x="395" y="235" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="255" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:IMEI全链路(硬)</text>
+    <rect x="555" y="235" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="255" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:MES追溯→售后</text>
+
+    <!-- Chain 7 -->
+    <rect x="15" y="275" width="370" height="32" rx="4" fill="#F3E5F5"/><text x="200" y="295" text-anchor="middle" fill="#333" font-size="9">签收→应收确认→对账→回款→核销→返利→账龄</text>
+    <rect x="395" y="275" width="150" height="32" rx="4" fill="#FFCDD2"/><text x="470" y="295" text-anchor="middle" fill="#C62828" font-size="8.5">瓶颈:三重匹配(硬)</text>
+    <rect x="555" y="275" width="160" height="32" rx="4" fill="#C8E6C9"/><text x="635" y="295" text-anchor="middle" fill="#2E7D32" font-size="8.5">先行:ERP+价格中心</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(20, 505)">
+    <rect x="0" y="0" width="1360" height="60" rx="6" fill="#ECEFF1"/>
+    <text x="30" y="20" fill="#333" font-size="10" font-weight="bold">图例:</text>
+    <line x1="30" y1="38" x2="80" y2="38" stroke="#D32F2F" stroke-width="2.5"/><text x="88" y="42" fill="#555" font-size="9">硬依赖(必须先行建设)</text>
+    <line x1="230" y1="38" x2="280" y2="38" stroke="#FF9800" stroke-width="2" stroke-dasharray="6,3"/><text x="288" y="42" fill="#555" font-size="9">软依赖(可并行/渐进完善)</text>
+    <line x1="440" y1="38" x2="490" y2="38" stroke="#2196F3" stroke-width="1.5" stroke-dasharray="5,5"/><text x="498" y="42" fill="#555" font-size="9">可选依赖(增强能力)</text>
+    <rect x="650" y="30" width="16" height="16" rx="3" fill="#E65100" stroke="#D32F2F" stroke-width="2"/><text x="672" y="44" fill="#555" font-size="9">瓶颈能力(关键路径)</text>
+    <rect x="800" y="30" width="16" height="16" rx="3" fill="#C8E6C9"/><text x="822" y="44" fill="#555" font-size="9">先行建设项</text>
+
+    <text x="30" y="56" fill="#888" font-size="8.5">依赖分析用于: 实施波次编排(硬依赖决定先后顺序) | 风险评估(瓶颈能力延期影响全链) | 并行建设调度(软依赖/可选依赖可并行)</text>
+  </g>
+
+  <!-- Implementation wave mapping -->
+  <g transform="translate(20, 575)">
+    <rect x="0" y="0" width="1360" height="120" rx="6" fill="#37474F"/>
+    <text x="680" y="20" text-anchor="middle" fill="#FFD54F" font-size="12" font-weight="bold">基于能力依赖的实施波次建议</text>
+    <text x="50" y="45" fill="#A5D6A7" font-size="9.5">Wave 1(Y1奠基): MDM)→库存中心→价格中心→PLM+BOM→GRC(隐私合规) → 【消除P0硬依赖瓶颈】</text>
+    <text x="50" y="65" fill="#90CAF9" font-size="9.5">Wave 2(Y2上 链路贯通): OMS+订单中心→CRM→APS(MRP)→SRM→WMS → 【LTC主链路打通】</text>
+    <text x="50" y="85" fill="#FFCC80" font-size="9.5">Wave 3(Y2下 供应制造): MES+QMS→TMS→ERP+财务共享→CDP+MA → 【制造/物流/服务闭环】</text>
+    <text x="50" y="105" fill="#CE93D8" font-size="9.5">Wave 4(Y3 智能全球): AI平台→低代码→海外区域云→数据中台增强 → 【智能化+全球化运营】</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>

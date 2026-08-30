@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图2-13 LTC阶段-业务组件-数据-API支撑矩阵</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f8fafc;color:#1e293b;font-family:'Inter','Microsoft YaHei',Arial,sans-serif;padding:24px}
+.container{max-width:1580px;margin:0 auto}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.title{font-size:24px;font-weight:800;color:#0f172a;letter-spacing:.2px}
+.subtitle{margin-top:6px;color:#64748b;font-size:13px;line-height:1.6;max-width:1120px}
+.badge{display:inline-flex;align-items:center;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap}
+.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(15,23,42,.05);overflow:auto}
+.section-title{font-size:16px;font-weight:800;color:#0f172a;margin:18px 0 10px}
+.note{font-size:12px;color:#64748b;line-height:1.5;margin:8px 0 14px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.legend span{font-size:12px;border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:5px 9px}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.domain{border:1px solid #dbeafe;background:#f8fbff;border-radius:10px;padding:12px;min-height:160px}
+.domain.core{border-color:#bae6fd;background:#f0f9ff}
+.domain.ops{border-color:#ddd6fe;background:#faf5ff}
+.domain.guard{border-color:#fecdd3;background:#fff7f7}
+.domain-title{font-size:14px;font-weight:800;color:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.domain-code{font-size:11px;color:#64748b;font-weight:700}
+.group{border-left:3px solid #38bdf8;padding-left:8px;margin:8px 0}
+.group-name{font-size:12px;font-weight:800;color:#334155;margin-bottom:5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:11px;line-height:1.35;border:1px solid #e2e8f0;background:#fff;border-radius:7px;padding:4px 6px;color:#334155}
+.chip.master{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.tx{border-color:#bfdbfe;background:#eff6ff;color:#1e40af}
+.chip.rule{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.chip.api{border-color:#c7d2fe;background:#eef2ff;color:#3730a3}
+.chip.app{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+.lane{display:grid;grid-template-columns:170px repeat(7,minmax(130px,1fr));border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;min-width:1180px}
+.lane div{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:9px;font-size:12px;line-height:1.45;background:#fff}
+.lane .head{font-weight:800;background:#f1f5f9;color:#0f172a;text-align:center}
+.lane .rowhead{font-weight:800;background:#f8fafc;color:#0f172a}
+.lane div:nth-child(8n){border-right:0}
+.mini{font-size:11px;color:#64748b}
+.stack{display:flex;flex-direction:column;gap:6px}
+.flow-svg{width:100%;height:auto;min-width:1220px}
+.node-title{font-size:13px;font-weight:800;fill:#0f172a}
+.node-sub{font-size:10px;fill:#475569}
+.edge-label{font-size:10px;fill:#334155;font-weight:700}
+.footer{margin-top:14px;color:#64748b;font-size:11px;text-align:right}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;min-width:1100px}
+th,td{border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:8px;vertical-align:top;line-height:1.45}
+th{background:#f1f5f9;color:#0f172a;font-weight:800;text-align:left;position:sticky;top:0}
+td:first-child,th:first-child{border-left:1px solid #e2e8f0}
+tr:first-child th{border-top:1px solid #e2e8f0}
+tr:first-child th:first-child{border-top-left-radius:8px}
+tr:first-child th:last-child{border-top-right-radius:8px}
+@media(max-width:1100px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.header{flex-direction:column}.title{font-size:20px}}
+</style>
+
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div>
+      <div class="title">图2-13 LTC阶段-业务组件-数据-API支撑矩阵</div>
+      <div class="subtitle">LTC流程拆到阶段后，展示每个阶段由哪些业务能力、数据对象、应用系统和API接口支撑。</div>
+    </div>
+    <div class="badge">浅色EA架构图</div>
+  </div>
+  <div class="diagram-card">
+    <div class="note">本矩阵将LTC七个阶段与业务组件、数据读写、应用/API能力放在同一视图中，表达端到端流程穿透关系。</div>
+    <div class="lane"><div class='head'>映射对象</div><div class='head'>市场与商机</div><div class='head'>销售与下单</div><div class='head'>计划与供应</div><div class='head'>生产制造</div><div class='head'>物流交付</div><div class='head'>客户服务</div><div class='head'>财务回款</div><div class='rowhead'>业务组件/能力</div><div><div class='chips'><span class="chip ">定义目标用户、价格带、卖点和传播主张</span><span class="chip ">产品卖点</span><span class="chip ">预算分配</span><span class="chip ">线索采集</span><span class="chip ">隐私授权</span><span class="chip ">线索评分</span><span class="chip ">提高线索转化判断准确性</span></div></div><div><div class='chips'><span class="chip ">渠道准入</span><span class="chip ">价格体系</span><span class="chip ">订单审核</span><span class="chip ">保证订单主体和渠道归属准确</span><span class="chip ">判断订单是否可以承诺履约</span><span class="chip ">应收</span><span class="chip ">防止违规交易</span></div></div><div><div class='chips'><span class="chip ">把市场需求和销售预测转成供应计划</span><span class="chip ">支撑供需缺口识别</span><span class="chip ">应收</span><span class="chip ">提供MRP运算的产品数据源</span><span class="chip ">采购申请</span><span class="chip ">供应商绩效</span><span class="chip ">识别受限物料和供应商风险</span></div></div><div><div class='chips'><span class="chip ">详细排产</span><span class="chip ">校验排产可行性</span><span class="chip ">工艺路线</span><span class="chip ">车间执行</span><span class="chip ">质量追溯</span><span class="chip ">把质量问题回流研发变更</span></div></div><div><div class='chips'><span class="chip ">驱动履约任务生成</span><span class="chip ">选择可履约库存</span><span class="chip ">仓店路由</span><span class="chip ">完成实物出库</span><span class="chip ">质量追溯</span><span class="chip ">完成交付闭环</span><span class="chip ">应收</span></div></div><div><div class='chips'><span class="chip ">服务工单</span><span class="chip ">判断服务权益</span><span class="chip ">备件库存</span><span class="chip ">质量追溯</span></div></div><div><div class='chips'><span class="chip ">应收</span><span class="chip ">提供对账依据</span><span class="chip ">保证结算金额准确</span><span class="chip ">确定返利对象和政策</span><span class="chip ">保证结算合规可审计</span></div></div><div class='rowhead'>读取数据</div><div><div class='chips'><span class="chip master">产品</span><span class="chip master">SKU</span><span class="chip master">用户标签</span><span class="chip master">历史销量</span><span class="chip master">竞品信息</span><span class="chip master">预算</span><span class="chip master">渠道伙伴</span><span class="chip master">媒介资源</span></div></div><div><div class='chips'><span class="chip master">客户</span><span class="chip master">渠道伙伴</span><span class="chip master">门店</span><span class="chip master">SKU</span><span class="chip master">价格政策</span><span class="chip master">促销活动</span><span class="chip master">用户账号</span><span class="chip master">有效报价</span></div></div><div><div class='chips'><span class="chip master">销售预测</span><span class="chip master">销售订单</span><span class="chip master">渠道库存</span><span class="chip master">Campaign</span><span class="chip master">产能</span><span class="chip master">预算</span><span class="chip master">S&amp;OP计划</span><span class="chip master">MPS</span></div></div><div><div class='chips'><span class="chip master">S&amp;OP计划</span><span class="chip master">采购交期</span><span class="chip master">库存策略</span><span class="chip master">产线</span><span class="chip master">设备</span><span class="chip master">工艺路线</span><span class="chip master">生产工单</span><span class="chip master">BOM</span></div></div><div><div class='chips'><span class="chip master">销售订单</span><span class="chip master">库存水位</span><span class="chip master">门店</span><span class="chip master">仓库</span><span class="chip master">物流SLA</span><span class="chip master">区域规则</span><span class="chip master">配送任务</span><span class="chip master">库存策略</span></div></div><div><div class='chips'><span class="chip master">用户账号</span><span class="chip master">销售订单</span><span class="chip master">IMEI/SN履历</span><span class="chip master">保修政策</span><span class="chip master">会员权益</span><span class="chip master">服务工单</span><span class="chip master">故障代码</span><span class="chip master">备件</span></div></div><div><div class='chips'><span class="chip master">销售订单</span><span class="chip master">签收记录</span><span class="chip master">价格政策</span><span class="chip master">促销活动</span><span class="chip master">客户</span><span class="chip master">渠道伙伴</span><span class="chip master">应收单</span><span class="chip master">银行流水</span></div></div><div class='rowhead'>产生/更新数据</div><div><div class='chips'><span class="chip tx">Campaign</span><span class="chip tx">目标人群</span><span class="chip tx">产品</span><span class="chip tx">营销内容</span><span class="chip tx">媒介投放</span><span class="chip tx">营销线索</span><span class="chip tx">隐私授权</span><span class="chip tx">用户行为日志</span></div></div><div><div class='chips'><span class="chip tx">有效报价</span><span class="chip tx">促销资格校验记录</span><span class="chip tx">销售订单</span><span class="chip tx">订单行</span><span class="chip tx">购物车快照</span><span class="chip tx">库存预占</span><span class="chip tx">信用校验结果</span><span class="chip tx">合规校验结果</span></div></div><div><div class='chips'><span class="chip tx">S&amp;OP计划</span><span class="chip tx">供需缺口</span><span class="chip tx">计划版本</span><span class="chip tx">采购申请</span><span class="chip tx">物料</span><span class="chip tx">库存补货建议</span><span class="chip tx">采购订单</span><span class="chip tx">交期承诺</span></div></div><div><div class='chips'><span class="chip tx">MPS</span><span class="chip tx">详细排产</span><span class="chip tx">生产工单</span><span class="chip tx">开工许可</span><span class="chip tx">领料记录</span><span class="chip tx">上料校验记录</span><span class="chip tx">工序记录</span><span class="chip tx">质量检测记录</span></div></div><div><div class='chips'><span class="chip tx">履约路由结果</span><span class="chip tx">库存预占</span><span class="chip tx">配送任务</span><span class="chip tx">拣货记录</span><span class="chip tx">出库单</span><span class="chip tx">物流单</span><span class="chip tx">IMEI绑定记录</span><span class="chip tx">在途轨迹</span></div></div><div><div class='chips'><span class="chip tx">服务工单</span><span class="chip tx">保修校验结果</span><span class="chip tx">预约记录</span><span class="chip tx">维修单</span><span class="chip tx">备件</span><span class="chip tx">维修记录</span><span class="chip tx">旧件记录</span><span class="chip tx">NPS反馈</span></div></div><div><div class='chips'><span class="chip tx">应收单</span><span class="chip tx">发票</span><span class="chip tx">对账单</span><span class="chip tx">收入确认记录</span><span class="chip tx">回款核销记录</span><span class="chip tx">返利结算单</span><span class="chip tx">账龄分析</span></div></div><div class='rowhead'>应用/API接口</div><div><div class='chips'><span class="chip api">CRM客户与渠道管理/客户中心/GET /users/{id}/profile</span><span class="chip api">PLM产品生命周期管理/产品中心/GET /skus/{sku_id}</span><span class="chip api">GRC法务合规平台/合规风险中心/POST /compliance/privacy-check</span><span class="chip api">CRM客户与渠道管理/客户中心/GET /customers/{id}</span></div></div><div><div class='chips'><span class="chip api">CRM客户与渠道管理/客户中心/GET /customers/{id}</span><span class="chip api">PLM产品生命周期管理/产品中心/GET /skus/{sku_id}</span><span class="chip api">OMS全渠道订单管理/价格促销中心/POST /pricing/calculate</span><span class="chip api">OMS全渠道订单管理/价格促销中心/POST /promotions/validate</span><span class="chip api">OMS全渠道订单管理/订单中心/POST /orders</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/atp-query</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/reservations</span><span class="chip api">GRC法务合规平台/合规风险中心/POST /compliance/trade-check</span></div></div><div><div class='chips'><span class="chip api">供应链计划APS/计划中心/POST /plans/sop-balance</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/atp-query</span><span class="chip api">供应链计划APS/计划中心/POST /plans/mrp-run</span><span class="chip api">PLM产品生命周期管理/产品中心/GET /boms/{sku_id}/effective</span><span class="chip api">SRM供应商协同平台/供应商中心/POST /purchase-orders</span><span class="chip api">SRM供应商协同平台/供应商中心/POST /suppliers/{id}/risk-check</span></div></div><div><div class='chips'><span class="chip api">供应链计划APS/计划中心/POST /plans/sop-balance</span><span class="chip api">MES制造执行系统/制造中心/POST /work-orders</span><span class="chip api">PLM产品生命周期管理/产品中心/GET /boms/{sku_id}/effective</span><span class="chip api">MES制造执行系统/制造中心/POST /operations/records</span><span class="chip api">QMS质量管理系统/质量追溯中心/GET /trace/{imei}</span><span class="chip api">QMS质量管理系统/质量追溯中心/POST /quality/capa</span></div></div><div><div class='chips'><span class="chip api">OMS全渠道订单管理/订单中心/POST /orders</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/atp-query</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/reservations</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/release</span><span class="chip api">QMS质量管理系统/质量追溯中心/GET /trace/{imei}</span><span class="chip api">ERP企业资源计划/财务结算中心/POST /receivables/confirm</span></div></div><div><div class='chips'><span class="chip api">CRM客户与渠道管理/服务中心/POST /service-tickets</span><span class="chip api">OMS全渠道订单管理/订单中心/POST /orders</span><span class="chip api">QMS质量管理系统/质量追溯中心/GET /trace/{imei}</span><span class="chip api">WMS仓储管理系统/库存中心/POST /inventory/atp-query</span><span class="chip api">售后服务管理平台/服务中心/POST /repairs/{id}/complete</span><span class="chip api">QMS质量管理系统/质量追溯中心/POST /quality/capa</span></div></div><div><div class='chips'><span class="chip api">ERP企业资源计划/财务结算中心/POST /receivables/confirm</span><span class="chip api">OMS全渠道订单管理/订单中心/POST /orders</span><span class="chip api">OMS全渠道订单管理/价格促销中心/POST /pricing/calculate</span><span class="chip api">ERP企业资源计划/财务结算中心/POST /payments/match</span><span class="chip api">OMS全渠道订单管理/价格促销中心/POST /promotions/validate</span></div></div></div>
+    </div>
+  <div class="footer">Generated from enterprise architecture metadata · html/图2-13 LTC阶段-业务组件-数据-API支撑矩阵 · Light architecture diagram style</div>
+</div>
+</body>
+</html>

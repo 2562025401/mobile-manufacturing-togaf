@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>LTC事件流拓扑图</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:15px}
+.container{max-width:1500px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:4px;font-size:18px}
+.subtitle{text-align:center;color:#666;margin-bottom:15px;font-size:11px}
+</style></head>
+<body>
+<div class="container">
+<h1>LTC事件流拓扑图 — 领域事件驱动集成架构</h1>
+<p class="subtitle">27个LTC领域事件 × 7阶段映射 × Producer/Consumer × Topic/QoS × 事件设计模式</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 750">
+  <defs>
+    <marker id="evt" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#FF9800"/></marker>
+    <marker id="evtG" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#4CAF50"/></marker>
+    <marker id="evtB" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#2196F3"/></marker>
+    <marker id="evtP" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0,0 L7,2.5 L0,5 Z" fill="#9C27B0"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1460" height="750" fill="#F5F5F0"/>
+
+  <!-- ===== LEFT: Producer Column ===== -->
+  <g transform="translate(15, 40)">
+    <rect x="0" y="0" width="200" height="700" rx="8" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="200" height="30" rx="8" fill="#37474F"/>
+    <text x="100" y="20" text-anchor="middle" fill="#FFD54F" font-size="12" font-weight="bold">事件生产者 (Producers)</text>
+
+    <!-- Stage 1 -->
+    <rect x="10" y="42" width="180" height="68" rx="5" fill="#FFF3E0" stroke="#FF9800" stroke-width="1.2"/>
+    <text x="100" y="58" text-anchor="middle" fill="#E65100" font-size="9.5" font-weight="bold">阶段1: 市场与商机</text>
+    <text x="100" y="74" text-anchor="middle" fill="#555" font-size="8">MA营销自动化</text>
+    <text x="100" y="90" text-anchor="middle" fill="#888" font-size="7.5">CampaignCreated / LeadCaptured</text>
+    <text x="100" y="104" text-anchor="middle" fill="#888" font-size="7.5">ConsentGranted / MQLQualified</text>
+
+    <!-- Stage 2 -->
+    <rect x="10" y="120" width="180" height="68" rx="5" fill="#FFF3E0" stroke="#FF9800" stroke-width="1.2"/>
+    <text x="100" y="136" text-anchor="middle" fill="#E65100" font-size="9.5" font-weight="bold">阶段2: 销售与下单</text>
+    <text x="100" y="152" text-anchor="middle" fill="#555" font-size="8">OMS订单中心 / 库存中心 / ERP</text>
+    <text x="100" y="168" text-anchor="middle" fill="#888" font-size="7.5">OrderCreated / StockReserved</text>
+    <text x="100" y="182" text-anchor="middle" fill="#888" font-size="7.5">OrderApproved / CreditChecked</text>
+
+    <!-- Stage 3 -->
+    <rect x="10" y="198" width="180" height="58" rx="5" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.2"/>
+    <text x="100" y="214" text-anchor="middle" fill="#2E7D32" font-size="9.5" font-weight="bold">阶段3: 计划与供应</text>
+    <text x="100" y="230" text-anchor="middle" fill="#555" font-size="8">APS计划中心 / SRM供应商中心</text>
+    <text x="100" y="248" text-anchor="middle" fill="#888" font-size="7.5">SOPPlanPublished / MRPCompleted / POConfirmed</text>
+
+    <!-- Stage 4 -->
+    <rect x="10" y="266" width="180" height="68" rx="5" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.2"/>
+    <text x="100" y="282" text-anchor="middle" fill="#2E7D32" font-size="9.5" font-weight="bold">阶段4: 生产制造</text>
+    <text x="100" y="298" text-anchor="middle" fill="#555" font-size="8">MES制造中心 / QMS质量追溯</text>
+    <text x="100" y="314" text-anchor="middle" fill="#888" font-size="7.5">WorkOrderCreated / ProductionStarted</text>
+    <text x="100" y="328" text-anchor="middle" fill="#888" font-size="7.5">IMEIBound / CAPACreated</text>
+
+    <!-- Stage 5 -->
+    <rect x="10" y="344" width="180" height="58" rx="5" fill="#E3F2FD" stroke="#2196F3" stroke-width="1.2"/>
+    <text x="100" y="360" text-anchor="middle" fill="#1565C0" font-size="9.5" font-weight="bold">阶段5: 物流交付</text>
+    <text x="100" y="376" text-anchor="middle" fill="#555" font-size="8">WMS / TMS / 库存中心</text>
+    <text x="100" y="394" text-anchor="middle" fill="#888" font-size="7.5">ShipmentRouted / OrderShipped / PODSigned</text>
+
+    <!-- Stage 6 -->
+    <rect x="10" y="412" width="180" height="58" rx="5" fill="#E3F2FD" stroke="#2196F3" stroke-width="1.2"/>
+    <text x="100" y="428" text-anchor="middle" fill="#1565C0" font-size="9.5" font-weight="bold">阶段6: 客户服务</text>
+    <text x="100" y="444" text-anchor="middle" fill="#555" font-size="8">售后平台 / QMS</text>
+    <text x="100" y="462" text-anchor="middle" fill="#888" font-size="7.5">ServiceTicketCreated / RepairCompleted</text>
+
+    <!-- Stage 7 -->
+    <rect x="10" y="480" width="180" height="58" rx="5" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1.2"/>
+    <text x="100" y="496" text-anchor="middle" fill="#6A1B9A" font-size="9.5" font-weight="bold">阶段7: 财务回款</text>
+    <text x="100" y="512" text-anchor="middle" fill="#555" font-size="8">ERP财务结算</text>
+    <text x="100" y="530" text-anchor="middle" fill="#888" font-size="7.5">ReceivableConfirmed / PaymentMatched / RebateSettled</text>
+
+    <!-- Event Count Badge -->
+    <rect x="30" y="555" width="140" height="28" rx="14" fill="#263238"/>
+    <text x="100" y="574" text-anchor="middle" fill="#FFD54F" font-size="11" font-weight="bold">共27个领域事件</text>
+  </g>
+
+  <!-- ===== MIDDLE: Event Bus with event cards ===== -->
+  <g transform="translate(240, 40)">
+    <rect x="0" y="0" width="520" height="700" rx="8" fill="#FFF8E1" stroke="#FFB300" stroke-width="2.5"/>
+    <rect x="0" y="0" width="520" height="30" rx="8" fill="#FFB300"/>
+    <text x="260" y="20" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Kafka/RocketMQ 事件总线 — Topic: ltc.*.events</text>
+
+    <!-- Row 1: Market -->
+    <rect x="12" y="42" width="496" height="68" rx="5" fill="#FFFDE7" stroke="#FFCC80" stroke-width="1"/>
+    <text x="20" y="58" fill="#E65100" font-size="9" font-weight="bold">阶段1 Topic: ltc.marketing.events</text>
+    <rect x="20" y="65" width="142" height="20" rx="3" fill="#FFE082"/><text x="91" y="79" text-anchor="middle" fill="#E65100" font-size="7.5">CampaignCreated</text>
+    <rect x="168" y="65" width="118" height="20" rx="3" fill="#FFCC80"/><text x="227" y="79" text-anchor="middle" fill="#E65100" font-size="7.5">LeadCaptured</text>
+    <rect x="292" y="65" width="108" height="20" rx="3" fill="#FFCC80"/><text x="346" y="79" text-anchor="middle" fill="#E65100" font-size="7.5">ConsentGranted</text>
+    <rect x="406" y="65" width="96" height="20" rx="3" fill="#FFCC80"/><text x="454" y="79" text-anchor="middle" fill="#E65100" font-size="7.5">MQLQualified</text>
+    <text x="20" y="102" fill="#888" font-size="7">QoS: at-least-once | 保留:30-90天(合规:永久) | 分区key: campaignId/leadId/userId</text>
+
+    <!-- Row 2: Order -->
+    <rect x="12" y="120" width="496" height="68" rx="5" fill="#FFFDE7" stroke="#FFCC80" stroke-width="1"/>
+    <text x="20" y="136" fill="#E65100" font-size="9" font-weight="bold">阶段2 Topic: ltc.order.events + ltc.inventory.events</text>
+    <rect x="20" y="143" width="112" height="20" rx="3" fill="#FFE082"/><text x="76" y="157" text-anchor="middle" fill="#E65100" font-size="7.5">OrderCreated</text>
+    <rect x="138" y="143" width="116" height="20" rx="3" fill="#FFCC80"/><text x="196" y="157" text-anchor="middle" fill="#E65100" font-size="7.5">StockReserved</text>
+    <rect x="260" y="143" width="108" height="20" rx="3" fill="#FFCC80"/><text x="314" y="157" text-anchor="middle" fill="#E65100" font-size="7.5">OrderApproved</text>
+    <rect x="374" y="143" width="104" height="20" rx="3" fill="#FFCC80"/><text x="426" y="157" text-anchor="middle" fill="#E65100" font-size="7.5">CreditChecked</text>
+    <text x="20" y="180" fill="#888" font-size="7">QoS: exactly-once | 保留:7天(热)/365天(冷) | 分区key: orderId | 异常: 重试3次→DLQ</text>
+
+    <!-- Row 3: Plan -->
+    <rect x="12" y="198" width="496" height="58" rx="5" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1"/>
+    <text x="20" y="214" fill="#2E7D32" font-size="9" font-weight="bold">阶段3 Topic: ltc.planning.events</text>
+    <rect x="20" y="221" width="135" height="20" rx="3" fill="#A5D6A7"/><text x="87" y="235" text-anchor="middle" fill="#2E7D32" font-size="7.5">SOPPlanPublished</text>
+    <rect x="162" y="221" width="115" height="20" rx="3" fill="#C8E6C9"/><text x="219" y="235" text-anchor="middle" fill="#2E7D32" font-size="7.5">MRPCompleted</text>
+    <rect x="284" y="221" width="104" height="20" rx="3" fill="#C8E6C9"/><text x="336" y="235" text-anchor="middle" fill="#2E7D32" font-size="7.5">POConfirmed</text>
+    <text x="20" y="250" fill="#888" font-size="7">QoS: at-least-once | 保留:30-365天 | 分区key: planId/poId | 计划版本历史保留</text>
+
+    <!-- Row 4: Manufacturing -->
+    <rect x="12" y="266" width="496" height="68" rx="5" fill="#E8F5E9" stroke="#A5D6A7" stroke-width="1"/>
+    <text x="20" y="282" fill="#2E7D32" font-size="9" font-weight="bold">阶段4 Topic: mfg.trace.events + mfg.quality.events</text>
+    <rect x="20" y="289" width="125" height="20" rx="3" fill="#A5D6A7"/><text x="82" y="303" text-anchor="middle" fill="#2E7D32" font-size="7.5">WorkOrderCreated</text>
+    <rect x="152" y="289" width="118" height="20" rx="3" fill="#C8E6C9"/><text x="211" y="303" text-anchor="middle" fill="#2E7D32" font-size="7.5">ProductionStarted</text>
+    <rect x="277" y="289" width="98" height="20" rx="3" fill="#C8E6C9"/><text x="326" y="303" text-anchor="middle" fill="#2E7D32" font-size="7.5">IMEIBound</text>
+    <rect x="382" y="289" width="108" height="20" rx="3" fill="#C8E6C9"/><text x="436" y="303" text-anchor="middle" fill="#2E7D32" font-size="7.5">CAPACreated</text>
+    <text x="20" y="327" fill="#888" font-size="7">QoS: exactly-once(IMEI) | 保留:90天/永久(IMEI) | 分区key: workOrderId/imei | 离线缓冲</text>
+
+    <!-- Row 5: Delivery -->
+    <rect x="12" y="344" width="496" height="58" rx="5" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1"/>
+    <text x="20" y="360" fill="#1565C0" font-size="9" font-weight="bold">阶段5 Topic: ltc.fulfillment.events</text>
+    <rect x="20" y="367" width="118" height="20" rx="3" fill="#90CAF9"/><text x="79" y="381" text-anchor="middle" fill="#1565C0" font-size="7.5">ShipmentRouted</text>
+    <rect x="145" y="367" width="108" height="20" rx="3" fill="#90CAF9"/><text x="199" y="381" text-anchor="middle" fill="#1565C0" font-size="7.5">OrderShipped</text>
+    <rect x="260" y="367" width="112" height="20" rx="3" fill="#90CAF9"/><text x="316" y="381" text-anchor="middle" fill="#1565C0" font-size="7.5">InventoryDeducted</text>
+    <rect x="379" y="367" width="95" height="20" rx="3" fill="#90CAF9"/><text x="426" y="381" text-anchor="middle" fill="#1565C0" font-size="7.5">PODSigned</text>
+    <text x="20" y="396" fill="#888" font-size="7">QoS: exactly-once(出库/签收) | 保留:30-365天 | 分区key: orderId | 签收触发售后期+应收</text>
+
+    <!-- Row 6: Service -->
+    <rect x="12" y="412" width="496" height="58" rx="5" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1"/>
+    <text x="20" y="428" fill="#1565C0" font-size="9" font-weight="bold">阶段6 Topic: ltc.service.events + ltc.quality.events</text>
+    <rect x="20" y="435" width="132" height="20" rx="3" fill="#90CAF9"/><text x="86" y="449" text-anchor="middle" fill="#1565C0" font-size="7.5">ServiceTicketCreated</text>
+    <rect x="159" y="435" width="108" height="20" rx="3" fill="#90CAF9"/><text x="213" y="449" text-anchor="middle" fill="#1565C0" font-size="7.5">RepairCompleted</text>
+    <rect x="274" y="435" width="98" height="20" rx="3" fill="#90CAF9"/><text x="323" y="449" text-anchor="middle" fill="#1565C0" font-size="7.5">NPSCollected</text>
+    <rect x="379" y="435" width="115" height="20" rx="3" fill="#90CAF9"/><text x="436" y="449" text-anchor="middle" fill="#1565C0" font-size="7.5">QualityFeedback</text>
+    <text x="20" y="464" fill="#888" font-size="7">QoS: at-least-once | 保留:365天 | 分区key: ticketId/imei | 故障code标准化</text>
+
+    <!-- Row 7: Finance -->
+    <rect x="12" y="480" width="496" height="58" rx="5" fill="#F3E5F5" stroke="#CE93D8" stroke-width="1"/>
+    <text x="20" y="496" fill="#6A1B9A" font-size="9" font-weight="bold">阶段7 Topic: ltc.finance.events</text>
+    <rect x="20" y="503" width="140" height="20" rx="3" fill="#CE93D8"/><text x="90" y="517" text-anchor="middle" fill="#6A1B9A" font-size="7.5">ReceivableConfirmed</text>
+    <rect x="168" y="503" width="120" height="20" rx="3" fill="#CE93D8"/><text x="228" y="517" text-anchor="middle" fill="#6A1B9A" font-size="7.5">PaymentMatched</text>
+    <rect x="296" y="503" width="110" height="20" rx="3" fill="#CE93D8"/><text x="351" y="517" text-anchor="middle" fill="#6A1B9A" font-size="7.5">RebateSettled</text>
+    <text x="20" y="532" fill="#888" font-size="7">QoS: exactly-once | 保留:10年(审计) | 分区key: receivableId/customerId | 不可变日志</text>
+
+    <!-- Key consumers bar -->
+    <rect x="12" y="550" width="496" height="28" rx="4" fill="#ECEFF1"/>
+    <text x="260" y="569" text-anchor="middle" fill="#37474F" font-size="9" font-weight="bold">消费者: 通知服务 | 数据平台 | WMS/APS/MES/ERP | CRM/CDP/MA | 经营分析/BI | GRC/Audit</text>
+
+    <!-- Saga example -->
+    <rect x="12" y="590" width="496" height="55" rx="5" fill="#263238"/>
+    <text x="20" y="608" fill="#FFD54F" font-size="9" font-weight="bold">Saga编排示例: 订单创建→库存预占→支付→履约</text>
+    <text x="20" y="625" fill="#B0BEC5" font-size="8">正向: OrderCreated→StockReserved→OrderPaid→OrderApproved(Step) | 补偿: 库存释放+取消订单+退款(Compensate)</text>
+    <text x="20" y="640" fill="#B0BEC5" font-size="8">幂等: 每个事件携带idempotencyKey(orderId+eventType) | 对账: 每日批处理核对订单-库存-支付-履约一致性</text>
+  </g>
+
+  <!-- ===== RIGHT: Consumer Column ===== -->
+  <g transform="translate(785, 40)">
+    <rect x="0" y="0" width="195" height="700" rx="8" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="195" height="30" rx="8" fill="#37474F"/>
+    <text x="97" y="20" text-anchor="middle" fill="#FFD54F" font-size="12" font-weight="bold">事件消费者</text>
+
+    <rect x="10" y="42" width="175" height="78" rx="5" fill="#E3F2FD" stroke="#42A5F5" stroke-width="1"/>
+    <text x="97" y="60" text-anchor="middle" fill="#1565C0" font-size="9" font-weight="bold">1. 通知服务</text>
+    <text x="97" y="78" text-anchor="middle" fill="#555" font-size="7.5">短信/推送/邮件/站内信</text>
+    <text x="97" y="96" text-anchor="middle" fill="#888" font-size="7">消费: OrderCreated→Shipped→Delivered</text>
+    <text x="97" y="112" text-anchor="middle" fill="#888" font-size="7">延迟&lt;5s | 频控防骚扰</text>
+
+    <rect x="10" y="130" width="175" height="78" rx="5" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1"/>
+    <text x="97" y="148" text-anchor="middle" fill="#6A1B9A" font-size="9" font-weight="bold">2. 数据平台</text>
+    <text x="97" y="166" text-anchor="middle" fill="#555" font-size="7.5">数据中台+数据湖仓</text>
+    <text x="97" y="184" text-anchor="middle" fill="#888" font-size="7">全事件消费→Flink→ClickHouse</text>
+    <text x="97" y="200" text-anchor="middle" fill="#888" font-size="7">实时指标: T+0订单/库存/签收</text>
+
+    <rect x="10" y="218" width="175" height="78" rx="5" fill="#E8F5E9" stroke="#66BB6A" stroke-width="1"/>
+    <text x="97" y="236" text-anchor="middle" fill="#2E7D32" font-size="9" font-weight="bold">3. 业务系统(WMS/APS/MES/ERP)</text>
+    <text x="97" y="254" text-anchor="middle" fill="#555" font-size="7.5">订单→履行动作触发</text>
+    <text x="97" y="270" text-anchor="middle" fill="#555" font-size="7.5">生产→质量→出库联动</text>
+    <text x="97" y="288" text-anchor="middle" fill="#888" font-size="7">延迟&lt;1s(交易) ~ &lt;5min(批)</text>
+
+    <rect x="10" y="306" width="175" height="68" rx="5" fill="#FFF3E0" stroke="#FFB74D" stroke-width="1"/>
+    <text x="97" y="324" text-anchor="middle" fill="#E65100" font-size="9" font-weight="bold">4. CRM/CDP/MA</text>
+    <text x="97" y="342" text-anchor="middle" fill="#555" font-size="7.5">客户360/画像实时更新</text>
+    <text x="97" y="358" text-anchor="middle" fill="#555" font-size="7.5">营销触发/自动化旅程</text>
+    <text x="97" y="370" text-anchor="middle" fill="#888" font-size="7">延迟&lt;5s(实时)/T+1(批量)</text>
+
+    <rect x="10" y="384" width="175" height="58" rx="5" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1"/>
+    <text x="97" y="402" text-anchor="middle" fill="#6A1B9A" font-size="9" font-weight="bold">5. 经营分析/BI</text>
+    <text x="97" y="420" text-anchor="middle" fill="#555" font-size="7.5">实时指标仪表板/预警</text>
+    <text x="97" y="436" text-anchor="middle" fill="#888" font-size="7">T+0小时级 经营驾驶舱</text>
+
+    <rect x="10" y="452" width="175" height="48" rx="5" fill="#ECEFF1" stroke="#90A4AE" stroke-width="1"/>
+    <text x="97" y="470" text-anchor="middle" fill="#37474F" font-size="9" font-weight="bold">6. GRC/Audit</text>
+    <text x="97" y="488" text-anchor="middle" fill="#555" font-size="7.5">合规审计/异常检测/证据链</text>
+  </g>
+
+  <!-- ===== BOTTOM: QoS Legend ===== -->
+  <g transform="translate(15, 695)">
+    <rect x="0" y="0" width="1205" height="28" rx="5" fill="#ECEFF1"/>
+    <text x="10" y="19" fill="#333" font-size="9" font-weight="bold">QoS: </text>
+    <rect x="55" y="5" width="90" height="18" rx="3" fill="#FFCDD2"/><text x="100" y="18" text-anchor="middle" fill="#C62828" font-size="8">exactly-once(交易/审计)</text>
+    <rect x="155" y="5" width="80" height="18" rx="3" fill="#FFF9C4"/><text x="195" y="18" text-anchor="middle" fill="#F57F17" font-size="8">at-least-once(流程)</text>
+    <text x="250" y="19" fill="#333" font-size="9">| 保留: 7天(热)~10年(审计) | 分区: orderId/imei/customerId hash | 异常: 重试3次→DLQ→日批对账补偿</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>

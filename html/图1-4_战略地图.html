@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>战略地图 — 四层因果链路与KPI目标值</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:30px 20px;display:flex;flex-direction:column;align-items:center}
+.container{max-width:1260px;width:100%;display:flex;flex-direction:column;align-items:center;gap:20px}
+.toolbar{display:flex;gap:10px;align-self:flex-end;margin-bottom:4px}
+.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;border-radius:6px;background:#ffffff;color:#475569;cursor:pointer;transition:all .15s}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#1e293b}
+.chart-wrapper{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;width:100%;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.chart-wrapper svg{display:block;width:100%;height:auto;max-width:1200px;margin:0 auto}
+.info-cards{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.card{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:border-color .15s}
+.card:hover{border-color:#94a3b8}
+.card h4{font-size:13px;font-weight:600;color:#0f172a;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h4 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.card ul{list-style:none;padding:0}
+.card ul li{font-size:11.5px;color:#475569;line-height:1.65;padding:3px 0;padding-left:14px;position:relative}
+.card ul li::before{content:'• ';position:absolute;left:0;color:#94a3b8}
+.dot-rose{background:#f43f5e}
+.dot-cyan{background:#06b6d4}
+.dot-emerald{background:#10b981}
+@media(max-width:860px){.info-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copyChart()">📋 复制</button>
+<button onclick="downloadPNG()">🖼 PNG</button>
+<button onclick="downloadPDF()">📄 PDF</button>
+</div>
+<div class="chart-wrapper" id="chart-container">
+<svg id="chart-svg" viewBox="0 0 1200 800" width="1200" height="800" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<div class="info-cards">
+<div class="card">
+<h4><span class="dot dot-rose"></span>财务价值</h4>
+<ul>
+<li>Y3营收目标1650亿，年复合增长率保持行业领先</li>
+<li>毛利率提升至24%，产品结构优化驱动盈利改善</li>
+<li>净利率翻倍至7%，运营效率与规模效应持续释放</li>
+<li>互联网服务收入成为第二增长曲线，服务生态初步成型</li>
+</ul>
+</div>
+<div class="card">
+<h4><span class="dot dot-cyan"></span>客户价值</h4>
+<ul>
+<li>高端份额翻倍至8%，旗舰产品突破600美元以上价格带</li>
+<li>NPS大幅提升至45，超越行业平均水平的用户体验</li>
+<li>用户复购率提升至50%，品牌忠诚度显著增强</li>
+<li>全球化覆盖中国、东南亚、欧洲三大核心区域</li>
+</ul>
+</div>
+<div class="card">
+<h4><span class="dot dot-emerald"></span>能力建设</h4>
+<ul>
+<li>TTM缩短5个月，产品开发效率提升30%以上</li>
+<li>库存周转加速13天，运营资金效率大幅改善</li>
+<li>核心数据同源率达90%，消除数据孤岛</li>
+<li>中台服务复用率达70%，降低重复建设成本</li>
+</ul>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+const NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById('chart-svg');
+const W=1200, H=800;
+
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(let k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function txt(str, x, y, attrs){
+  const t = el('text', {x, y, ...attrs});
+  t.textContent = str;
+  return t;
+}
+function rect(x, y, w, h, attrs){
+  return el('rect', {x, y, width:w, height:h, rx:4, ry:4, ...attrs});
+}
+function group(attrs){
+  return el('g', {...attrs});
+}
+
+const frag = document.createDocumentFragment();
+
+// Background
+frag.appendChild(el('rect', {width:W, height:H, fill:'#ffffff'}));
+
+// Grid pattern
+const defs = el('defs', {});
+const pat = el('pattern', {id:'grid2', width:40, height:40, patternUnits:'userSpaceOnUse'});
+pat.appendChild(el('rect', {width:40, height:40, fill:'#ffffff'}));
+pat.appendChild(el('path', {d:'M 40 0 L 0 0 0 40', fill:'none', stroke:'#e2e8f0', strokeWidth:0.5}));
+defs.appendChild(pat);
+frag.appendChild(defs);
+frag.appendChild(el('rect', {width:W, height:H, fill:'url(#grid2)'}));
+
+// Title area
+frag.appendChild(el('rect', {x:0, y:0, width:W, height:60, fill:'#f8fafc', opacity:0.7}));
+frag.appendChild(txt('战略地图 (Strategy Map) — 四层因果链路与KPI目标值', 30, 32, {fill:'#0f172a', 'font-size':'20px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+frag.appendChild(txt('财务 → 客户 → 内部流程 → 学习成长  四层战略目标因果链', 30, 53, {fill:'#475569', 'font-size':'13px', 'font-weight':'400', 'font-family':'JetBrains Mono, monospace'}));
+
+// ─── Layer data ───
+const layers = [
+  {
+    id:'finance', name:'财务层', en:'Financial',
+    y:75, h:108,
+    bg:'#fef2f2', titleBg:'#fee2e2', accent:'#dc2626', text:'#991b1b',
+    kpis:[
+      {name:'营收增长', period:'Y0→Y3', val:'+38%', sub:'年复合增长率保持领先', imp:'up'},
+      {name:'毛利率', baseline:'20%', target:'24%', sub:'+4pp 产品结构优化', imp:'up'},
+      {name:'净利率', baseline:'4%', target:'7%', sub:'+3pp 运营效率提升', imp:'up'},
+      {name:'互联网服务\n收入占比', baseline:'6%', target:'15%', sub:'+9pp 第二增长曲线', imp:'up'}
+    ]
+  },
+  {
+    id:'customer', name:'客户层', en:'Customer',
+    y:210, h:108,
+    bg:'#eff6ff', titleBg:'#dbeafe', accent:'#2563eb', text:'#1e40af',
+    kpis:[
+      {name:'全球市场\n份额', baseline:'9%', target:'12%', sub:'+3pp 规模扩张', imp:'up'},
+      {name:'高端份额\n(≥$600)', baseline:'4%', target:'8%', sub:'+4pp 高端突破', imp:'up'},
+      {name:'NPS\n净推荐值', baseline:'32', target:'45', sub:'+13 体验提升', imp:'up'},
+      {name:'用户\n复购率', baseline:'35%', target:'50%', sub:'+15pp 品牌忠诚', imp:'up'}
+    ]
+  },
+  {
+    id:'process', name:'内部流程层', en:'Internal Process',
+    y:345, h:108,
+    bg:'#f0fdf4', titleBg:'#dcfce7', accent:'#16a34a', text:'#166534',
+    kpis:[
+      {name:'TTM\n产品上市周期', baseline:'16个月', target:'11个月', sub:'-5个月 研发提效', imp:'down'},
+      {name:'库存\n周转天数', baseline:'45天', target:'32天', sub:'-13天 运营加速', imp:'down'},
+      {name:'返修率', baseline:'3.5%', target:'2.0%', sub:'-1.5pp 质量提升', imp:'down'},
+      {name:'需求预测\n准确率', baseline:'58%', target:'75%', sub:'+17pp 精准计划', imp:'up'}
+    ]
+  },
+  {
+    id:'learning', name:'学习成长层', en:'Learning & Growth',
+    y:480, h:108,
+    bg:'#faf5ff', titleBg:'#f3e8ff', accent:'#9333ea', text:'#581c87',
+    kpis:[
+      {name:'核心数据\n同源率', baseline:'10%', target:'90%', sub:'+80pp 消除孤岛', imp:'up'},
+      {name:'数字化\n人才占比', baseline:'25%', target:'60%', sub:'+35pp 人才升级', imp:'up'},
+      {name:'中台服务\n复用率', baseline:'0%', target:'70%', sub:'从零构建中台能力', imp:'up'}
+    ]
+  }
+];
+
+// ─── Draw Layers ───
+const cardGap = 15;
+const cardW = 270;
+
+layers.forEach((ly, li) => {
+  const {y, h, bg, titleBg, accent, text, name, en, kpis} = ly;
+
+  // Layer background
+  frag.appendChild(rect(15, y, 1170, h, {fill:bg, stroke:titleBg, strokeWidth:1}));
+
+  // Title bar on left side of layer
+  frag.appendChild(rect(15, y, 140, 24, {fill:accent, rx:4, ry:4}));
+  frag.appendChild(txt(name+' '+en, 23, y+17, {fill:'#ffffff', 'font-size':'11px', 'font-weight':'600', 'font-family':'JetBrains Mono, monospace'}));
+
+  // Decorative indicator line
+  frag.appendChild(el('line', {x1:15, y1:y+24, x2:1185, y2:y+24, stroke:accent, strokeWidth:1.5, opacity:0.3}));
+
+  // KPI Cards
+  const cardAreaY = y + 32;
+  const totalCards = kpis.length;
+  const totalW = totalCards * cardW + (totalCards-1) * cardGap;
+  const cardOffsetX = (1185 - totalW) / 2;
+
+  kpis.forEach((kpi, ki) => {
+    const cx = 15 + cardOffsetX + ki * (cardW + cardGap);
+    const cy = cardAreaY;
+    const cw = cardW;
+    const ch = h - 40;
+
+    // Card background
+    frag.appendChild(rect(cx, cy, cw, ch, {fill:'#ffffff', stroke:'#e2e8f0', strokeWidth:1}));
+
+    // KPI name (handle multi-line)
+    const nameLines = kpi.name.split('\n');
+    nameLines.forEach((line, li) => {
+      frag.appendChild(txt(line, cx+14, cy+16+li*13, {fill:'#1e293b', 'font-size':'10px', 'font-weight':'600', 'font-family':'JetBrains Mono, monospace'}));
+    });
+
+    // Divider
+    frag.appendChild(el('line', {x1:cx+14, y1:cy+42, x2:cx+cw-14, y2:cy+42, stroke:'#f1f5f9', strokeWidth:1}));
+
+    if(kpi.val){
+      // Simple value display (e.g., "+38%")
+      frag.appendChild(txt(kpi.val, cx+14, cy+60, {fill:accent, 'font-size':'18px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+      frag.appendChild(txt(kpi.period, cx+14, cy+78, {fill:'#94a3b8', 'font-size':'8px', 'font-family':'JetBrains Mono, monospace'}));
+    } else {
+      // Baseline → Target
+      const isUp = kpi.imp === 'up';
+      const arrowColor = isUp ? accent : '#16a34a';
+      const arrowSym = isUp ? '↑' : '↓';
+
+      // Baseline
+      frag.appendChild(txt(kpi.baseline, cx+14, cy+56, {fill:'#94a3b8', 'font-size':'13px', 'font-weight':'500', 'font-family':'JetBrains Mono, monospace'}));
+
+      // Arrow
+      frag.appendChild(txt('→', cx+14+70, cy+56, {fill:arrowColor, 'font-size':'13px', 'font-family':'JetBrains Mono, monospace'}));
+
+      // Target
+      frag.appendChild(txt(kpi.target, cx+14+95, cy+56, {fill:arrowColor, 'font-size':'14px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+
+      // Improvement indicator
+      frag.appendChild(txt(arrowSym+' '+kpi.sub, cx+14, cy+76, {fill:'#64748b', 'font-size':'8px', 'font-family':'JetBrains Mono, monospace'}));
+
+      // Mini progress bar
+      const barY = cy + 90;
+      const barW = cw - 28;
+      const barH = 5;
+      frag.appendChild(rect(cx+14, barY, barW, barH, {fill:'#f1f5f9', rx:3, ry:3}));
+
+      // Parse baseline and target for progress
+      const bVal = parseFloat(kpi.baseline);
+      const tVal = parseFloat(kpi.target);
+      if(!isNaN(bVal) && !isNaN(tVal) && tVal > 0){
+        let pct;
+        if(isUp){
+          pct = Math.min(bVal / tVal, 1);
+        } else {
+          pct = Math.min(tVal / bVal, 1);
+        }
+        if(pct < 1){
+          const fillW = Math.max(barW * pct, 8);
+          frag.appendChild(rect(cx+14, barY, fillW, barH, {fill:accent, rx:3, ry:3, opacity:0.7}));
+        }
+        // Remaining bar in lighter shade
+        if(pct < 1){
+          const remW = barW * (1-pct);
+          frag.appendChild(rect(cx+14+barW*pct, barY, remW, barH, {fill:accent, rx:3, ry:3, opacity:0.15}));
+        }
+      }
+    }
+
+    // Subtitle at bottom of card
+    if(kpi.val){
+      frag.appendChild(txt(kpi.sub, cx+14, cy+ch-10, {fill:'#94a3b8', 'font-size':'8px', 'font-family':'JetBrains Mono, monospace'}));
+    }
+  });
+});
+
+// ─── Connecting Arrows with Causal Text ───
+// 3 arrows between 4 layers, placed in the gaps pointing upward
+const arrowX = 1130;
+const causalTexts = [
+  {lower:3, upper:2, text:'数字化能力\n驱动流程效率\n与质量提升'},
+  {lower:2, upper:1, text:'高效运营\n提升客户体验\n与品牌口碑'},
+  {lower:1, upper:0, text:'客户满意\n驱动营收增长\n与盈利改善'}
+];
+
+causalTexts.forEach((ct) => {
+  const lower = layers[ct.lower];
+  const upper = layers[ct.upper];
+  const gapBottom = lower.y - 5;
+  const gapTop = upper.y + upper.h + 5;
+  const midY = (gapBottom + gapTop) / 2;
+
+  // Arrow line (upward)
+  frag.appendChild(el('line', {
+    x1:arrowX, y1:gapBottom, x2:arrowX, y2:gapTop,
+    stroke:'#94a3b8', strokeWidth:2, 'stroke-dasharray':'4,3'
+  }));
+
+  // Arrowhead (triangle pointing up)
+  frag.appendChild(el('polygon', {
+    points:`${arrowX-6},${gapTop+8} ${arrowX+6},${gapTop+8} ${arrowX},${gapTop-2}`,
+    fill:'#94a3b8'
+  }));
+
+  // Causal text placed to the left of the arrow
+  const textLines = ct.text.split('\n');
+  textLines.forEach((line, li) => {
+    frag.appendChild(txt(line, arrowX-16, midY - 15 + li*14, {
+      fill:'#64748b', 'font-size':'8.5px', 'font-family':'JetBrains Mono, monospace',
+      'text-anchor':'end', 'font-weight':'400'
+    }));
+  });
+});
+
+// ─── Strategy Theme Alignment Strip ───
+const stripY = 610;
+const stripH = 85;
+frag.appendChild(rect(15, stripY, 1170, stripH, {fill:'#f8fafc', stroke:'#e2e8f0', strokeWidth:1}));
+
+// Strip title
+frag.appendChild(txt('战略主题对齐  STRATEGIC THEME ALIGNMENT', 30, stripY+18, {fill:'#0f172a', 'font-size':'11px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+
+const themes = [
+  {name:'高端突破', en:'PREMIUM BREAKTHROUGH', color:'#f59e0b', layers:[true, true, true, true], desc:'以旗舰产品突破高端市场'},
+  {name:'全球扩张', en:'GLOBAL EXPANSION', color:'#06b6d4', layers:[true, true, true, true], desc:'三大区域市场深度覆盖'},
+  {name:'生态变现', en:'ECOSYSTEM MONETIZATION', color:'#8b5cf6', layers:[true, true, true, true], desc:'互联网服务与IoT生态变现'}
+];
+
+const themeStartY = stripY + 30;
+const themeW = 350;
+const themeGap = 30;
+const themeStartX = (1185 - (3*themeW + 2*themeGap)) / 2;
+
+themes.forEach((th, ti) => {
+  const tx = 15 + themeStartX + ti * (themeW + themeGap);
+
+  // Theme card
+  frag.appendChild(rect(tx, themeStartY, themeW, 48, {fill:'#ffffff', stroke:'#e2e8f0', strokeWidth:1, rx:4, ry:4}));
+
+  // Theme name
+  frag.appendChild(txt(th.name+' '+th.en, tx+12, themeStartY+16, {fill:th.color, 'font-size':'10px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+
+  // Description
+  frag.appendChild(txt(th.desc, tx+12, themeStartY+30, {fill:'#64748b', 'font-size':'8px', 'font-family':'JetBrains Mono, monospace'}));
+
+  // Layer alignment dots
+  const layerNames = ['F','C','P','L'];
+  layerNames.forEach((ln, li) => {
+    const dotX = tx + 12 + li * 28;
+    const dotY = themeStartY + 40;
+    frag.appendChild(el('circle', {cx:dotX, cy:dotY, r:5, fill:th.color, opacity:0.8}));
+    frag.appendChild(txt(ln, dotX-3, dotY+9, {fill:'#ffffff', 'font-size':'5.5px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+  });
+});
+
+// ─── Footer ───
+frag.appendChild(el('line', {x1:30, y1:765, x2:1170, y2:765, stroke:'#e2e8f0', strokeWidth:1}));
+frag.appendChild(txt('← 因果链路说明：学习成长能力建设 → 内部流程优化 → 客户价值提升 → 财务成果实现', 30, 782, {fill:'#94a3b8', 'font-size':'9px', 'font-family':'JetBrains Mono, monospace'}));
+
+svg.appendChild(frag);
+})();
+
+// ─── Export Functions ───
+async function copyChart(){
+  const el = document.getElementById('chart-container');
+  try {
+    const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+    const blob = await new Promise(resolve => canvas.toBlob(resolve));
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+  } catch(e){
+    const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+    const dataUrl = canvas.toDataURL('image/png');
+    const blob = await (await fetch(dataUrl)).blob();
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+  }
+}
+
+async function downloadPNG(){
+  const el = document.getElementById('chart-container');
+  const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+  const link = document.createElement('a');
+  link.download = '战略地图.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+async function downloadPDF(){
+  const el = document.getElementById('chart-container');
+  const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+  const imgData = canvas.toDataURL('image/png');
+  const {jsPDF} = window.jspdf;
+  const pdf = new jsPDF('l', 'mm', 'a4');
+  const pdfW = pdf.internal.pageSize.getWidth();
+  const pdfH = canvas.height * pdfW / canvas.width;
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+  pdf.save('战略地图.pdf');
+}
+</script>
+</body>
+</html>

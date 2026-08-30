@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>图5-9 云原生中台</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b}.container{max-width:1400px;margin:0 auto}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s}.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}.diagram-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:.5px}svg{width:100%;height:auto;display:block}text{font-family:'JetBrains Mono',monospace}</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">云原生技术中台 (PaaS) — 3-Layer: K8s · DevOps · Microservice · Resource→Service</div>
+<svg viewBox="0 0 1250 750" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width=".5"/></pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10z" fill="#64748b"/></marker>
+</defs>
+<rect width="1250" height="750" fill="#f8fafc"/><rect width="1250" height="750" fill="url(#grid)"/>
+<text x="625" y="28" text-anchor="middle" fill="#0f172a" font-size="14" font-weight="700" letter-spacing="1">云原生技术中台 (PaaS) — 容器平台 · DevOps · 微服务治理 · 资源→服务抽象</text>
+
+<!-- ===== LAYER 1: 容器平台 (K8s) ===== -->
+<rect x="40" y="50" width="1170" height="138" rx="8" fill="rgba(16,185,129,.03)" stroke="rgba(16,185,129,.12)" stroke-width="1"/>
+<rect x="40" y="50" width="1170" height="28" rx="8" fill="rgba(16,185,129,.08)"/>
+<text x="625" y="69" text-anchor="middle" fill="#065f46" font-size="12" font-weight="600">Layer 1: 容器平台 — Container Platform (Kubernetes)</text>
+
+<rect x="60" y="88" width="210" height="88" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<rect x="60" y="88" width="210" height="20" rx="4" fill="rgba(16,185,129,.08)"/>
+<text x="165" y="102" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">集群管理</text>
+<text x="75" y="120" fill="#475569" font-size="7.5">Rancher / ACK One / Anthos</text>
+<text x="75" y="138" fill="#475569" font-size="7.5">多集群联邦 · 统一控制面</text>
+<text x="75" y="156" fill="#475569" font-size="7.5">节点自动扩缩 · 混部调度</text>
+
+<rect x="290" y="88" width="210" height="88" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<rect x="290" y="88" width="210" height="20" rx="4" fill="rgba(16,185,129,.08)"/>
+<text x="395" y="102" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">网络与存储</text>
+<text x="305" y="120" fill="#475569" font-size="7.5">Calico (BGP/VXLAN) · Cilium</text>
+<text x="305" y="138" fill="#475569" font-size="7.5">CSI: Ceph · NFS · Local SSD</text>
+<text x="305" y="156" fill="#475569" font-size="7.5">Ingress: Nginx · API Gateway</text>
+
+<rect x="520" y="88" width="210" height="88" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<rect x="520" y="88" width="210" height="20" rx="4" fill="rgba(16,185,129,.08)"/>
+<text x="625" y="102" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">运行时</text>
+<text x="535" y="120" fill="#475569" font-size="7.5">containerd · Docker (受限)</text>
+<text x="535" y="138" fill="#475569" font-size="7.5">gVisor (安全容器)</text>
+<text x="535" y="156" fill="#475569" font-size="7.5">Kata Containers (强隔离)</text>
+
+<rect x="750" y="88" width="210" height="88" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<rect x="750" y="88" width="210" height="20" rx="4" fill="rgba(16,185,129,.08)"/>
+<text x="855" y="102" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">可观测性</text>
+<text x="765" y="120" fill="#475569" font-size="7.5">Prometheus + Thanos</text>
+<text x="765" y="138" fill="#475569" font-size="7.5">Grafana (统一仪表盘)</text>
+<text x="765" y="156" fill="#475569" font-size="7.5">ELK / Loki (日志)</text>
+
+<rect x="980" y="88" width="210" height="88" rx="4" fill="rgba(16,185,129,.04)" stroke="rgba(16,185,129,.1)" stroke-width=".8"/>
+<rect x="980" y="88" width="210" height="20" rx="4" fill="rgba(16,185,129,.08)"/>
+<text x="1085" y="102" text-anchor="middle" fill="#065f46" font-size="9" font-weight="600">安全</text>
+<text x="995" y="120" fill="#475569" font-size="7.5">OPA Gatekeeper (策略)</text>
+<text x="995" y="138" fill="#475569" font-size="7.5">Kyverno (准入控制)</text>
+<text x="995" y="156" fill="#475569" font-size="7.5">Falco (运行时安全)</text>
+
+<!-- Arrow down -->
+<path d="M 625 188 L 625 206" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 2: DevOps ===== -->
+<rect x="40" y="214" width="1170" height="170" rx="8" fill="rgba(59,130,246,.03)" stroke="rgba(59,130,246,.12)" stroke-width="1"/>
+<rect x="40" y="214" width="1170" height="28" rx="8" fill="rgba(59,130,246,.08)"/>
+<text x="625" y="233" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="600">Layer 2: DevOps平台 — CI/CD + GitOps + IaC + Observability</text>
+
+<!-- CI/CD -->
+<rect x="60" y="252" width="260" height="120" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<rect x="60" y="252" width="260" height="22" rx="5" fill="rgba(59,130,246,.08)"/>
+<text x="190" y="268" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">CI/CD 持续集成/部署</text>
+<text x="75" y="288" fill="#475569" font-size="7.5">• GitLab CI · Jenkins · Tekton</text>
+<text x="75" y="304" fill="#475569" font-size="7.5">• 流水线: Build → Test → Scan → Deploy</text>
+<text x="75" y="320" fill="#475569" font-size="7.5">• 每日构建: 500+ 流水线执行</text>
+<text x="75" y="336" fill="#475569" font-size="7.5">• 制品管理: Harbor · Nexus</text>
+<text x="75" y="352" fill="#475569" font-size="7.5">• 容器镜像: 自动构建+漏洞扫描</text>
+
+<!-- GitOps -->
+<rect x="340" y="252" width="260" height="120" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<rect x="340" y="252" width="260" height="22" rx="5" fill="rgba(59,130,246,.08)"/>
+<text x="470" y="268" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">GitOps 持续交付</text>
+<text x="355" y="288" fill="#475569" font-size="7.5">• ArgoCD · Flux CD</text>
+<text x="355" y="304" fill="#475569" font-size="7.5">• Git as Single Source of Truth</text>
+<text x="355" y="320" fill="#475569" font-size="7.5">• 环境: dev→staging→prod</text>
+<text x="355" y="336" fill="#475569" font-size="7.5">• 渐进式交付: Flagger</text>
+<text x="355" y="352" fill="#475569" font-size="7.5">• 回滚: 1-click Rollback</text>
+
+<!-- IaC -->
+<rect x="620" y="252" width="260" height="120" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<rect x="620" y="252" width="260" height="22" rx="5" fill="rgba(59,130,246,.08)"/>
+<text x="750" y="268" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">IaC 基础设施即代码</text>
+<text x="635" y="288" fill="#475569" font-size="7.5">• Terraform · Crossplane · Pulumi</text>
+<text x="635" y="304" fill="#475569" font-size="7.5">• 声明式基础设施</text>
+<text x="635" y="320" fill="#475569" font-size="7.5">• 环境: 一键创建/销毁</text>
+<text x="635" y="336" fill="#475569" font-size="7.5">• 版本控制 · 变更审批</text>
+<text x="635" y="352" fill="#475569" font-size="7.5">• 合规检查: Sentinel / OPA</text>
+
+<!-- Observability -->
+<rect x="900" y="252" width="290" height="120" rx="5" fill="rgba(59,130,246,.04)" stroke="rgba(59,130,246,.1)" stroke-width=".8"/>
+<rect x="900" y="252" width="290" height="22" rx="5" fill="rgba(59,130,246,.08)"/>
+<text x="1045" y="268" text-anchor="middle" fill="#1e40af" font-size="9" font-weight="600">可观测性</text>
+<text x="915" y="288" fill="#475569" font-size="7.5">• Metrics: Prometheus + Thanos</text>
+<text x="915" y="304" fill="#475569" font-size="7.5">• Logging: ELK / Loki + Grafana</text>
+<text x="915" y="320" fill="#475569" font-size="7.5">• Tracing: Jaeger / Zipkin (全链路)</text>
+<text x="915" y="336" fill="#475569" font-size="7.5">• Alerting: Alertmanager + PagerDuty</text>
+<text x="915" y="352" fill="#475569" font-size="7.5">• SLO/SLI: 服务级别目标管理</text>
+
+<!-- Arrow down -->
+<path d="M 625 384 L 625 402" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 3: 微服务治理 ===== -->
+<rect x="40" y="410" width="1170" height="150" rx="8" fill="rgba(139,92,246,.03)" stroke="rgba(139,92,246,.12)" stroke-width="1"/>
+<rect x="40" y="410" width="1170" height="28" rx="8" fill="rgba(139,92,246,.08)"/>
+<text x="625" y="429" text-anchor="middle" fill="#6d28d9" font-size="12" font-weight="600">Layer 3: 微服务治理 — Service Mesh · 注册中心 · 配置中心 · 网关</text>
+
+<rect x="60" y="448" width="210" height="100" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="60" y="448" width="210" height="20" rx="4" fill="rgba(139,92,246,.08)"/>
+<text x="165" y="462" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">Service Mesh</text>
+<text x="75" y="482" fill="#475569" font-size="7.5">• Istio (生产级)</text>
+<text x="75" y="498" fill="#475569" font-size="7.5">• Envoy Sidecar</text>
+<text x="75" y="514" fill="#475569" font-size="7.5">• mTLS 全链路加密</text>
+<text x="75" y="530" fill="#475569" font-size="7.5">• 灰度/金丝雀/蓝绿</text>
+
+<rect x="290" y="448" width="210" height="100" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="290" y="448" width="210" height="20" rx="4" fill="rgba(139,92,246,.08)"/>
+<text x="395" y="462" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">注册中心</text>
+<text x="305" y="482" fill="#475569" font-size="7.5">• Nacos</text>
+<text x="305" y="498" fill="#475569" font-size="7.5">• Consul</text>
+<text x="305" y="514" fill="#475569" font-size="7.5">• 健康检查 · 负载均衡</text>
+<text x="305" y="530" fill="#475569" font-size="7.5">• 2000+ 服务注册</text>
+
+<rect x="520" y="448" width="210" height="100" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="520" y="448" width="210" height="20" rx="4" fill="rgba(139,92,246,.08)"/>
+<text x="625" y="462" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">配置中心</text>
+<text x="535" y="482" fill="#475569" font-size="7.5">• Apollo</text>
+<text x="535" y="498" fill="#475569" font-size="7.5">• Nacos Config</text>
+<text x="535" y="514" fill="#475569" font-size="7.5">• 实时配置推送</text>
+<text x="535" y="530" fill="#475569" font-size="7.5">• 灰度配置</text>
+
+<rect x="750" y="448" width="210" height="100" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="750" y="448" width="210" height="20" rx="4" fill="rgba(139,92,246,.08)"/>
+<text x="855" y="462" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">API Gateway</text>
+<text x="765" y="482" fill="#475569" font-size="7.5">• Kong / APISIX</text>
+<text x="765" y="498" fill="#475569" font-size="7.5">• Nginx Plus</text>
+<text x="765" y="514" fill="#475569" font-size="7.5">• 限流 · 鉴权 · 路由</text>
+<text x="765" y="530" fill="#475569" font-size="7.5">• 可观测: 全量API监控</text>
+
+<rect x="980" y="448" width="210" height="100" rx="4" fill="rgba(139,92,246,.04)" stroke="rgba(139,92,246,.1)" stroke-width=".8"/>
+<rect x="980" y="448" width="210" height="20" rx="4" fill="rgba(139,92,246,.08)"/>
+<text x="1085" y="462" text-anchor="middle" fill="#6d28d9" font-size="9" font-weight="600">分布式事务</text>
+<text x="995" y="482" fill="#475569" font-size="7.5">• Seata</text>
+<text x="995" y="498" fill="#475569" font-size="7.5">• TCC · Saga · XA</text>
+<text x="995" y="514" fill="#475569" font-size="7.5">• 跨服务一致性</text>
+<text x="995" y="530" fill="#475569" font-size="7.5">• 分布式事务监控</text>
+
+<!-- ===== Evolution: Resource → Service ===== -->
+<path d="M 625 560 L 625 578" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="40" y="586" width="1170" height="70" rx="8" fill="rgba(245,158,11,.03)" stroke="rgba(245,158,11,.12)" stroke-width="1"/>
+<rect x="40" y="586" width="1170" height="26" rx="8" fill="rgba(245,158,11,.08)"/>
+<text x="625" y="604" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">抽象演进: Resource → Service — 从基础设施到业务能力的抽象</text>
+
+<rect x="60" y="622" width="180" height="26" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="150" y="639" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">IaaS: 计算·存储·网络</text>
+<path d="M 240 635 L 256 635" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="258" y="622" width="180" height="26" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="348" y="639" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">CaaS: 容器+编排</text>
+<path d="M 438 635 L 454 635" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="456" y="622" width="180" height="26" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="546" y="639" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">PaaS: 中间件+数据库</text>
+<path d="M 636 635 L 652 635" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="654" y="622" width="180" height="26" rx="4" fill="rgba(245,158,11,.06)" stroke="rgba(245,158,11,.1)" stroke-width=".8"/>
+<text x="744" y="639" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">SaaS: 业务能力服务</text>
+
+<text x="60" y="648" fill="#475569" font-size="7">抽象层级提升: 开发者不再关注"服务器在哪"，而是"需要什么能力"</text>
+
+<!-- Bottom summary -->
+<rect x="40" y="668" width="1170" height="40" rx="6" fill="rgba(99,102,241,.03)" stroke="rgba(99,102,241,.08)" stroke-width="1"/>
+<text x="625" y="686" text-anchor="middle" fill="#0f172a" font-size="10" font-weight="600">平台价值: 部署效率↑80% · 环境准备↓90% · 资源利用率↑50% · 开发-测试-生产一致性100%</text>
+<text x="625" y="702" text-anchor="middle" fill="#475569" font-size="8.5">技术栈: K8s + Istio + ArgoCD + Prometheus + Nacos + Apollo + Kong + Seata + Terraform</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){var s=getSvgElement(),c=s.cloneNode(!0);c.setAttribute('xmlns','http://www.w3.org/2000/svg');var r=s.getBoundingClientRect();c.setAttribute('width',r.width);c.setAttribute('height',r.height);return c;}
+function copySVG(){var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});}
+function exportPNG(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var a=document.createElement('a');a.download='图5-9_云原生中台.png';a.href=canvas.toDataURL('image/png');a.click();});}
+function exportPDF(){var card=getCardElement();html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){var imgData=canvas.toDataURL('image/png');var jspdf=window.jspdf.jsPDF;var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);pdf.save('图5-9_云原生中台.pdf');});}
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图4-2 应用组合地图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #1e293b; }
+.toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; }
+.toolbar button { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 16px; border-radius: 6px; border: 1px solid #e2e8f0; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.15s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.toolbar .sep { color: #cbd5e1; font-size: 12px; }
+#container { position: relative; }
+svg { display: block; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(255,255,255,0.9); padding: 12px 24px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #475569; display: none; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <span style="font-size:13px;font-weight:600;color:#0f172a;">图4-2 应用组合地图 — LTC系统链全景</span>
+  <span class="sep">|</span>
+  <button onclick="copySVG()">📋 Copy SVG</button>
+  <button onclick="exportPNG()">🖼 Export PNG</button>
+  <button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div id="container">
+  <svg id="diagram" viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg" style="width:1400px;height:700px;">
+    <defs>
+      <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/></filter>
+      <filter id="shadowDeep" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/></filter>
+      <marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8"/></marker>
+    </defs>
+
+    <!-- Background grid -->
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="#ffffff"/><circle cx="10" cy="10" r="0.6" fill="#e2e8f0"/></pattern>
+    <rect width="1400" height="700" fill="url(#grid)"/>
+
+    <!-- ===== TITLE ===== -->
+    <text x="700" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a" letter-spacing="2">应用组合地图 — LTC系统链全景</text>
+    <text x="700" y="52" text-anchor="middle" font-size="11" fill="#475569" letter-spacing="1">Application Portfolio Map · 现有/目标/差距</text>
+    <line x1="150" y1="60" x2="1250" y2="60" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- ===== LEGEND ===== -->
+    <rect x="1100" y="70" width="270" height="115" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <text x="1115" y="90" font-size="10" font-weight="600" fill="#0f172a">状态图例</text>
+    <rect x="1115" y="98" width="12" height="12" rx="3" fill="#22c55e"/>
+    <text x="1135" y="108" font-size="9" fill="#475569">已部署/稳定运行</text>
+    <rect x="1115" y="118" width="12" height="12" rx="3" fill="#eab308"/>
+    <text x="1135" y="128" font-size="9" fill="#475569">需升级/部分覆盖</text>
+    <rect x="1115" y="138" width="12" height="12" rx="3" fill="#ef4444"/>
+    <text x="1135" y="148" font-size="9" fill="#475569">未建设/Excel为主</text>
+    <rect x="1115" y="158" width="12" height="12" rx="3" fill="#94a3b8"/>
+    <text x="1135" y="168" font-size="9" fill="#475569">维持现状</text>
+
+    <!-- ===== SECTION LABEL ===== -->
+    <text x="700" y="82" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">▸ LTC 核心系统链</text>
+
+    <!-- ===== LTC CHAIN: 11 systems ===== -->
+    <!-- System box dimensions: width 105, height 68. Spacing: 130px apart (25px gap) -->
+    <!-- Row 1: 6 systems CDP, MA, CRM, OMS, APS, SRM -->
+    <!-- Row 2: 5 systems ERP, MES, WMS, TMS, 财务 -->
+
+    <!-- Helper: each box at x_start + i*118 (118 = 105+13 gap) -->
+    <!-- CDP -->
+    <rect x="40" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="40" y="140" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="40" y="154" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="92" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">CDP</text>
+    <text x="50" y="184" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="50" y="196" font-size="7" fill="#475569">营销域 · 80%</text>
+
+    <!-- Arrow -->
+    <line x1="145" y1="174" x2="155" y2="174" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- MA -->
+    <rect x="158" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="158" y="140" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="158" y="154" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="210" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">MA</text>
+    <text x="168" y="184" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="168" y="196" font-size="7" fill="#475569">营销域 · 75%</text>
+
+    <line x1="263" y1="174" x2="273" y2="174" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- CRM -->
+    <rect x="276" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="276" y="140" width="105" height="20" rx="6" fill="rgba(234,179,8,0.10)"/>
+    <rect x="276" y="154" width="105" height="6" fill="rgba(234,179,8,0.10)"/>
+    <text x="328" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">CRM</text>
+    <text x="286" y="184" font-size="8" fill="#eab308" font-weight="500">● 需升级</text>
+    <text x="286" y="196" font-size="7" fill="#475569">销售域 · 55%</text>
+
+    <line x1="381" y1="174" x2="391" y2="174" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- OMS -->
+    <rect x="394" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="394" y="140" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="394" y="154" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="446" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">OMS</text>
+    <text x="404" y="184" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="404" y="196" font-size="7" fill="#475569">交易域 · 85%</text>
+
+    <line x1="499" y1="174" x2="509" y2="174" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- APS -->
+    <rect x="512" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="512" y="140" width="105" height="20" rx="6" fill="rgba(239,68,68,0.10)"/>
+    <rect x="512" y="154" width="105" height="6" fill="rgba(239,68,68,0.10)"/>
+    <text x="564" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">APS</text>
+    <text x="522" y="184" font-size="8" fill="#ef4444" font-weight="500">● 未建设</text>
+    <text x="522" y="196" font-size="7" fill="#475569">供应链域 · 10%</text>
+
+    <line x1="617" y1="174" x2="627" y2="174" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- SRM -->
+    <rect x="630" y="140" width="105" height="68" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="630" y="140" width="105" height="20" rx="6" fill="rgba(234,179,8,0.10)"/>
+    <rect x="630" y="154" width="105" height="6" fill="rgba(234,179,8,0.10)"/>
+    <text x="682" y="157" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">SRM</text>
+    <text x="640" y="184" font-size="8" fill="#eab308" font-weight="500">● 需升级</text>
+    <text x="640" y="196" font-size="7" fill="#475569">采购域 · 50%</text>
+
+    <!-- Big arrow connecting to next row -->
+    <line x1="735" y1="174" x2="760" y2="174" stroke="#94a3b8" stroke-width="1.5"/>
+    <path d="M760,174 L755,169 L755,179 Z" fill="#94a3b8"/>
+    <line x1="760" y1="174" x2="760" y2="214" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+    <!-- ERP (start of row 2) -->
+    <line x1="40" y1="214" x2="55" y2="214" stroke="#94a3b8" stroke-width="1.5"/>
+    <path d="M55,214 L50,209 L50,219 Z" fill="#94a3b8"/>
+
+    <!-- ERP -->
+    <rect x="58" y="240" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="58" y="240" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="58" y="254" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="110" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">ERP</text>
+    <text x="68" y="284" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="68" y="296" font-size="7" fill="#475569">财务域 · 90%</text>
+
+    <line x1="163" y1="274" x2="173" y2="274" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- MES -->
+    <rect x="176" y="240" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="176" y="240" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="176" y="254" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="228" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">MES</text>
+    <text x="186" y="284" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="186" y="296" font-size="7" fill="#475569">制造域 · 80%</text>
+
+    <line x1="281" y1="274" x2="291" y2="274" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- WMS -->
+    <rect x="294" y="240" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="294" y="240" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="294" y="254" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="346" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">WMS</text>
+    <text x="304" y="284" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="304" y="296" font-size="7" fill="#475569">物流域 · 85%</text>
+
+    <line x1="399" y1="274" x2="409" y2="274" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- TMS -->
+    <rect x="412" y="240" width="105" height="68" rx="6" fill="#ffffff" stroke="#eab308" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="412" y="240" width="105" height="20" rx="6" fill="rgba(234,179,8,0.10)"/>
+    <rect x="412" y="254" width="105" height="6" fill="rgba(234,179,8,0.10)"/>
+    <text x="464" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">TMS</text>
+    <text x="422" y="284" font-size="8" fill="#eab308" font-weight="500">● 需升级</text>
+    <text x="422" y="296" font-size="7" fill="#475569">物流域 · 60%</text>
+
+    <line x1="517" y1="274" x2="527" y2="274" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowG)"/>
+
+    <!-- 财务 -->
+    <rect x="530" y="240" width="105" height="68" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="530" y="240" width="105" height="20" rx="6" fill="rgba(34,197,94,0.10)"/>
+    <rect x="530" y="254" width="105" height="6" fill="rgba(34,197,94,0.10)"/>
+    <text x="582" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">财务</text>
+    <text x="540" y="284" font-size="8" fill="#22c55e" font-weight="500">● 已部署</text>
+    <text x="540" y="296" font-size="7" fill="#475569">财务域 · 90%</text>
+
+    <!-- LTC flow label -->
+    <text x="115" y="230" font-size="9" fill="#7c3aed" font-weight="500">LTC ▸ 端到端流程</text>
+
+    <!-- ===== LTC flow indicator ===== -->
+    <rect x="650" y="248" width="310" height="52" rx="8" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="805" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#3b82f6">LTC 端到端流程覆盖</text>
+    <text x="805" y="288" text-anchor="middle" font-size="8" fill="#475569">从线索到现金 · 全链路数字化</text>
+
+    <!-- ===== SUPPORTING SYSTEMS ===== -->
+    <text x="700" y="350" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">▸ 支撑及周边系统</text>
+
+    <rect x="120" y="370" width="240" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="120" y="370" width="240" height="26" rx="8" fill="rgba(148,163,184,0.10)"/>
+    <rect x="120" y="390" width="240" height="6" fill="rgba(148,163,184,0.10)"/>
+    <text x="240" y="390" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">IoT 平台</text>
+    <text x="135" y="412" font-size="8" fill="#475569">设备连接管理 · 固件OTA升级</text>
+    <text x="135" y="426" font-size="8" fill="#475569">产品溯源 · 资产追踪</text>
+    <text x="135" y="440" font-size="8" fill="#475569">状态: 已部署 · 覆盖 70%</text>
+    <rect x="120" y="450" width="240" height="10" rx="2" fill="#e2e8f0"/>
+    <rect x="120" y="450" width="168" height="10" rx="2" fill="#22c55e" opacity="0.6"/>
+
+    <rect x="410" y="370" width="240" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="410" y="370" width="240" height="26" rx="8" fill="rgba(148,163,184,0.10)"/>
+    <rect x="410" y="390" width="240" height="6" fill="rgba(148,163,184,0.10)"/>
+    <text x="530" y="390" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">HR 系统</text>
+    <text x="425" y="412" font-size="8" fill="#475569">组织人事 · 薪酬绩效</text>
+    <text x="425" y="426" font-size="8" fill="#475569">招聘培训 · 员工自助</text>
+    <text x="425" y="440" font-size="8" fill="#475569">状态: 需升级 · 覆盖 55%</text>
+    <rect x="410" y="450" width="240" height="10" rx="2" fill="#e2e8f0"/>
+    <rect x="410" y="450" width="132" height="10" rx="2" fill="#eab308" opacity="0.6"/>
+
+    <rect x="700" y="370" width="240" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="700" y="370" width="240" height="26" rx="8" fill="rgba(148,163,184,0.10)"/>
+    <rect x="700" y="390" width="240" height="6" fill="rgba(148,163,184,0.10)"/>
+    <text x="820" y="390" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">协同办公</text>
+    <text x="715" y="412" font-size="8" fill="#475569">OA审批 · 知识管理</text>
+    <text x="715" y="426" font-size="8" fill="#475569">流程引擎 · 企业通讯</text>
+    <text x="715" y="440" font-size="8" fill="#475569">状态: 已部署 · 覆盖 85%</text>
+    <rect x="700" y="450" width="240" height="10" rx="2" fill="#e2e8f0"/>
+    <rect x="700" y="450" width="204" height="10" rx="2" fill="#22c55e" opacity="0.6"/>
+
+    <rect x="990" y="370" width="240" height="90" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <rect x="990" y="370" width="240" height="26" rx="8" fill="rgba(148,163,184,0.10)"/>
+    <rect x="990" y="390" width="240" height="6" fill="rgba(148,163,184,0.10)"/>
+    <text x="1110" y="390" text-anchor="middle" font-size="11" font-weight="600" fill="#0f172a">售后工单</text>
+    <text x="1005" y="412" font-size="8" fill="#475569">售后申请 · 维修管理</text>
+    <text x="1005" y="426" font-size="8" fill="#475569">配件管理 · 服务评价</text>
+    <text x="1005" y="440" font-size="8" fill="#475569">状态: 需升级 · 覆盖 60%</text>
+    <rect x="990" y="450" width="240" height="10" rx="2" fill="#e2e8f0"/>
+    <rect x="990" y="450" width="144" height="10" rx="2" fill="#eab308" opacity="0.6"/>
+
+    <!-- ===== GAP ANALYSIS SECTION ===== -->
+    <rect x="40" y="500" width="1240" height="110" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+    <text x="660" y="522" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">差距分析要点</text>
+    <line x1="100" y1="530" x2="1220" y2="530" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- Gap items -->
+    <rect x="65" y="540" width="280" height="55" rx="6" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="1"/>
+    <text x="205" y="558" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">APS 空白</text>
+    <text x="75" y="574" font-size="8" fill="#475569">高级计划排程依赖 Excel，无法</text>
+    <text x="75" y="586" font-size="8" fill="#475569">实现产销协同与智能排产</text>
+
+    <rect x="365" y="540" width="280" height="55" rx="6" fill="rgba(234,179,8,0.06)" stroke="rgba(234,179,8,0.15)" stroke-width="1"/>
+    <text x="505" y="558" text-anchor="middle" font-size="10" font-weight="600" fill="#ca8a04">CRM 升级需求</text>
+    <text x="375" y="574" font-size="8" fill="#475569">现有 CRM 功能覆盖面不足，</text>
+    <text x="375" y="586" font-size="8" fill="#475569">缺少渠道管理和销售预测能力</text>
+
+    <rect x="665" y="540" width="280" height="55" rx="6" fill="rgba(234,179,8,0.06)" stroke="rgba(234,179,8,0.15)" stroke-width="1"/>
+    <text x="805" y="558" text-anchor="middle" font-size="10" font-weight="600" fill="#ca8a04">TMS 功能不足</text>
+    <text x="675" y="574" font-size="8" fill="#475569">运输管理功能较基础，缺少</text>
+    <text x="675" y="586" font-size="8" fill="#475569">路径优化和运费自动结算</text>
+
+    <rect x="965" y="540" width="280" height="55" rx="6" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+    <text x="1105" y="558" text-anchor="middle" font-size="10" font-weight="600" fill="#2563eb">数据贯通</text>
+    <text x="975" y="574" font-size="8" fill="#475569">系统间数据未完全打通，</text>
+    <text x="975" y="586" font-size="8" fill="#475569">LTC 流程断点多，需ESB集成</text>
+
+    <!-- ===== FOOTER ===== -->
+    <text x="700" y="685" text-anchor="middle" font-size="8" fill="#94a3b8">图4-2 应用组合地图 — LTC系统链全景 · TOGAF Application Architecture · 手机制造商</text>
+  </svg>
+  <div class="loading" id="loading">Generating…</div>
+</div>
+
+<script>
+function copySVG() {
+  const svg = document.getElementById('diagram');
+  const clone = svg.cloneNode(true);
+  clone.removeAttribute('style');
+  const serializer = new XMLSerializer();
+  const str = serializer.serializeToString(clone);
+  navigator.clipboard.writeText(str).then(() => {
+    const btn = document.querySelector('.toolbar button:first-child');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+function exportPNG() {
+  document.getElementById('loading').style.display = 'block';
+  const el = document.getElementById('container');
+  html2canvas(el, { scale: 2, backgroundColor: '#f8fafc', useCORS: true, logging: false }).then(canvas => {
+    document.getElementById('loading').style.display = 'none';
+    const link = document.createElement('a');
+    link.download = '图4-2_应用组合地图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(e => { document.getElementById('loading').style.display = 'none'; alert('Export error: ' + e.message); });
+}
+function exportPDF() {
+  document.getElementById('loading').style.display = 'block';
+  const el = document.getElementById('container');
+  html2canvas(el, { scale: 2, backgroundColor: '#f8fafc', useCORS: true, logging: false }).then(canvas => {
+    document.getElementById('loading').style.display = 'none';
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width * 0.75, canvas.height * 0.75] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width * 0.75, canvas.height * 0.75);
+    pdf.save('图4-2_应用组合地图.pdf');
+  }).catch(e => { document.getElementById('loading').style.display = 'none'; alert('Export error: ' + e.message); });
+}
+</script>
+</body>
+</html>

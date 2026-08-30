@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-8 数据生命周期管理</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f8fafc; font-family: 'JetBrains Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 24px; min-height: 100vh; }
+.toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-self: flex-end; }
+.toolbar button { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: #ffffff; color: #475569; cursor: pointer; transition: all 0.2s; }
+.toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #0f172a; }
+.container { position: relative; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04); overflow: hidden; }
+.container svg { display: block; }
+.status-msg { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; margin-top: 8px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div style="width:100%;max-width:1260px;display:flex;flex-direction:column;align-items:center;">
+<div class="toolbar">
+  <button onclick="copyAsImage()">复制</button>
+  <button onclick="downloadPNG()">PNG</button>
+  <button onclick="downloadPDF()">PDF</button>
+</div>
+<div class="container" id="diagram">
+<svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" style="width:1200px;height:720px;">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5" opacity="0.5"/>
+  </pattern>
+  <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+  </filter>
+  <filter id="shadow-md" x="-4%" y="-4%" width="108%" height="108%">
+    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+  </marker>
+</defs>
+
+<!-- Background -->
+<rect width="1200" height="720" fill="#ffffff"/>
+<rect width="1200" height="720" fill="url(#grid)"/>
+
+<!-- Title -->
+<text x="600" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a" letter-spacing="2">数据生命周期管理</text>
+<text x="600" y="56" text-anchor="middle" font-size="12" fill="#64748b" letter-spacing="1">产生 → 存储 → 使用 → 归档 → 销毁 · 冷热四级分层</text>
+<line x1="40" y1="65" x2="1160" y2="65" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- ===================== TOP FLOW: 生命周期五阶段 ===================== -->
+<rect x="30" y="75" width="1140" height="26" rx="4" fill="rgba(99,102,241,0.06)"/>
+<text x="600" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">数据生命周期五阶段</text>
+
+<!-- Stage 1: 数据产生 -->
+<g>
+  <rect x="95" y="115" width="170" height="75" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="95" y="115" width="170" height="4" rx="2" fill="#3b82f6"/>
+  <circle cx="115" cy="140" r="10" fill="rgba(59,130,246,0.12)"/>
+  <text x="115" y="144" text-anchor="middle" font-size="10" font-weight="600" fill="#2563eb">1</text>
+  <text x="135" y="144" font-size="12" font-weight="600" fill="#1e293b">数据产生</text>
+  <text x="180" y="168" text-anchor="middle" font-size="10" fill="#475569">业务系统录入 · IoT采集</text>
+  <text x="180" y="182" text-anchor="middle" font-size="10" fill="#475569">外部数据接入</text>
+</g>
+
+<line x1="265" y1="152" x2="298" y2="152" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Stage 2: 数据存储 -->
+<g>
+  <rect x="302" y="115" width="170" height="75" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="302" y="115" width="170" height="4" rx="2" fill="#10b981"/>
+  <circle cx="322" cy="140" r="10" fill="rgba(16,185,129,0.12)"/>
+  <text x="322" y="144" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">2</text>
+  <text x="342" y="144" font-size="12" font-weight="600" fill="#1e293b">数据存储</text>
+  <text x="387" y="168" text-anchor="middle" font-size="10" fill="#475569">分类存储 · 多副本冗余</text>
+  <text x="387" y="182" text-anchor="middle" font-size="10" fill="#475569">安全加密</text>
+</g>
+
+<line x1="472" y1="152" x2="505" y2="152" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Stage 3: 数据使用 -->
+<g>
+  <rect x="509" y="115" width="170" height="75" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="509" y="115" width="170" height="4" rx="2" fill="#f59e0b"/>
+  <circle cx="529" cy="140" r="10" fill="rgba(245,158,11,0.12)"/>
+  <text x="529" y="144" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">3</text>
+  <text x="549" y="144" font-size="12" font-weight="600" fill="#1e293b">数据使用</text>
+  <text x="594" y="168" text-anchor="middle" font-size="10" fill="#475569">分析查询 · 报表展示</text>
+  <text x="594" y="182" text-anchor="middle" font-size="10" fill="#475569">数据服务</text>
+</g>
+
+<line x1="679" y1="152" x2="712" y2="152" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Stage 4: 数据归档 -->
+<g>
+  <rect x="716" y="115" width="170" height="75" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="716" y="115" width="170" height="4" rx="2" fill="#8b5cf6"/>
+  <circle cx="736" cy="140" r="10" fill="rgba(139,92,246,0.12)"/>
+  <text x="736" y="144" text-anchor="middle" font-size="10" font-weight="600" fill="#7c3aed">4</text>
+  <text x="756" y="144" font-size="12" font-weight="600" fill="#1e293b">数据归档</text>
+  <text x="801" y="168" text-anchor="middle" font-size="10" fill="#475569">冷热分离 · 压缩存储</text>
+  <text x="801" y="182" text-anchor="middle" font-size="10" fill="#475569">长期保存</text>
+</g>
+
+<line x1="886" y1="152" x2="919" y2="152" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Stage 5: 数据销毁 -->
+<g>
+  <rect x="923" y="115" width="170" height="75" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="923" y="115" width="170" height="4" rx="2" fill="#ef4444"/>
+  <circle cx="943" cy="140" r="10" fill="rgba(239,68,68,0.12)"/>
+  <text x="943" y="144" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">5</text>
+  <text x="963" y="144" font-size="12" font-weight="600" fill="#1e293b">数据销毁</text>
+  <text x="1008" y="168" text-anchor="middle" font-size="10" fill="#475569">合规删除 · 磁盘消磁</text>
+  <text x="1008" y="182" text-anchor="middle" font-size="10" fill="#475569">销毁证明</text>
+</g>
+
+<!-- Divider -->
+<line x1="30" y1="207" x2="1170" y2="207" stroke="#e2e8f0" stroke-width="1"/>
+
+<!-- ===================== CENTER: 冷热四级金字塔 ===================== -->
+<rect x="30" y="215" width="570" height="26" rx="4" fill="rgba(59,130,246,0.06)"/>
+<text x="315" y="232" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">冷热四级分层</text>
+
+<!-- Pyramid -->
+<!-- Center x=315 -->
+<!-- 热 - Level 1 (top) -->
+<polygon points="315,250 360,310 270,310" fill="rgba(239,68,68,0.1)" stroke="#fca5a5" stroke-width="1"/>
+<text x="315" y="278" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">热数据</text>
+<text x="315" y="296" text-anchor="middle" font-size="9" fill="#475569">&lt; 30d</text>
+<text x="315" y="306" text-anchor="middle" font-size="8" fill="#475569">SSD 毫秒级</text>
+
+<!-- 温 - Level 2 -->
+<polygon points="270,310 360,310 405,390 225,390" fill="rgba(245,158,11,0.1)" stroke="#fcd34d" stroke-width="1"/>
+<text x="315" y="345" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">温数据</text>
+<text x="315" y="363" text-anchor="middle" font-size="9" fill="#475569">30d - 2y</text>
+<text x="315" y="375" text-anchor="middle" font-size="8" fill="#475569">混合存储 秒级</text>
+
+<!-- 冷 - Level 3 -->
+<polygon points="225,390 405,390 450,470 180,470" fill="rgba(59,130,246,0.1)" stroke="#93c5fd" stroke-width="1"/>
+<text x="315" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">冷数据</text>
+<text x="315" y="443" text-anchor="middle" font-size="9" fill="#475569">2y - 5y</text>
+<text x="315" y="455" text-anchor="middle" font-size="8" fill="#475569">HDD+对象存储 分钟级</text>
+
+<!-- 归档 - Level 4 (bottom) -->
+<polygon points="180,470 450,470 495,530 135,530" fill="rgba(100,116,139,0.12)" stroke="#cbd5e1" stroke-width="1"/>
+<text x="315" y="497" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">归档数据</text>
+<text x="315" y="515" text-anchor="middle" font-size="9" fill="#475569">&gt; 5y</text>
+<text x="315" y="527" text-anchor="middle" font-size="8" fill="#475569">WORM存储 小时级</text>
+
+<!-- Right-side annotations -->
+<!-- Volume arrows showing increasing volume -->
+<text x="105" y="370" font-size="10" fill="#94a3b8" transform="rotate(-90,105,370)">数据量递增</text>
+<line x1="120" y1="290" x2="120" y2="510" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+<polygon points="120,510 115,500 125,500" fill="#94a3b8"/>
+
+<text x="540" y="370" font-size="10" fill="#94a3b8" transform="rotate(90,540,370)">访问频率递减</text>
+<line x1="525" y1="290" x2="525" y2="510" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+<polygon points="525,510 520,500 530,500" fill="#94a3b8"/>
+
+<!-- ===================== RIGHT PANEL: 差异化策略 ===================== -->
+<rect x="620" y="215" width="550" height="26" rx="4" fill="rgba(245,158,11,0.06)"/>
+<text x="895" y="232" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">按数据类别差异化策略</text>
+
+<!-- Card 1: 主数据 -->
+<g>
+  <rect x="640" y="258" width="510" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="640" y="258" width="4" height="46" rx="2" fill="#3b82f6"/>
+  <text x="660" y="277" font-size="12" font-weight="600" fill="#1e293b">主数据</text>
+  <text x="720" y="277" font-size="10" fill="#475569">（产品/物料/客户/供应商）</text>
+  <rect x="920" y="266" width="210" height="18" rx="9" fill="rgba(16,185,129,0.1)"/>
+  <text x="1025" y="279" text-anchor="middle" font-size="9" font-weight="500" fill="#059669">永久归档 · 持续可用</text>
+  <text x="660" y="296" font-size="10" fill="#475569">策略：数据持续可用，不设删除期限，版本管理永久保存</text>
+</g>
+
+<!-- Card 2: 交易数据 -->
+<g>
+  <rect x="640" y="314" width="510" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="640" y="314" width="4" height="46" rx="2" fill="#f59e0b"/>
+  <text x="660" y="333" font-size="12" font-weight="600" fill="#1e293b">交易数据</text>
+  <text x="720" y="333" font-size="10" fill="#475569">（订单/合同/支付）</text>
+  <rect x="920" y="322" width="210" height="18" rx="9" fill="rgba(245,158,11,0.1)"/>
+  <text x="1025" y="335" text-anchor="middle" font-size="9" font-weight="500" fill="#d97706">5年归档 · 到期清理</text>
+  <text x="660" y="352" font-size="10" fill="#475569">策略：在线保留5年，到期转归档冷存，10年后合规销毁</text>
+</g>
+
+<!-- Card 3: 用户PII -->
+<g>
+  <rect x="640" y="370" width="510" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="640" y="370" width="4" height="46" rx="2" fill="#ef4444"/>
+  <text x="660" y="389" font-size="12" font-weight="600" fill="#1e293b">用户 PII</text>
+  <text x="720" y="389" font-size="10" fill="#475569">（姓名/手机号/身份证/地址）</text>
+  <rect x="920" y="378" width="210" height="18" rx="9" fill="rgba(239,68,68,0.1)"/>
+  <text x="1025" y="391" text-anchor="middle" font-size="9" font-weight="500" fill="#dc2626">注销30天全删除</text>
+  <text x="660" y="408" font-size="10" fill="#475569">策略：用户注销请求触发，30天内全系统PII定位与擦除（GDPR/PIPL）</text>
+</g>
+
+<!-- Card 4: 行为日志 -->
+<g>
+  <rect x="640" y="426" width="510" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="640" y="426" width="4" height="46" rx="2" fill="#8b5cf6"/>
+  <text x="660" y="445" font-size="12" font-weight="600" fill="#1e293b">行为日志</text>
+  <text x="720" y="445" font-size="10" fill="#475569">（浏览/点击/操作日志）</text>
+  <rect x="920" y="434" width="210" height="18" rx="9" fill="rgba(139,92,246,0.1)"/>
+  <text x="1025" y="447" text-anchor="middle" font-size="9" font-weight="500" fill="#7c3aed">2年聚合 · 永久保存</text>
+  <text x="660" y="464" font-size="10" fill="#475569">策略：原始日志保留2年，聚合统计结果永久保存（匿名化）</text>
+</g>
+
+<!-- Card 5: IoT原始 -->
+<g>
+  <rect x="640" y="482" width="510" height="46" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="640" y="482" width="4" height="46" rx="2" fill="#14b8a6"/>
+  <text x="660" y="501" font-size="12" font-weight="600" fill="#1e293b">IoT 原始数据</text>
+  <text x="740" y="501" font-size="10" fill="#475569">（设备采集/传感器/产线）</text>
+  <rect x="920" y="490" width="210" height="18" rx="9" fill="rgba(20,184,166,0.1)"/>
+  <text x="1025" y="503" text-anchor="middle" font-size="9" font-weight="500" fill="#0d9488">6月聚合 · 永久保存</text>
+  <text x="660" y="520" font-size="10" fill="#475569">策略：原始数据保留6月，聚合指标永久保存，降低存储成本</text>
+</g>
+
+<!-- ===================== BOTTOM: 被遗忘权合规 ===================== -->
+<line x1="30" y1="546" x2="1170" y2="546" stroke="#e2e8f0" stroke-width="1"/>
+
+<rect x="30" y="554" width="1140" height="26" rx="4" fill="rgba(239,68,68,0.06)"/>
+<text x="600" y="571" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">被遗忘权合规（Right to be Forgotten · GDPR / PIPL）</text>
+
+<!-- Compliance box -->
+<rect x="50" y="592" width="1100" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+<rect x="50" y="592" width="1100" height="110" rx="10" fill="rgba(239,68,68,0.03)"/>
+
+<!-- 合规流程 -->
+<g>
+  <!-- Step 1 -->
+  <rect x="80" y="612" width="180" height="36" rx="18" fill="rgba(239,68,68,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="170" y="634" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">用户注销请求</text>
+
+  <line x1="260" y1="630" x2="295" y2="630" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="300" y="612" width="180" height="36" rx="18" fill="rgba(245,158,11,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="390" y="634" text-anchor="middle" font-size="10" font-weight="600" fill="#d97706">全系统PII定位</text>
+
+  <line x1="480" y1="630" x2="515" y2="630" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 -->
+  <rect x="520" y="612" width="180" height="36" rx="18" fill="rgba(59,130,246,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="610" y="634" text-anchor="middle" font-size="10" font-weight="600" fill="#2563eb">数据擦除执行</text>
+
+  <line x1="700" y1="630" x2="735" y2="630" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 4 -->
+  <rect x="740" y="612" width="180" height="36" rx="18" fill="rgba(16,185,129,0.08)" stroke="#e2e8f0" stroke-width="0.8"/>
+  <text x="830" y="634" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">合规证明报告</text>
+
+  <!-- Timer badge -->
+  <rect x="960" y="612" width="160" height="36" rx="18" fill="rgba(239,68,68,0.1)" stroke="#fca5a5" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="1040" y="634" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">⏱ 30天强制窗口</text>
+</g>
+
+<!-- Description -->
+<text x="80" y="676" font-size="10" fill="#475569">合规要求：</text>
+<text x="150" y="676" font-size="10" fill="#1e293b">用户行使被遗忘权提出注销请求后，须在30天内完成全系统PII数据定位与擦除，覆盖CRM/ERP/MDM/数据湖/日志等全部数据存储系统，并出具合规证明报告。</text>
+
+</svg>
+</div>
+<div class="status-msg" id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script>
+function showStatus(msg) {
+  document.getElementById('status').textContent = msg;
+  setTimeout(function(){ document.getElementById('status').textContent = ''; }, 3000);
+}
+async function copyAsImage() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showStatus('已复制到剪贴板');
+  } catch(e) { showStatus('复制失败: ' + e.message); }
+}
+async function downloadPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var link = document.createElement('a');
+    link.download = '图3-8_数据生命周期.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showStatus('PNG已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+async function downloadPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width/2, canvas.height/2] });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width/2, canvas.height/2);
+    pdf.save('图3-8_数据生命周期.pdf');
+    showStatus('PDF已下载');
+  } catch(e) { showStatus('下载失败: ' + e.message); }
+}
+</script>
+</body>
+</html>

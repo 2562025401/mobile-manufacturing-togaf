@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-6 架构能力成熟度雷达图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  padding: 24px;
+  font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+}
+#container {
+  max-width: 1140px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+  overflow: hidden;
+  position: relative;
+}
+.toolbar {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+.toolbar button {
+  font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.toolbar button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+.toolbar button:active {
+  background: #e2e8f0;
+}
+.toolbar button svg { width: 16px; height: 16px; flex-shrink: 0; }
+#diagram { padding: 0; line-height: 0; }
+#diagram svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div class="toolbar">
+    <button onclick="copyDiagram()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+    <button onclick="exportPNG()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      PNG
+    </button>
+    <button onclick="exportPDF()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      PDF
+    </button>
+  </div>
+
+  <div id="diagram">
+    <svg viewBox="0 0 1100 780" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.4"/>
+        </pattern>
+        <filter id="cardShadow" x="-2%" y="-2%" width="104%" height="108%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.06"/>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="1100" height="780" fill="#ffffff"/>
+      <rect width="1100" height="780" fill="url(#grid)"/>
+
+      <!-- Title -->
+      <text x="550" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构能力成熟度评估 — 五维雷达对比</text>
+      <text x="550" y="54" text-anchor="middle" font-size="11" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">EA Capability Maturity Model · 治理/业务/数据/应用/技术 五维评估</text>
+
+      <!-- Legend -->
+      <rect x="415" y="68" width="12" height="12" rx="2" fill="#f43f5e" opacity="0.7"/>
+      <text x="432" y="79" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">现状 Current</text>
+      <rect x="510" y="68" width="12" height="12" rx="2" fill="#3b82f6" opacity="0.7"/>
+      <text x="527" y="79" font-size="10" fill="#475569" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">目标Y3 Target</text>
+
+      <!-- ===== RADAR / PENTAGON CHART ===== -->
+      <g transform="translate(0,0)">
+
+        <!-- Level 5 pentagon (outermost) -->
+        <polygon points="290,135 476,270 405,488 175,488 105,270" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
+        <!-- Level 4 pentagon -->
+        <polygon points="290,174 438,282 382,456 198,456 142,282" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Level 3 pentagon -->
+        <polygon points="290,213 401,294 359,425 221,425 179,294" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Level 2 pentagon -->
+        <polygon points="290,252 364,306 336,393 244,393 216,306" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+        <!-- Level 1 pentagon (innermost) -->
+        <polygon points="290,291 327,318 313,362 267,362 253,318" fill="none" stroke="#e2e8f0" stroke-width="0.8"/>
+
+        <!-- Axis lines -->
+        <line x1="290" y1="330" x2="290" y2="135" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <line x1="290" y1="330" x2="476" y2="270" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <line x1="290" y1="330" x2="405" y2="488" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <line x1="290" y1="330" x2="175" y2="488" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <line x1="290" y1="330" x2="105" y2="270" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+        <!-- Center dot -->
+        <circle cx="290" cy="330" r="3" fill="#94a3b8"/>
+
+        <!-- Axis labels -->
+        <text x="290" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">治理</text>
+        <text x="290" y="136" text-anchor="middle" font-size="8" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Governance</text>
+
+        <text x="488" y="266" text-anchor="start" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务架构</text>
+        <text x="488" y="278" text-anchor="start" font-size="8" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Business</text>
+
+        <text x="412" y="502" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">数据架构</text>
+        <text x="412" y="514" text-anchor="middle" font-size="8" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Data</text>
+
+        <text x="168" y="502" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">应用架构</text>
+        <text x="168" y="514" text-anchor="middle" font-size="8" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Application</text>
+
+        <text x="92" y="266" text-anchor="end" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">技术架构</text>
+        <text x="92" y="278" text-anchor="end" font-size="8" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Technology</text>
+
+        <!-- Maturity level labels (along governance axis) -->
+        <text x="296" y="294" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">L1 初始</text>
+        <text x="296" y="255" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">L2 重复</text>
+        <text x="296" y="216" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">L3 定义</text>
+        <text x="296" y="177" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">L4 管理</text>
+        <text x="296" y="138" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">L5 优化</text>
+
+        <!-- ===== TARGET STATE PENTAGON (L4 - all dimensions) ===== -->
+        <polygon points="290,174 438,282 382,456 198,456 142,282" fill="#3b82f6" fill-opacity="0.1" stroke="#3b82f6" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Data point dots -->
+        <circle cx="290" cy="174" r="4.5" fill="#3b82f6"/>
+        <circle cx="438" cy="282" r="4.5" fill="#3b82f6"/>
+        <circle cx="382" cy="456" r="4.5" fill="#3b82f6"/>
+        <circle cx="198" cy="456" r="4.5" fill="#3b82f6"/>
+        <circle cx="142" cy="282" r="4.5" fill="#3b82f6"/>
+
+        <!-- ===== CURRENT STATE PENTAGON ===== -->
+        <polygon points="290,252 401,294 324,377 244,393 234,312" fill="#f43f5e" fill-opacity="0.12" stroke="#f43f5e" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Data point dots -->
+        <circle cx="290" cy="252" r="4.5" fill="#f43f5e"/>
+        <circle cx="401" cy="294" r="4.5" fill="#f43f5e"/>
+        <circle cx="324" cy="377" r="4.5" fill="#f43f5e"/>
+        <circle cx="244" cy="393" r="4.5" fill="#f43f5e"/>
+        <circle cx="234" cy="312" r="4.5" fill="#f43f5e"/>
+
+        <!-- Level value labels on data points (current) -->
+        <text x="270" y="248" text-anchor="end" font-size="9" font-weight="600" fill="#f43f5e" font-family="'JetBrains Mono',sans-serif">L2</text>
+        <text x="408" y="290" text-anchor="start" font-size="9" font-weight="600" fill="#f43f5e" font-family="'JetBrains Mono',sans-serif">L3</text>
+        <text x="340" y="373" text-anchor="start" font-size="9" font-weight="600" fill="#f43f5e" font-family="'JetBrains Mono',sans-serif">L1.5</text>
+        <text x="238" y="399" text-anchor="end" font-size="9" font-weight="600" fill="#f43f5e" font-family="'JetBrains Mono',sans-serif">L2</text>
+        <text x="228" y="308" text-anchor="end" font-size="9" font-weight="600" fill="#f43f5e" font-family="'JetBrains Mono',sans-serif">L1.5</text>
+
+        <!-- Level value labels on data points (target) -->
+        <text x="276" y="170" text-anchor="end" font-size="9" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">L4</text>
+        <text x="444" y="278" text-anchor="start" font-size="9" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">L4</text>
+        <text x="388" y="460" text-anchor="start" font-size="9" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">L4</text>
+        <text x="192" y="460" text-anchor="end" font-size="9" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">L4</text>
+        <text x="136" y="278" text-anchor="end" font-size="9" font-weight="600" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">L4</text>
+      </g>
+
+      <!-- ===== GAP ANALYSIS TABLE ===== -->
+      <text x="798" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">差距分析表 Gap Analysis</text>
+
+      <!-- Header -->
+      <rect x="520" y="84" width="555" height="28" rx="4" fill="#1e293b"/>
+      <text x="530" y="102" text-anchor="start" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">维度</text>
+      <text x="590" y="102" text-anchor="start" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">当前</text>
+      <text x="640" y="102" text-anchor="start" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">目标Y3</text>
+      <text x="700" y="102" text-anchor="start" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">关键差距</text>
+      <text x="810" y="102" text-anchor="start" font-size="10" font-weight="600" fill="#ffffff" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">提升路径</text>
+
+      <!-- Row 1: 治理 -->
+      <rect x="520" y="112" width="555" height="28" fill="#ffffff"/>
+      <text x="530" y="131" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">治理</text>
+      <text x="590" y="131" font-size="10" fill="#f43f5e" font-weight="600" font-family="'JetBrains Mono',sans-serif">L2</text>
+      <text x="640" y="131" font-size="10" fill="#3b82f6" font-weight="600" font-family="'JetBrains Mono',sans-serif">L4</text>
+      <text x="700" y="131" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">缺乏制度化</text>
+      <text x="810" y="131" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">成立架构委员会→运行ADR→符合度纳入上线评审</text>
+
+      <!-- Row 2: 业务 -->
+      <rect x="520" y="140" width="555" height="28" fill="#f8fafc"/>
+      <text x="530" y="159" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务</text>
+      <text x="590" y="159" font-size="10" fill="#f43f5e" font-weight="600" font-family="'JetBrains Mono',sans-serif">L3</text>
+      <text x="640" y="159" font-size="10" fill="#3b82f6" font-weight="600" font-family="'JetBrains Mono',sans-serif">L4</text>
+      <text x="700" y="159" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务-IT映射弱</text>
+      <text x="810" y="159" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">Y/V模型→四类矩阵→能力热力图驱动投资</text>
+
+      <!-- Row 3: 数据 -->
+      <rect x="520" y="168" width="555" height="28" fill="#ffffff"/>
+      <text x="530" y="187" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">数据</text>
+      <text x="590" y="187" font-size="10" fill="#f43f5e" font-weight="600" font-family="'JetBrains Mono',sans-serif">L1.5</text>
+      <text x="640" y="187" font-size="10" fill="#3b82f6" font-weight="600" font-family="'JetBrains Mono',sans-serif">L4</text>
+      <text x="700" y="187" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">主数据未统一</text>
+      <text x="810" y="187" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">MDM上线→标准+质量→元数据+血缘</text>
+
+      <!-- Row 4: 应用 -->
+      <rect x="520" y="196" width="555" height="28" fill="#f8fafc"/>
+      <text x="530" y="215" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">应用</text>
+      <text x="590" y="215" font-size="10" fill="#f43f5e" font-weight="600" font-family="'JetBrains Mono',sans-serif">L2</text>
+      <text x="640" y="215" font-size="10" fill="#3b82f6" font-weight="600" font-family="'JetBrains Mono',sans-serif">L4</text>
+      <text x="700" y="215" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">中台未建成</text>
+      <text x="810" y="215" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务中台→微服务拆分→API目录→服务治理</text>
+
+      <!-- Row 5: 技术 -->
+      <rect x="520" y="224" width="555" height="28" fill="#ffffff"/>
+      <text x="530" y="243" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">技术</text>
+      <text x="590" y="243" font-size="10" fill="#f43f5e" font-weight="600" font-family="'JetBrains Mono',sans-serif">L1.5</text>
+      <text x="640" y="243" font-size="10" fill="#3b82f6" font-weight="600" font-family="'JetBrains Mono',sans-serif">L4</text>
+      <text x="700" y="243" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">云化率&lt;20%</text>
+      <text x="810" y="243" font-size="10" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">容器化→混合云→技术中台PaaS→零信任</text>
+
+      <!-- Table bottom border -->
+      <rect x="520" y="252" width="555" height="1" fill="#e2e8f0"/>
+
+      <!-- ===== INFO CARDS ===== -->
+
+      <!-- Card 1: 当前成熟度 (rose) -->
+      <g filter="url(#cardShadow)">
+        <rect x="30" y="520" width="330" height="175" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="46" cy="538" r="5" fill="#f43f5e"/>
+        <text x="58" y="542" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">当前成熟度</text>
+
+        <circle cx="46" cy="562" r="3" fill="#f43f5e"/>
+        <text x="56" y="566" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">治理 L2: 局部评审缺制度化</text>
+        <circle cx="46" cy="582" r="3" fill="#f43f5e"/>
+        <text x="56" y="586" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务 L3: 流程标准化已建立</text>
+        <circle cx="46" cy="602" r="3" fill="#f43f5e"/>
+        <text x="56" y="606" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">数据 L1.5: 主数据未统一</text>
+        <circle cx="46" cy="622" r="3" fill="#f43f5e"/>
+        <text x="56" y="626" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">应用 L2: 中台未建成,点对点集成</text>
+        <circle cx="46" cy="642" r="3" fill="#f43f5e"/>
+        <text x="56" y="646" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">技术 L1.5: 云化率&lt;20%</text>
+      </g>
+
+      <!-- Card 2: 目标成熟度(L4) (emerald) -->
+      <g filter="url(#cardShadow)">
+        <rect x="380" y="520" width="330" height="175" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="396" cy="538" r="5" fill="#10b981"/>
+        <text x="408" y="542" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">目标成熟度 (L4 管理级)</text>
+
+        <circle cx="396" cy="568" r="3" fill="#10b981"/>
+        <text x="406" y="572" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构符合度可量化追踪</text>
+        <circle cx="396" cy="594" r="3" fill="#10b981"/>
+        <text x="406" y="598" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">架构变更可版本管控</text>
+        <circle cx="396" cy="620" r="3" fill="#10b981"/>
+        <text x="406" y="624" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">能力覆盖率可指标评估</text>
+        <circle cx="396" cy="646" r="3" fill="#10b981"/>
+        <text x="406" y="650" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">5维度全面达到管理级</text>
+      </g>
+
+      <!-- Card 3: 关键跃升路径 (cyan) -->
+      <g filter="url(#cardShadow)">
+        <rect x="730" y="520" width="330" height="175" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="746" cy="538" r="5" fill="#06b6d4"/>
+        <text x="758" y="542" font-size="11" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">关键跃升路径</text>
+
+        <circle cx="746" cy="568" r="3" fill="#06b6d4"/>
+        <text x="756" y="572" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">成立架构委员会建立治理</text>
+        <circle cx="746" cy="594" r="3" fill="#06b6d4"/>
+        <text x="756" y="598" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">MDM统一主数据源头</text>
+        <circle cx="746" cy="620" r="3" fill="#06b6d4"/>
+        <text x="756" y="624" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">业务中台沉淀共性能力</text>
+        <circle cx="746" cy="646" r="3" fill="#06b6d4"/>
+        <text x="756" y="650" font-size="9.5" fill="#334155" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif">容器化+混合云夯实底座</text>
+      </g>
+
+    </svg>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function getCanvas() {
+  return html2canvas(document.getElementById('container'), {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#f8fafc',
+    logging: false,
+    width: document.getElementById('container').scrollWidth,
+    height: document.getElementById('container').scrollHeight
+  });
+}
+
+function copyDiagram() {
+  getCanvas().then(function(canvas) {
+    canvas.toBlob(function(blob) {
+      navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]).then(function() {
+        showToast('Copied to clipboard');
+      }).catch(function() {
+        alert('Copy failed. Try PNG export instead.');
+      });
+    });
+  });
+}
+
+function exportPNG() {
+  getCanvas().then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = '图1-6_架构能力成熟度雷达图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+}
+
+function exportPDF() {
+  getCanvas().then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({
+      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('图1-6_架构能力成熟度雷达图.pdf');
+  });
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 24px;border-radius:8px;font:500 13px/1 "JetBrains Mono",sans-serif;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:opacity 0.3s';
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 2000);
+}
+</script>
+</body>
+</html>

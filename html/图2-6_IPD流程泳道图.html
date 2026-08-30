@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-6 — IPD流程泳道图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#f8fafc;
+  font-family:'JetBrains Mono',monospace;
+  color:#1e293b;
+  padding:24px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.container{max-width:1360px;width:100%;}
+.header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:14px;gap:12px;
+}
+.title-group h1{
+  font-size:18px;font-weight:700;color:#0f172a;
+  letter-spacing:0.3px;line-height:1.3;
+}
+.title-group .subtitle{
+  font-size:11px;color:#475569;margin-top:2px;
+  font-weight:400;
+}
+.toolbar{display:flex;gap:6px;flex-shrink:0;padding-top:2px;}
+.toolbar button{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:5px 12px;border:1px solid #e2e8f0;border-radius:5px;
+  background:#ffffff;color:#475569;cursor:pointer;
+  transition:all 0.15s;letter-spacing:0.3px;
+}
+.toolbar button:hover{
+  background:#f1f5f9;border-color:#3b82f6;color:#3b82f6;
+}
+.diagram-wrapper{
+  background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;
+  padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.diagram-wrapper svg{display:block;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <h1>产品研发 IPD 流程泳道图</h1>
+      <div class="subtitle">Integrated Product Development · 六阶段·五DCP·跨职能协同</div>
+    </div>
+    <div class="toolbar">
+      <button onclick="copyDiagram()">复制</button>
+      <button onclick="exportPNG()">PNG</button>
+      <button onclick="exportPDF()">PDF</button>
+    </div>
+  </div>
+  <div class="diagram-wrapper" id="diagram">
+    <svg viewBox="0 0 1300 750" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family:'JetBrains Mono',monospace;">
+      <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+        </pattern>
+        <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+        </filter>
+        <filter id="shadowLight" x="-2%" y="-2%" width="104%" height="104%">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.03"/>
+        </filter>
+      </defs>
+      <rect width="1300" height="750" fill="url(#grid)"/>
+      <rect width="1300" height="750" fill="#ffffff" opacity="0.92"/>
+
+      <!-- ===== TITLE ===== -->
+      <text x="20" y="22" font-size="12" font-weight="700" fill="#0f172a" letter-spacing="0.3">IPD 流程泳道图 SWIMLANE</text>
+      <text x="20" y="38" font-size="8" fill="#475569">六阶段 · 五 DCP 决策门 · 六职能跨域协同</text>
+
+      <!-- ===== PHASE COLUMNS (x positions) ===== -->
+      <!-- Concept: x=130, Plan: x=315, Dev: x=500, Verify: x=685, Launch: x=870, Lifecycle: x=1055 -->
+      <!-- Column width: 185px each, no gaps. Merged boundaries. -->
+
+      <!-- Phase Header Backgrounds -->
+      <rect x="130" y="48" width="185" height="30" rx="4" fill="#3b82f6" opacity="0.85"/>
+      <rect x="315" y="48" width="185" height="30" rx="4" fill="#0891b2" opacity="0.85"/>
+      <rect x="500" y="48" width="185" height="30" rx="4" fill="#059669" opacity="0.85"/>
+      <rect x="685" y="48" width="185" height="30" rx="4" fill="#8b5cf6" opacity="0.85"/>
+      <rect x="870" y="48" width="185" height="30" rx="4" fill="#f97316" opacity="0.85"/>
+      <rect x="1055" y="48" width="185" height="30" rx="4" fill="#64748b" opacity="0.85"/>
+
+      <text x="222" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">概念 CONCEPT</text>
+      <text x="407" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">计划 PLAN</text>
+      <text x="592" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">开发 DEVELOP</text>
+      <text x="777" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">验证 VERIFY</text>
+      <text x="962" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">发布 LAUNCH</text>
+      <text x="1147" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">生命周期 LIFECYCLE</text>
+
+      <!-- Phase sub-labels (L1 indicators) -->
+      <text x="222" y="82" text-anchor="middle" font-size="7" fill="#3b82f6" font-weight="500">阶段 1</text>
+      <text x="407" y="82" text-anchor="middle" font-size="7" fill="#0891b2" font-weight="500">阶段 2</text>
+      <text x="592" y="82" text-anchor="middle" font-size="7" fill="#059669" font-weight="500">阶段 3</text>
+      <text x="777" y="82" text-anchor="middle" font-size="7" fill="#8b5cf6" font-weight="500">阶段 4</text>
+      <text x="962" y="82" text-anchor="middle" font-size="7" fill="#f97316" font-weight="500">阶段 5</text>
+      <text x="1147" y="82" text-anchor="middle" font-size="7" fill="#64748b" font-weight="500">阶段 6</text>
+
+      <!-- ===== DCP GATE DIAMONDS (at column boundaries) ===== -->
+      <!-- DCP1: x=312 (between concept 130+185=315 and plan 315) -->
+      <polygon points="312,55 320,47 328,55 320,63" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadowLight)"/>
+      <text x="320" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ef4444">DCP1</text>
+
+      <!-- DCP2: x=497 -->
+      <polygon points="497,55 505,47 513,55 505,63" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadowLight)"/>
+      <text x="505" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ef4444">DCP2</text>
+
+      <!-- DCP3: x=682 -->
+      <polygon points="682,55 690,47 698,55 690,63" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadowLight)"/>
+      <text x="690" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ef4444">DCP3</text>
+
+      <!-- DCP4: x=867 -->
+      <polygon points="867,55 875,47 883,55 875,63" fill="#ffffff" stroke="#ef4444" stroke-width="2" filter="url(#shadowLight)"/>
+      <text x="875" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ef4444">DCP4</text>
+
+      <!-- DCP vertical boundary lines through all swimlanes -->
+      <line x1="315" y1="88" x2="315" y2="618" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>
+      <line x1="500" y1="88" x2="500" y2="618" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>
+      <line x1="685" y1="88" x2="685" y2="618" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>
+      <line x1="870" y1="88" x2="870" y2="618" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>
+
+      <!-- Column vertical separators (light) -->
+      <line x1="130" y1="88" x2="130" y2="618" stroke="#e2e8f0" stroke-width="0.5"/>
+      <line x1="1055" y1="88" x2="1055" y2="618" stroke="#e2e8f0" stroke-width="0.5"/>
+
+      <!-- ===== SWIMLANE DEFINITIONS ===== -->
+      <!-- Lanes: y positions and heights -->
+      <!-- L1: y=92, h=86; L2: y=180, h=86; L3: y=268, h=86; L4: y=356, h=86; L5: y=444, h=86; L6: y=532, h=86 -->
+      <!-- Total swimlane height: 6*86 + 4*2 = 524, ends at 92+524-2=614 -->
+
+      <!-- Alternating lane backgrounds -->
+      <rect x="130" y="92" width="1110" height="86" fill="rgba(59,130,246,0.02)"/>
+      <rect x="130" y="180" width="1110" height="86" fill="rgba(255,255,255,0)"/>
+      <rect x="130" y="268" width="1110" height="86" fill="rgba(59,130,246,0.02)"/>
+      <rect x="130" y="356" width="1110" height="86" fill="rgba(255,255,255,0)"/>
+      <rect x="130" y="444" width="1110" height="86" fill="rgba(59,130,246,0.02)"/>
+      <rect x="130" y="532" width="1110" height="86" fill="rgba(255,255,255,0)"/>
+
+      <!-- Horizontal swimlane dividers -->
+      <line x1="20" y1="92" x2="1260" y2="92" stroke="#cbd5e1" stroke-width="1.2"/>
+      <line x1="20" y1="178" x2="1260" y2="178" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="20" y1="266" x2="1260" y2="266" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="20" y1="354" x2="1260" y2="354" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="20" y1="442" x2="1260" y2="442" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="20" y1="530" x2="1260" y2="530" stroke="#cbd5e1" stroke-width="1"/>
+      <line x1="20" y1="618" x2="1260" y2="618" stroke="#cbd5e1" stroke-width="1.2"/>
+
+      <!-- Lane Labels -->
+      <!-- Lane 1: PDT Leader -->
+      <rect x="20" y="92" width="106" height="86" rx="4" fill="rgba(59,130,246,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">PDT</text>
+      <text x="73" y="129" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">Leader</text>
+      <text x="73" y="148" text-anchor="middle" font-size="7" fill="#475569">项目总负责</text>
+      <text x="73" y="162" text-anchor="middle" font-size="6" fill="#94a3b8">跨职能协调</text>
+
+      <!-- Lane 2: 研发 -->
+      <rect x="20" y="180" width="106" height="86" rx="4" fill="rgba(8,145,178,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="207" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">研发</text>
+      <text x="73" y="223" text-anchor="middle" font-size="7" fill="#475569">硬/软/测试</text>
+      <text x="73" y="248" text-anchor="middle" font-size="6" fill="#94a3b8">技术实现</text>
+
+      <!-- Lane 3: 市场/营销 -->
+      <rect x="20" y="268" width="106" height="86" rx="4" fill="rgba(249,115,22,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="295" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">市场 / 营销</text>
+      <text x="73" y="315" text-anchor="middle" font-size="7" fill="#475569">Marketing</text>
+      <text x="73" y="338" text-anchor="middle" font-size="6" fill="#94a3b8">需求 / 上市</text>
+
+      <!-- Lane 4: 制造/供应链 -->
+      <rect x="20" y="356" width="106" height="86" rx="4" fill="rgba(5,150,105,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="383" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">制造 / 供应链</text>
+      <text x="73" y="403" text-anchor="middle" font-size="7" fill="#475569">SCM &amp; Mfg</text>
+      <text x="73" y="426" text-anchor="middle" font-size="6" fill="#94a3b8">供应保障</text>
+
+      <!-- Lane 5: 质量 -->
+      <rect x="20" y="444" width="106" height="86" rx="4" fill="rgba(139,92,246,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="471" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">质量</text>
+      <text x="73" y="487" text-anchor="middle" font-size="7" fill="#475569">Quality</text>
+      <text x="73" y="510" text-anchor="middle" font-size="6" fill="#94a3b8">品控 · 认证</text>
+
+      <!-- Lane 6: 财务 -->
+      <rect x="20" y="532" width="106" height="86" rx="4" fill="rgba(239,68,68,0.06)" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="73" y="559" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">财务</text>
+      <text x="73" y="575" text-anchor="middle" font-size="7" fill="#475569">Finance</text>
+      <text x="73" y="598" text-anchor="middle" font-size="6" fill="#94a3b8">核算 · 损益</text>
+
+      <!-- ======================================================================= -->
+      <!-- ACTIVITIES IN EACH CELL -->
+      <!-- ======================================================================= -->
+      <!-- Helper: each column at x=130,315,500,685,870,1055, each 185px wide -->
+      <!-- Each cell origin: (colX, laneY). LaneY: 92, 180, 268, 356, 444, 532 -->
+      <!-- Activity pill: w=82, h=18, rx=4. Can place 2 per row -->
+
+      <!-- ===== LANE 1: PDT Leader ===== -->
+      <!-- Concept -->
+      <rect x="138" y="102" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="115" text-anchor="middle" font-size="7" fill="#1e293b">组建 PDT 团队</text>
+      <rect x="226" y="102" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="115" text-anchor="middle" font-size="7" fill="#1e293b">制定项目章程</text>
+      <rect x="138" y="126" width="82" height="18" rx="4" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="179" y="139" text-anchor="middle" font-size="7" fill="#475569">项目目标确认</text>
+
+      <!-- Plan -->
+      <rect x="323" y="102" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="115" text-anchor="middle" font-size="7" fill="#1e293b">制定项目计划</text>
+      <rect x="411" y="102" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="115" text-anchor="middle" font-size="7" fill="#1e293b">资源协调分配</text>
+      <rect x="323" y="126" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="364" y="139" text-anchor="middle" font-size="7" fill="#475569">风险管理计划</text>
+
+      <!-- Develop -->
+      <rect x="508" y="102" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="115" text-anchor="middle" font-size="7" fill="#1e293b">开发进度管理</text>
+      <rect x="596" y="102" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="115" text-anchor="middle" font-size="7" fill="#1e293b">跨职能协调</text>
+      <rect x="508" y="126" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="139" text-anchor="middle" font-size="7" fill="#475569">问题升级处理</text>
+
+      <!-- Verify -->
+      <rect x="693" y="102" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="115" text-anchor="middle" font-size="7" fill="#1e293b">验证管理</text>
+      <rect x="781" y="102" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="115" text-anchor="middle" font-size="7" fill="#1e293b">问题闭环</text>
+      <rect x="693" y="126" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="734" y="139" text-anchor="middle" font-size="7" fill="#475569">DCP4 准备</text>
+
+      <!-- Launch -->
+      <rect x="878" y="102" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="115" text-anchor="middle" font-size="7" fill="#1e293b">上市管理</text>
+      <rect x="966" y="102" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="115" text-anchor="middle" font-size="7" fill="#1e293b">量产协调</text>
+      <rect x="878" y="126" width="82" height="18" rx="4" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="919" y="139" text-anchor="middle" font-size="7" fill="#475569">交付决策</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="102" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="115" text-anchor="middle" font-size="7" fill="#1e293b">生命周期管理</text>
+      <rect x="1151" y="102" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="115" text-anchor="middle" font-size="7" fill="#1e293b">退市决策</text>
+
+      <!-- ===== LANE 2: 研发 ===== -->
+      <!-- Concept -->
+      <rect x="138" y="190" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="203" text-anchor="middle" font-size="7" fill="#1e293b">技术可行性评估</text>
+      <rect x="226" y="190" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="203" text-anchor="middle" font-size="7" fill="#1e293b">方案预研</text>
+      <rect x="138" y="214" width="82" height="18" rx="4" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="179" y="227" text-anchor="middle" font-size="7" fill="#475569">技术选型评估</text>
+
+      <!-- Plan -->
+      <rect x="323" y="190" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="203" text-anchor="middle" font-size="7" fill="#1e293b">系统总体设计</text>
+      <rect x="411" y="190" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="203" text-anchor="middle" font-size="7" fill="#1e293b">模块分解</text>
+      <rect x="323" y="214" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="364" y="227" text-anchor="middle" font-size="7" fill="#475569">架构设计评审</text>
+      <rect x="411" y="214" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="452" y="227" text-anchor="middle" font-size="7" fill="#475569">原型验证</text>
+
+      <!-- Develop -->
+      <rect x="508" y="190" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="203" text-anchor="middle" font-size="7" fill="#1e293b">硬件开发</text>
+      <rect x="596" y="190" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="203" text-anchor="middle" font-size="7" fill="#1e293b">软件开发</text>
+      <rect x="508" y="214" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="227" text-anchor="middle" font-size="7" fill="#475569">测试用例开发</text>
+      <rect x="596" y="214" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="637" y="227" text-anchor="middle" font-size="7" fill="#475569">单元测试</text>
+
+      <!-- Verify -->
+      <rect x="693" y="190" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="203" text-anchor="middle" font-size="7" fill="#1e293b">集成测试</text>
+      <rect x="781" y="190" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="203" text-anchor="middle" font-size="7" fill="#1e293b">系统测试</text>
+      <rect x="693" y="214" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="734" y="227" text-anchor="middle" font-size="7" fill="#475569">性能测试</text>
+      <rect x="781" y="214" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="822" y="227" text-anchor="middle" font-size="7" fill="#475569">缺陷修复</text>
+
+      <!-- Launch -->
+      <rect x="878" y="190" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="203" text-anchor="middle" font-size="7" fill="#1e293b">技术支持</text>
+      <rect x="966" y="190" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="203" text-anchor="middle" font-size="7" fill="#1e293b">版本发布管理</text>
+      <rect x="878" y="214" width="82" height="18" rx="4" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="919" y="227" text-anchor="middle" font-size="7" fill="#475569">发布基线确认</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="190" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="203" text-anchor="middle" font-size="7" fill="#1e293b">维护版本更新</text>
+      <rect x="1151" y="190" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="203" text-anchor="middle" font-size="7" fill="#1e293b">技术迭代</text>
+
+      <!-- ===== LANE 3: 市场/营销 ===== -->
+      <!-- Concept -->
+      <rect x="138" y="278" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="291" text-anchor="middle" font-size="7" fill="#1e293b">市场调研分析</text>
+      <rect x="226" y="278" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="291" text-anchor="middle" font-size="7" fill="#1e293b">用户需求采集</text>
+      <rect x="138" y="302" width="82" height="18" rx="4" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="179" y="315" text-anchor="middle" font-size="7" fill="#475569">竞品分析</text>
+
+      <!-- Plan -->
+      <rect x="323" y="278" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="291" text-anchor="middle" font-size="7" fill="#1e293b">产品定位</text>
+      <rect x="411" y="278" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="291" text-anchor="middle" font-size="7" fill="#1e293b">营销策略制定</text>
+      <rect x="323" y="302" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="364" y="315" text-anchor="middle" font-size="7" fill="#475569">GTM 策略</text>
+
+      <!-- Develop -->
+      <rect x="508" y="278" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="291" text-anchor="middle" font-size="7" fill="#1e293b">上市物料准备</text>
+      <rect x="596" y="278" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="291" text-anchor="middle" font-size="7" fill="#1e293b">营销内容开发</text>
+      <rect x="508" y="302" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="315" text-anchor="middle" font-size="7" fill="#475569">渠道沟通</text>
+
+      <!-- Verify -->
+      <rect x="693" y="278" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="291" text-anchor="middle" font-size="7" fill="#1e293b">市场验证</text>
+      <rect x="781" y="278" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="291" text-anchor="middle" font-size="7" fill="#1e293b">用户评测</text>
+      <rect x="693" y="302" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="734" y="315" text-anchor="middle" font-size="7" fill="#475569">定价验证</text>
+
+      <!-- Launch -->
+      <rect x="878" y="278" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="291" text-anchor="middle" font-size="7" fill="#1e293b">上市推广执行</text>
+      <rect x="966" y="278" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="291" text-anchor="middle" font-size="7" fill="#1e293b">渠道铺货</text>
+      <rect x="878" y="302" width="82" height="18" rx="4" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="919" y="315" text-anchor="middle" font-size="7" fill="#475569">发布活动</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="278" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="291" text-anchor="middle" font-size="7" fill="#1e293b">退市管理</text>
+      <rect x="1151" y="278" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="291" text-anchor="middle" font-size="7" fill="#1e293b">产品过渡计划</text>
+
+      <!-- ===== LANE 4: 制造/供应链 ===== -->
+      <!-- Concept -->
+      <rect x="138" y="366" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="379" text-anchor="middle" font-size="7" fill="#1e293b">早期制造评估</text>
+      <rect x="226" y="366" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="379" text-anchor="middle" font-size="7" fill="#1e293b">供应链风险识别</text>
+
+      <!-- Plan -->
+      <rect x="323" y="366" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="379" text-anchor="middle" font-size="7" fill="#1e293b">供应链规划</text>
+      <rect x="411" y="366" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="379" text-anchor="middle" font-size="7" fill="#1e293b">供应商确定</text>
+      <rect x="323" y="390" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="364" y="403" text-anchor="middle" font-size="7" fill="#475569">物料清单确认</text>
+
+      <!-- Develop -->
+      <rect x="508" y="366" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="379" text-anchor="middle" font-size="7" fill="#1e293b">物料准备</text>
+      <rect x="596" y="366" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="379" text-anchor="middle" font-size="7" fill="#1e293b">工装模具开发</text>
+      <rect x="508" y="390" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="403" text-anchor="middle" font-size="7" fill="#475569">长交期物料下单</text>
+
+      <!-- Verify -->
+      <rect x="693" y="366" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="379" text-anchor="middle" font-size="7" fill="#1e293b">试产验证</text>
+      <rect x="781" y="366" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="379" text-anchor="middle" font-size="7" fill="#1e293b">工艺验证</text>
+      <rect x="693" y="390" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="734" y="403" text-anchor="middle" font-size="7" fill="#475569">产能验证</text>
+
+      <!-- Launch -->
+      <rect x="878" y="366" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="379" text-anchor="middle" font-size="7" fill="#1e293b">量产爬坡</text>
+      <rect x="966" y="366" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="379" text-anchor="middle" font-size="7" fill="#1e293b">产能保障</text>
+      <rect x="878" y="390" width="82" height="18" rx="4" fill="rgba(249,115,22,0.06)" stroke="#f97316" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="919" y="403" text-anchor="middle" font-size="7" fill="#475569">交付保障</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="366" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="379" text-anchor="middle" font-size="7" fill="#1e293b">备件供应</text>
+      <rect x="1151" y="366" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="379" text-anchor="middle" font-size="7" fill="#1e293b">EOL 管理</text>
+
+      <!-- ===== LANE 5: 质量 ===== -->
+      <!-- Concept -->
+      <rect x="138" y="454" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="467" text-anchor="middle" font-size="7" fill="#1e293b">质量目标制定</text>
+      <rect x="226" y="454" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="467" text-anchor="middle" font-size="7" fill="#1e293b">质量策划</text>
+
+      <!-- Plan -->
+      <rect x="323" y="454" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="467" text-anchor="middle" font-size="7" fill="#1e293b">质量计划</text>
+      <rect x="411" y="454" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="467" text-anchor="middle" font-size="7" fill="#1e293b">测试策略制定</text>
+      <rect x="323" y="478" width="82" height="18" rx="4" fill="rgba(8,145,178,0.06)" stroke="#0891b2" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="364" y="491" text-anchor="middle" font-size="7" fill="#475569">质量标准定义</text>
+
+      <!-- Develop -->
+      <rect x="508" y="454" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="467" text-anchor="middle" font-size="7" fill="#1e293b">过程质量监控</text>
+      <rect x="596" y="454" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="467" text-anchor="middle" font-size="7" fill="#1e293b">来料检验</text>
+      <rect x="508" y="478" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="491" text-anchor="middle" font-size="7" fill="#475569">质量门控</text>
+
+      <!-- Verify -->
+      <rect x="693" y="454" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="467" text-anchor="middle" font-size="7" fill="#1e293b">可靠性测试</text>
+      <rect x="781" y="454" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="467" text-anchor="middle" font-size="7" fill="#1e293b">认证测试</text>
+      <rect x="693" y="478" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="734" y="491" text-anchor="middle" font-size="7" fill="#475569">合规认证</text>
+      <rect x="781" y="478" width="82" height="18" rx="4" fill="rgba(139,92,246,0.06)" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="822" y="491" text-anchor="middle" font-size="7" fill="#475569">准入测试</text>
+
+      <!-- Launch -->
+      <rect x="878" y="454" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="467" text-anchor="middle" font-size="7" fill="#1e293b">出货质量控制</text>
+      <rect x="966" y="454" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="467" text-anchor="middle" font-size="7" fill="#1e293b">客诉预防</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="454" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="467" text-anchor="middle" font-size="7" fill="#1e293b">质量回溯</text>
+      <rect x="1151" y="454" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="467" text-anchor="middle" font-size="7" fill="#1e293b">持续改进</text>
+
+      <!-- ===== LANE 6: 财务 ===== -->
+      <!-- Concept -->
+      <rect x="138" y="542" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="179" y="555" text-anchor="middle" font-size="7" fill="#1e293b">财务可行性分析</text>
+      <rect x="226" y="542" width="82" height="18" rx="4" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="267" y="555" text-anchor="middle" font-size="7" fill="#1e293b">投资回报评估</text>
+
+      <!-- Plan -->
+      <rect x="323" y="542" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="364" y="555" text-anchor="middle" font-size="7" fill="#1e293b">预算审批</text>
+      <rect x="411" y="542" width="82" height="18" rx="4" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="452" y="555" text-anchor="middle" font-size="7" fill="#1e293b">产品成本测算</text>
+
+      <!-- Develop -->
+      <rect x="508" y="542" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="549" y="555" text-anchor="middle" font-size="7" fill="#1e293b">成本控制</text>
+      <rect x="596" y="542" width="82" height="18" rx="4" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="0.5"/>
+      <text x="637" y="555" text-anchor="middle" font-size="7" fill="#1e293b">研发费用管理</text>
+      <rect x="508" y="566" width="82" height="18" rx="4" fill="rgba(5,150,105,0.06)" stroke="#059669" stroke-width="0.5" stroke-opacity="0.4"/>
+      <text x="549" y="579" text-anchor="middle" font-size="7" fill="#475569">BOM 成本监控</text>
+
+      <!-- Verify -->
+      <rect x="693" y="542" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="734" y="555" text-anchor="middle" font-size="7" fill="#1e293b">财务核算</text>
+      <rect x="781" y="542" width="82" height="18" rx="4" fill="rgba(139,92,246,0.08)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="822" y="555" text-anchor="middle" font-size="7" fill="#1e293b">投资分析</text>
+
+      <!-- Launch -->
+      <rect x="878" y="542" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="919" y="555" text-anchor="middle" font-size="7" fill="#1e293b">销售核算</text>
+      <rect x="966" y="542" width="82" height="18" rx="4" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="1007" y="555" text-anchor="middle" font-size="7" fill="#1e293b">利润分析</text>
+
+      <!-- Lifecycle -->
+      <rect x="1063" y="542" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1104" y="555" text-anchor="middle" font-size="7" fill="#1e293b">产品损益分析</text>
+      <rect x="1151" y="542" width="82" height="18" rx="4" fill="rgba(100,116,139,0.08)" stroke="#64748b" stroke-width="0.5"/>
+      <text x="1192" y="555" text-anchor="middle" font-size="7" fill="#1e293b">资产处置</text>
+
+      <!-- ======================================================================= -->
+      <!-- BOTTOM INFO CARDS -->
+      <!-- ======================================================================= -->
+      <g transform="translate(0, 636)">
+        <!-- Card 1: IPD 六阶段 -->
+        <rect x="20" y="0" width="400" height="100" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+        <rect x="20" y="0" width="400" height="28" rx="7" fill="rgba(59,130,246,0.07)"/>
+        <rect x="20" y="22" width="400" height="6" fill="rgba(59,130,246,0.07)"/>
+        <text x="220" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">IPD 六阶段模型</text>
+
+        <text x="34" y="46" font-size="7.5" fill="#475569">IPD (Integrated Product Development) 集成产品开</text>
+        <text x="34" y="59" font-size="7.5" fill="#475569">发将产品开发视为投资行为，通过六阶段结构化</text>
+        <text x="34" y="72" font-size="7.5" fill="#475569">流程管理产品创新。从概念到生命周期，每个阶</text>
+        <text x="34" y="85" font-size="7.5" fill="#475569">段有明确交付物和评审标准，确保研发投资质量。</text>
+
+        <!-- Phase color bar -->
+        <rect x="350" y="42" width="12" height="12" rx="2" fill="#3b82f6" opacity="0.7"/>
+        <text x="365" y="53" font-size="6.5" fill="#475569">概念</text>
+        <rect x="350" y="58" width="12" height="12" rx="2" fill="#0891b2" opacity="0.7"/>
+        <text x="365" y="69" font-size="6.5" fill="#475569">计划</text>
+        <rect x="350" y="74" width="12" height="12" rx="2" fill="#059669" opacity="0.7"/>
+        <text x="365" y="85" font-size="6.5" fill="#475569">开发</text>
+
+        <rect x="396" y="42" width="12" height="12" rx="2" fill="#8b5cf6" opacity="0.7"/>
+        <text x="411" y="53" font-size="6.5" fill="#475569">验证</text>
+        <rect x="396" y="58" width="12" height="12" rx="2" fill="#f97316" opacity="0.7"/>
+        <text x="411" y="69" font-size="6.5" fill="#475569">发布</text>
+        <rect x="396" y="74" width="12" height="12" rx="2" fill="#64748b" opacity="0.7"/>
+        <text x="411" y="85" font-size="6.5" fill="#475569">生命周期</text>
+
+        <!-- Card 2: DCP 决策评审 -->
+        <rect x="440" y="0" width="400" height="100" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+        <rect x="440" y="0" width="400" height="28" rx="7" fill="rgba(239,68,68,0.07)"/>
+        <rect x="440" y="22" width="400" height="6" fill="rgba(239,68,68,0.07)"/>
+        <text x="640" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">DCP 决策评审机制</text>
+
+        <text x="454" y="46" font-size="7.5" fill="#475569">DCP (Decision Check Point) 是IPD的关键治理机</text>
+        <text x="454" y="59" font-size="7.5" fill="#475569">制，由IPMT (集成组合管理团队) 对项目进行阶</text>
+        <text x="454" y="72" font-size="7.5" fill="#475569">段门控评审。DCP1-DCP4依次对应概念、计划、</text>
+        <text x="454" y="85" font-size="7.5" fill="#475569">开发和验证阶段出口，决策结果: Go / No-Go / Redirect。</text>
+
+        <rect x="790" y="42" width="14" height="14" rx="3" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="797" y="53" text-anchor="middle" font-size="7" fill="#ef4444" font-weight="700">D</text>
+        <text x="810" y="53" font-size="6.5" fill="#475569">DCP 菱形</text>
+        <text x="790" y="73" font-size="6.5" fill="#475569">门控决策</text>
+
+        <!-- Card 3: PDT 跨职能团队 -->
+        <rect x="860" y="0" width="400" height="100" rx="7" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+        <rect x="860" y="0" width="400" height="28" rx="7" fill="rgba(5,150,105,0.07)"/>
+        <rect x="860" y="22" width="400" height="6" fill="rgba(5,150,105,0.07)"/>
+        <text x="1060" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">PDT 跨职能团队</text>
+
+        <text x="874" y="46" font-size="7.5" fill="#475569">PDT (Product Development Team) 是IPD的核心</text>
+        <text x="874" y="59" font-size="7.5" fill="#475569">执行单元，由PDT Leader带领研发、市场、制造、</text>
+        <text x="874" y="72" font-size="7.5" fill="#475569">质量、财务等跨职能核心成员组成。各职能代表</text>
+        <text x="874" y="85" font-size="7.5" fill="#475569">在PDT内共同决策，确保端到端协同效率最大化。</text>
+
+        <!-- Team icon -->
+        <circle cx="1220" cy="52" r="10" fill="rgba(5,150,105,0.12)" stroke="#059669" stroke-width="0.8"/>
+        <circle cx="1216" cy="48" r="3" fill="#059669" opacity="0.6"/>
+        <circle cx="1224" cy="48" r="3" fill="#059669" opacity="0.6"/>
+        <path d="M 1212,57 Q 1220,52 1228,57" fill="none" stroke="#059669" stroke-width="1" opacity="0.6"/>
+        <text x="1220" y="72" text-anchor="middle" font-size="6" fill="#475569">6 职能</text>
+        <text x="1220" y="82" text-anchor="middle" font-size="6" fill="#475569">代表</text>
+      </g>
+
+      <!-- ===== FOOTER NOTE ===== -->
+      <text x="20" y="738" font-size="7" fill="#94a3b8">
+        注：泳道按职能分为6行，每行代表一个核心参与部门；DCP决策门(红色菱形)为阶段出口评审；活动卡片按IPD阶段分别填入对应泳道
+      </text>
+    </svg>
+  </div>
+</div>
+
+<script>
+async function getCanvas() {
+  return await html2canvas(document.getElementById('diagram'), {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    width: document.getElementById('diagram').scrollWidth,
+    height: document.getElementById('diagram').scrollHeight,
+    windowWidth: document.getElementById('diagram').scrollWidth,
+    windowHeight: document.getElementById('diagram').scrollHeight,
+  });
+}
+
+async function exportPNG() {
+  try {
+    const canvas = await getCanvas();
+    const link = document.createElement('a');
+    link.download = '图2-6_IPD流程泳道图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('导出PNG失败: ' + e.message);
+  }
+}
+
+async function exportPDF() {
+  try {
+    const canvas = await getCanvas();
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'l', unit:'mm', format:'a4'});
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图2-6_IPD流程泳道图.pdf');
+  } catch(e) {
+    alert('导出PDF失败: ' + e.message);
+  }
+}
+
+async function copyDiagram() {
+  try {
+    const canvas = await getCanvas();
+    canvas.toBlob(async function(blob) {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+      } catch(e) {
+        const url = URL.createObjectURL(blob);
+        const img = document.createElement('img');
+        img.src = url;
+        const sel = window.getSelection();
+        const range = document.createRange();
+        document.body.appendChild(img);
+        range.selectNodeContents(img);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        document.body.removeChild(img);
+        URL.revokeObjectURL(url);
+      }
+    });
+  } catch(e) {
+    alert('复制失败: ' + e.message);
+  }
+}
+</script>
+</body>
+</html>

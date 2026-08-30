@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>4A追溯矩阵全景图 - 手机制造企业架构</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:30px}
+.container{max-width:1400px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:8px;font-size:22px}
+.subtitle{text-align:center;color:#666;margin-bottom:25px;font-size:13px}
+svg{width:100%;height:auto}
+.legend{display:flex;justify-content:center;gap:30px;margin-top:15px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.legend-box{width:16px;height:16px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>4A追溯矩阵全景图 — 从战略到技术落地</h1>
+<p class="subtitle">Strategy → Business Architecture → Data Architecture → Application Architecture → Technology Architecture</p>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 900">
+  <defs>
+    <linearGradient id="baGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#2E7D32"/></linearGradient>
+    <linearGradient id="daGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2196F3"/><stop offset="100%" stop-color="#1565C0"/></linearGradient>
+    <linearGradient id="aaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF9800"/><stop offset="100%" stop-color="#E65100"/></linearGradient>
+    <linearGradient id="taGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#9C27B0"/><stop offset="100%" stop-color="#6A1B9A"/></linearGradient>
+    <marker id="arrowBA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#4CAF50"/>
+    </marker>
+    <marker id="arrowDA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2196F3"/>
+    </marker>
+    <marker id="arrowAA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#FF9800"/>
+    </marker>
+    <marker id="arrowTA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#9C27B0"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1360" height="900" fill="#F5F5F0" rx="8"/>
+
+  <!-- Title bars -->
+  <rect x="30" y="20" width="300" height="36" rx="6" fill="url(#baGrad)"/>
+  <text x="180" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">一、业务架构 (BA)</text>
+  <rect x="360" y="20" width="300" height="36" rx="6" fill="url(#daGrad)"/>
+  <text x="510" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">二、数据架构 (DA)</text>
+  <rect x="690" y="20" width="300" height="36" rx="6" fill="url(#aaGrad)"/>
+  <text x="840" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">三、应用架构 (AA)</text>
+  <rect x="1020" y="20" width="310" height="36" rx="6" fill="url(#taGrad)"/>
+  <text x="1175" y="44" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">四、技术架构 (TA)</text>
+
+  <!-- BA Column -->
+  <g transform="translate(30, 65)">
+    <!-- Strategy Layer -->
+    <rect x="0" y="0" width="300" height="30" rx="4" fill="#A5D6A7"/>
+    <text x="150" y="20" text-anchor="middle" fill="#1B5E20" font-size="11" font-weight="bold">战略目标层</text>
+    <rect x="0" y="32" width="300" height="80" rx="4" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="10" y="50" font-size="10" fill="#333">S-01 高端突破 | S-02 全球扩张</text>
+    <text x="10" y="66" font-size="10" fill="#333">S-03 生态变现</text>
+    <text x="10" y="82" font-size="10" fill="#666">KPI: TTM 11月 | 库存周转 32天 | NPS 45</text>
+    <text x="10" y="98" font-size="10" fill="#666">DSO 38天 | 营销ROI +30% | 主数据同源率90%</text>
+
+    <!-- Value Stream Layer -->
+    <rect x="0" y="118" width="300" height="28" rx="4" fill="#A5D6A7"/>
+    <text x="150" y="137" text-anchor="middle" fill="#1B5E20" font-size="11" font-weight="bold">价值流层 (8条企业级价值流)</text>
+    <rect x="0" y="148" width="300" height="70" rx="4" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="10" y="163" font-size="9.5" fill="#333">VF01 I2L 从创意到上市 | VF02 LTC 从线索到回款★</text>
+    <text x="10" y="178" font-size="9.5" fill="#333">VF03 P2P 从计划到采购 | VF04 P2M 从计划到生产</text>
+    <text x="10" y="193" font-size="9.5" fill="#333">VF05 I2R 从问题到解决 | VF06 B2R 从预算到报告</text>
+    <text x="10" y="208" font-size="9.5" fill="#333">VF07 T2P 从人才到绩效 | VF08 R2C 从风险到控制</text>
+
+    <!-- Business Domain Layer -->
+    <rect x="0" y="224" width="300" height="28" rx="4" fill="#A5D6A7"/>
+    <text x="150" y="243" text-anchor="middle" fill="#1B5E20" font-size="11" font-weight="bold">L2业务域层 (14域)</text>
+    <rect x="0" y="254" width="300" height="95" rx="4" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="8" y="268" font-size="9" fill="#333">核心价值域:</text>
+    <text x="8" y="282" font-size="9" fill="#2E7D32">D02产品研发 D03供应链 D04制造</text>
+    <text x="8" y="296" font-size="9" fill="#2E7D32">D05市场营销 D06销售渠道 D07客服</text>
+    <text x="8" y="312" font-size="9" fill="#333">企业运营域+价值延伸:</text>
+    <text x="8" y="326" font-size="9" fill="#666">D01战略 D08生态 D09人力 D10财务</text>
+    <text x="8" y="340" font-size="9" fill="#666">D11法务 D12安全 D13 IT D14行政</text>
+
+    <!-- L4 Capability -->
+    <rect x="0" y="355" width="300" height="28" rx="4" fill="#A5D6A7"/>
+    <text x="150" y="374" text-anchor="middle" fill="#1B5E20" font-size="11" font-weight="bold">L3-L4能力层 (184+业务能力)</text>
+    <rect x="0" y="385" width="300" height="80" rx="4" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="8" y="400" font-size="9" fill="#333">★P0优先: S&OP协同, BOM管理, 订单路由</text>
+    <text x="8" y="415" font-size="9" fill="#333">  ATP库存承诺, 质量追溯, 用户画像</text>
+    <text x="8" y="430" font-size="9" fill="#333">  应收结算, 隐私贸易合规</text>
+    <text x="8" y="450" font-size="9" fill="#666">每个L4能力 → 应用边界/数据Owner/服务接口</text>
+
+    <!-- LTC Activity -->
+    <rect x="0" y="471" width="300" height="28" rx="4" fill="#A5D6A7"/>
+    <text x="150" y="490" text-anchor="middle" fill="#1B5E20" font-size="11" font-weight="bold">LTC L5-L7流程层 (24关键活动)</text>
+    <rect x="0" y="501" width="300" height="105" rx="4" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="8" y="516" font-size="9" fill="#2E7D32">1.市场与商机: 品牌策略/线索采集/MQL</text>
+    <text x="8" y="531" font-size="9" fill="#2E7D32">2.销售与下单: 价格校验/订单创建/信用检查</text>
+    <text x="8" y="546" font-size="9" fill="#2E7D32">3.计划与供应: S&OP平衡/MRP/供应商协同</text>
+    <text x="8" y="561" font-size="9" fill="#2E7D32">4.生产制造: 排产/工单执行/质量追溯</text>
+    <text x="8" y="576" font-size="9" fill="#2E7D32">5.物流交付: 履约路由/拣配/签收</text>
+    <text x="8" y="591" font-size="9" fill="#2E7D32">6.客户服务: 报修/维修/质量回流</text>
+    <text x="8" y="606" font-size="9" fill="#2E7D32">7.财务回款: 应收对账/回款核销/返利</text>
+  </g>
+
+  <!-- DA Column -->
+  <g transform="translate(360, 65)">
+    <rect x="0" y="0" width="300" height="30" rx="4" fill="#90CAF9"/>
+    <text x="150" y="20" text-anchor="middle" fill="#0D47A1" font-size="11" font-weight="bold">数据域层 (14域对齐业务域)</text>
+    <rect x="0" y="32" width="300" height="85" rx="4" fill="#E3F2FD" stroke="#2196F3" stroke-width="1"/>
+    <text x="8" y="48" font-size="9" fill="#333">DD01战略 DD02产品研发 DD03供应链</text>
+    <text x="8" y="63" font-size="9" fill="#333">DD04生产 DD05市场营销 DD06销售渠道</text>
+    <text x="8" y="78" font-size="9" fill="#333">DD07客服 DD08生态 DD09人力资源</text>
+    <text x="8" y="93" font-size="9" fill="#333">DD10财务 DD11法务 DD12安全</text>
+    <text x="8" y="108" font-size="9" fill="#333">DD13 IT数字化 DD14行政设施</text>
+
+    <rect x="0" y="123" width="300" height="28" rx="4" fill="#90CAF9"/>
+    <text x="150" y="142" text-anchor="middle" fill="#0D47A1" font-size="11" font-weight="bold">核心主数据 (19对象)</text>
+    <rect x="0" y="153" width="300" height="65" rx="4" fill="#E3F2FD" stroke="#2196F3" stroke-width="1"/>
+    <text x="8" y="168" font-size="9" fill="#0D47A1">产品/SKU/BOM/物料 | 客户/用户/渠道/门店</text>
+    <text x="8" y="183" font-size="9" fill="#0D47A1">供应商 | 人员/组织/岗位 | 会计科目/成本中心</text>
+    <text x="8" y="198" font-size="9" fill="#0D47A1">资产类别/单位/区域/币种</text>
+    <text x="8" y="213" font-size="9" fill="#666">权威源(MDM) → 审批分发 → 消费方订阅</text>
+
+    <rect x="0" y="224" width="300" height="28" rx="4" fill="#90CAF9"/>
+    <text x="150" y="243" text-anchor="middle" fill="#0D47A1" font-size="11" font-weight="bold">概念/逻辑数据模型</text>
+    <rect x="0" y="254" width="300" height="80" rx="4" fill="#E3F2FD" stroke="#2196F3" stroke-width="1"/>
+    <text x="8" y="269" font-size="9" fill="#333">CDM: 24+核心实体关系(产品-SKU-订单-库存)</text>
+    <text x="8" y="284" font-size="9" fill="#333">LDM: 100+数据对象核心属性/主键/状态</text>
+    <text x="8" y="299" font-size="9" fill="#333">PDM: 物理设计方法论(不展开DDL)</text>
+    <text x="8" y="319" font-size="9" fill="#666">三类跨域关系: 产品/BOM/物料 | 客户/用户/渠道</text>
+
+    <rect x="0" y="340" width="300" height="28" rx="4" fill="#90CAF9"/>
+    <text x="150" y="359" text-anchor="middle" fill="#0D47A1" font-size="11" font-weight="bold">数据集成模式</text>
+    <rect x="0" y="370" width="300" height="50" rx="4" fill="#E3F2FD" stroke="#2196F3" stroke-width="1"/>
+    <text x="8" y="386" font-size="9" fill="#333">API同步 | 事件/消息 | CDC增量 | 批量ETL</text>
+    <text x="8" y="402" font-size="9" fill="#333">文件/EDI | IoT/边缘采集</text>
+
+    <rect x="0" y="426" width="300" height="28" rx="4" fill="#90CAF9"/>
+    <text x="150" y="445" text-anchor="middle" fill="#0D47A1" font-size="11" font-weight="bold">数据治理体系</text>
+    <rect x="0" y="456" width="300" height="55" rx="4" fill="#E3F2FD" stroke="#2196F3" stroke-width="1"/>
+    <text x="8" y="472" font-size="9" fill="#333">治理组织: 委员会-Owner-管家-平台团队</text>
+    <text x="8" y="488" font-size="9" fill="#333">标准: 编码/命名/指标口径 质量: 完整/一致/及时/唯一</text>
+
+    <rect x="0" y="517" width="300" height="85" rx="4" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+    <text x="8" y="533" font-size="9.5" fill="#E65100" font-weight="bold">【新增P1-3】数据血缘追溯体系</text>
+    <text x="8" y="549" font-size="9" fill="#666">订单创建→签收→应收→回款关键链路</text>
+    <text x="8" y="564" font-size="9" fill="#666">活动→数据对象→系统表→指标 全链路血缘</text>
+    <text x="8" y="579" font-size="9" fill="#666">数据质量框架: DAMA 6维度×核心数据对象</text>
+    <text x="8" y="596" font-size="9" fill="#666">→ 附件3-9 数据血缘追溯 | 附件3-10 质量度量框架</text>
+  </g>
+
+  <!-- AA Column -->
+  <g transform="translate(690, 65)">
+    <rect x="0" y="0" width="300" height="30" rx="4" fill="#FFCC80"/>
+    <text x="150" y="20" text-anchor="middle" fill="#E65100" font-size="11" font-weight="bold">应用分层架构</text>
+    <rect x="0" y="32" width="300" height="55" rx="4" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+    <text x="8" y="48" font-size="9" fill="#333">前台应用: App/官网/电商/POS/门户</text>
+    <text x="8" y="63" font-size="9" fill="#333">业务应用: PLM/APS/SRM/ERP/MES/CRM/OMS/WMS</text>
+    <text x="8" y="78" font-size="9" fill="#333">TMS/售后/HR/财务/GRC/安全/ITSM</text>
+
+    <rect x="0" y="93" width="300" height="28" rx="4" fill="#FFCC80"/>
+    <text x="150" y="112" text-anchor="middle" fill="#E65100" font-size="11" font-weight="bold">21核心应用系统</text>
+    <rect x="0" y="123" width="300" height="85" rx="4" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+    <text x="8" y="138" font-size="9" fill="#333">APP01经营 APP02 PLM APP03 APS APP04 SRM</text>
+    <text x="8" y="153" font-size="9" fill="#333">APP05 ERP APP06 MES APP07 QMS APP08 CDP</text>
+    <text x="8" y="168" font-size="9" fill="#333">APP09 MA APP10 CRM APP11 OMS APP12 WMS</text>
+    <text x="8" y="183" font-size="9" fill="#333">APP13 TMS APP14售后 APP15生态 APP16 HR</text>
+    <text x="8" y="198" font-size="9" fill="#333">APP17财务 APP18 GRC APP19 IAM APP20 ITSM</text>
+
+    <rect x="0" y="214" width="300" height="28" rx="4" fill="#FFCC80"/>
+    <text x="150" y="233" text-anchor="middle" fill="#E65100" font-size="11" font-weight="bold">13业务能力中心 (29+API)</text>
+    <rect x="0" y="244" width="300" height="70" rx="4" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+    <text x="8" y="260" font-size="9" fill="#E65100">BC01客户 BC02产品 BC03订单 BC04库存</text>
+    <text x="8" y="275" font-size="9" fill="#E65100">BC05价格促销 BC06计划 BC07供应商 BC08制造</text>
+    <text x="8" y="290" font-size="9" fill="#E65100">BC09质量追溯 BC10服务 BC11财务结算</text>
+    <text x="8" y="305" font-size="9" fill="#E65100">BC12合规风险 BC13项目</text>
+
+    <rect x="0" y="320" width="300" height="28" rx="4" fill="#FFCC80"/>
+    <text x="150" y="339" text-anchor="middle" fill="#E65100" font-size="11" font-weight="bold">应用集成架构</text>
+    <rect x="0" y="350" width="300" height="55" rx="4" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+    <text x="8" y="366" font-size="9" fill="#333">同步API(ATP/价格/合规) | 领域事件(Kafka)</text>
+    <text x="8" y="382" font-size="9" fill="#333">流程编排(BPM) | 数据同步(MDM/CDC/ETL)</text>
+    <text x="8" y="398" font-size="9" fill="#333">外部伙伴(开放API/EDI) | 设备边缘(MQTT)</text>
+
+    <rect x="0" y="411" width="300" height="28" rx="4" fill="#FFCC80"/>
+    <text x="150" y="430" text-anchor="middle" fill="#E65100" font-size="11" font-weight="bold">LTC应用-数据-API映射</text>
+    <rect x="0" y="441" width="300" height="55" rx="4" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+    <text x="8" y="457" font-size="9" fill="#333">7阶段24活动 × 应用/数据/API三维映射</text>
+    <text x="8" y="473" font-size="9" fill="#666">每个活动: 读/写数据对象 + 调用API + 承载应用</text>
+
+    <rect x="0" y="502" width="300" height="98" rx="4" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+    <text x="8" y="518" font-size="9.5" fill="#E65100" font-weight="bold">【新增P1-4/P2-2】应用NFR + 事件目录</text>
+    <text x="8" y="534" font-size="9" fill="#666">核心应用NFR: QPS/延迟/可用性/数据增长</text>
+    <text x="8" y="549" font-size="9" fill="#666">LTC事件目录: 18+领域事件Schema定义</text>
+    <text x="8" y="564" font-size="9" fill="#666">事件: OrderCreated/StockReserved/OrderPaid/</text>
+    <text x="8" y="579" font-size="9" fill="#666">OrderShipped/PODSigned/ReceivableConfirmed</text>
+    <text x="8" y="594" font-size="9" fill="#666">→ 附件4-8 核心应用NFR | 附件4-9 LTC事件目录</text>
+  </g>
+
+  <!-- TA Column -->
+  <g transform="translate(1020, 65)">
+    <rect x="0" y="0" width="310" height="30" rx="4" fill="#CE93D8"/>
+    <text x="155" y="20" text-anchor="middle" fill="#4A148C" font-size="11" font-weight="bold">云原生技术中台 (11子系统)</text>
+    <rect x="0" y="32" width="310" height="85" rx="4" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+    <text x="8" y="48" font-size="9" fill="#333">开发: 微服务框架 | 低代码平台 | API设计</text>
+    <text x="8" y="63" font-size="9" fill="#333">集成: iPaaS(BPM/API网关/ESB/连接器)</text>
+    <text x="8" y="78" font-size="9" fill="#333">执行: 容器云(K8s) | 微服务治理 | 中间件服务</text>
+    <text x="8" y="93" font-size="9" fill="#333">数据: MDM | 数据湖仓 | Flink | ClickHouse</text>
+    <text x="8" y="108" font-size="9" fill="#333">运维: DevOps | 可观测(Prometheus/Grafana)</text>
+
+    <rect x="0" y="123" width="310" height="28" rx="4" fill="#CE93D8"/>
+    <text x="155" y="142" text-anchor="middle" fill="#4A148C" font-size="11" font-weight="bold">基础设施部署 (4级算力)</text>
+    <rect x="0" y="153" width="310" height="55" rx="4" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+    <text x="8" y="169" font-size="9" fill="#333">中心私有云(双AZ) → 区域云(海外数据驻留)</text>
+    <text x="8" y="185" font-size="9" fill="#333">工厂边缘云(K3s+MES) → 门店边缘节点(POS)</text>
+    <text x="8" y="201" font-size="9" fill="#333">混合云: 私有云+公有云CDN/弹性/灾备</text>
+
+    <rect x="0" y="214" width="310" height="28" rx="4" fill="#CE93D8"/>
+    <text x="155" y="233" text-anchor="middle" fill="#4A148C" font-size="11" font-weight="bold">微服务技术选型</text>
+    <rect x="0" y="244" width="310" height="65" rx="4" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+    <text x="8" y="260" font-size="9" fill="#333">Java/Spring Cloud Alibaba + Go/Gin + Vue3/React</text>
+    <text x="8" y="276" font-size="9" fill="#333">Nacos | APISIX/Kong | Kafka/RocketMQ | Redis</text>
+    <text x="8" y="292" font-size="9" fill="#333">MySQL/PG/TDSQL | ES | Prometheus/Grafana | K8s</text>
+    <text x="8" y="308" font-size="9" fill="#666">设计原则: DDD限界上下文 | 粗粒度优先 | 接口契约先行</text>
+
+    <rect x="0" y="315" width="310" height="28" rx="4" fill="#CE93D8"/>
+    <text x="155" y="334" text-anchor="middle" fill="#4A148C" font-size="11" font-weight="bold">安全与容灾体系</text>
+    <rect x="0" y="345" width="310" height="55" rx="4" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+    <text x="8" y="361" font-size="9" fill="#333">6层安全: 身份/网络/应用/数据/运维/安全运营</text>
+    <text x="8" y="377" font-size="9" fill="#333">容灾: T0双活 RTO&lt;15min | T1主备 RTO&lt;1h</text>
+    <text x="8" y="393" font-size="9" fill="#333">零信任 | DevSecOps | 3-2-1备份 | 全链路演练</text>
+
+    <rect x="0" y="406" width="310" height="28" rx="4" fill="#CE93D8"/>
+    <text x="155" y="425" text-anchor="middle" fill="#4A148C" font-size="11" font-weight="bold">三年技术演进</text>
+    <rect x="0" y="436" width="310" height="50" rx="4" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+    <text x="8" y="452" font-size="9" fill="#333">Y1奠基: K8s/DevOps/API网关/MDM</text>
+    <text x="8" y="468" font-size="9" fill="#333">Y2扩展: 服务网格/iPaaS/边缘K3s</text>
+    <text x="8" y="484" font-size="9" fill="#333">Y3成熟: FinOps/智能运维/AI算力/Serverless</text>
+
+    <rect x="0" y="492" width="310" height="105" rx="4" fill="#FFF9C4" stroke="#F9A825" stroke-width="1.5"/>
+    <text x="8" y="508" font-size="9.5" fill="#E65100" font-weight="bold">【新增P2-3】技术中台SLA矩阵</text>
+    <text x="8" y="524" font-size="9" fill="#666">API网关: 99.99%, &lt;10ms, 10万QPS</text>
+    <text x="8" y="539" font-size="9" fill="#666">Kafka: 99.95%, &lt;20ms, 10万条/s</text>
+    <text x="8" y="554" font-size="9" fill="#666">Redis: 99.99%, &lt;1ms, 10万QPS/节点</text>
+    <text x="8" y="569" font-size="9" fill="#666">K8s: 99.95%, Pod启动&lt;30s</text>
+    <text x="8" y="584" font-size="9" fill="#666">DB: 99.99%, &lt;10ms写/&lt;5ms读, TPS 5000+</text>
+    <text x="8" y="599" font-size="9" fill="#666">→ 附件5-9 技术中台SLA定义</text>
+  </g>
+
+  <!-- Cross-domain arrows (bottom) -->
+  <g>
+    <!-- BA → DA -->
+    <path d="M180,700 C180,740 375,740 375,700" fill="none" stroke="#4CAF50" stroke-width="2.5" marker-end="url(#arrowBA)" stroke-dasharray="6,3"/>
+    <text x="277" y="755" text-anchor="middle" fill="#4CAF50" font-size="9" font-weight="bold">业务对象→数据对象</text>
+    <!-- DA → AA -->
+    <path d="M510,700 C510,740 705,740 705,700" fill="none" stroke="#2196F3" stroke-width="2.5" marker-end="url(#arrowDA)" stroke-dasharray="6,3"/>
+    <text x="607" y="755" text-anchor="middle" fill="#2196F3" font-size="9" font-weight="bold">数据对象→能力中心API</text>
+    <!-- AA → TA -->
+    <path d="M840,700 C840,740 1035,740 1035,700" fill="none" stroke="#FF9800" stroke-width="2.5" marker-end="url(#arrowAA)" stroke-dasharray="6,3"/>
+    <text x="937" y="755" text-anchor="middle" fill="#FF9800" font-size="9" font-weight="bold">NFR→技术中台SLA</text>
+
+    <!-- Feedback loops (bottom-up) -->
+    <path d="M1035,760 C1035,800 840,800 840,760" fill="none" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrowTA)" stroke-dasharray="8,4"/>
+    <text x="937" y="815" text-anchor="middle" fill="#9C27B0" font-size="9">技术约束→应用架构</text>
+    <path d="M705,770 C705,830 510,830 510,770" fill="none" stroke="#FF9800" stroke-width="2" marker-end="url(#arrowAA)" stroke-dasharray="8,4"/>
+    <text x="607" y="845" text-anchor="middle" fill="#FF9800" font-size="9">数据服务→业务能力</text>
+  </g>
+
+  <!-- Bottom section: integrated metrics -->
+  <g transform="translate(30, 850)">
+    <rect x="0" y="0" width="1300" height="40" rx="6" fill="#37474F"/>
+    <text x="650" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">4A集成V模型验证闭环: 战略KPI→业务能力→数据质量→应用SLA→技术容量→实施里程碑 (每季度架构符合性评审)</text>
+    <text x="650" y="34" text-anchor="middle" fill="#B0BEC5" font-size="9">追溯链完整度: 24 LTC活动 × 14列 = 336个追溯节点 | 100%可追溯至战略目标、数据对象、API和技术组件</text>
+  </g>
+</svg>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-box" style="background:#4CAF50"></div>业务架构 (BA)</div>
+  <div class="legend-item"><div class="legend-box" style="background:#2196F3"></div>数据架构 (DA)</div>
+  <div class="legend-item"><div class="legend-box" style="background:#FF9800"></div>应用架构 (AA)</div>
+  <div class="legend-item"><div class="legend-box" style="background:#9C27B0"></div>技术架构 (TA)</div>
+  <div class="legend-item"><div class="legend-box" style="background:#FFF9C4;border:1px solid #F9A825"></div>本次新增内容</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图1-1 PEST宏观环境分析框架 — 手机厂商战略环境扫描</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f8fafc;
+    font-family: 'JetBrains Mono', 'PingFang SC', 'Microsoft YaHei', monospace;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    max-width: 1160px;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 36px 30px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  .toolbar {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .toolbar button {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .toolbar button:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #94a3b8;
+  }
+  .header {
+    margin-bottom: 20px;
+    padding-right: 200px;
+  }
+  .header .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.3px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 5px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+  .header .label-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+    background: #475569;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    background: #ffffff;
+  }
+  .cards-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .info-card {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: box-shadow 0.15s;
+  }
+  .info-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .info-card .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-card .card-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .info-card .card-item {
+    font-size: 11.5px;
+    color: #475569;
+    line-height: 1.6;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .info-card .card-item::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 8px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #94a3b8;
+  }
+  .info-card .card-en {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: 2px;
+  }
+  .cards-row .card-emerald .card-title .dot { background: #059669; }
+  .cards-row .card-cyan .card-title .dot { background: #0891b2; }
+  .cards-row .card-amber .card-title .dot { background: #d97706; }
+
+  @media (max-width: 800px) {
+    .container { padding: 18px 14px; }
+    .header { padding-right: 0; }
+    .header .title { font-size: 16px; }
+    .toolbar { position: static; justify-content: flex-end; margin-bottom: 10px; }
+    .cards-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="diagram-container">
+  <div class="toolbar">
+    <button onclick="copySVG()">复制</button>
+    <button onclick="exportPNG()">PNG</button>
+    <button onclick="exportPDF()">PDF</button>
+  </div>
+
+  <div class="header">
+    <div class="title">
+      <span class="label-tag">图1-1</span>
+      PEST 宏观环境分析框架 — 手机厂商战略环境扫描
+    </div>
+    <div class="subtitle">Political · Economic · Social · Technological 四维度结构化分析</div>
+  </div>
+
+  <svg viewBox="0 0 1100 750" xmlns="http://www.w3.org/2000/svg" font-family="'JetBrains Mono','PingFang SC','Microsoft YaHei',monospace">
+    <defs>
+      <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+      </pattern>
+      <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#1e293b" flood-opacity="0.10"/>
+      </filter>
+      <filter id="shadowLight" x="-4%" y="-4%" width="108%" height="112%">
+        <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#1e293b" flood-opacity="0.06"/>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1100" height="750" fill="#ffffff"/>
+    <rect width="1100" height="750" fill="url(#grid)"/>
+
+    <!-- ==================== QUADRANTS ==================== -->
+
+    <!-- POLITICAL — Top Left -->
+    <g transform="translate(35, 15)">
+      <rect x="0" y="0" width="490" height="235" rx="10" fill="rgba(30,41,59,0.06)" stroke="#64748b" stroke-width="1.5"/>
+      <rect x="0" y="0" width="490" height="38" rx="10" fill="rgba(30,41,59,0.10)"/>
+      <rect x="0" y="20" width="490" height="18" fill="rgba(30,41,59,0.10)"/>
+      <text x="18" y="25" font-size="15" font-weight="700" fill="#1e293b">政治 Political</text>
+      <line x1="0" y1="38" x2="490" y2="38" stroke="#64748b" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <!-- Bullets -->
+      <circle cx="18" cy="60" r="3" fill="#64748b"/>
+      <text x="30" y="64" font-size="11.5" fill="#1e293b">贸易管制与供应链脱钩</text>
+      <text x="30" y="80" font-size="10" fill="#64748b">Trade restrictions · Decoupling risks</text>
+
+      <circle cx="18" cy="100" r="3" fill="#64748b"/>
+      <text x="30" y="104" font-size="11.5" fill="#1e293b">芯片出口管制 (CHIPS Act / 荷兰限令)</text>
+      <text x="30" y="120" font-size="10" fill="#64748b">Chip export controls · Advanced process restrictions</text>
+
+      <circle cx="18" cy="140" r="3" fill="#64748b"/>
+      <text x="30" y="144" font-size="11.5" fill="#1e293b">数据主权法规 (GDPR / PIPL / DPDP)</text>
+      <text x="30" y="160" font-size="10" fill="#64748b">Data sovereignty · Cross-border compliance</text>
+
+      <circle cx="18" cy="180" r="3" fill="#64748b"/>
+      <text x="30" y="184" font-size="11.5" fill="#1e293b">本地制造激励与关税壁垒</text>
+      <text x="30" y="200" font-size="10" fill="#64748b">Local manufacturing incentives · Tariff barriers</text>
+    </g>
+
+    <!-- ECONOMIC — Top Right -->
+    <g transform="translate(575, 15)">
+      <rect x="0" y="0" width="490" height="235" rx="10" fill="rgba(8,145,178,0.08)" stroke="#0891b2" stroke-width="1.5"/>
+      <rect x="0" y="0" width="490" height="38" rx="10" fill="rgba(8,145,178,0.14)"/>
+      <rect x="0" y="20" width="490" height="18" fill="rgba(8,145,178,0.14)"/>
+      <text x="18" y="25" font-size="15" font-weight="700" fill="#1e293b">经济 Economic</text>
+      <line x1="0" y1="38" x2="490" y2="38" stroke="#0891b2" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <!-- Bullets -->
+      <circle cx="18" cy="60" r="3" fill="#0891b2"/>
+      <text x="30" y="64" font-size="11.5" fill="#1e293b">全球智能手机年出货约 <tspan font-weight="600">12亿台</tspan></text>
+      <text x="30" y="80" font-size="10" fill="#64748b">~1.2B units/year · Mature market saturation</text>
+
+      <circle cx="18" cy="100" r="3" fill="#0891b2"/>
+      <text x="30" y="104" font-size="11.5" fill="#1e293b">换机周期延长至 <tspan font-weight="600">30–36个月</tspan></text>
+      <text x="30" y="120" font-size="10" fill="#64748b">Replacement cycle lengthening</text>
+
+      <circle cx="18" cy="140" r="3" fill="#0891b2"/>
+      <text x="30" y="144" font-size="11.5" fill="#1e293b">高端市场（≥$600）占比突破 <tspan font-weight="600">28%</tspan></text>
+      <text x="30" y="160" font-size="10" fill="#64748b">Premium segment growth · ASP uplift</text>
+
+      <circle cx="18" cy="180" r="3" fill="#0891b2"/>
+      <text x="30" y="184" font-size="11.5" fill="#1e293b">新兴市场从功能机向智能机结构性转移</text>
+      <text x="30" y="200" font-size="10" fill="#64748b">Emerging market transition · Feature→Smartphone</text>
+    </g>
+
+    <!-- SOCIAL — Bottom Left -->
+    <g transform="translate(35, 270)">
+      <rect x="0" y="0" width="490" height="235" rx="10" fill="rgba(217,119,6,0.08)" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="0" y="0" width="490" height="38" rx="10" fill="rgba(217,119,6,0.14)"/>
+      <rect x="0" y="20" width="490" height="18" fill="rgba(217,119,6,0.14)"/>
+      <text x="18" y="25" font-size="15" font-weight="700" fill="#1e293b">社会 Social</text>
+      <line x1="0" y1="38" x2="490" y2="38" stroke="#d97706" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <!-- Bullets -->
+      <circle cx="18" cy="60" r="3" fill="#d97706"/>
+      <text x="30" y="64" font-size="11.5" fill="#1e293b">消费者从「参数驱动」转向「体验驱动」</text>
+      <text x="30" y="80" font-size="10" fill="#64748b">Specs → Experience · Perceived value matters</text>
+
+      <circle cx="18" cy="100" r="3" fill="#d97706"/>
+      <text x="30" y="104" font-size="11.5" fill="#1e293b">Gen Z 品牌忠诚度下降，尝新意愿增强</text>
+      <text x="30" y="120" font-size="10" fill="#64748b">Gen Z brand loyalty decline · Open to new brands</text>
+
+      <circle cx="18" cy="140" r="3" fill="#d97706"/>
+      <text x="30" y="144" font-size="11.5" fill="#1e293b">二手/翻新手机市场年增速 >15%</text>
+      <text x="30" y="160" font-size="10" fill="#64748b">Used/refurbished market · Circular economy</text>
+
+      <circle cx="18" cy="180" r="3" fill="#d97706"/>
+      <text x="30" y="184" font-size="11.5" fill="#1e293b">健康追踪与数字福祉功能需求上升</text>
+      <text x="30" y="200" font-size="10" fill="#64748b">Health monitoring · Digital wellness trends</text>
+    </g>
+
+    <!-- TECHNOLOGICAL — Bottom Right -->
+    <g transform="translate(575, 270)">
+      <rect x="0" y="0" width="490" height="235" rx="10" fill="rgba(5,150,105,0.08)" stroke="#059669" stroke-width="1.5"/>
+      <rect x="0" y="0" width="490" height="38" rx="10" fill="rgba(5,150,105,0.14)"/>
+      <rect x="0" y="20" width="490" height="18" fill="rgba(5,150,105,0.14)"/>
+      <text x="18" y="25" font-size="15" font-weight="700" fill="#1e293b">技术 Technological</text>
+      <line x1="0" y1="38" x2="490" y2="38" stroke="#059669" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <!-- Bullets (5 items) -->
+      <circle cx="18" cy="56" r="3" fill="#059669"/>
+      <text x="30" y="60" font-size="11.5" fill="#1e293b">端侧 AI 大模型普及（On-device LLM）</text>
+
+      <circle cx="18" cy="82" r="3" fill="#059669"/>
+      <text x="30" y="86" font-size="11.5" fill="#1e293b">折叠屏技术成熟，成本曲线下移</text>
+
+      <circle cx="18" cy="108" r="3" fill="#059669"/>
+      <text x="30" y="112" font-size="11.5" fill="#1e293b">卫星通信 NTN 进入消费级实用化</text>
+
+      <circle cx="18" cy="134" r="3" fill="#059669"/>
+      <text x="30" y="138" font-size="11.5" fill="#1e293b">硅碳负极电池突破，续航大幅提升</text>
+
+      <circle cx="18" cy="160" r="3" fill="#059669"/>
+      <text x="30" y="164" font-size="11.5" fill="#1e293b">计算摄影 + 多摄融合算法持续进化</text>
+
+      <text x="30" y="192" font-size="10" fill="#64748b">On-device AI · Foldables · NTN · Si-C batteries · Computational photography</text>
+    </g>
+
+    <!-- ==================== CENTER KEY INSIGHT ==================== -->
+    <g transform="translate(460, 232)" filter="url(#shadow)">
+      <rect x="0" y="0" width="180" height="56" rx="28" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+      <rect x="2" y="2" width="176" height="52" rx="26" fill="rgba(217,119,6,0.08)"/>
+      <text x="90" y="24" font-size="11" font-weight="600" fill="#d97706" text-anchor="middle">存量竞争时代</text>
+      <text x="90" y="45" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">价值与生态驱动</text>
+    </g>
+
+    <!-- Connecting lines from center to quadrants -->
+    <line x1="550" y1="228" x2="550" y2="245" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+    <line x1="550" y1="290" x2="550" y2="270" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+    <line x1="458" y1="260" x2="440" y2="260" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+    <line x1="642" y1="260" x2="660" y2="260" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.4"/>
+
+    <!-- ==================== BOTTOM BAR: 核心启示 ==================== -->
+    <g transform="translate(35, 540)">
+      <!-- Main bar background -->
+      <rect x="0" y="0" width="1030" height="80" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.2"/>
+      <!-- Left label -->
+      <rect x="0" y="0" width="140" height="80" rx="10" fill="#1e293b"/>
+      <rect x="100" y="0" width="40" height="80" fill="#1e293b"/>
+      <text x="70" y="38" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">核心启示</text>
+      <text x="70" y="56" font-size="9" font-weight="400" fill="#94a3b8" text-anchor="middle">EA Core Implications</text>
+
+      <!-- 5 Items -->
+      <!-- Item 1 -->
+      <g transform="translate(170, 18)">
+        <rect x="0" y="0" width="154" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="16" cy="22" r="4" fill="#64748b"/>
+        <text x="28" y="19" font-size="11" font-weight="500" fill="#1e293b">供应链多元化</text>
+        <text x="28" y="33" font-size="8.5" fill="#94a3b8">Supply Chain Diversification</text>
+      </g>
+      <!-- Item 2 -->
+      <g transform="translate(342, 18)">
+        <rect x="0" y="0" width="154" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="16" cy="22" r="4" fill="#0891b2"/>
+        <text x="28" y="19" font-size="11" font-weight="500" fill="#1e293b">数据合规全球化</text>
+        <text x="28" y="33" font-size="8.5" fill="#94a3b8">Global Data Compliance</text>
+      </g>
+      <!-- Item 3 -->
+      <g transform="translate(514, 18)">
+        <rect x="0" y="0" width="154" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="16" cy="22" r="4" fill="#d97706"/>
+        <text x="28" y="19" font-size="11" font-weight="500" fill="#1e293b">用户体验数字化</text>
+        <text x="28" y="33" font-size="8.5" fill="#94a3b8">Digital User Experience</text>
+      </g>
+      <!-- Item 4 -->
+      <g transform="translate(686, 18)">
+        <rect x="0" y="0" width="154" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="16" cy="22" r="4" fill="#059669"/>
+        <text x="28" y="19" font-size="11" font-weight="500" fill="#1e293b">AI 端侧化</text>
+        <text x="28" y="33" font-size="8.5" fill="#94a3b8">On-Device AI</text>
+      </g>
+      <!-- Item 5 -->
+      <g transform="translate(858, 18)">
+        <rect x="0" y="0" width="154" height="44" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+        <circle cx="16" cy="22" r="4" fill="#dc2626"/>
+        <text x="28" y="19" font-size="11" font-weight="500" fill="#1e293b">高端化突破</text>
+        <text x="28" y="33" font-size="8.5" fill="#94a3b8">Premium Breakthrough</text>
+      </g>
+    </g>
+  </svg>
+
+  <!-- Info Cards -->
+  <div class="cards-row">
+    <div class="info-card card-emerald">
+      <div class="card-title"><span class="dot"></span>市场趋势 <span class="card-en">Market Trends</span></div>
+      <div class="card-item">出货量稳定在 11–12 亿台/年，市场总量见顶</div>
+      <div class="card-item">换机周期延长至 30–36 个月，存量替换为主</div>
+      <div class="card-item">高端机型（≥$600）占比持续提升至 28%</div>
+      <div class="card-item">折叠屏市场年增速 &gt;15%，新形态需求崛起</div>
+    </div>
+    <div class="info-card card-cyan">
+      <div class="card-title"><span class="dot"></span>技术浪潮 <span class="card-en">Technology Waves</span></div>
+      <div class="card-item">端侧 AI 大模型普及，重构手机交互范式</div>
+      <div class="card-item">折叠屏成本曲线下移，渗透率有望加速</div>
+      <div class="card-item">卫星通信 NTN 进入消费级实用化阶段</div>
+      <div class="card-item">硅碳负极电池突破，续航与轻薄兼得</div>
+    </div>
+    <div class="info-card card-amber">
+      <div class="card-title"><span class="dot"></span>合规挑战 <span class="card-en">Compliance Challenges</span></div>
+      <div class="card-item">GDPR / PIPL 数据驻留与跨境传输要求</div>
+      <div class="card-item">芯片出口管制（先进制程）应对策略</div>
+      <div class="card-item">碳足迹追踪与 ESG 披露合规</div>
+      <div class="card-item">各国外商投资审查与本地化运营</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const container = document.getElementById('diagram-container');
+
+async function copySVG() {
+  try {
+    const svg = container.querySelector('svg');
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    const html = new XMLSerializer().serializeToString(clone);
+    await navigator.clipboard.writeText(html);
+    showToast('SVG copied to clipboard');
+  } catch(e) {
+    showToast('Copy failed: ' + e.message);
+  }
+}
+
+async function exportPNG() {
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const link = document.createElement('a');
+    link.download = '图1-1_PEST框架图.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG exported');
+  } catch(e) {
+    showToast('PNG export failed: ' + e.message);
+  }
+}
+
+async function exportPDF() {
+  try {
+    const canvas = await html2canvas(container, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4');
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = (canvas.height * pdfW) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+    pdf.save('图1-1_PEST框架图.pdf');
+    showToast('PDF exported');
+  } catch(e) {
+    showToast('PDF export failed: ' + e.message);
+  }
+}
+
+function showToast(msg) {
+  let t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {
+    position: 'fixed', bottom: '30px', left: '50%', transform: 'translateX(-50%)',
+    background: '#1e293b', color: '#fff', padding: '10px 22px', borderRadius: '8px',
+    fontFamily: "'JetBrains Mono',monospace", fontSize: '13px', zIndex: '999',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)', opacity: '0', transition: 'opacity 0.3s'
+  });
+  document.body.appendChild(t);
+  requestAnimationFrame(() => { t.style.opacity = '1'; });
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2000);
+}
+</script>
+</body>
+</html>

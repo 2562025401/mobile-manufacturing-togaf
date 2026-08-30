@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竞争格局与标杆对比雷达图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:30px 20px;display:flex;flex-direction:column;align-items:center}
+.container{max-width:1160px;width:100%;display:flex;flex-direction:column;align-items:center;gap:20px}
+.toolbar{display:flex;gap:10px;align-self:flex-end;margin-bottom:4px}
+.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;border-radius:6px;background:#ffffff;color:#475569;cursor:pointer;transition:all .15s}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#1e293b}
+.chart-wrapper{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;width:100%;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.chart-wrapper svg{display:block;width:100%;height:auto;max-width:1100px;margin:0 auto}
+.takeaways{width:100%;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:24px 28px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.takeaways h3{font-size:15px;font-weight:600;color:#0f172a;padding-bottom:14px;border-bottom:2px solid #e2e8f0;margin-bottom:18px;letter-spacing:.3px}
+.takeaways h3::before{content:'◆ ';color:#6366f1}
+.takeaway-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.takeaway-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;font-size:12px;color:#334155;line-height:1.6;transition:border-color .15s}
+.takeaway-item:hover{border-color:#94a3b8}
+.takeaway-item strong{color:#0f172a;font-weight:600}
+.takeaway-item .tag{display:inline-block;font-size:10px;font-weight:600;padding:1px 8px;border-radius:4px;margin-right:6px;color:#fff}
+.tag-apple{background:#8E8E93}
+.tag-samsung{background:#1A3EB0}
+.tag-huawei{background:#D32F2F}
+.tag-xiaomi{background:#FF6D00}
+.tag-oppo{background:#2E7D32}
+.tag-vivo{background:#2962FF}
+.info-cards{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:4px}
+.card{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 22px;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:border-color .15s}
+.card:hover{border-color:#94a3b8}
+.card h4{font-size:13px;font-weight:600;color:#0f172a;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h4 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.card ul{list-style:none;padding:0}
+.card ul li{font-size:11.5px;color:#475569;line-height:1.65;padding:3px 0;padding-left:14px;position:relative}
+.card ul li::before{content:'• ';position:absolute;left:0;color:#94a3b8}
+.dot-emerald{background:#10b981}
+.dot-cyan{background:#06b6d4}
+.dot-amber{background:#f59e0b}
+.dot-rose{background:#f43f5e}
+@media(max-width:860px){.info-cards{grid-template-columns:1fr}.takeaway-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copyChart()">📋 复制</button>
+<button onclick="downloadPNG()">🖼 PNG</button>
+<button onclick="downloadPDF()">📄 PDF</button>
+</div>
+<div class="chart-wrapper" id="chart-container">
+<svg id="chart-svg" viewBox="0 0 1100 800" width="1100" height="800" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<div class="takeaways">
+<h3>标杆最佳实践提炼</h3>
+<div class="takeaway-grid">
+<div class="takeaway-item"><span class="tag tag-apple">Apple</span><strong>垂直整合 + 零售体验闭环</strong> — 从芯片(A系列/M系列)到操作系统(iOS)到零售店(Apple Store)的全链路控制，实现高端溢价与生态锁定。本企业应重点借鉴其高端品牌建设和生态协同模式。</div>
+<div class="takeaway-item"><span class="tag tag-huawei">Huawei</span><strong>IPD研发体系 + 供应链韧性</strong> — 集成产品开发(IPD)流程保障研发效率，多源供应策略与芯片备选方案提升供应链抗风险能力。本企业可引入IPD方法论优化产品开发流程。</div>
+<div class="takeaway-item"><span class="tag tag-samsung">Samsung</span><strong>元器件垂直整合 + 全球制造</strong> — 从存储芯片、屏幕到电池的全产业链布局，全球多地制造基地降低地缘风险。本企业应关注其全球化产能布局策略。</div>
+<div class="takeaway-item"><span class="tag tag-xiaomi">Xiaomi</span><strong>线上效率 + 生态链投资</strong> — 以互联网模式降低渠道成本，生态链企业矩阵扩大IoT覆盖。本企业可参考其线上运营效率与生态投资模式。</div>
+</div>
+</div>
+
+<div class="info-cards">
+<div class="card">
+<h4><span class="dot dot-emerald"></span>核心发现</h4>
+<ul>
+<li>高端占比与品牌溢价方面，与苹果/华为差距最大，提升空间显著</li>
+<li>渠道覆盖具备线下纵深优势，但线上数字化能力有待加强</li>
+<li>生态完善度与苹果差距显著，应用服务生态亟需构建</li>
+<li>供应链韧性有提升空间，关键元器件备选方案不足</li>
+</ul>
+</div>
+<div class="card">
+<h4><span class="dot dot-cyan"></span>标杆实践</h4>
+<ul>
+<li>苹果：垂直整合 + 零售体验闭环，品牌溢价能力行业第一</li>
+<li>华为：IPD研发体系 + 供应链韧性，多源供应策略</li>
+<li>三星：元器件垂直整合 + 全球制造，产业链深度布局</li>
+<li>小米：线上效率 + 生态链投资，互联网渠道成本优势</li>
+</ul>
+</div>
+<div class="card">
+<h4><span class="dot dot-amber"></span>差异化路径</h4>
+<ul>
+<li>影像算法平台构筑技术壁垒，形成差异化竞争支点</li>
+<li>渠道中台实现全渠道数字化，打通线上线下数据</li>
+<li>柔性供应链提升周转效率，建立需求驱动的敏捷供应</li>
+<li>用户社区提升品牌粘性，构建忠实用户生态</li>
+</ul>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+const NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById('chart-svg');
+const W=1100, H=800;
+
+const dims = [
+  {name:'市场份额', en:'Market Share'},
+  {name:'高端占比', en:'Premium Mix'},
+  {name:'研发强度', en:'R&D Intensity'},
+  {name:'渠道覆盖', en:'Channel Coverage'},
+  {name:'生态完善度', en:'Ecosystem Maturity'},
+  {name:'全球化深度', en:'Globalization Depth'},
+  {name:'品牌溢价', en:'Brand Premium'},
+  {name:'供应链韧性', en:'Supply Chain Resilience'}
+];
+
+const cos = [
+  {id:'apple',  label:'苹果(Apple)',   color:'#8E8E93'},
+  {id:'samsung',label:'三星(Samsung)', color:'#1A3EB0'},
+  {id:'huawei', label:'华为(Huawei)',  color:'#D32F2F'},
+  {id:'xiaomi', label:'小米(Xiaomi)',  color:'#FF6D00'},
+  {id:'oppo',   label:'OPPO',          color:'#2E7D32'},
+  {id:'vivo',   label:'vivo(本企业)',  color:'#2962FF'}
+];
+
+const scoreData = [
+  [6,9,5,7,5,5],
+  [10,7,6,3,4,3],
+  [8,8,9,5,6,6],
+  [7,8,6,8,9,9],
+  [10,8,7,5,4,4],
+  [9,9,4,7,5,4],
+  [10,7,6,3,4,3],
+  [9,9,7,5,6,6]
+];
+
+// Layout constants
+const barStartX = 200;
+const barEndX = 970;
+const barAvail = barEndX - barStartX; // 770
+const ptW = barAvail / 10; // 77
+
+const rowH = 86;
+const chartStartY = 108;
+
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for(let k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+function txt(str, x, y, attrs){
+  const t = el('text', {x, y, ...attrs});
+  t.textContent = str;
+  return t;
+}
+
+function rect(x, y, w, h, attrs){
+  return el('rect', {x, y, width:w, height:h, rx:3, ry:3, ...attrs});
+}
+
+// ─── Build SVG ───
+let frag = document.createDocumentFragment();
+
+// Background
+frag.appendChild(el('rect', {width:W, height:H, fill:'#ffffff'}));
+
+// Grid pattern
+const defs = el('defs', {});
+const pat = el('pattern', {id:'grid', width:40, height:40, patternUnits:'userSpaceOnUse'});
+pat.appendChild(el('rect', {width:40, height:40, fill:'#ffffff'}));
+pat.appendChild(el('path', {d:'M 40 0 L 0 0 0 40', fill:'none', stroke:'#e2e8f0', strokeWidth:0.5}));
+defs.appendChild(pat);
+frag.appendChild(defs);
+frag.appendChild(el('rect', {width:W, height:H, fill:'url(#grid)'}));
+
+// Radar decorative background - concentric circles (very faint)
+const cx=550, cy=380;
+for(let r=100; r<=550; r+=90){
+  const circle = el('circle', {cx, cy, r, fill:'none', stroke:'#e2e8f0', strokeWidth:0.6, opacity:0.35});
+  frag.appendChild(circle);
+}
+// Radial spokes (8 spokes, faint)
+for(let i=0; i<8; i++){
+  const angle = (i * 45) * Math.PI / 180;
+  const x2 = cx + Math.cos(angle) * 550;
+  const y2 = cy + Math.sin(angle) * 550;
+  const line = el('line', {x1:cx, y1:cy, x2, y2, stroke:'#e2e8f0', strokeWidth:0.5, opacity:0.25});
+  frag.appendChild(line);
+}
+
+// Top header band
+frag.appendChild(el('rect', {x:0, y:0, width:W, height:80, fill:'#f8fafc', opacity:0.6}));
+
+// Title
+frag.appendChild(txt('竞争格局与标杆对比雷达图', 30, 34, {fill:'#0f172a', 'font-size':'22px', 'font-weight':'700', 'font-family':'JetBrains Mono, monospace'}));
+
+// Subtitle
+const sub = txt('六大厂商 × 八大维度  多维度竞争力对比分析', 30, 58, {fill:'#475569', 'font-size':'13px', 'font-weight':'400', 'font-family':'JetBrains Mono, monospace'});
+frag.appendChild(sub);
+
+// Legend
+const legY = 74;
+cos.forEach((c, i) => {
+  const lx = 30 + i * 175;
+  frag.appendChild(el('circle', {cx:lx, cy:legY-3, r:5, fill:c.color, stroke:'#fff', strokeWidth:1.5}));
+  const ltx = lx + 10;
+  const lOpts = {fill:'#1e293b', 'font-size':'11px', 'font-weight':'500', 'font-family':'JetBrains Mono, monospace'};
+  if(i===5){
+    frag.appendChild(txt('★ '+c.label, ltx, legY, {...lOpts, fill:'#2962FF', 'font-weight':'700'}));
+  } else {
+    frag.appendChild(txt(c.label, ltx, legY, lOpts));
+  }
+});
+
+// Scale axis at top of chart area
+const scaleY = 94;
+for(let i=1; i<=10; i++){
+  const sx = barStartX + (i-1) * ptW;
+  frag.appendChild(el('line', {x1:sx, y1:scaleY-4, x2:sx, y2:scaleY+2, stroke:'#cbd5e1', strokeWidth:0.8}));
+  frag.appendChild(txt(String(i), sx-4, scaleY+16, {fill:'#94a3b8', 'font-size':'9px', 'font-family':'JetBrains Mono, monospace', 'text-anchor':'middle'}));
+}
+// Bottom border line for scale
+frag.appendChild(el('line', {x1:barStartX, y1:scaleY+2, x2:barEndX, y2:scaleY+2, stroke:'#e2e8f0', strokeWidth:1}));
+
+// ─── 8 Dimension Rows ───
+const barH = 8;
+const barGap = 4;
+const rowLabelH = 10;
+const barAreaStart = rowLabelH + 4;
+
+for(let di=0; di<8; di++){
+  const rowY = chartStartY + di * rowH;
+  const labelY = rowY + 9;
+
+  // Dimension label (left side)
+  frag.appendChild(txt(dims[di].name, 14, labelY, {fill:'#0f172a', 'font-size':'11.5px', 'font-weight':'600', 'font-family':'JetBrains Mono, monospace'}));
+  frag.appendChild(txt(dims[di].en, 14, labelY+13, {fill:'#94a3b8', 'font-size':'8px', 'font-weight':'400', 'font-family':'JetBrains Mono, monospace'}));
+
+  // Max score indicator for this dimension
+  const maxScore = Math.max(...scoreData[di]);
+  frag.appendChild(txt('最高 '+maxScore+'分', 14, labelY+26, {fill:'#94a3b8', 'font-size':'7.5px', 'font-family':'JetBrains Mono, monospace'}));
+
+  // Bars
+  for(let ci=0; ci<6; ci++){
+    const score = scoreData[di][ci];
+    const bY = rowY + barAreaStart + ci * (barH + barGap);
+    const bW = score * ptW;
+
+    // Background track
+    frag.appendChild(rect(barStartX, bY, barAvail, barH, {fill:'#f1f5f9', rx:2, ry:2}));
+
+    // Filled bar
+    const barAttrs = {fill:cos[ci].color, rx:2, ry:2, opacity:ci===5?1:0.8};
+    frag.appendChild(rect(barStartX, bY, bW, barH, barAttrs));
+
+    // Score label at end of bar
+    const scoreX = barStartX + bW + 5;
+    const scoreY2 = bY + barH - 1;
+    const sOpts = {fill:'#1e293b', 'font-size':'9px', 'font-weight':'500', 'font-family':'JetBrains Mono, monospace'};
+
+    if(ci===5){
+      // vivo - special marker
+      frag.appendChild(txt('★'+score, scoreX, scoreY2, {...sOpts, fill:'#2962FF', 'font-weight':'700'}));
+    } else {
+      frag.appendChild(txt(String(score), scoreX, scoreY2, sOpts));
+    }
+  }
+
+  // Leader indicator at top of bars (which competitor leads this dimension)
+  const leadIdx = scoreData[di].indexOf(maxScore);
+  const leadY = rowY + barAreaStart - 3;
+  const leadX = barStartX + maxScore * ptW + 4;
+  frag.appendChild(txt('◀ '+cos[leadIdx].id.toUpperCase(), leadX, leadY, {fill:cos[leadIdx].color, 'font-size':'6.5px', 'font-weight':'600', 'font-family':'JetBrains Mono, monospace'}));
+}
+
+// ─── Bottom Decoration ───
+frag.appendChild(el('line', {x1:30, y1:778, x2:1070, y2:778, stroke:'#e2e8f0', strokeWidth:1}));
+
+// Radar icon in top right
+const rx=1010, ry=30;
+// Outer hexagon
+const pts = [];
+for(let i=0; i<6; i++){
+  const a = i * 60 * Math.PI / 180 - Math.PI/2;
+  pts.push([rx + Math.cos(a)*22, ry + Math.sin(a)*22]);
+}
+const hexStr = pts.map(p=>`${p[0]},${p[1]}`).join(' ');
+frag.appendChild(el('polygon', {points:hexStr, fill:'none', stroke:'#cbd5e1', strokeWidth:1.2}));
+// Inner hexagon
+const pts2 = [];
+for(let i=0; i<6; i++){
+  const a = i * 60 * Math.PI / 180 - Math.PI/2;
+  pts2.push([rx + Math.cos(a)*12, ry + Math.sin(a)*12]);
+}
+const hexStr2 = pts2.map(p=>`${p[0]},${p[1]}`).join(' ');
+frag.appendChild(el('polygon', {points:hexStr2, fill:'none', stroke:'#e2e8f0', strokeWidth:1}));
+// Spokes
+for(let i=0; i<6; i++){
+  const a = i * 60 * Math.PI / 180 - Math.PI/2;
+  frag.appendChild(el('line', {x1:rx, y1:ry, x2:rx+Math.cos(a)*22, y2:ry+Math.sin(a)*22, stroke:'#e2e8f0', strokeWidth:0.8}));
+}
+// Data points (decorative)
+const decScores = [7,9,5,8,6,4];
+for(let i=0; i<6; i++){
+  const a = i * 60 * Math.PI / 180 - Math.PI/2;
+  const rVal = 4 + decScores[i]*1.8;
+  const px = rx + Math.cos(a)*rVal;
+  const py = ry + Math.sin(a)*rVal;
+  frag.appendChild(el('circle', {cx:px, cy:py, r:2.5, fill:'#6366f1', stroke:'#fff', strokeWidth:1}));
+}
+frag.appendChild(txt('RADAR', rx, ry+38, {fill:'#94a3b8', 'font-size':'7px', 'text-anchor':'middle', 'font-family':'JetBrains Mono, monospace'}));
+
+svg.appendChild(frag);
+})();
+
+// ─── Export Functions ───
+async function copyChart(){
+  const el = document.getElementById('chart-container');
+  try {
+    const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+    const blob = await new Promise(resolve => canvas.toBlob(resolve));
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+  } catch(e){
+    // Fallback: copy as base64 data URL
+    const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+    const dataUrl = canvas.toDataURL('image/png');
+    const blob = await (await fetch(dataUrl)).blob();
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+  }
+}
+
+async function downloadPNG(){
+  const el = document.getElementById('chart-container');
+  const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+  const link = document.createElement('a');
+  link.download = '竞争格局雷达图.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+async function downloadPDF(){
+  const el = document.getElementById('chart-container');
+  const canvas = await html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false});
+  const imgData = canvas.toDataURL('image/png');
+  const {jsPDF} = window.jspdf;
+  const pdf = new jsPDF('l', 'mm', 'a4');
+  const pdfW = pdf.internal.pageSize.getWidth();
+  const pdfH = canvas.height * pdfW / canvas.width;
+  pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH);
+  pdf.save('竞争格局雷达图.pdf');
+}
+</script>
+</body>
+</html>

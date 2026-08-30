@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-12 业务解决方案方法论与参考模型映射</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+#toolbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; gap: 8px; padding: 10px 24px;
+  background: #ffffff; border-bottom: 1px solid #e2e8f0;
+  width: 100%; max-width: 1260px;
+  align-items: center; border-radius: 0 0 8px 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+#toolbar .label { font-size: 12px; color: #94a3b8; margin-right: 8px; font-weight: 500; }
+#toolbar button {
+  padding: 6px 18px; border: 1px solid #e2e8f0; border-radius: 6px;
+  background: #ffffff; color: #475569;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  cursor: pointer; transition: all 0.15s ease; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+#toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #1e293b; }
+#toolbar button:active { background: #e2e8f0; }
+#diagram {
+  margin: 24px auto; background: #ffffff;
+  border: 1px solid #e2e8f0; border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15,23,42,0.06);
+  overflow: hidden; max-width: 1240px; width: 100%;
+}
+#diagram svg { display: block; width: 100%; height: auto; }
+#diagram svg text, #diagram svg tspan { font-family: 'JetBrains Mono', monospace; }
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1e293b; color: #ffffff; padding: 8px 20px; border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 200;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span class="label">Export</span>
+  <button onclick="copyDiagram()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 3V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1" stroke="currentColor" stroke-width="1.2"/></svg> Copy
+  </button>
+  <button onclick="exportPNG()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="3.5" r="1" fill="currentColor"/></svg> PNG
+  </button>
+  <button onclick="exportPDF()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 1h5l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.2"/><path d="M8 1v3h3" stroke="currentColor" stroke-width="1.2"/></svg> PDF
+  </button>
+</div>
+
+<div id="diagram">
+<svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="none"/>
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow-light" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.04"/>
+    </filter>
+    <marker id="arrow" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="#3b82f6"/>
+    </marker>
+    <linearGradient id="g-title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <rect width="1200" height="720" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1200" height="4" fill="#3b82f6" opacity="0.2"/>
+
+  <!-- Title -->
+  <text x="600" y="28" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a" letter-spacing="1">业务解决方案方法论与行业参考模型映射</text>
+  <text x="600" y="50" text-anchor="middle" font-size="12" font-weight="400" fill="#475569" letter-spacing="0.5">AS-IS&rarr;差距&rarr;TO-BE &#183; SCOR/IPD/CRM/ITIL 裁剪引用</text>
+  <line x1="350" y1="56" x2="850" y2="56" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- ===== LEFT SIDE: AS-IS → Gap → TO-BE ===== -->
+
+  <!-- AS-IS Box -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="75" width="320" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="40" y="75" width="320" height="28" rx="8" fill="rgba(59,130,246,0.08)"/>
+    <rect x="40" y="95" width="320" height="8" fill="rgba(59,130,246,0.08)"/>
+    <rect x="55" y="82" width="20" height="14" rx="3" fill="#3b82f6"/>
+    <text x="65" y="92" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">1</text>
+    <text x="200" y="93" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">AS-IS 现状分析</text>
+    <!-- Content -->
+    <g font-size="10" fill="#475569">
+      <text x="55" y="118">&#8226; 流程现状梳理</text>
+      <text x="200" y="118">&#8226; 痛点识别与分类</text>
+      <text x="55" y="138">&#8226; 流程绩效测量</text>
+      <text x="200" y="138">&#8226; 问题清单输出</text>
+    </g>
+    <!-- Input tag -->
+    <rect x="55" y="148" width="50" height="14" rx="3" fill="rgba(59,130,246,0.1)"/>
+    <text x="80" y="158" text-anchor="middle" font-size="7" fill="#3b82f6">输入: 访谈/文档</text>
+    <!-- Output tag -->
+    <rect x="260" y="148" width="50" height="14" rx="3" fill="rgba(249,115,22,0.1)"/>
+    <text x="285" y="158" text-anchor="middle" font-size="7" fill="#f97316">输出: 痛点清单</text>
+  </g>
+
+  <!-- Arrow: AS-IS → Gap -->
+  <line x1="200" y1="178" x2="200" y2="198" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="215" y="190" font-size="8" fill="#94a3b8">流程&rarr;痛点</text>
+
+  <!-- Gap Analysis Box -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="203" width="320" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="40" y="203" width="320" height="28" rx="8" fill="rgba(249,115,22,0.08)"/>
+    <rect x="40" y="223" width="320" height="8" fill="rgba(249,115,22,0.08)"/>
+    <rect x="55" y="210" width="20" height="14" rx="3" fill="#f97316"/>
+    <text x="65" y="220" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">2</text>
+    <text x="200" y="221" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">差距分析 (Gap Analysis)</text>
+    <g font-size="10" fill="#475569">
+      <text x="55" y="246">&#8226; 对标行业参考模型</text>
+      <text x="200" y="246">&#8226; 能力差距识别</text>
+      <text x="55" y="266">&#8226; 流程成熟度评估</text>
+      <text x="200" y="266">&#8226; 改进优先级排序</text>
+    </g>
+    <rect x="55" y="276" width="50" height="14" rx="3" fill="rgba(139,92,246,0.1)"/>
+    <text x="80" y="286" text-anchor="middle" font-size="7" fill="#8b5cf6">参考: SCOR/IPD</text>
+    <rect x="260" y="276" width="50" height="14" rx="3" fill="rgba(249,115,22,0.1)"/>
+    <text x="285" y="286" text-anchor="middle" font-size="7" fill="#f97316">输出: 差距清单</text>
+  </g>
+
+  <!-- Arrow: Gap → TO-BE -->
+  <line x1="200" y1="306" x2="200" y2="326" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="215" y="318" font-size="8" fill="#94a3b8">差距&rarr;方案</text>
+
+  <!-- TO-BE Box -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="331" width="320" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="40" y="331" width="320" height="28" rx="8" fill="rgba(5,150,105,0.08)"/>
+    <rect x="40" y="351" width="320" height="8" fill="rgba(5,150,105,0.08)"/>
+    <rect x="55" y="338" width="20" height="14" rx="3" fill="#059669"/>
+    <text x="65" y="348" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">3</text>
+    <text x="200" y="349" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">TO-BE 目标设计</text>
+    <g font-size="10" fill="#475569">
+      <text x="55" y="374">&#8226; 目标流程设计</text>
+      <text x="200" y="374">&#8226; RACI职责定义</text>
+      <text x="55" y="394">&#8226; 业务能力映射</text>
+      <text x="200" y="394">&#8226; 系统需求定义</text>
+    </g>
+    <rect x="55" y="404" width="50" height="14" rx="3" fill="rgba(59,130,246,0.1)"/>
+    <text x="80" y="414" text-anchor="middle" font-size="7" fill="#3b82f6">输入: 差距清单</text>
+    <rect x="260" y="404" width="50" height="14" rx="3" fill="rgba(5,150,105,0.1)"/>
+    <text x="285" y="414" text-anchor="middle" font-size="7" fill="#059669">输出: 目标方案</text>
+  </g>
+
+  <!-- ===== CENTER: 手机厂商业务架构 Target ===== -->
+  <g filter="url(#shadow)">
+    <rect x="395" y="85" width="380" height="290" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <rect x="395" y="85" width="380" height="36" rx="12" fill="url(#g-title)"/>
+    <rect x="395" y="113" width="380" height="8" fill="url(#g-title)"/>
+    <text x="585" y="108" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff" letter-spacing="2">手机厂商业务架构</text>
+
+    <!-- Decorative center icon -->
+    <circle cx="585" cy="165" r="22" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="0.5"/>
+    <text x="585" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">目标</text>
+
+    <!-- Architecture components adopted from reference models -->
+    <!-- SCOR adoption (upper left) -->
+    <rect x="415" y="200" width="160" height="48" rx="6" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.25)" stroke-width="0.5"/>
+    <text x="495" y="218" text-anchor="middle" font-size="9" font-weight="600" fill="#3b82f6">SCOR 供应链体系</text>
+    <text x="495" y="236" text-anchor="middle" font-size="8" fill="#475569">P/S/M/D/R 裁剪适配L5-L7</text>
+
+    <!-- IPD adoption (upper right) -->
+    <rect x="595" y="200" width="160" height="48" rx="6" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.25)" stroke-width="0.5"/>
+    <text x="675" y="218" text-anchor="middle" font-size="9" font-weight="600" fill="#8b5cf6">IPD 产品开发</text>
+    <text x="675" y="236" text-anchor="middle" font-size="8" fill="#475569">需求管理 &#183; 技术评审 &#183; 项目管理</text>
+
+    <!-- CRM adoption (lower left) -->
+    <rect x="415" y="262" width="160" height="48" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.25)" stroke-width="0.5"/>
+    <text x="495" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#f97316">CRM 客户管理</text>
+    <text x="495" y="298" text-anchor="middle" font-size="8" fill="#475569">销售 &#183; 营销 &#183; 服务全流程</text>
+
+    <!-- ITIL adoption (lower right) -->
+    <rect x="595" y="262" width="160" height="48" rx="6" fill="rgba(8,145,178,0.06)" stroke="rgba(8,145,178,0.25)" stroke-width="0.5"/>
+    <text x="675" y="280" text-anchor="middle" font-size="9" font-weight="600" fill="#0891b2">ITIL IT服务</text>
+    <text x="675" y="298" text-anchor="middle" font-size="8" fill="#475569">服务策略 &#183; 设计 &#183; 运营</text>
+
+    <!-- Bottom label -->
+    <line x1="415" y1="328" x2="755" y2="328" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="585" y="348" text-anchor="middle" font-size="9" fill="#94a3b8">多参考模型裁剪融合 &#183; 适配手机制造业态</text>
+  </g>
+
+  <!-- ===== RIGHT SIDE: 4 Reference Model Boxes ===== -->
+  <!-- 2×2 grid at x=795, w=175, gap=20, total=370. Right edge: 795+370=1165 -->
+
+  <!-- SCOR -->
+  <g filter="url(#shadow-light)">
+    <rect x="800" y="90" width="175" height="95" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="90" width="175" height="3" rx="2" fill="#3b82f6"/>
+    <rect x="808" y="98" width="28" height="16" rx="4" fill="rgba(59,130,246,0.12)"/>
+    <text x="822" y="110" text-anchor="middle" font-size="9" font-weight="700" fill="#3b82f6">SCOR</text>
+    <text x="890" y="110" font-size="9" font-weight="600" fill="#1e293b">供应链参考模型</text>
+    <g font-size="8" fill="#475569">
+      <text x="810" y="132">Plan &#183; Source &#183; Make</text>
+      <text x="810" y="146">Deliver &#183; Return</text>
+      <text x="810" y="160">绩效指标 &#183; 最佳实践</text>
+    </g>
+  </g>
+
+  <!-- IPD -->
+  <g filter="url(#shadow-light)">
+    <rect x="995" y="90" width="175" height="95" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="995" y="90" width="175" height="3" rx="2" fill="#8b5cf6"/>
+    <rect x="1003" y="98" width="26" height="16" rx="4" fill="rgba(139,92,246,0.12)"/>
+    <text x="1016" y="110" text-anchor="middle" font-size="9" font-weight="700" fill="#8b5cf6">IPD</text>
+    <text x="1085" y="110" font-size="9" font-weight="600" fill="#1e293b">集成产品开发</text>
+    <g font-size="8" fill="#475569">
+      <text x="1005" y="132">需求管理流程</text>
+      <text x="1005" y="146">技术评审体系</text>
+      <text x="1005" y="160">项目开发管理</text>
+    </g>
+  </g>
+
+  <!-- CRM -->
+  <g filter="url(#shadow-light)">
+    <rect x="800" y="200" width="175" height="95" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="200" width="175" height="3" rx="2" fill="#f97316"/>
+    <rect x="808" y="208" width="28" height="16" rx="4" fill="rgba(249,115,22,0.12)"/>
+    <text x="822" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#f97316">CRM</text>
+    <text x="890" y="220" font-size="9" font-weight="600" fill="#1e293b">客户关系管理</text>
+    <g font-size="8" fill="#475569">
+      <text x="810" y="242">销售管理</text>
+      <text x="810" y="256">营销自动化</text>
+      <text x="810" y="270">服务管理</text>
+    </g>
+  </g>
+
+  <!-- ITIL -->
+  <g filter="url(#shadow-light)">
+    <rect x="995" y="200" width="175" height="95" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="995" y="200" width="175" height="3" rx="2" fill="#0891b2"/>
+    <rect x="1003" y="208" width="28" height="16" rx="4" fill="rgba(8,145,178,0.12)"/>
+    <text x="1016" y="220" text-anchor="middle" font-size="9" font-weight="700" fill="#0891b2">ITIL</text>
+    <text x="1085" y="220" font-size="9" font-weight="600" fill="#1e293b">IT服务管理</text>
+    <g font-size="8" fill="#475569">
+      <text x="1005" y="242">服务策略</text>
+      <text x="1005" y="256">服务设计</text>
+      <text x="1005" y="270">服务运营</text>
+    </g>
+  </g>
+
+  <!-- Dashed connectors: reference models → center regions -->
+
+  <!-- SCOR → SCOR adoption -->
+  <path d="M 800 137 L 770 137 L 620 185 L 575 200" fill="none" stroke="#3b82f6" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.5"/>
+
+  <!-- IPD → IPD adoption -->
+  <path d="M 995 137 L 970 137 L 730 185 L 675 200" fill="none" stroke="#8b5cf6" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.5"/>
+
+  <!-- CRM → CRM adoption -->
+  <path d="M 800 247 L 770 247 L 630 255 L 575 262" fill="none" stroke="#f97316" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.5"/>
+
+  <!-- ITIL → ITIL adoption -->
+  <path d="M 995 247 L 970 247 L 730 255 L 675 262" fill="none" stroke="#0891b2" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.5"/>
+
+  <!-- ===== BOTTOM: 业务解决方案三要素 ===== -->
+  <g>
+    <!-- Section label -->
+    <rect x="50" y="450" width="1100" height="1" fill="#e2e8f0"/>
+    <rect x="460" y="443" width="280" height="16" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="600" y="454" text-anchor="middle" font-size="9" font-weight="600" fill="#0f172a">业务解决方案三要素</text>
+
+    <!-- Element 1 -->
+    <g filter="url(#shadow-light)">
+      <rect x="50" y="470" width="340" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="50" y="470" width="6" height="70" rx="3" fill="#3b82f6"/>
+      <text x="70" y="493" font-size="11" font-weight="600" fill="#0f172a">AS-IS流程痛点清单</text>
+      <text x="70" y="512" font-size="9" fill="#475569">流程瓶颈识别 &#183; 非增值环节消除 &#183; 痛点评分矩阵</text>
+      <text x="70" y="528" font-size="8" fill="#94a3b8">输出: 流程痛点清单 &#183; 改进机会矩阵</text>
+    </g>
+
+    <!-- Element 2 -->
+    <g filter="url(#shadow-light)">
+      <rect x="430" y="470" width="340" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="430" y="470" width="6" height="70" rx="3" fill="#f97316"/>
+      <text x="450" y="493" font-size="11" font-weight="600" fill="#0f172a">TO-BE目标流程+RACI优化</text>
+      <text x="450" y="512" font-size="9" fill="#475569">端到端流程设计 &#183; 角色职责定义 &#183; 流程绩效指标</text>
+      <text x="450" y="528" font-size="8" fill="#94a3b8">输出: TO-BE流程图 &#183; RACI矩阵 &#183; KPI体系</text>
+    </g>
+
+    <!-- Element 3 -->
+    <g filter="url(#shadow-light)">
+      <rect x="810" y="470" width="340" height="70" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="810" y="470" width="6" height="70" rx="3" fill="#059669"/>
+      <text x="830" y="493" font-size="11" font-weight="600" fill="#0f172a">改进举措+能力映射</text>
+      <text x="830" y="512" font-size="9" fill="#475569">改进举措定义 &#183; 业务能力映射 &#183; 系统需求映射</text>
+      <text x="830" y="528" font-size="8" fill="#94a3b8">输出: 改进举措表 &#183; 能力映射矩阵 &#183; 实施路线图</text>
+    </g>
+  </g>
+
+  <!-- Connecting lines from AS-IS/Gap/TO-BE to bottom elements -->
+  <path d="M 200 431 L 200 450 L 220 470" fill="none" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <path d="M 200 431 L 200 450 L 600 470" fill="none" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <path d="M 200 431 L 200 450 L 980 470" fill="none" stroke="#94a3b8" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+  <!-- ===== INFO CARDS ===== -->
+
+  <!-- Info Card 1: 参考模型裁剪 -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="560" width="360" height="142" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="40" y="560" width="360" height="30" rx="10" fill="#f8fafc"/>
+    <rect x="40" y="580" width="360" height="10" fill="#f8fafc"/>
+    <text x="220" y="580" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">参考模型裁剪策略</text>
+    <line x1="60" y1="598" x2="380" y2="598" stroke="#e2e8f0" stroke-width="1"/>
+    <g font-size="9" fill="#475569">
+      <rect x="60" y="612" width="320" height="18" rx="4" fill="rgba(59,130,246,0.06)"/>
+      <text x="70" y="625" font-weight="600" fill="#3b82f6">SCOR</text>
+      <text x="180" y="625">裁剪P/S/M/D/R五环节，针对手机制造L5-L7执行层展开</text>
+
+      <rect x="60" y="636" width="320" height="18" rx="4" fill="rgba(139,92,246,0.06)"/>
+      <text x="70" y="649" font-weight="600" fill="#8b5cf6">IPD</text>
+      <text x="180" y="649">裁剪需求管理、技术评审、项目开发三大核心域</text>
+
+      <rect x="60" y="660" width="320" height="18" rx="4" fill="rgba(249,115,22,0.06)"/>
+      <text x="70" y="673" font-weight="600" fill="#f97316">CRM</text>
+      <text x="180" y="673">裁剪销售管理、营销自动化和服务管理流程</text>
+
+      <rect x="60" y="684" width="320" height="18" rx="4" fill="rgba(8,145,178,0.06)"/>
+      <text x="70" y="697" font-weight="600" fill="#0891b2">ITIL</text>
+      <text x="180" y="697">裁剪服务策略、设计、运营三大流程</text>
+    </g>
+  </g>
+
+  <!-- Info Card 2: 业务方案三要素 -->
+  <g filter="url(#shadow)">
+    <rect x="420" y="560" width="360" height="142" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="420" y="560" width="360" height="30" rx="10" fill="#f8fafc"/>
+    <rect x="420" y="580" width="360" height="10" fill="#f8fafc"/>
+    <text x="600" y="580" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">业务方案三要素详解</text>
+    <line x1="440" y1="598" x2="760" y2="598" stroke="#e2e8f0" stroke-width="1"/>
+    <g font-size="9" fill="#475569">
+      <!-- Element 1 -->
+      <rect x="440" y="612" width="320" height="26" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="450" y="625" font-weight="600" fill="#3b82f6">要素一</text>
+      <text x="510" y="625">AS-IS流程痛点清单</text>
+      <text x="450" y="636">识别流程瓶颈，消除非增值环节，输出改进机会</text>
+
+      <!-- Element 2 -->
+      <rect x="440" y="644" width="320" height="26" rx="4" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.2)" stroke-width="0.5"/>
+      <text x="450" y="657" font-weight="600" fill="#f97316">要素二</text>
+      <text x="510" y="657">TO-BE目标流程+RACI优化</text>
+      <text x="450" y="668">设计端到端目标流程，定义角色职责和KPI</text>
+
+      <!-- Element 3 -->
+      <rect x="440" y="676" width="320" height="26" rx="4" fill="rgba(5,150,105,0.06)" stroke="rgba(5,150,105,0.2)" stroke-width="0.5"/>
+      <text x="450" y="689" font-weight="600" fill="#059669">要素三</text>
+      <text x="510" y="689">改进举措+能力映射</text>
+      <text x="450" y="700">定义改进举措，映射业务能力和系统需求</text>
+    </g>
+  </g>
+
+  <!-- Info Card 3: 从对标到落地 -->
+  <g filter="url(#shadow)">
+    <rect x="800" y="560" width="360" height="142" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="800" y="560" width="360" height="30" rx="10" fill="#f8fafc"/>
+    <rect x="800" y="580" width="360" height="10" fill="#f8fafc"/>
+    <text x="980" y="580" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">从对标到落地实施路径</text>
+    <line x1="820" y1="598" x2="1140" y2="598" stroke="#e2e8f0" stroke-width="1"/>
+    <g font-size="9" fill="#475569">
+      <!-- Pathway steps -->
+      <rect x="815" y="612" width="330" height="18" rx="4" fill="rgba(59,130,246,0.06)"/>
+      <text x="825" y="625" font-weight="600" fill="#3b82f6">Step 1 对标</text>
+      <text x="920" y="625">行业参考模型裁剪 &#183; 最佳实践对标</text>
+
+      <rect x="815" y="636" width="330" height="18" rx="4" fill="rgba(249,115,22,0.06)"/>
+      <text x="825" y="649" font-weight="600" fill="#f97316">Step 2 诊断</text>
+      <text x="920" y="649">AS-IS流程分析 &#183; 差距识别 &#183; 优先级排序</text>
+
+      <rect x="815" y="660" width="330" height="18" rx="4" fill="rgba(5,150,105,0.06)"/>
+      <text x="825" y="673" font-weight="600" fill="#059669">Step 3 设计</text>
+      <text x="920" y="673">TO-BE目标流程 &#183; RACI &#183; 能力映射</text>
+
+      <rect x="815" y="684" width="330" height="18" rx="4" fill="rgba(139,92,246,0.06)"/>
+      <text x="825" y="697" font-weight="600" fill="#8b5cf6">Step 4 实施</text>
+      <text x="920" y="697">改进举措落地 &#183; 系统实施 &#183; 持续优化</text>
+    </g>
+  </g>
+
+</svg>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8Hj" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" integrity="sha384-ZSs6LKr2GoUPDyHrN+rCQgyHL1yUyok5xMniSrgeRG7rUvA6vTmxronM1eZOfjgz" crossorigin="anonymous"></script>
+<script>
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+async function copyDiagram() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showToast('Copied to clipboard!');
+  } catch(e) { showToast('Copy failed: ' + e.message); }
+}
+async function exportPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var link = document.createElement('a');
+    link.download = '图2-12_业务解决方案与参考模型.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG exported!');
+  } catch(e) { showToast('PNG export failed: ' + e.message); }
+}
+async function exportPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' });
+    var pw = pdf.internal.pageSize.getWidth();
+    var ph = (canvas.height * pw) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pw, ph);
+    pdf.save('图2-12_业务解决方案与参考模型.pdf');
+    showToast('PDF exported!');
+  } catch(e) { showToast('PDF export failed: ' + e.message); }
+}
+</script>
+</body>
+</html>

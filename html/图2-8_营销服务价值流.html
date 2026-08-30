@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图2-8 营销服务价值流</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f8fafc;
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+#toolbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; gap: 8px; padding: 10px 24px;
+  background: #ffffff; border-bottom: 1px solid #e2e8f0;
+  width: 100%; max-width: 1360px;
+  align-items: center; border-radius: 0 0 8px 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+#toolbar .label { font-size: 12px; color: #94a3b8; margin-right: 8px; font-weight: 500; }
+#toolbar button {
+  padding: 6px 18px; border: 1px solid #e2e8f0; border-radius: 6px;
+  background: #ffffff; color: #475569;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  cursor: pointer; transition: all 0.15s ease; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+#toolbar button:hover { background: #f1f5f9; border-color: #94a3b8; color: #1e293b; }
+#toolbar button:active { background: #e2e8f0; }
+#diagram {
+  margin: 24px auto; background: #ffffff;
+  border: 1px solid #e2e8f0; border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15,23,42,0.06);
+  overflow: hidden; max-width: 1340px; width: 100%;
+}
+#diagram svg { display: block; width: 100%; height: auto; }
+#diagram svg text, #diagram svg tspan { font-family: 'JetBrains Mono', monospace; }
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1e293b; color: #ffffff; padding: 8px 20px; border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 200;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span class="label">Export</span>
+  <button onclick="copyDiagram()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 3V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1" stroke="currentColor" stroke-width="1.2"/></svg> Copy
+  </button>
+  <button onclick="exportPNG()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="3.5" r="1" fill="currentColor"/></svg> PNG
+  </button>
+  <button onclick="exportPDF()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 1h5l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.2"/><path d="M8 1v3h3" stroke="currentColor" stroke-width="1.2"/></svg> PDF
+  </button>
+</div>
+
+<div id="diagram">
+<svg viewBox="0 0 1300 750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="none"/>
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <filter id="shadow-light" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.04"/>
+    </filter>
+    <marker id="arrow" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="#94a3b8"/>
+    </marker>
+    <linearGradient id="g-primary" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1300" height="750" fill="#ffffff"/>
+  <rect width="1300" height="750" fill="url(#grid)"/>
+  <rect x="0" y="0" width="1300" height="4" fill="#8b5cf6" opacity="0.2"/>
+
+  <!-- Title -->
+  <text x="650" y="28" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a" letter-spacing="1">营销服务价值流 &mdash; 用户全生命周期</text>
+  <text x="650" y="50" text-anchor="middle" font-size="12" font-weight="400" fill="#475569" letter-spacing="0.5">获客&rarr;转化&rarr;激活&rarr;使用&rarr;服务&rarr;换机&rarr;推荐 &#183; CDP+MA+O2O</text>
+  <line x1="400" y1="56" x2="900" y2="56" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- 8 Stage Blocks -->
+  <!-- Each block: 132w x 88h, gaps 10px. Total: 8*132+7*10 = 1056+70 = 1126. Margin: (1300-1126)/2 = 87 -->
+  <!-- x: 87, 229, 371, 513, 655, 797, 939, 1081 -->
+
+  <!-- Stage data: name, color, short desc -->
+
+  <!-- Stage 1: 品牌认知 -->
+  <g filter="url(#shadow-light)">
+    <rect x="87" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="87" y="65" width="132" height="24" rx="8" fill="rgba(139,92,246,0.1)"/>
+    <rect x="87" y="81" width="132" height="8" fill="rgba(139,92,246,0.1)"/>
+    <circle cx="100" cy="77" r="7" fill="#8b5cf6"/>
+    <text x="100" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">01</text>
+    <text x="142" y="80" font-size="11" font-weight="600" fill="#1e293b">品牌认知</text>
+    <text x="153" y="108" text-anchor="middle" font-size="9" fill="#475569">广告曝光 &#183; 内容营销</text>
+    <text x="153" y="124" text-anchor="middle" font-size="9" fill="#475569">KOL &#183; 品牌传播</text>
+    <rect x="95" y="134" width="116" height="12" rx="3" fill="rgba(59,130,246,0.08)"/>
+    <text x="153" y="143" text-anchor="middle" font-size="7" fill="#3b82f6" font-weight="500">L1获客</text>
+  </g>
+
+  <!-- Stage 2: 兴趣 -->
+  <g filter="url(#shadow-light)">
+    <rect x="229" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="229" y="65" width="132" height="24" rx="8" fill="rgba(59,130,246,0.1)"/>
+    <rect x="229" y="81" width="132" height="8" fill="rgba(59,130,246,0.1)"/>
+    <circle cx="242" cy="77" r="7" fill="#3b82f6"/>
+    <text x="242" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">02</text>
+    <text x="284" y="80" font-size="11" font-weight="600" fill="#1e293b">兴趣</text>
+    <text x="295" y="108" text-anchor="middle" font-size="9" fill="#475569">官网浏览 &#183; 评测观看</text>
+    <text x="295" y="124" text-anchor="middle" font-size="9" fill="#475569">社交媒体互动</text>
+    <rect x="237" y="134" width="116" height="12" rx="3" fill="rgba(59,130,246,0.08)"/>
+    <text x="295" y="143" text-anchor="middle" font-size="7" fill="#3b82f6" font-weight="500">L2认知</text>
+  </g>
+
+  <!-- Stage 3: 购买 -->
+  <g filter="url(#shadow-light)">
+    <rect x="371" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="371" y="65" width="132" height="24" rx="8" fill="rgba(249,115,22,0.1)"/>
+    <rect x="371" y="81" width="132" height="8" fill="rgba(249,115,22,0.1)"/>
+    <circle cx="384" cy="77" r="7" fill="#f97316"/>
+    <text x="384" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">03</text>
+    <text x="426" y="80" font-size="11" font-weight="600" fill="#1e293b">购买</text>
+    <text x="437" y="108" text-anchor="middle" font-size="9" fill="#475569">电商下单 &#183; 门店购买</text>
+    <text x="437" y="124" text-anchor="middle" font-size="9" fill="#475569">运营商合约</text>
+    <rect x="379" y="134" width="116" height="12" rx="3" fill="rgba(249,115,22,0.08)"/>
+    <text x="437" y="143" text-anchor="middle" font-size="7" fill="#f97316" font-weight="500">L3转化</text>
+  </g>
+
+  <!-- Stage 4: 激活 -->
+  <g filter="url(#shadow-light)">
+    <rect x="513" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="513" y="65" width="132" height="24" rx="8" fill="rgba(5,150,105,0.1)"/>
+    <rect x="513" y="81" width="132" height="8" fill="rgba(5,150,105,0.1)"/>
+    <circle cx="526" cy="77" r="7" fill="#059669"/>
+    <text x="526" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">04</text>
+    <text x="568" y="80" font-size="11" font-weight="600" fill="#1e293b">激活</text>
+    <text x="579" y="108" text-anchor="middle" font-size="9" fill="#475569">App注册 &#183; 实名认证</text>
+    <text x="579" y="124" text-anchor="middle" font-size="9" fill="#475569">新机设置</text>
+    <rect x="521" y="134" width="116" height="12" rx="3" fill="rgba(5,150,105,0.08)"/>
+    <text x="579" y="143" text-anchor="middle" font-size="7" fill="#059669" font-weight="500">L4激活</text>
+  </g>
+
+  <!-- Stage 5: 使用 -->
+  <g filter="url(#shadow-light)">
+    <rect x="655" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="655" y="65" width="132" height="24" rx="8" fill="rgba(8,145,178,0.1)"/>
+    <rect x="655" y="81" width="132" height="8" fill="rgba(8,145,178,0.1)"/>
+    <circle cx="668" cy="77" r="7" fill="#0891b2"/>
+    <text x="668" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">05</text>
+    <text x="710" y="80" font-size="11" font-weight="600" fill="#1e293b">使用</text>
+    <text x="721" y="108" text-anchor="middle" font-size="9" fill="#475569">日常使用 &#183; 增值服务</text>
+    <text x="721" y="124" text-anchor="middle" font-size="9" fill="#475569">云服务 &#183; 应用生态</text>
+    <rect x="663" y="134" width="116" height="12" rx="3" fill="rgba(8,145,178,0.08)"/>
+    <text x="721" y="143" text-anchor="middle" font-size="7" fill="#0891b2" font-weight="500">L5留存</text>
+  </g>
+
+  <!-- Stage 6: 服务 -->
+  <g filter="url(#shadow-light)">
+    <rect x="797" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="797" y="65" width="132" height="24" rx="8" fill="rgba(139,92,246,0.1)"/>
+    <rect x="797" y="81" width="132" height="8" fill="rgba(139,92,246,0.1)"/>
+    <circle cx="810" cy="77" r="7" fill="#8b5cf6"/>
+    <text x="810" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">06</text>
+    <text x="852" y="80" font-size="11" font-weight="600" fill="#1e293b">服务</text>
+    <text x="863" y="108" text-anchor="middle" font-size="9" fill="#475569">售后咨询 &#183; 维修检测</text>
+    <text x="863" y="124" text-anchor="middle" font-size="9" fill="#475569">配件更换</text>
+    <rect x="805" y="134" width="116" height="12" rx="3" fill="rgba(139,92,246,0.08)"/>
+    <text x="863" y="143" text-anchor="middle" font-size="7" fill="#8b5cf6" font-weight="500">L6服务</text>
+  </g>
+
+  <!-- Stage 7: 换机 -->
+  <g filter="url(#shadow-light)">
+    <rect x="939" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="939" y="65" width="132" height="24" rx="8" fill="rgba(249,115,22,0.1)"/>
+    <rect x="939" y="81" width="132" height="8" fill="rgba(249,115,22,0.1)"/>
+    <circle cx="952" cy="77" r="7" fill="#f97316"/>
+    <text x="952" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">07</text>
+    <text x="994" y="80" font-size="11" font-weight="600" fill="#1e293b">换机</text>
+    <text x="1005" y="108" text-anchor="middle" font-size="9" fill="#475569">以旧换新 &#183; 合约到期</text>
+    <text x="1005" y="124" text-anchor="middle" font-size="9" fill="#475569">升级购买</text>
+    <rect x="947" y="134" width="116" height="12" rx="3" fill="rgba(249,115,22,0.08)"/>
+    <text x="1005" y="143" text-anchor="middle" font-size="7" fill="#f97316" font-weight="500">L7复购</text>
+  </g>
+
+  <!-- Stage 8: 推荐 -->
+  <g filter="url(#shadow-light)">
+    <rect x="1081" y="65" width="132" height="88" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="1081" y="65" width="132" height="24" rx="8" fill="rgba(239,68,68,0.1)"/>
+    <rect x="1081" y="81" width="132" height="8" fill="rgba(239,68,68,0.1)"/>
+    <circle cx="1094" cy="77" r="7" fill="#ef4444"/>
+    <text x="1094" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#ffffff">08</text>
+    <text x="1136" y="80" font-size="11" font-weight="600" fill="#1e293b">推荐</text>
+    <text x="1147" y="108" text-anchor="middle" font-size="9" fill="#475569">口碑分享 &#183; 社交裂变</text>
+    <text x="1147" y="124" text-anchor="middle" font-size="9" fill="#475569">推荐有奖</text>
+    <rect x="1089" y="134" width="116" height="12" rx="3" fill="rgba(239,68,68,0.08)"/>
+    <text x="1147" y="143" text-anchor="middle" font-size="7" fill="#ef4444" font-weight="500">L8传播</text>
+  </g>
+
+  <!-- Connecting arrows between stages -->
+  <line x1="219" y1="109" x2="225" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="361" y1="109" x2="367" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="503" y1="109" x2="509" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="645" y1="109" x2="651" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="787" y1="109" x2="793" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="929" y1="109" x2="935" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="1071" y1="109" x2="1077" y2="109" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- Touchpoints Row -->
+  <g filter="url(#shadow-light)">
+    <rect x="30" y="160" width="1240" height="1" fill="#e2e8f0"/>
+    <rect x="30" y="162" width="120" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="90" y="181" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">关键触点</text>
+    <!-- Per-stage touchpoints -->
+    <text x="153" y="181" text-anchor="middle" font-size="8" fill="#475569">广告/TVC</text>
+    <text x="295" y="181" text-anchor="middle" font-size="8" fill="#475569">官网/评测</text>
+    <text x="437" y="181" text-anchor="middle" font-size="8" fill="#475569">电商/门店</text>
+    <text x="579" y="181" text-anchor="middle" font-size="8" fill="#475569">App注册</text>
+    <text x="721" y="181" text-anchor="middle" font-size="8" fill="#475569">手机App/云</text>
+    <text x="863" y="181" text-anchor="middle" font-size="8" fill="#475569">客服/维修</text>
+    <text x="1005" y="181" text-anchor="middle" font-size="8" fill="#475569">以旧换新</text>
+    <text x="1147" y="181" text-anchor="middle" font-size="8" fill="#475569">分享/社区</text>
+  </g>
+
+  <!-- Capabilities Row -->
+  <g filter="url(#shadow-light)">
+    <rect x="30" y="195" width="120" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="90" y="214" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">业务能力</text>
+    <text x="153" y="214" text-anchor="middle" font-size="8" fill="#475569">品牌管理</text>
+    <text x="295" y="214" text-anchor="middle" font-size="8" fill="#475569">Campaign</text>
+    <text x="437" y="214" text-anchor="middle" font-size="8" fill="#475569">CRM/O2O</text>
+    <text x="579" y="214" text-anchor="middle" font-size="8" fill="#475569">用户中心</text>
+    <text x="721" y="214" text-anchor="middle" font-size="8" fill="#475569">产品运营</text>
+    <text x="863" y="214" text-anchor="middle" font-size="8" fill="#475569">售后工单</text>
+    <text x="1005" y="214" text-anchor="middle" font-size="8" fill="#475569">以旧换新</text>
+    <text x="1147" y="214" text-anchor="middle" font-size="8" fill="#475569">推荐系统</text>
+  </g>
+
+  <!-- Systems Row -->
+  <g filter="url(#shadow-light)">
+    <rect x="30" y="230" width="120" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+    <text x="90" y="249" text-anchor="middle" font-size="10" font-weight="600" fill="#0f172a">系统支撑</text>
+    <text x="153" y="249" text-anchor="middle" font-size="8" fill="#475569">CDP/MA</text>
+    <text x="295" y="249" text-anchor="middle" font-size="8" fill="#475569">CDP/广告</text>
+    <text x="437" y="249" text-anchor="middle" font-size="8" fill="#475569">电商/OMS</text>
+    <text x="579" y="249" text-anchor="middle" font-size="8" fill="#475569">POS/会员</text>
+    <text x="721" y="249" text-anchor="middle" font-size="8" fill="#475569">用户后台</text>
+    <text x="863" y="249" text-anchor="middle" font-size="8" fill="#475569">工单系统</text>
+    <text x="1005" y="249" text-anchor="middle" font-size="8" fill="#475569">换机平台</text>
+    <text x="1147" y="249" text-anchor="middle" font-size="8" fill="#475569">推荐引擎</text>
+  </g>
+
+  <!-- CDP Band -->
+  <rect x="30" y="274" width="1240" height="30" rx="6" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.25)" stroke-width="1" stroke-dasharray="4,2"/>
+  <rect x="30" y="274" width="1240" height="30" rx="6" fill="rgba(59,130,246,0.04)"/>
+  <circle cx="55" cy="289" r="8" fill="rgba(59,130,246,0.2)"/>
+  <text x="55" y="292" text-anchor="middle" font-size="8" fill="#3b82f6">CDP</text>
+  <text x="650" y="293" text-anchor="middle" font-size="11" font-weight="600" fill="#3b82f6">CDP统一用户画像贯穿全生命周期</text>
+  <!-- Connector dots to each stage -->
+  <circle cx="153" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="295" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="437" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="579" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="721" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="863" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="1005" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="1147" cy="289" r="2.5" fill="#3b82f6" opacity="0.4"/>
+
+  <!-- MA Band -->
+  <rect x="30" y="312" width="1240" height="30" rx="6" fill="rgba(249,115,22,0.06)" stroke="rgba(249,115,22,0.25)" stroke-width="1" stroke-dasharray="4,2"/>
+  <rect x="30" y="312" width="1240" height="30" rx="6" fill="rgba(249,115,22,0.04)"/>
+  <circle cx="55" cy="327" r="8" fill="rgba(249,115,22,0.2)"/>
+  <text x="55" y="330" text-anchor="middle" font-size="8" fill="#f97316">MA</text>
+  <text x="650" y="331" text-anchor="middle" font-size="11" font-weight="600" fill="#f97316">MA自动化触达 &#183; 精准营销 &#183; 全渠道推送</text>
+  <circle cx="153" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="295" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="437" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="579" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="721" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="863" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="1005" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+  <circle cx="1147" cy="327" r="2.5" fill="#f97316" opacity="0.4"/>
+
+  <!-- O2O Loop Section -->
+  <g filter="url(#shadow-light)">
+    <rect x="30" y="358" width="1240" height="80" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="30" y="358" width="1240" height="3" rx="2" fill="#8b5cf6"/>
+    <text x="650" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">O2O全渠道闭环</text>
+
+    <!-- O2O Flow Diagram -->
+    <!-- 线上下单 -->
+    <rect x="120" y="395" width="100" height="28" rx="14" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="170" y="413" text-anchor="middle" font-size="10" font-weight="600" fill="#3b82f6">线上下单</text>
+
+    <!-- Arrow -->
+    <path d="M 220 409 L 250 409" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- 门店自提 / 门店配送 -->
+    <rect x="255" y="388" width="90" height="22" rx="11" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+    <text x="300" y="403" text-anchor="middle" font-size="9" font-weight="600" fill="#f97316">门店自提</text>
+    <rect x="255" y="414" width="90" height="22" rx="11" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+    <text x="300" y="429" text-anchor="middle" font-size="9" font-weight="600" fill="#f97316">门店配送</text>
+
+    <!-- Arrow -->
+    <path d="M 345 409 L 375 409" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- 激活 -->
+    <rect x="380" y="395" width="90" height="28" rx="14" fill="rgba(5,150,105,0.1)" stroke="#059669" stroke-width="1"/>
+    <text x="425" y="413" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">激活</text>
+
+    <!-- Arrow -->
+    <path d="M 470 409 L 500 409" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- 会员 -->
+    <rect x="505" y="395" width="90" height="28" rx="14" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="550" y="413" text-anchor="middle" font-size="10" font-weight="600" fill="#8b5cf6">会员</text>
+
+    <!-- Loop back arrow -->
+    <path d="M 595 409 L 630 409" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- Recirculation label -->
+    <text x="670" y="413" font-size="9" fill="#94a3b8">复购/推荐 &rarr;</text>
+
+    <!-- Vertical rejoin line going back up -->
+    <line x1="700" y1="395" x2="700" y2="395" stroke="#94a3b8" stroke-width="1"/>
+
+    <!-- Right side info: key capabilities -->
+    <text x="900" y="398" font-size="9" fill="#475569">线上线下一体化: 统一商品 &#183; 统一价格 &#183; 统一库存 &#183; 统一会员</text>
+    <text x="900" y="418" font-size="9" fill="#475569">场景: 线上下单门店自提 &#183; 门店扫码线上发货 &#183; 线上购买门店售后</text>
+  </g>
+
+  <!-- Info Card 1: CDP 360 -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="458" width="390" height="272" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="30" y="458" width="390" height="32" rx="10" fill="#f8fafc"/>
+    <rect x="30" y="478" width="390" height="12" fill="#f8fafc"/>
+    <text x="225" y="480" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">CDP 360&deg;用户画像</text>
+    <line x1="50" y1="498" x2="400" y2="498" stroke="#e2e8f0" stroke-width="1"/>
+
+    <g font-size="10" fill="#475569">
+      <!-- Core capability blocks -->
+      <rect x="50" y="512" width="350" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="60" y="527" font-weight="600" fill="#3b82f6">OneID</text>
+      <text x="200" y="527">统一用户标识 &#183; 全渠道ID-Mapping</text>
+
+      <rect x="50" y="542" width="350" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="60" y="557" font-weight="600" fill="#3b82f6">标签体系</text>
+      <text x="200" y="557">300+标签 &#183; 基础/行为/偏好/预测</text>
+
+      <rect x="50" y="572" width="350" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="60" y="587" font-weight="600" fill="#3b82f6">分群引擎</text>
+      <text x="200" y="587">RFM分群 &#183; 生命周期分群 &#183; 价值分群</text>
+
+      <rect x="50" y="602" width="350" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="60" y="617" font-weight="600" fill="#3b82f6">分析洞察</text>
+      <text x="200" y="617">转化漏斗 &#183; 留存分析 &#183; 路径分析</text>
+
+      <rect x="50" y="632" width="350" height="22" rx="4" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.2)" stroke-width="0.5"/>
+      <text x="60" y="647" font-weight="600" fill="#3b82f6">数据整合</text>
+      <text x="200" y="647">电商 &#183; CRM &#183; POS &#183; 广告 &#183; 售后 &#183; 社交</text>
+    </g>
+
+    <line x1="50" y1="668" x2="400" y2="668" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="225" y="686" text-anchor="middle" font-size="9" fill="#94a3b8">全渠道数据整合 &#183; 统一用户视图 &#183; 驱动精准营销</text>
+  </g>
+
+  <!-- Info Card 2: User Lifecycle -->
+  <g filter="url(#shadow)">
+    <rect x="455" y="458" width="390" height="272" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="455" y="458" width="390" height="32" rx="10" fill="#f8fafc"/>
+    <rect x="455" y="478" width="390" height="12" fill="#f8fafc"/>
+    <text x="650" y="480" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">用户生命周期阶段</text>
+    <line x1="475" y1="498" x2="825" y2="498" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- Lifecycle visualization -->
+    <g>
+      <!-- L1 -->
+      <rect x="475" y="512" width="42" height="42" rx="4" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="496" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#8b5cf6">认知</text>
+      <text x="496" y="543" text-anchor="middle" font-size="6" fill="#8b5cf6">L1</text>
+      <line x1="517" y1="533" x2="525" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L2 -->
+      <rect x="527" y="512" width="42" height="42" rx="4" fill="rgba(59,130,246,0.12)" stroke="#3b82f6" stroke-width="0.5"/>
+      <text x="548" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#3b82f6">兴趣</text>
+      <text x="548" y="543" text-anchor="middle" font-size="6" fill="#3b82f6">L2</text>
+      <line x1="569" y1="533" x2="577" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L3 -->
+      <rect x="579" y="512" width="42" height="42" rx="4" fill="rgba(249,115,22,0.12)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="600" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#f97316">购买</text>
+      <text x="600" y="543" text-anchor="middle" font-size="6" fill="#f97316">L3</text>
+      <line x1="621" y1="533" x2="629" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L4 -->
+      <rect x="631" y="512" width="42" height="42" rx="4" fill="rgba(5,150,105,0.12)" stroke="#059669" stroke-width="0.5"/>
+      <text x="652" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#059669">激活</text>
+      <text x="652" y="543" text-anchor="middle" font-size="6" fill="#059669">L4</text>
+      <line x1="673" y1="533" x2="681" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L5 -->
+      <rect x="683" y="512" width="42" height="42" rx="4" fill="rgba(8,145,178,0.12)" stroke="#0891b2" stroke-width="0.5"/>
+      <text x="704" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#0891b2">使用</text>
+      <text x="704" y="543" text-anchor="middle" font-size="6" fill="#0891b2">L5</text>
+      <line x1="725" y1="533" x2="733" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L6 -->
+      <rect x="735" y="512" width="42" height="42" rx="4" fill="rgba(139,92,246,0.12)" stroke="#8b5cf6" stroke-width="0.5"/>
+      <text x="756" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#8b5cf6">服务</text>
+      <text x="756" y="543" text-anchor="middle" font-size="6" fill="#8b5cf6">L6</text>
+      <line x1="777" y1="533" x2="785" y2="533" stroke="#94a3b8" stroke-width="0.8"/>
+
+      <!-- L7 -->
+      <rect x="787" y="512" width="42" height="42" rx="4" fill="rgba(249,115,22,0.12)" stroke="#f97316" stroke-width="0.5"/>
+      <text x="808" y="528" text-anchor="middle" font-size="7" font-weight="700" fill="#f97316">换机</text>
+      <text x="808" y="543" text-anchor="middle" font-size="6" fill="#f97316">L7</text>
+
+      <!-- L8 below with return arrow -->
+      <rect x="475" y="562" width="354" height="32" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.2)" stroke-width="0.5"/>
+      <text x="652" y="582" text-anchor="middle" font-size="9" fill="#ef4444" font-weight="600">L8 推荐传播 &rarr; 形成口碑裂变，驱动新用户认知</text>
+      <!-- Curved return arrow -->
+      <path d="M 750 578 Q 800 540 800 533" fill="none" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+    </g>
+
+    <line x1="475" y1="605" x2="825" y2="605" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+    <text x="650" y="625" text-anchor="middle" font-size="10" fill="#475569">核心运营指标</text>
+    <g font-size="9" fill="#475569">
+      <rect x="490" y="636" width="140" height="24" rx="4" fill="rgba(59,130,246,0.06)"/>
+      <text x="560" y="652" text-anchor="middle">获客成本(CAC)</text>
+      <rect x="640" y="636" width="140" height="24" rx="4" fill="rgba(5,150,105,0.06)"/>
+      <text x="710" y="652" text-anchor="middle">用户生命周期价值(LTV)</text>
+    </g>
+    <text x="650" y="688" text-anchor="middle" font-size="9" fill="#94a3b8">全生命周期管理 &#183; 提升LTV &#183; 降低CAC &#183; 驱动增长</text>
+  </g>
+
+  <!-- Info Card 3: O2O Closed Loop -->
+  <g filter="url(#shadow)">
+    <rect x="880" y="458" width="390" height="272" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="880" y="458" width="390" height="32" rx="10" fill="#f8fafc"/>
+    <rect x="880" y="478" width="390" height="12" fill="#f8fafc"/>
+    <text x="1075" y="480" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">O2O全渠道闭环</text>
+    <line x1="900" y1="498" x2="1250" y2="498" stroke="#e2e8f0" stroke-width="1"/>
+
+    <!-- O2O Cycle visualization -->
+    <g>
+      <!-- Cycle -->
+      <path d="M 1075 560 A 50 50 0 1 1 1075 530 A 50 50 0 1 1 1075 560" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+
+      <!-- Four nodes around the cycle -->
+      <!-- Top: Online Order -->
+      <rect x="1015" y="518" width="120" height="24" rx="12" fill="rgba(59,130,246,0.1)" stroke="#3b82f6" stroke-width="1"/>
+      <text x="1075" y="534" text-anchor="middle" font-size="9" font-weight="600" fill="#3b82f6">线上平台下单</text>
+
+      <!-- Right: Store Fulfillment -->
+      <rect x="1110" y="558" width="120" height="24" rx="12" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+      <text x="1170" y="574" text-anchor="middle" font-size="9" font-weight="600" fill="#f97316">门店履约/自提</text>
+
+      <!-- Bottom: Activation -->
+      <rect x="1015" y="598" width="120" height="24" rx="12" fill="rgba(5,150,105,0.1)" stroke="#059669" stroke-width="1"/>
+      <text x="1075" y="614" text-anchor="middle" font-size="9" font-weight="600" fill="#059669">用户激活</text>
+
+      <!-- Left: Data Feedback -->
+      <rect x="920" y="558" width="120" height="24" rx="12" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="980" y="574" text-anchor="middle" font-size="9" font-weight="600" fill="#8b5cf6">CDP数据回流</text>
+
+      <!-- Connecting arrows around the cycle -->
+      <path d="M 1020 542 Q 1020 530 1030 530" fill="none" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 1125 542 Q 1160 545 1160 556" fill="none" stroke="#f97316" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 1160 582 Q 1160 593 1130 598" fill="none" stroke="#059669" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <path d="M 1020 598 Q 980 593 980 582" fill="none" stroke="#8b5cf6" stroke-width="1.2" marker-end="url(#arrow)"/>
+    </g>
+
+    <line x1="900" y1="638" x2="1250" y2="638" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+    <g font-size="9" fill="#475569">
+      <text x="1075" y="658" text-anchor="middle">核心场景</text>
+      <text x="1075" y="676" text-anchor="middle">线上下单门店自提 &#183; 门店体验线上下单 &#183; 线上购买门店售后</text>
+      <text x="1075" y="694" text-anchor="middle">统一库存 &#183; 统一价格 &#183; 统一会员 &#183; 统一营销</text>
+    </g>
+
+    <line x1="900" y1="704" x2="1250" y2="704" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <text x="1075" y="718" text-anchor="middle" font-size="9" fill="#94a3b8">打破线上线下壁垒 &#183; 无缝购物体验 &#183; 数据驱动闭环</text>
+  </g>
+</svg>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8Hj" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" integrity="sha384-ZSs6LKr2GoUPDyHrN+rCQgyHL1yUyok5xMniSrgeRG7rUvA6vTmxronM1eZOfjgz" crossorigin="anonymous"></script>
+<script>
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+async function copyDiagram() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var blob = await new Promise(function(resolve){ canvas.toBlob(resolve, 'image/png'); });
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showToast('Copied to clipboard!');
+  } catch(e) { showToast('Copy failed: ' + e.message); }
+}
+async function exportPNG() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var link = document.createElement('a');
+    link.download = '图2-8_营销服务价值流.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('PNG exported!');
+  } catch(e) { showToast('PNG export failed: ' + e.message); }
+}
+async function exportPDF() {
+  try {
+    var el = document.getElementById('diagram');
+    var canvas = await html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'l', unit: 'mm', format: 'a4' });
+    var pw = pdf.internal.pageSize.getWidth();
+    var ph = (canvas.height * pw) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pw, ph);
+    pdf.save('图2-8_营销服务价值流.pdf');
+    showToast('PDF exported!');
+  } catch(e) { showToast('PDF export failed: ' + e.message); }
+}
+</script>
+</body>
+</html>

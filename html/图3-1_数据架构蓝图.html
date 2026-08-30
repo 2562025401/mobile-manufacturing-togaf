@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图3-1 数据架构总体蓝图</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f8fafc;font-family:'JetBrains Mono','PingFang SC','Microsoft YaHei',sans-serif;padding:24px;color:#1e293b;display:flex;justify-content:center}
+.container{max-width:1440px;width:100%;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:24px 28px 28px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.toolbar{display:flex;gap:10px;margin-bottom:18px;align-items:center}
+.toolbar button{font-family:inherit;font-size:12px;padding:6px 14px;border:1px solid #e2e8f0;background:#fff;border-radius:6px;color:#475569;cursor:pointer;transition:all .15s}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a}
+.toolbar .spacer{flex:1}
+.title-section{margin-bottom:14px}
+.title-section h1{font-size:20px;font-weight:600;color:#0f172a}
+.title-section p{font-size:13px;color:#64748b;margin-top:3px}
+.svg-wrap{width:100%;overflow-x:auto;background:#fff;border:1px solid #e2e8f0;border-radius:8px}
+.cards-row{display:flex;gap:14px;margin-top:18px;flex-wrap:wrap}
+.info-card{flex:1;min-width:200px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:13px 15px}
+.info-card h3{font-size:12px;font-weight:600;color:#0f172a;margin-bottom:5px}
+.info-card h3 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.info-card p,.info-card ul{font-size:11px;color:#475569;line-height:1.65}
+.info-card ul{padding-left:14px;margin-top:3px}
+@media print{.toolbar{display:none!important}}
+</style>
+</head>
+<body>
+<div class="container" id="report-container">
+  <div class="toolbar">
+    <button onclick="copyAsImage(this)">📋 Copy</button>
+    <button onclick="downloadPNG(this)">🖼️ PNG</button>
+    <button onclick="downloadPDF(this)">📄 PDF</button>
+    <span class="spacer"></span>
+    <span class="badge" style="font-size:11px;color:#94a3b8">图3-1 · 数据架构总体蓝图</span>
+  </div>
+  <div class="title-section">
+    <h1>数据架构总体蓝图</h1>
+    <p>Data Architecture Blueprint · 数据战略 → 十域全景 → 数据平台 → 数据治理</p>
+  </div>
+  <div class="svg-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 920" width="100%" height="auto">
+      <defs>
+        <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#e2e8f0" stroke-width="0.4"/></pattern>
+        <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#64748b" flood-opacity="0.06"/></filter>
+        <filter id="shadowM"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#64748b" flood-opacity="0.1"/></filter>
+        <marker id="arrowR" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#94a3b8"/></marker>
+        <marker id="arrowB" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#3b82f6"/></marker>
+        <marker id="arrowD" markerWidth="5" markerHeight="7" refX="2.5" refY="6" orient="auto"><polygon points="0 0, 5 0, 2.5 7" fill="#94a3b8"/></marker>
+      </defs>
+      <rect width="1400" height="920" fill="#fff"/>
+      <rect width="1400" height="920" fill="url(#grid)"/>
+
+      <!-- ================================================================ -->
+      <!-- BAND 0: 数据战略 (Full Width, Top) -->
+      <!-- ================================================================ -->
+      <rect x="14" y="10" width="1372" height="56" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="34" y="44" font-size="14" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">数据战略 Data Strategy</text>
+      <line x1="220" y1="22" x2="220" y2="54" stroke="#e2e8f0" stroke-width="1"/>
+
+      <rect x="240" y="20" width="240" height="36" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+      <text x="360" y="43" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8" font-family="'JetBrains Mono',sans-serif">① 一处定义 · SSOT</text>
+
+      <rect x="496" y="20" width="240" height="36" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+      <text x="616" y="43" text-anchor="middle" font-size="12" font-weight="600" fill="#047857" font-family="'JetBrains Mono',sans-serif">② 全局共享 · DaaS</text>
+
+      <rect x="752" y="20" width="240" height="36" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+      <text x="872" y="43" text-anchor="middle" font-size="12" font-weight="600" fill="#b45309" font-family="'JetBrains Mono',sans-serif">③ 安全合规 · Privacy</text>
+
+      <rect x="1008" y="20" width="240" height="36" rx="6" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1"/>
+      <text x="1128" y="43" text-anchor="middle" font-size="12" font-weight="600" fill="#6d28d9" font-family="'JetBrains Mono',sans-serif">④ 智能驱动 · AI-Ready</text>
+
+      <!-- ================================================================ -->
+      <!-- BAND 1: 十大数据主题域 (Main Area, 2 Rows) -->
+      <!-- ================================================================ -->
+      <rect x="14" y="78" width="1068" height="406" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="34" y="106" font-size="13" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">十大数据主题域 10 Data Subject Domains</text>
+      <text x="34" y="124" font-size="9" fill="#64748b" font-family="'JetBrains Mono',sans-serif">D01-D10 · 覆盖LTC全链路 · 每域含主数据/事务/行为实体</text>
+
+      <!-- === Row 1: 需求侧 (Demand Flow) y=138 === -->
+      <rect x="30" y="140" width="1038" height="152" rx="7" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="48" y="160" font-size="10" font-weight="700" fill="#3b82f6" font-family="'JetBrains Mono',sans-serif">需求侧 Demand · LTC前端</text>
+
+      <!-- D04 营销 -->
+      <rect x="48" y="175" width="200" height="100" rx="7" fill="#fff" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="48" y="175" width="200" height="26" rx="7" fill="#fff7ed"/><rect x="48" y="189" width="200" height="12" fill="#fff7ed"/>
+      <text x="148" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#c2410c" font-family="'JetBrains Mono',sans-serif">D04 营销/活动</text>
+      <text x="148" y="216" text-anchor="middle" font-size="9" fill="#475569">Campaign · 媒介投放</text>
+      <text x="148" y="234" text-anchor="middle" font-size="9" fill="#475569">线索MQL/SQL · ROI归因</text>
+      <text x="148" y="252" text-anchor="middle" font-size="9" fill="#475569">CDP标签 · ABTest</text>
+      <text x="148" y="268" text-anchor="middle" font-size="8" fill="#f97316">~10⁴-10⁵</text>
+
+      <line x1="250" y1="225" x2="276" y2="225" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D02 客户 -->
+      <rect x="284" y="175" width="200" height="100" rx="7" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="284" y="175" width="200" height="26" rx="7" fill="#eff6ff"/><rect x="284" y="189" width="200" height="12" fill="#eff6ff"/>
+      <text x="384" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8" font-family="'JetBrains Mono',sans-serif">D02 客户/用户</text>
+      <text x="384" y="216" text-anchor="middle" font-size="9" fill="#475569">客户 · 用户360°画像</text>
+      <text x="384" y="234" text-anchor="middle" font-size="9" fill="#475569">会员等级 · 权益</text>
+      <text x="384" y="252" text-anchor="middle" font-size="9" fill="#475569">行为埋点 · 设备使用</text>
+      <text x="384" y="268" text-anchor="middle" font-size="8" fill="#3b82f6">~10⁷-10⁸</text>
+
+      <line x1="486" y1="225" x2="512" y2="225" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D03 渠道 -->
+      <rect x="520" y="175" width="200" height="100" rx="7" fill="#fff" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="520" y="175" width="200" height="26" rx="7" fill="#faf5ff"/><rect x="520" y="189" width="200" height="12" fill="#faf5ff"/>
+      <text x="620" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9" font-family="'JetBrains Mono',sans-serif">D03 渠道/门店</text>
+      <text x="620" y="216" text-anchor="middle" font-size="9" fill="#475569">经销商 · 门店 · 导购</text>
+      <text x="620" y="234" text-anchor="middle" font-size="9" fill="#475569">渠道库存 · 区域层级</text>
+      <text x="620" y="252" text-anchor="middle" font-size="9" fill="#475569">POS交易 · 客流</text>
+      <text x="620" y="268" text-anchor="middle" font-size="8" fill="#8b5cf6">~10³-10⁵</text>
+
+      <line x1="722" y1="225" x2="748" y2="225" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D05 订单 (LTC心脏 - larger) -->
+      <rect x="756" y="175" width="290" height="100" rx="7" fill="#fff" stroke="#ef4444" stroke-width="2" filter="url(#shadowM)"/>
+      <rect x="756" y="175" width="290" height="26" rx="7" fill="#fef2f2"/><rect x="756" y="189" width="290" height="12" fill="#fef2f2"/>
+      <text x="901" y="193" text-anchor="middle" font-size="12" font-weight="800" fill="#b91c1c" font-family="'JetBrains Mono',sans-serif">D05 订单/交易 ★ LTC心脏</text>
+      <text x="901" y="216" text-anchor="middle" font-size="9" fill="#475569">销售订单 · 订单行 · 支付 · 发票 · 购物车</text>
+      <text x="901" y="234" text-anchor="middle" font-size="9" fill="#475569">引用: D01产品 + D02客户 + D03门店</text>
+      <text x="901" y="252" text-anchor="middle" font-size="9" fill="#475569">被消费: D06采购 + D08库存 + D09财务</text>
+      <text x="901" y="268" text-anchor="middle" font-size="8" fill="#ef4444">~10⁵-10⁶/日</text>
+
+      <!-- === Row 2: 供给侧 (Supply Flow) y=306 === -->
+      <rect x="30" y="306" width="1038" height="152" rx="7" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="48" y="326" font-size="10" font-weight="700" fill="#059669" font-family="'JetBrains Mono',sans-serif">供给侧 Supply · LTC中下游</text>
+
+      <!-- D01 产品 -->
+      <rect x="48" y="341" width="145" height="100" rx="7" fill="#fff" stroke="#0891b2" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="48" y="341" width="145" height="26" rx="7" fill="#ecfeff"/><rect x="48" y="355" width="145" height="12" fill="#ecfeff"/>
+      <text x="120" y="359" text-anchor="middle" font-size="12" font-weight="700" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">D01 产品</text>
+      <text x="120" y="384" text-anchor="middle" font-size="8.5" fill="#475569">产品SKU</text>
+      <text x="120" y="400" text-anchor="middle" font-size="8.5" fill="#475569">BOM(EBOM/PBOM</text>
+      <text x="120" y="416" text-anchor="middle" font-size="8.5" fill="#475569">/MBOM)</text>
+      <text x="120" y="434" text-anchor="middle" font-size="7" fill="#0891b2">~10³-10⁴</text>
+
+      <line x1="195" y1="391" x2="219" y2="391" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D06 采购 -->
+      <rect x="227" y="341" width="170" height="100" rx="7" fill="#fff" stroke="#0891b2" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="227" y="341" width="170" height="26" rx="7" fill="#ecfeff"/><rect x="227" y="355" width="170" height="12" fill="#ecfeff"/>
+      <text x="312" y="359" text-anchor="middle" font-size="12" font-weight="700" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">D06 计划/采购</text>
+      <text x="312" y="384" text-anchor="middle" font-size="8.5" fill="#475569">S&amp;OP · MRP</text>
+      <text x="312" y="400" text-anchor="middle" font-size="8.5" fill="#475569">采购PO · ASN</text>
+      <text x="312" y="416" text-anchor="middle" font-size="8.5" fill="#475569">供应商协同</text>
+      <text x="312" y="434" text-anchor="middle" font-size="7" fill="#0891b2">~10³-10⁴ PO/月</text>
+
+      <line x1="399" y1="391" x2="423" y2="391" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D07 制造 -->
+      <rect x="431" y="341" width="170" height="100" rx="7" fill="#fff" stroke="#059669" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="431" y="341" width="170" height="26" rx="7" fill="#ecfdf5"/><rect x="431" y="355" width="170" height="12" fill="#ecfdf5"/>
+      <text x="516" y="359" text-anchor="middle" font-size="12" font-weight="700" fill="#047857" font-family="'JetBrains Mono',sans-serif">D07 生产/质量</text>
+      <text x="516" y="384" text-anchor="middle" font-size="8.5" fill="#475569">生产工单</text>
+      <text x="516" y="400" text-anchor="middle" font-size="8.5" fill="#475569">SMT检测(AOI/SPI)</text>
+      <text x="516" y="416" text-anchor="middle" font-size="8.5" fill="#475569">IMEI追溯(L7)</text>
+      <text x="516" y="434" text-anchor="middle" font-size="7" fill="#059669">~10⁶-10⁷/日</text>
+
+      <line x1="603" y1="391" x2="627" y2="391" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D08 库存 -->
+      <rect x="635" y="341" width="170" height="100" rx="7" fill="#fff" stroke="#0891b2" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="635" y="341" width="170" height="26" rx="7" fill="#ecfeff"/><rect x="635" y="355" width="170" height="12" fill="#ecfeff"/>
+      <text x="720" y="359" text-anchor="middle" font-size="12" font-weight="700" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">D08 库存/物流</text>
+      <text x="720" y="384" text-anchor="middle" font-size="8.5" fill="#475569">6级库存水位</text>
+      <text x="720" y="400" text-anchor="middle" font-size="8.5" fill="#475569">WMS · TMS</text>
+      <text x="720" y="416" text-anchor="middle" font-size="8.5" fill="#475569">POD签收</text>
+      <text x="720" y="434" text-anchor="middle" font-size="7" fill="#0891b2">~10⁴-10⁵/日</text>
+
+      <line x1="807" y1="391" x2="831" y2="391" stroke="#3b82f6" stroke-width="1.2" marker-end="url(#arrowB)"/>
+
+      <!-- D09 财务 -->
+      <rect x="839" y="341" width="110" height="100" rx="7" fill="#fff" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="839" y="341" width="110" height="26" rx="7" fill="#fffbeb"/><rect x="839" y="355" width="110" height="12" fill="#fffbeb"/>
+      <text x="894" y="359" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309" font-family="'JetBrains Mono',sans-serif">D09 财务</text>
+      <text x="894" y="384" text-anchor="middle" font-size="8.5" fill="#475569">应收/应付</text>
+      <text x="894" y="400" text-anchor="middle" font-size="8.5" fill="#475569">总账·成本</text>
+      <text x="894" y="416" text-anchor="middle" font-size="8.5" fill="#475569">多组织多币种</text>
+      <text x="894" y="434" text-anchor="middle" font-size="7" fill="#f59e0b">C3机密</text>
+
+      <line x1="951" y1="391" x2="975" y2="391" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowR)"/>
+
+      <!-- D10 生态 -->
+      <rect x="983" y="341" width="85" height="100" rx="7" fill="#fff" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="983" y="341" width="85" height="26" rx="7" fill="#fffbeb"/><rect x="983" y="355" width="85" height="12" fill="#fffbeb"/>
+      <text x="1025" y="359" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309" font-family="'JetBrains Mono',sans-serif">D10</text>
+      <text x="1025" y="384" text-anchor="middle" font-size="8.5" fill="#475569">IoT</text>
+      <text x="1025" y="400" text-anchor="middle" font-size="8.5" fill="#475569">内容</text>
+      <text x="1025" y="416" text-anchor="middle" font-size="8.5" fill="#475569">开发者</text>
+      <text x="1025" y="434" text-anchor="middle" font-size="7" fill="#f59e0b">~10⁶-10⁷</text>
+
+      <!-- Down arrow: domains → platform -->
+      <line x1="538" y1="458" x2="538" y2="490" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowD)" stroke-dasharray="4,2"/>
+
+      <!-- ================================================================ -->
+      <!-- BAND 2: 数据平台层 (Full Width, Bottom-Left) -->
+      <!-- ================================================================ -->
+      <rect x="14" y="498" width="1068" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="34" y="524" font-size="13" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">数据平台层 Data Platform</text>
+      <text x="34" y="540" font-size="9" fill="#64748b" font-family="'JetBrains Mono',sans-serif">采集 → 集成 → 中台(ODS→DWD→DWS→ADS) → 服务</text>
+
+      <!-- Layer 1: 采集 -->
+      <rect x="34" y="556" width="130" height="42" rx="6" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+      <text x="99" y="582" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8" font-family="'JetBrains Mono',sans-serif">📡 数据采集</text>
+      <rect x="180" y="558" width="110" height="38" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="235" y="582" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">CDC</text>
+      <rect x="302" y="558" width="110" height="38" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="357" y="582" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">Kafka</text>
+      <rect x="424" y="558" width="110" height="38" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="479" y="582" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">SDK/API</text>
+      <text x="990" y="582" text-anchor="end" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono',sans-serif">实时/准实时</text>
+
+      <!-- Arrow 采集→集成 -->
+      <line x1="546" y1="577" x2="574" y2="577" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowR)"/>
+
+      <!-- Layer 2: 集成 -->
+      <rect x="580" y="556" width="170" height="42" rx="6" fill="#cffafe" stroke="#67e8f9" stroke-width="1"/>
+      <text x="665" y="582" text-anchor="middle" font-size="11" font-weight="600" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">⚡ 数据集成总线</text>
+
+      <!-- Arrow 集成→中台 -->
+      <line x1="762" y1="577" x2="790" y2="577" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowR)"/>
+
+      <!-- Layer 3: 数据中台 (ODS→DWD→DWS→ADS) -->
+      <rect x="34" y="614" width="130" height="42" rx="6" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+      <text x="99" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#6d28d9" font-family="'JetBrains Mono',sans-serif">🔄 数据中台</text>
+
+      <rect x="180" y="616" width="130" height="38" rx="5" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+      <text x="245" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8" font-family="'JetBrains Mono',sans-serif">ODS 贴源层</text>
+
+      <line x1="312" y1="635" x2="334" y2="635" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowR)"/>
+
+      <rect x="340" y="616" width="130" height="38" rx="5" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+      <text x="405" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#047857" font-family="'JetBrains Mono',sans-serif">DWD 明细层</text>
+
+      <line x1="472" y1="635" x2="494" y2="635" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowR)"/>
+
+      <rect x="500" y="616" width="130" height="38" rx="5" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+      <text x="565" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#b45309" font-family="'JetBrains Mono',sans-serif">DWS 汇总层</text>
+
+      <line x1="632" y1="635" x2="654" y2="635" stroke="#94a3b8" stroke-width="1" marker-end="url(#arrowR)"/>
+
+      <rect x="660" y="616" width="130" height="38" rx="5" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1"/>
+      <text x="725" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#6d28d9" font-family="'JetBrains Mono',sans-serif">ADS 应用层</text>
+
+      <text x="990" y="640" text-anchor="end" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono',sans-serif">数据建模 · 指标统一 · 血缘追踪</text>
+
+      <!-- Arrow DWS→服务 -->
+      <line x1="802" y1="635" x2="830" y2="635" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#arrowR)"/>
+
+      <!-- Layer 4: 数据服务 -->
+      <rect x="836" y="614" width="130" height="42" rx="6" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1"/>
+      <text x="901" y="640" text-anchor="middle" font-size="11" font-weight="600" fill="#047857" font-family="'JetBrains Mono',sans-serif">🚀 数据服务</text>
+
+      <rect x="180" y="668" width="160" height="36" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="260" y="691" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">API Gateway</text>
+
+      <rect x="355" y="668" width="160" height="36" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="435" y="691" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">消息队列(Kafka)</text>
+
+      <rect x="530" y="668" width="160" height="36" rx="5" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="610" y="691" text-anchor="middle" font-size="11" font-weight="500" fill="#1e293b" font-family="'JetBrains Mono',sans-serif">数据目录门户</text>
+
+      <text x="990" y="691" text-anchor="end" font-size="8" fill="#94a3b8" font-family="'JetBrains Mono',sans-serif">自助发现 · 订阅 · SLA监控</text>
+
+      <!-- Platform → Domains feedback arrow -->
+      <line x1="538" y1="614" x2="538" y2="498" stroke="#059669" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="548" y="560" font-size="8" fill="#059669" font-family="'JetBrains Mono',sans-serif">数据反哺业务</text>
+
+      <!-- ================================================================ -->
+      <!-- RIGHT COLUMN: 数据治理柱 -->
+      <!-- ================================================================ -->
+      <rect x="1096" y="78" width="290" height="660" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      <rect x="1096" y="78" width="290" height="5" rx="3" fill="#8b5cf6"/>
+      <text x="1241" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a" font-family="'JetBrains Mono',sans-serif">数据治理柱</text>
+      <text x="1241" y="124" text-anchor="middle" font-size="9" fill="#64748b" font-family="'JetBrains Mono',sans-serif">Data Governance Pillar</text>
+
+      <!-- 6 governance blocks -->
+      <g font-family="'JetBrains Mono',sans-serif">
+      <rect x="1112" y="138" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="138" width="4" height="80" rx="2" fill="#8b5cf6"/>
+      <text x="1132" y="162" font-size="11" font-weight="600" fill="#0f172a">三级治理组织</text>
+      <text x="1132" y="180" font-size="9" fill="#64748b">数据治理委员会</text>
+      <text x="1132" y="196" font-size="9" fill="#64748b">数据Owner · 数据管家</text>
+
+      <rect x="1112" y="228" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="228" width="4" height="80" rx="2" fill="#3b82f6"/>
+      <text x="1132" y="252" font-size="11" font-weight="600" fill="#0f172a">数据标准体系</text>
+      <text x="1132" y="270" font-size="9" fill="#64748b">主数据编码 · 业务术语</text>
+      <text x="1132" y="286" font-size="9" fill="#64748b">指标口径 · 接口规范</text>
+
+      <rect x="1112" y="318" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="318" width="4" height="80" rx="2" fill="#10b981"/>
+      <text x="1132" y="342" font-size="11" font-weight="600" fill="#0f172a">数据质量管理</text>
+      <text x="1132" y="360" font-size="9" fill="#64748b">五维检核 · 自动监控</text>
+      <text x="1132" y="376" font-size="9" fill="#64748b">问题工单 · 整改闭环</text>
+
+      <rect x="1112" y="408" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="408" width="4" height="80" rx="2" fill="#f59e0b"/>
+      <text x="1132" y="432" font-size="11" font-weight="600" fill="#0f172a">主数据管理 MDM</text>
+      <text x="1132" y="450" font-size="9" fill="#64748b">9类主数据 · 四层架构</text>
+      <text x="1132" y="466" font-size="9" fill="#64748b">创建→分发→订阅→消费</text>
+
+      <rect x="1112" y="498" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="498" width="4" height="80" rx="2" fill="#ec4899"/>
+      <text x="1132" y="522" font-size="11" font-weight="600" fill="#0f172a">元数据管理</text>
+      <text x="1132" y="540" font-size="9" fill="#64748b">技术·业务·操作元数据</text>
+      <text x="1132" y="556" font-size="9" fill="#64748b">字段级血缘 · 影响分析</text>
+
+      <rect x="1112" y="588" width="258" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#shadow)"/>
+      <rect x="1112" y="588" width="4" height="80" rx="2" fill="#ef4444"/>
+      <text x="1132" y="612" font-size="11" font-weight="600" fill="#0f172a">数据安全与隐私</text>
+      <text x="1132" y="630" font-size="9" fill="#64748b">分类分级 C1-C4</text>
+      <text x="1132" y="646" font-size="9" fill="#64748b">PIPL/GDPR · 跨境合规</text>
+      </g>
+
+      <!-- LTC data chain annotation (bottom) -->
+      <rect x="16" y="754" width="1368" height="32" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5"/>
+      <text x="34" y="775" font-size="10" font-weight="600" fill="#475569" font-family="'JetBrains Mono',sans-serif">LTC 核心数据链:</text>
+      <rect x="190" y="762" width="80" height="20" rx="4" fill="#f97316" opacity="0.12"/><text x="230" y="777" text-anchor="middle" font-size="9" fill="#c2410c" font-family="'JetBrains Mono',sans-serif">D04营销</text>
+      <text x="276" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="284" y="762" width="80" height="20" rx="4" fill="#3b82f6" opacity="0.12"/><text x="324" y="777" text-anchor="middle" font-size="9" fill="#1d4ed8" font-family="'JetBrains Mono',sans-serif">D02客户</text>
+      <text x="370" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="378" y="762" width="80" height="20" rx="4" fill="#8b5cf6" opacity="0.12"/><text x="418" y="777" text-anchor="middle" font-size="9" fill="#6d28d9" font-family="'JetBrains Mono',sans-serif">D03渠道</text>
+      <text x="464" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="472" y="762" width="80" height="20" rx="4" fill="#ef4444" opacity="0.12"/><text x="512" y="777" text-anchor="middle" font-size="9" fill="#b91c1c" font-family="'JetBrains Mono',sans-serif">D05订单★</text>
+      <text x="558" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="566" y="762" width="80" height="20" rx="4" fill="#0891b2" opacity="0.12"/><text x="606" y="777" text-anchor="middle" font-size="9" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">D06采购</text>
+      <text x="652" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="660" y="762" width="80" height="20" rx="4" fill="#059669" opacity="0.12"/><text x="700" y="777" text-anchor="middle" font-size="9" fill="#047857" font-family="'JetBrains Mono',sans-serif">D07制造</text>
+      <text x="746" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="754" y="762" width="80" height="20" rx="4" fill="#0891b2" opacity="0.12"/><text x="794" y="777" text-anchor="middle" font-size="9" fill="#0e7490" font-family="'JetBrains Mono',sans-serif">D08库存</text>
+      <text x="840" y="777" font-size="9" fill="#94a3b8">→</text>
+      <rect x="848" y="762" width="80" height="20" rx="4" fill="#f59e0b" opacity="0.12"/><text x="888" y="777" text-anchor="middle" font-size="9" fill="#b45309" font-family="'JetBrains Mono',sans-serif">D09财务→D10</text>
+      <text x="1000" y="777" font-size="9" fill="#64748b">| 十域 · 核心实体 · C1-C4分级 · Owner明确 · 无循环依赖</text>
+
+      <!-- Enterprise boundary -->
+      <rect x="12" y="76" width="1376" height="662" rx="10" fill="none" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="8,4"/>
+    </svg>
+  </div>
+  <div class="cards-row">
+    <div class="info-card"><h3><span class="dot" style="background:#3b82f6;"></span>数据战略驱动</h3><p>一处定义(SSOT)→全局共享(DaaS)→安全合规→智能驱动。数据从"流程副产品"升级为"战略资产"。</p></div>
+    <div class="info-card"><h3><span class="dot" style="background:#ef4444;"></span>LTC数据链</h3><p>需求侧(D04→D02→D03→D05)横向流转，供给侧(D01→D06→D07→D08→D09→D10)承接执行。D05订单为数据心脏。</p></div>
+    <div class="info-card"><h3><span class="dot" style="background:#059669;"></span>数据平台层</h3><p>采集(CDC/Kafka/SDK)→集成总线→中台(ODS→DWD→DWS→ADS)→数据服务(API/消息/目录)。批流一体,实时反哺业务。</p></div>
+    <div class="info-card"><h3><span class="dot" style="background:#8b5cf6;"></span>数据治理柱</h3><p>三级组织·标准体系·五维质量·MDM九类主数据·元数据血缘·C1-C4安全分级。治理=架构+全生命周期。</p></div>
+  </div>
+</div>
+<script>
+async function copyAsImage(b){const o=b.textContent;try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),bl=await new Promise(r=>c.toBlob(r,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':bl})]);b.textContent='✓ Copied!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+async function downloadPNG(b){const o=b.textContent;b.textContent='⏳ ...';try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),a=document.createElement('a');a.download='图3-1_数据架构蓝图.png';a.href=c.toDataURL('image/png');a.click();b.textContent='✓ Done!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+async function downloadPDF(b){const o=b.textContent;b.textContent='⏳ ...';try{const e=document.getElementById('report-container'),r=e.getBoundingClientRect(),p=32,c=await html2canvas(document.body,{backgroundColor:'#f8fafc',scale:2,useCORS:!0,ignoreElements:e=>e.closest&&e.closest('.toolbar'),x:r.left+window.scrollX-p,y:r.top+window.scrollY-p,width:r.width+p*2,height:r.height+p*2}),d=c.toDataURL('image/png'),{jsPDF:j}=window.jspdf,o2=c.width>c.height?'landscape':'portrait',pdf=new j({orientation:o2,unit:'px',format:[c.width,c.height],hotfixes:['px_scaling']});pdf.addImage(d,'PNG',0,0,c.width,c.height);pdf.save('图3-1_数据架构蓝图.pdf');b.textContent='✓ Done!'}catch(e){b.textContent='✗ Failed'}setTimeout(()=>b.textContent=o,2000)}
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图5-1 技术架构总体蓝图</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#f8fafc;font-family:'JetBrains Mono',monospace;padding:24px;color:#1e293b;}
+.container{max-width:1400px;margin:0 auto;}
+.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px;}
+.toolbar button{font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 16px;border:1px solid #e2e8f0;background:#ffffff;border-radius:6px;cursor:pointer;color:#475569;transition:all .15s;}
+.toolbar button:hover{background:#f1f5f9;border-color:#94a3b8;color:#0f172a;}
+.diagram-card{background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.diagram-title{font-size:18px;font-weight:600;color:#0f172a;margin-bottom:16px;text-align:center;letter-spacing:0.5px;}
+svg{width:100%;height:auto;display:block;}
+text{font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="toolbar">
+<button onclick="copySVG()">📋 Copy SVG</button>
+<button onclick="exportPNG()">🖼 Export PNG</button>
+<button onclick="exportPDF()">📄 Export PDF</button>
+</div>
+<div class="diagram-card" id="diagram">
+<div class="diagram-title">技术架构总体蓝图 — Technology Architecture Blueprint</div>
+<svg viewBox="0 0 1300 780" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+  </pattern>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+  </marker>
+  <linearGradient id="top-bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="rgba(59,130,246,0.06)"/>
+    <stop offset="100%" stop-color="rgba(59,130,246,0)"/>
+  </linearGradient>
+</defs>
+<rect width="1300" height="780" fill="url(#top-bg)"/>
+<rect width="1300" height="780" fill="url(#grid)"/>
+
+<!-- Title Banner -->
+<rect x="50" y="16" width="1200" height="42" rx="6" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+<text x="650" y="43" text-anchor="middle" fill="#0f172a" font-size="15" font-weight="700" letter-spacing="1">手机制造企业技术架构总体蓝图 — LTC端到端系统部署全景</text>
+
+<!-- ===== LAYER 1: 技术战略 ===== -->
+<rect x="50" y="76" width="1200" height="52" rx="6" fill="rgba(99,102,241,0.06)" stroke="rgba(99,102,241,0.15)" stroke-width="1"/>
+<text x="80" y="107" fill="#0f172a" font-size="13" font-weight="600">技术战略</text>
+<rect x="200" y="82" width="130" height="36" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+<text x="265" y="104" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">Cloud Native First</text>
+<rect x="350" y="82" width="130" height="36" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+<text x="415" y="104" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">Mobile-First</text>
+<rect x="500" y="82" width="130" height="36" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+<text x="565" y="104" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">AI-Driven</text>
+<rect x="650" y="82" width="150" height="36" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+<text x="725" y="104" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">Security by Design</text>
+<rect x="820" y="82" width="130" height="36" rx="4" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+<text x="885" y="104" text-anchor="middle" fill="#4338ca" font-size="10" font-weight="600">Data-Driven</text>
+<path d="M 650 128 L 650 140" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 2: 三级算力 ===== -->
+<rect x="50" y="148" width="1200" height="160" rx="6" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.12)" stroke-width="1"/>
+<text x="80" y="174" fill="#0f172a" font-size="13" font-weight="600">三级算力部署 — 3-Tier Computing</text>
+
+<!-- Center Cloud -->
+<rect x="80" y="186" width="350" height="110" rx="6" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.18)" stroke-width="1"/>
+<rect x="80" y="186" width="350" height="24" rx="6" fill="rgba(16,185,129,0.1)"/>
+<text x="255" y="202" text-anchor="middle" fill="#065f46" font-size="11" font-weight="600">中心云 — 双AZ架构</text>
+<text x="100" y="226" fill="#475569" font-size="9">LTC系统: CRM / ERP (SAP S/4HANA) / PLM / MES</text>
+<text x="100" y="242" fill="#475569" font-size="9">规格: 5000+ vCPU · 20TB+ 内存 · 100TB+ 分布式存储</text>
+<text x="100" y="258" fill="#475569" font-size="9">双AZ: 主AZ承载交易 · 备AZ实时同步 · AZ级自动切换</text>
+<rect x="100" y="268" width="80" height="20" rx="3" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.25)" stroke-width="0.8"/>
+<text x="140" y="282" text-anchor="middle" fill="#065f46" font-size="8" font-weight="500">核心交易系统</text>
+
+<!-- Regional Cloud -->
+<rect x="460" y="186" width="350" height="110" rx="6" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.18)" stroke-width="1"/>
+<rect x="460" y="186" width="350" height="24" rx="6" fill="rgba(59,130,246,0.1)"/>
+<text x="635" y="202" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="600">区域云 — EU / SEA / LATAM</text>
+<text x="480" y="226" fill="#475569" font-size="9">LTC系统: OMS / WMS / TMS / 海外电商 / 渠道管理</text>
+<text x="480" y="242" fill="#475569" font-size="9">规格: 1000-2000 vCPU/Region · 分布式SQL+对象存储</text>
+<text x="480" y="258" fill="#475569" font-size="9">数据主权: 本地化部署 · GDPR/当地法规遵从</text>
+<rect x="480" y="268" width="100" height="20" rx="3" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.25)" stroke-width="0.8"/>
+<text x="530" y="282" text-anchor="middle" fill="#1e40af" font-size="8" font-weight="500">海外业务系统</text>
+
+<!-- Edge Cloud -->
+<rect x="840" y="186" width="380" height="110" rx="6" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.18)" stroke-width="1"/>
+<rect x="840" y="186" width="380" height="24" rx="6" fill="rgba(245,158,11,0.1)"/>
+<text x="1030" y="202" text-anchor="middle" fill="#92400e" font-size="11" font-weight="600">边缘云 — 智能工厂</text>
+<text x="860" y="226" fill="#475569" font-size="9">LTC系统: 智能产线MES / 质量检测 / 设备运维 (IoT Hub)</text>
+<text x="860" y="242" fill="#475569" font-size="9">规格: 100-500 vCPU/Factory · 本地实时处理<1ms</text>
+<text x="860" y="258" fill="#475569" font-size="9">工厂: 东莞 · 郑州 · 印度 · 巴西 · 越南 (2025)</text>
+<rect x="860" y="268" width="110" height="20" rx="3" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.25)" stroke-width="0.8"/>
+<text x="915" y="282" text-anchor="middle" fill="#92400e" font-size="8" font-weight="500">产线边缘计算</text>
+
+<!-- Arrow down -->
+<path d="M 650 308 L 650 320" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 3: 云原生PaaS ===== -->
+<rect x="50" y="328" width="1200" height="130" rx="6" fill="rgba(139,92,246,0.04)" stroke="rgba(139,92,246,0.12)" stroke-width="1"/>
+<text x="80" y="354" fill="#0f172a" font-size="13" font-weight="600">云原生PaaS平台</text>
+
+<!-- Container -->
+<rect x="80" y="366" width="340" height="80" rx="5" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+<rect x="80" y="366" width="340" height="22" rx="5" fill="rgba(139,92,246,0.1)"/>
+<text x="250" y="381" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">容器平台 — Kubernetes Multi-Cluster</text>
+<text x="100" y="402" fill="#475569" font-size="9">• 中心: K8s 500+Node · 区域: K8s 50-100Node</text>
+<text x="100" y="418" fill="#475569" font-size="9">• 边缘: K3s 10-20Node · Calico + Istio 网络</text>
+<text x="100" y="434" fill="#475569" font-size="9">• 统一控制面 (Rancher / ACK) 多集群管理</text>
+
+<!-- DevOps -->
+<rect x="450" y="366" width="340" height="80" rx="5" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+<rect x="450" y="366" width="340" height="22" rx="5" fill="rgba(139,92,246,0.1)"/>
+<text x="620" y="381" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">DevOps平台 — CI/CD + GitOps</text>
+<text x="470" y="402" fill="#475569" font-size="9">• GitLab + Jenkins + ArgoCD · 流水线 2000+/日</text>
+<text x="470" y="418" fill="#475569" font-size="9">• IaC: Terraform + Crossplane · 环境自动创建</text>
+<text x="470" y="434" fill="#475569" font-size="9">• 灰度发布: 金丝雀 + 蓝绿部署 · 可观测: Prometheus+Grafana</text>
+
+<!-- Microservice -->
+<rect x="820" y="366" width="400" height="80" rx="5" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+<rect x="820" y="366" width="400" height="22" rx="5" fill="rgba(139,92,246,0.1)"/>
+<text x="1020" y="381" text-anchor="middle" fill="#6d28d9" font-size="10" font-weight="600">微服务治理 — Service Mesh</text>
+<text x="840" y="402" fill="#475569" font-size="9">• Istio Service Mesh · 全链路 mTLS 加密通信</text>
+<text x="840" y="418" fill="#475569" font-size="9">• Nacos 注册中心 + Sentinel 流量控制 + Nginx Gateway</text>
+<text x="840" y="434" fill="#475569" font-size="9">• 统一配置中心 (Apollo) · 分布式事务 (Seata)</text>
+
+<!-- Arrow down -->
+<path d="M 650 458 L 650 470" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 4: 安全 ===== -->
+<rect x="50" y="478" width="590" height="130" rx="6" fill="rgba(239,68,68,0.04)" stroke="rgba(239,68,68,0.12)" stroke-width="1"/>
+<text x="80" y="504" fill="#0f172a" font-size="13" font-weight="600">信息安全 — 纵深防御 + 零信任</text>
+
+<rect x="80" y="516" width="170" height="38" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.8"/>
+<text x="165" y="532" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">身份安全</text>
+<text x="165" y="546" text-anchor="middle" fill="#475569" font-size="8">IAM / SSO / MFA</text>
+
+<rect x="260" y="516" width="170" height="38" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.8"/>
+<text x="345" y="532" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">网络安全</text>
+<text x="345" y="546" text-anchor="middle" fill="#475569" font-size="8">WAF/IPS/防火墙</text>
+
+<rect x="440" y="516" width="170" height="38" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.8"/>
+<text x="525" y="532" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">主机安全</text>
+<text x="525" y="546" text-anchor="middle" fill="#475569" font-size="8">HIDS / EDR</text>
+
+<rect x="80" y="560" width="170" height="38" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.8"/>
+<text x="165" y="576" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">应用安全</text>
+<text x="165" y="590" text-anchor="middle" fill="#475569" font-size="8">SAST/DAST/RASP</text>
+
+<rect x="260" y="560" width="170" height="38" rx="4" fill="rgba(239,68,68,0.06)" stroke="rgba(239,68,68,0.15)" stroke-width="0.8"/>
+<text x="345" y="576" text-anchor="middle" fill="#b91c1c" font-size="9" font-weight="600">数据安全</text>
+<text x="345" y="590" text-anchor="middle" fill="#475569" font-size="8">加密/脱敏/DLP</text>
+
+<!-- Zero Trust -->
+<rect x="660" y="478" width="560" height="130" rx="6" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.12)" stroke-width="1"/>
+<text x="690" y="504" fill="#0f172a" font-size="13" font-weight="600">零信任架构 — Zero Trust</text>
+
+<rect x="680" y="516" width="160" height="38" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.8"/>
+<text x="760" y="532" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">身份为中心</text>
+<text x="760" y="546" text-anchor="middle" fill="#475569" font-size="8">零信任网络访问 ZTNA</text>
+
+<rect x="850" y="516" width="160" height="38" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.8"/>
+<text x="930" y="532" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">最小权限</text>
+<text x="930" y="546" text-anchor="middle" fill="#475569" font-size="8">Just-In-Time Access</text>
+
+<rect x="1020" y="516" width="170" height="38" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.8"/>
+<text x="1105" y="532" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">持续验证</text>
+<text x="1105" y="546" text-anchor="middle" fill="#475569" font-size="8">实时信任评估</text>
+
+<rect x="680" y="560" width="200" height="38" rx="4" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="0.8"/>
+<text x="780" y="576" text-anchor="middle" fill="#92400e" font-size="9" font-weight="600">微隔离 Micro-Segmentation</text>
+<text x="780" y="590" text-anchor="middle" fill="#475569" font-size="8">东西向流量全加密</text>
+
+<!-- Arrow down -->
+<path d="M 650 608 L 650 620" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- ===== LAYER 5: 容灾 ===== -->
+<rect x="50" y="628" width="1200" height="100" rx="6" fill="rgba(14,165,233,0.04)" stroke="rgba(14,165,233,0.12)" stroke-width="1"/>
+<text x="80" y="654" fill="#0f172a" font-size="13" font-weight="600">容灾架构 — Disaster Recovery</text>
+
+<rect x="80" y="666" width="500" height="50" rx="5" fill="rgba(14,165,233,0.06)" stroke="rgba(14,165,233,0.15)" stroke-width="1"/>
+<rect x="80" y="666" width="200" height="50" rx="5" fill="rgba(14,165,233,0.12)"/>
+<text x="180" y="693" text-anchor="middle" fill="#0369a1" font-size="11" font-weight="600">同城双活</text>
+<text x="300" y="688" fill="#475569" font-size="9">RPO=0 · RTO&lt;5min</text>
+<text x="300" y="704" fill="#475569" font-size="9">核心交易系统 · 实时数据同步</text>
+
+<rect x="620" y="666" width="500" height="50" rx="5" fill="rgba(14,165,233,0.06)" stroke="rgba(14,165,233,0.15)" stroke-width="1"/>
+<rect x="620" y="666" width="200" height="50" rx="5" fill="rgba(14,165,233,0.12)"/>
+<text x="720" y="693" text-anchor="middle" fill="#0369a1" font-size="11" font-weight="600">异地灾备</text>
+<text x="840" y="688" fill="#475569" font-size="9">RPO&lt;15min · RTO&lt;2h</text>
+<text x="840" y="704" fill="#475569" font-size="9">数据异步复制 · 定期容灾演练</text>
+
+<!-- Legend -->
+<rect x="50" y="742" width="1200" height="30" rx="4" fill="rgba(99,102,241,0.04)" stroke="rgba(99,102,241,0.1)" stroke-width="0.8"/>
+<rect x="80" y="749" width="12" height="12" rx="2" fill="rgba(16,185,129,0.3)"/>
+<text x="98" y="759" fill="#475569" font-size="9">中心云</text>
+<rect x="200" y="749" width="12" height="12" rx="2" fill="rgba(59,130,246,0.3)"/>
+<text x="218" y="759" fill="#475569" font-size="9">区域云</text>
+<rect x="320" y="749" width="12" height="12" rx="2" fill="rgba(245,158,11,0.3)"/>
+<text x="338" y="759" fill="#475569" font-size="9">边缘云</text>
+<rect x="440" y="749" width="12" height="12" rx="2" fill="rgba(139,92,246,0.3)"/>
+<text x="458" y="759" fill="#475569" font-size="9">云原生PaaS</text>
+<rect x="580" y="749" width="12" height="12" rx="2" fill="rgba(239,68,68,0.3)"/>
+<text x="598" y="759" fill="#475569" font-size="9">安全</text>
+<rect x="690" y="749" width="12" height="12" rx="2" fill="rgba(14,165,233,0.3)"/>
+<text x="708" y="759" fill="#475569" font-size="9">容灾</text>
+<text x="820" y="759" fill="#475569" font-size="9">策略: Cloud Native First · Mobile-First · AI-Driven · Security by Design · Data-Driven</text>
+</svg>
+</div>
+</div>
+<script>
+function getSvgElement(){return document.querySelector('#diagram svg');}
+function getCardElement(){return document.getElementById('diagram');}
+function getCloneSvg(){
+  var s=getSvgElement(),c=s.cloneNode(!0);
+  c.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  var r=s.getBoundingClientRect();
+  c.setAttribute('width',r.width);c.setAttribute('height',r.height);
+  return c;
+}
+function copySVG(){
+  var c=getCloneSvg(),x=new XMLSerializer().serializeToString(c);
+  navigator.clipboard.writeText(x).then(function(){alert('SVG copied to clipboard!');});
+}
+function exportPNG(){
+  var card=getCardElement();
+  html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){
+    var a=document.createElement('a');
+    a.download='图5-1_技术架构蓝图.png';
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  });
+}
+function exportPDF(){
+  var card=getCardElement();
+  html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:!0,logging:!1}).then(function(canvas){
+    var imgData=canvas.toDataURL('image/png');
+    var jspdf=window.jspdf.jsPDF;
+    var pdf=new jspdf({orientation:'landscape',unit:'px',format:[canvas.width/2,canvas.height/2]});
+    pdf.addImage(imgData,'PNG',0,0,canvas.width/2,canvas.height/2);
+    pdf.save('图5-1_技术架构蓝图.pdf');
+  });
+}
+</script>
+</body>
+</html>

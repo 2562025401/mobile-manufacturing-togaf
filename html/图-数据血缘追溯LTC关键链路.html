@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>数据血缘追溯 - LTC关键链路</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#F5F5F0;font-family:'Microsoft YaHei',sans-serif;padding:20px}
+.container{max-width:1400px;margin:0 auto}
+h1{text-align:center;color:#2B579A;margin-bottom:8px;font-size:20px}
+.subtitle{text-align:center;color:#666;margin-bottom:20px;font-size:12px}
+</style></head>
+<body>
+<div class="container">
+<h1>数据血缘追溯 — LTC关键链路端到端全景</h1>
+<p class="subtitle">业务活动 → 数据对象(源) → 数据对象(目标) → 系统/表 → 转换逻辑 → 指标消费 | DAMA数据血缘标准</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 850">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#555"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1360" height="850" fill="#F5F5F0"/>
+
+  <!-- Chain 1: 订单创建链 -->
+  <g transform="translate(20, 15)">
+    <rect x="0" y="0" width="1320" height="150" rx="8" fill="#FFF8E1" stroke="#FFB300" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1320" height="26" rx="8" fill="#FFB300"/>
+    <text x="15" y="18" fill="#fff" font-size="11" font-weight="bold">血缘链1: 订单创建链 (LTC阶段: 销售与下单 | SLA: &lt;200ms | 数据Owner: 销售与渠道)</text>
+    <text x="700" y="18" fill="#fff" font-size="9">业务活动: 订单创建与客户确认 → 影响: 直接影响营收和履约</text>
+
+    <!-- Node 1: source -->
+    <rect x="15" y="40" width="185" height="55" rx="5" fill="#FFE082"/>
+    <text x="107" y="60" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">数据源(上游系统)</text>
+    <text x="107" y="76" text-anchor="middle" fill="#555" font-size="8">MDM/customer + MDM/sku</text>
+    <text x="107" y="90" text-anchor="middle" fill="#888" font-size="7.5">客户主数据 + SKU主数据</text>
+
+    <path d="M205,67 L225,67" fill="none" stroke="#E65100" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Node 2: transform -->
+    <rect x="235" y="40" width="200" height="55" rx="5" fill="#FFE082"/>
+    <text x="335" y="60" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">加工/转换(OMS)</text>
+    <text x="335" y="76" text-anchor="middle" fill="#555" font-size="8">客户身份校验→SKU有效性校验</text>
+    <text x="335" y="90" text-anchor="middle" fill="#555" font-size="8">→价格计算→订单号生成→行创建</text>
+
+    <path d="M440,67 L460,67" fill="none" stroke="#E65100" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Node 3: target -->
+    <rect x="470" y="40" width="220" height="55" rx="5" fill="#FF8F00"/>
+    <text x="580" y="56" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">数据目标(下游系统)</text>
+    <text x="580" y="72" text-anchor="middle" fill="#fff" font-size="8">OMS/sales_order + sales_order_line</text>
+    <text x="580" y="88" text-anchor="middle" fill="#FFE082" font-size="7.5">销售订单 + 订单行</text>
+
+    <path d="M695,67 L715,67" fill="none" stroke="#E65100" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Node 4: indicator -->
+    <rect x="725" y="40" width="190" height="55" rx="5" fill="#BF360C"/>
+    <text x="820" y="56" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">指标消费(KPI)</text>
+    <text x="820" y="72" text-anchor="middle" fill="#FFAB91" font-size="8">订单接入成功率指标</text>
+    <text x="820" y="88" text-anchor="middle" fill="#FFAB91" font-size="7.5">T+0小时级 → 数据中台</text>
+
+    <!-- Quality check -->
+    <rect x="930" y="40" width="180" height="55" rx="5" fill="#FFF" stroke="#E65100" stroke-width="1"/>
+    <text x="1020" y="56" text-anchor="middle" fill="#E65100" font-size="8.5" font-weight="bold">质量规则(DQ-SO-01/02)</text>
+    <text x="1020" y="72" text-anchor="middle" fill="#555" font-size="7.5">必填完整率100%</text>
+    <text x="1020" y="88" text-anchor="middle" fill="#555" font-size="7.5">金额偏差=0, SKU有效性100%</text>
+
+    <!-- Downstream chain -->
+    <text x="15" y="130" fill="#E65100" font-size="8.5" font-weight="bold">下游消费: </text>
+    <text x="95" y="130" fill="#555" font-size="8">订单→OMS履约路由 | 订单→APS需求汇总 | 订单→WMS波次拣货 | 订单→ERP应收确认 | 订单→数据中台经营分析</text>
+  </g>
+
+  <!-- Chain 2: 库存预占链 -->
+  <g transform="translate(20, 175)">
+    <rect x="0" y="0" width="1320" height="130" rx="8" fill="#E8F5E9" stroke="#66BB6A" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1320" height="26" rx="8" fill="#66BB6A"/>
+    <text x="15" y="18" fill="#fff" font-size="11" font-weight="bold">血缘链2: 库存预占链 (LTC阶段: 销售与下单 | SLA: &lt;100ms | 数据Owner: 供应链管理)</text>
+    <text x="660" y="18" fill="#fff" font-size="9">业务活动: 信用/库存/合规检查 → 影响: 防止超卖=营收损失+客诉</text>
+
+    <rect x="15" y="38" width="175" height="45" rx="5" fill="#A5D6A7"/><text x="102" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">OMS/sales_order</text><text x="102" y="72" text-anchor="middle" fill="#555" font-size="7.5">已创建订单(待审核)</text>
+    <path d="M195,60 L215,60" fill="none" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="225" y="38" width="195" height="45" rx="5" fill="#A5D6A7"/><text x="322" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">库存中心/atp_query</text><text x="322" y="72" text-anchor="middle" fill="#555" font-size="7.5">可用库存=实物-预占-冻结+在途</text>
+    <path d="M425,60 L445,60" fill="none" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="455" y="38" width="200" height="45" rx="5" fill="#43A047"/><text x="555" y="56" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">库存中心/reservation</text><text x="555" y="72" text-anchor="middle" fill="#C8E6C9" font-size="7.5">预占记录(订单ID+SKU+数量+有效期)</text>
+    <path d="M660,60 L680,60" fill="none" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="690" y="38" width="180" height="45" rx="5" fill="#FFF" stroke="#2E7D32" stroke-width="1"/><text x="780" y="56" text-anchor="middle" fill="#2E7D32" font-size="8" font-weight="bold">质量规则(DQ-INV-01~03)</text><text x="780" y="72" text-anchor="middle" fill="#555" font-size="7.5">ATP准确性/SLA/超卖防护</text>
+
+    <text x="15" y="110" fill="#2E7D32" font-size="8" font-weight="bold">关键控制: </text>
+    <text x="95" y="110" fill="#555" font-size="8">预占幂等(orderId唯一键) | 预占过期自动释放(30min) | 超卖负库存告警 | 库存事件: StockReserved → OMS/WMS/数据平台</text>
+  </g>
+
+  <!-- Chain 3: 签收-应收链 -->
+  <g transform="translate(20, 315)">
+    <rect x="0" y="0" width="1320" height="150" rx="8" fill="#E3F2FD" stroke="#42A5F5" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1320" height="26" rx="8" fill="#42A5F5"/>
+    <text x="15" y="18" fill="#fff" font-size="11" font-weight="bold">血缘链3: 签收→应收链 (LTC阶段: 物流交付→财务回款 | SLA: &lt;30s+&lt;5min | Owner: 财务管理)</text>
+
+    <rect x="15" y="38" width="170" height="45" rx="5" fill="#90CAF9"/><text x="100" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">TMS/delivery_receipt</text><text x="100" y="72" text-anchor="middle" fill="#555" font-size="7.5">签收记录(POD/时间/IMEI)</text>
+    <path d="M190,60 L210,60" fill="none" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="220" y="38" width="185" height="45" rx="5" fill="#90CAF9"/><text x="312" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">OMS(订单状态更新)</text><text x="312" y="72" text-anchor="middle" fill="#555" font-size="7.5">订单状态: 已签收(触发应收)</text>
+    <path d="M410,60 L430,60" fill="none" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="440" y="38" width="200" height="45" rx="5" fill="#1565C0"/><text x="540" y="56" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">ERP/accounts_receivable</text><text x="540" y="72" text-anchor="middle" fill="#BBDEFB" font-size="7.5">应收单(金额=订单×签收-促销补贴)</text>
+    <path d="M645,60 L665,60" fill="none" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="675" y="38" width="185" height="45" rx="5" fill="#1565C0"/><text x="767" y="56" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">ERP(回款核销)</text><text x="767" y="72" text-anchor="middle" fill="#BBDEFB" font-size="7.5">回款匹配→核销→账龄更新</text>
+    <path d="M865,60 L885,60" fill="none" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="895" y="38" width="185" height="45" rx="5" fill="#0D47A1"/><text x="987" y="56" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">数据中台/DSO_indicator</text><text x="987" y="72" text-anchor="middle" fill="#BBDEFB" font-size="7.5">DSO=期末应收/(年营收/365)</text>
+
+    <text x="15" y="110" fill="#1565C0" font-size="8.5" font-weight="bold">关键数据质量阀(DQ-AR-01/02, DQ-PMT-01/02): </text>
+    <text x="310" y="110" fill="#555" font-size="8">应收金额=订单金额×签收确认 三重匹配 | 返利政策版本必须可追溯 | 审计保留10年</text>
+    <text x="15" y="130" fill="#1565C0" font-size="8.5" font-weight="bold">事件链: </text>
+    <text x="80" y="130" fill="#555" font-size="8">OrderDelivered → ReceivableConfirmed → PaymentMatched → RebateSettled</text>
+  </g>
+
+  <!-- Chain 4: IMEI质量追溯 -->
+  <g transform="translate(20, 475)">
+    <rect x="0" y="0" width="1320" height="150" rx="8" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1320" height="26" rx="8" fill="#AB47BC"/>
+    <text x="15" y="18" fill="#fff" font-size="11" font-weight="bold">血缘链4: IMEI质量追溯链 (阶段: 制造→交付→售后 | SLA: 追溯&lt;1s | Owner: 生产制造/客户服务)</text>
+
+    <rect x="15" y="38" width="170" height="45" rx="5" fill="#CE93D8"/><text x="100" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">MES/operation_record</text><text x="100" y="72" text-anchor="middle" fill="#555" font-size="7.5">工序记录+物料批次+人员</text>
+    <path d="M190,60 L210,60" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="220" y="38" width="170" height="45" rx="5" fill="#CE93D8"/><text x="305" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">MES/device_trace</text><text x="305" y="72" text-anchor="middle" fill="#555" font-size="7.5">IMEI←工单+物料批次+测试</text>
+    <path d="M395,60 L415,60" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="425" y="38" width="170" height="45" rx="5" fill="#CE93D8"/><text x="510" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">WMS(出库IMEI绑定)</text><text x="510" y="72" text-anchor="middle" fill="#555" font-size="7.5">IMEI+渠道码→出库单</text>
+    <path d="M600,60 L620,60" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="630" y="38" width="170" height="45" rx="5" fill="#CE93D8"/><text x="715" y="56" text-anchor="middle" fill="#333" font-size="8.5" font-weight="bold">售后/repair_order</text><text x="715" y="72" text-anchor="middle" fill="#555" font-size="7.5">故障代码+维修记录</text>
+    <path d="M805,60 L825,60" fill="none" stroke="#6A1B9A" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="835" y="38" width="195" height="45" rx="5" fill="#6A1B9A"/><text x="932" y="56" text-anchor="middle" fill="#fff" font-size="8.5" font-weight="bold">QMS/CAPA+PLM/ECN</text><text x="932" y="72" text-anchor="middle" fill="#E1BEE7" font-size="7.5">质量回流→设计/工艺改进</text>
+
+    <text x="15" y="110" fill="#6A1B9A" font-size="8.5" font-weight="bold">全生命周期追溯(DQ-MFG-01, DQ-SRV-01, DQ-QA-01): </text>
+    <text x="260" y="110" fill="#555" font-size="8">IMEI全局唯一 | 绑定完整率≥99.9% | 工单→批次→检测→渠道→激活→维修→CAPA 完整闭环</text>
+    <text x="15" y="130" fill="#6A1B9A" font-size="8.5" font-weight="bold">事件链: </text>
+    <text x="80" y="130" fill="#555" font-size="8">IMEIBound → OrderShipped → ServiceTicketCreated → RepairCompleted → CAPACreated → ECNChanged</text>
+  </g>
+
+  <!-- Summary section -->
+  <g transform="translate(20, 640)">
+    <rect x="0" y="0" width="1320" height="75" rx="6" fill="#37474F"/>
+    <text x="660" y="20" text-anchor="middle" fill="#FFD54F" font-size="11" font-weight="bold">数据血缘追溯体系 — 覆盖4条LTC关键链路, 18个血缘节点, 24+质量规则, 10个消费指标</text>
+    <text x="40" y="44" fill="#B0BEC5" font-size="9">血缘层级: L1-业务活动(触发者) → L2-数据对象(产生/消费) → L3-系统/表(物理位置) → L4-指标(业务价值)</text>
+    <text x="40" y="62" fill="#B0BEC5" font-size="9">质量门禁: 完整性(必填100%) / 准确性(金额偏差=0) / 及时性(SLA内) / 唯一性(编码全局唯一) / 一致性(跨系统对账) / 可追溯(血缘100%)</text>
+  </g>
+
+  <!-- Data quality dashboard -->
+  <g transform="translate(20, 725)">
+    <rect x="0" y="0" width="1320" height="55" rx="6" fill="#ECEFF1"/>
+    <text x="660" y="18" text-anchor="middle" fill="#2B579A" font-size="10" font-weight="bold">数据质量仪表板 — DAMA 6维度 × 核心数据对象</text>
+    <text x="40" y="38" fill="#555" font-size="8.5">产品: 完整100%/唯一100%/一致99.9% | SKU: 完整100%/有效100% | BOM: 准确99.5%/及时99%</text>
+    <text x="40" y="50" fill="#555" font-size="8.5">订单: 完整100%/一致100%/及时99.5% | 库存: 准确99.5%/及时99.9% | 应收: 准确99.9%/及时99.5% | IMEI: 完整99.9%/唯一100%</text>
+  </g>
+</svg>
+</div>
+</body>
+</html>
