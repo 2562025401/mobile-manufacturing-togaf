@@ -1,0 +1,2213 @@
+model_type: SCENARIO
+version: '1.0'
+domain: 手机制造行业企业架构-业务域元模型
+use_cases:
+- id: UC-H2R-01
+  name: H2R-招聘到退休
+  domain: 端到端场景
+  description: 场景定位：人力资源域主导的端到端，覆盖招聘需求 → 筛选 → Offer → 入职 → 合同 → 薪酬绩效 → 发展 → 异动/离职。跨域：人力资源域为主，衔接财务域（薪酬/报销）、战略经营域（编制/人才）。
+  actors:
+  - 用人部门
+  - HR/用人
+  - 面试官
+  - HR
+  - HR/员工
+  - 薪酬
+  - 上级/员工
+  - 培训
+  - HR/管理
+  - HR/IT
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 招聘需求提交
+    behaviorRef: null
+    stage: 招聘
+    readObjects:
+    - AGG-HR-001
+    writeObjects:
+    - AGG-HR-009
+    role: 用人部门
+    supportApp: 招聘系统
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 简历筛选
+    behaviorRef: BEH-HR-002
+    stage: 筛选
+    readObjects: []
+    writeObjects: []
+    role: HR/用人
+    supportApp: 招聘系统
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 面试与评估
+    behaviorRef: BEH-HR-003
+    stage: 面试
+    readObjects: []
+    writeObjects: []
+    role: 面试官
+    supportApp: 招聘系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 发Offer
+    behaviorRef: BEH-HR-004
+    stage: Offer
+    readObjects: []
+    writeObjects: []
+    role: HR
+    supportApp: 招聘/HRIS
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 入职办理
+    behaviorRef: BEH-HR-005
+    stage: 入职
+    readObjects:
+    - AGG-HR-003
+    writeObjects:
+    - AGG-HR-007
+    - AGG-HR-013
+    role: HR
+    supportApp: HRIS
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 合同签署/续签
+    behaviorRef: BEH-HR-006
+    stage: 合同
+    readObjects: []
+    writeObjects:
+    - AGG-HR-013
+    role: HR/员工
+    supportApp: HRIS
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 薪酬核算
+    behaviorRef: BEH-HR-009
+    stage: 薪酬
+    readObjects:
+    - AGG-HR-018
+    writeObjects: []
+    role: 薪酬
+    supportApp: 薪酬系统
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 绩效评估
+    behaviorRef: BEH-HR-011
+    stage: 绩效
+    readObjects:
+    - AGG-HR-017
+    writeObjects:
+    - AGG-HR-017
+    role: 上级/员工
+    supportApp: 绩效系统
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 培训实施
+    behaviorRef: BEH-HR-012
+    stage: 发展
+    readObjects:
+    - AGG-HR-019
+    writeObjects: []
+    role: 培训
+    supportApp: 培训系统
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 内部调动
+    behaviorRef: BEH-HR-016
+    stage: 异动
+    readObjects:
+    - AGG-HR-001
+    writeObjects:
+    - AGG-HR-026
+    - AGG-HR-007
+    role: HR
+    supportApp: HRIS
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 人才盘点
+    behaviorRef: BEH-HR-018
+    stage: 人才
+    readObjects: []
+    writeObjects: []
+    role: HR/管理
+    supportApp: 人才系统
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 离职办理
+    behaviorRef: BEH-HR-017
+    stage: 离职
+    readObjects:
+    - AGG-HR-026
+    writeObjects: []
+    role: HR/IT
+    supportApp: HRIS
+    nextSteps:
+    - S13
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-I2R-01
+  name: I2R-问题到解决
+  domain: 端到端场景
+  description: 场景定位：售后服务域主导的端到端，覆盖服务请求 → 派单 → 诊断 → 维修/退换 → 满意度 → 结算。跨域：售后服务域为主，衔接市场营销域（客户）、供应链域（备件）、财务域（费用）。
+  actors:
+  - 客服
+  - 客服/工程师
+  - 调度
+  - 备件/网点
+  - 工程师
+  - 售后
+  - 客关
+  - 售后/销售
+  - 系统/客户
+  - 财务/售后
+  - 调度/管理
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 服务请求接入
+    behaviorRef: null
+    stage: 接入
+    readObjects:
+    - AGG-MKT-001
+    writeObjects:
+    - AGG-AFT-001
+    - AGG-MAN-015
+    role: 客服
+    supportApp: 售后系统
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 故障定性与编码
+    behaviorRef: null
+    stage: 诊断
+    readObjects: []
+    writeObjects:
+    - AGG-MAN-015
+    role: 客服/工程师
+    supportApp: 售后系统
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 工单派单
+    behaviorRef: BEH-AFT-003
+    stage: 调度
+    readObjects:
+    - AGG-AFT-010
+    - AGG-AFT-011
+    writeObjects:
+    - AGG-AFT-002
+    role: 调度
+    supportApp: 售后系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 备件申领/调拨
+    behaviorRef: BEH-AFT-006
+    stage: 备件
+    readObjects: []
+    writeObjects: []
+    role: 备件/网点
+    supportApp: 备件WMS
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 维修执行
+    behaviorRef: BEH-AFT-008
+    stage: 维修
+    readObjects:
+    - AGG-MAN-015
+    writeObjects:
+    - AGG-AFT-003
+    role: 工程师
+    supportApp: 售后系统
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 退换货处理
+    behaviorRef: BEH-AFT-009
+    stage: 退换
+    readObjects:
+    - AGG-MAN-015
+    writeObjects:
+    - AGG-AFT-004
+    role: 售后
+    supportApp: 售后系统/OMS
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 客户投诉处理
+    behaviorRef: BEH-AFT-010
+    stage: 投诉
+    readObjects:
+    - AGG-MAN-015
+    writeObjects:
+    - AGG-AFT-012
+    role: 客关
+    supportApp: 投诉系统
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 增值服务开通
+    behaviorRef: BEH-AFT-011
+    stage: 增值
+    readObjects: []
+    writeObjects: []
+    role: 售后/销售
+    supportApp: 售后系统
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 满意度回收
+    behaviorRef: BEH-AFT-014
+    stage: 评价
+    readObjects: []
+    writeObjects: []
+    role: 系统/客户
+    supportApp: 售后系统
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 知识沉淀
+    behaviorRef: BEH-AFT-015
+    stage: 知识
+    readObjects: []
+    writeObjects:
+    - AGG-AFT-017
+    role: 工程师
+    supportApp: 知识库
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 服务费用核算
+    behaviorRef: BEH-AFT-017
+    stage: 结算
+    readObjects:
+    - AGG-MAN-015
+    - AGG-AFT-003
+    writeObjects: []
+    role: 财务/售后
+    supportApp: 售后/财务
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: SLA超时升级
+    behaviorRef: null
+    stage: 监控
+    readObjects:
+    - AGG-AFT-019
+    - AGG-MAN-015
+    writeObjects: []
+    role: 调度/管理
+    supportApp: 售后系统
+    nextSteps:
+    - S13
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-IPD-01
+  name: IPD-创意到上市
+  domain: 端到端场景
+  description: 场景定位：产品研发域主导的端到端，覆盖创意 → 概念 → 计划 → 开发 → 验证 → 发布 → 生命周期。跨域：产品研发域为主，衔接战略经营域（战略对齐）、供应链域（BOM/量产）、生产制造域（工艺）。
+  actors:
+  - 全员/产品
+  - 产品委员会
+  - 产品管理
+  - 产品/需求
+  - 设计
+  - 硬件
+  - 项目经理
+  - 评审组
+  - 研发/工艺
+  - 测试
+  - 研发
+  - 工艺/制造
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 创意提交
+    behaviorRef: null
+    stage: 创意
+    readObjects: []
+    writeObjects:
+    - AGG-RND-008
+    role: 全员/产品
+    supportApp: PLM
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 创意评审
+    behaviorRef: null
+    stage: 创意评审
+    readObjects:
+    - AGG-STR-001
+    writeObjects: []
+    role: 产品委员会
+    supportApp: PLM
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 产品立项
+    behaviorRef: BEH-RND-002
+    stage: 立项
+    readObjects:
+    - AGG-STR-001
+    - AGG-MKT-009
+    writeObjects:
+    - AGG-RND-009
+    role: 产品管理
+    supportApp: PLM
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 需求收集与评审
+    behaviorRef: null
+    stage: 需求
+    readObjects: []
+    writeObjects:
+    - AGG-RND-008
+    role: 产品/需求
+    supportApp: PLM
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 概念设计
+    behaviorRef: null
+    stage: 概念
+    readObjects:
+    - AGG-RND-008
+    writeObjects:
+    - AGG-RND-010
+    - AGG-RND-011
+    role: 设计
+    supportApp: PLM/CAD
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 器件选型与认证
+    behaviorRef: BEH-RND-005
+    stage: 器件
+    readObjects:
+    - AGG-RND-010
+    writeObjects:
+    - AGG-RND-012
+    role: 硬件
+    supportApp: PLM
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 计划制定
+    behaviorRef: BEH-HR-010
+    stage: 计划
+    readObjects:
+    - AGG-RND-009
+    writeObjects: []
+    role: 项目经理
+    supportApp: PLM
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 详细设计与BOM
+    behaviorRef: null
+    stage: 开发
+    readObjects: []
+    writeObjects:
+    - AGG-RND-005
+    role: 设计
+    supportApp: PLM
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 阶段评审(DCP/TR)
+    behaviorRef: BEH-RND-014
+    stage: 评审门
+    readObjects: []
+    writeObjects:
+    - AGG-RND-023
+    role: 评审组
+    supportApp: PLM
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 试制(EVT/DVT/PVT)
+    behaviorRef: null
+    stage: 验证
+    readObjects: []
+    writeObjects: []
+    role: 研发/工艺
+    supportApp: PLM/MES
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 测试验证
+    behaviorRef: null
+    stage: 验证
+    readObjects: []
+    writeObjects:
+    - AGG-RND-014
+    role: 测试
+    supportApp: PLM/测试系统
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 工程变更(ECO)
+    behaviorRef: null
+    stage: 变更
+    readObjects: []
+    writeObjects:
+    - AGG-RND-016
+    role: 研发
+    supportApp: PLM
+    nextSteps:
+    - S13
+  - stepId: S13
+    stepType: BEHAVIOR_CALL
+    action: 量产工艺准备
+    behaviorRef: null
+    stage: 转产
+    readObjects: []
+    writeObjects:
+    - AGG-MAN-005
+    role: 工艺/制造
+    supportApp: MES/PLM
+    nextSteps:
+    - S14
+  - stepId: S14
+    stepType: BEHAVIOR_CALL
+    action: 产品发布(GA)
+    behaviorRef: BEH-RND-024
+    stage: 发布
+    readObjects: []
+    writeObjects: []
+    role: 产品管理
+    supportApp: PLM/MDM
+    nextSteps:
+    - S15
+  - stepId: S15
+    stepType: BEHAVIOR_CALL
+    action: 生命周期管理
+    behaviorRef: null
+    stage: 生命周期
+    readObjects: []
+    writeObjects: []
+    role: 产品管理
+    supportApp: PLM
+    nextSteps:
+    - S16
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-ISC-01
+  name: ISC-计划到交付
+  domain: 端到端场景
+  description: 场景定位：供应链域主导的端到端（独立于 LTC 销售侧），覆盖需求 → S&OP → MPS → MRP → 采购/生产 → 入库 → 发运。跨域：供应链域（计划/采购/物流）+ 生产制造域 + 财务域（成本）。
+  actors:
+  - 计划
+  - 供应链/财务
+  - 计划员
+  - 采购
+  - 供应商
+  - 收货/质检
+  - 仓管
+  - 计划/制造
+  - 产线
+  - 制造/仓管
+  - 物流
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 需求预测生成
+    behaviorRef: null
+    stage: 需求
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-006
+    role: 计划
+    supportApp: APS
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: S&OP平衡
+    behaviorRef: BEH-SUP-006
+    stage: S&OP
+    readObjects:
+    - AGG-SUP-006
+    writeObjects: []
+    role: 供应链/财务
+    supportApp: APS/BI
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 主生产计划(MPS)生成
+    behaviorRef: null
+    stage: 计划
+    readObjects:
+    - AGG-SUP-006
+    writeObjects:
+    - AGG-SUP-008
+    role: 计划
+    supportApp: APS
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 物料需求计划(MRP)运行
+    behaviorRef: null
+    stage: 计划
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-009
+    role: 计划
+    supportApp: APS/ERP
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 采购申请
+    behaviorRef: BEH-SUP-011
+    stage: 采购需求
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-014
+    role: 计划员
+    supportApp: ERP
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 采购订单生成与发布
+    behaviorRef: null
+    stage: 采购
+    readObjects:
+    - AGG-SUP-014
+    - AGG-SUP-012
+    writeObjects:
+    - AGG-SUP-019
+    role: 采购
+    supportApp: SRM/ERP
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 供应商交期确认
+    behaviorRef: null
+    stage: 采购
+    readObjects:
+    - AGG-SUP-019
+    writeObjects: []
+    role: 供应商
+    supportApp: SRM
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 收货与质检
+    behaviorRef: null
+    stage: 收货
+    readObjects:
+    - AGG-SUP-019
+    writeObjects: []
+    role: 收货/质检
+    supportApp: WMS/QMS
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 入库上架
+    behaviorRef: null
+    stage: 入库
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-029
+    role: 仓管
+    supportApp: WMS
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 生产工单下达
+    behaviorRef: null
+    stage: 生产
+    readObjects: []
+    writeObjects:
+    - AGG-MAN-014
+    - AGG-MAN-015
+    role: 计划/制造
+    supportApp: MES
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 工序报工与流转
+    behaviorRef: BEH-MAN-010
+    stage: 制造
+    readObjects:
+    - AGG-MAN-015
+    writeObjects:
+    - AGG-MAN-019
+    role: 产线
+    supportApp: MES
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 成品入库
+    behaviorRef: BEH-MAN-018
+    stage: 入库
+    readObjects: []
+    writeObjects:
+    - AGG-MAN-029
+    - AGG-SUP-029
+    role: 制造/仓管
+    supportApp: MES/WMS
+    nextSteps:
+    - S13
+  - stepId: S13
+    stepType: BEHAVIOR_CALL
+    action: 订单发运交付
+    behaviorRef: null
+    stage: 发运
+    readObjects:
+    - AGG-MKT-008
+    writeObjects:
+    - AGG-SUP-033
+    role: 物流
+    supportApp: TMS/WMS
+    nextSteps:
+    - S14
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-01
+  name: LTC-交付到开票
+  domain: 端到端场景
+  description: 场景定位：LTC 第六程，覆盖交付确认 → 应收确认 → 开票申请 → 销售发票开具 → 收入确认。跨域：市场营销域（交付）+ 财务域（应收/发票/收入）。
+  actors:
+  - 财务/订单
+  - 财务AR
+  - 财务/商务
+  - 系统
+  - 财务
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 交付确认回写
+    behaviorRef: null
+    stage: 交付确认
+    readObjects:
+    - AGG-MKT-008
+    writeObjects: []
+    role: 财务/订单
+    supportApp: OMS/ERP
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 应收确认
+    behaviorRef: BEH-FIN-002
+    stage: 应收
+    readObjects:
+    - AGG-MKT-008
+    writeObjects:
+    - AGG-FIN-007
+    role: 财务AR
+    supportApp: ERP/AR
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 开票申请
+    behaviorRef: null
+    stage: 开票申请
+    readObjects:
+    - AGG-FIN-007
+    writeObjects: []
+    role: 财务/商务
+    supportApp: 开票系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 开票数据校验
+    behaviorRef: null
+    stage: 开票校验
+    readObjects:
+    - AGG-MKT-001
+    writeObjects: []
+    role: 系统
+    supportApp: 开票系统
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 开具销售发票
+    behaviorRef: null
+    stage: 开票
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-008
+    role: 财务
+    supportApp: 开票系统/ERP
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 发票交付客户
+    behaviorRef: null
+    stage: 发票交付
+    readObjects:
+    - AGG-FIN-008
+    writeObjects: []
+    role: 财务/商务
+    supportApp: 开票系统/邮件
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 发票红冲（退回时）
+    behaviorRef: null
+    stage: 红冲
+    readObjects:
+    - AGG-FIN-008
+    writeObjects: []
+    role: 财务
+    supportApp: 开票系统
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 收入确认记账
+    behaviorRef: null
+    stage: 收入
+    readObjects:
+    - AGG-FIN-008
+    writeObjects:
+    - AGG-FIN-006
+    role: 财务
+    supportApp: ERP财务
+    nextSteps:
+    - S09
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-02
+  name: LTC-合同到订单
+  domain: 端到端场景
+  description: 场景定位：LTC 第四程，覆盖合同转化 → 销售订单创建 → 校验审批 → 确认。跨域：市场营销域（销售）→ 供应链域（库存/计划）→ 财务域（信用/价格）。
+  actors:
+  - 销售/订单
+  - 订单
+  - 系统
+  - 财务/信用
+  - 销售管理
+  - 销售/客服
+  - 订单/计划
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 合同转销售订单
+    behaviorRef: null
+    stage: 订单创建
+    readObjects:
+    - AGG-RND-003
+    writeObjects:
+    - AGG-MKT-008
+    role: 销售/订单
+    supportApp: OMS/CRM
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 订单行项目生成
+    behaviorRef: null
+    stage: 订单明细
+    readObjects:
+    - AGG-RND-005
+    - AGG-RND-003
+    writeObjects: []
+    role: 订单
+    supportApp: OMS
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 库存可用性检查
+    behaviorRef: null
+    stage: 可用性校验
+    readObjects:
+    - AGG-SUP-029
+    writeObjects: []
+    role: 系统
+    supportApp: OMS/WMS
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 价格与促销校验
+    behaviorRef: null
+    stage: 价格校验
+    readObjects: []
+    writeObjects: []
+    role: 系统
+    supportApp: OMS/促销引擎
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 客户信用额度检查
+    behaviorRef: null
+    stage: 信用校验
+    readObjects: []
+    writeObjects: []
+    role: 财务/信用
+    supportApp: CRM/ERP
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 订单审批
+    behaviorRef: null
+    stage: 订单审批
+    readObjects: []
+    writeObjects: []
+    role: 销售管理
+    supportApp: OA/OMS
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 订单确认通知客户
+    behaviorRef: null
+    stage: 订单确认
+    readObjects:
+    - AGG-MKT-008
+    writeObjects: []
+    role: 销售/客服
+    supportApp: OMS/CRM
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 订单下发履约
+    behaviorRef: null
+    stage: 履约下发
+    readObjects: []
+    writeObjects: []
+    role: 订单/计划
+    supportApp: OMS
+    nextSteps:
+    - S09
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-03
+  name: LTC-商机到报价
+  domain: 端到端场景
+  description: 场景定位：LTC 第二程，覆盖商机推进 → 需求确认 → 方案配置 → 报价生成。跨域：市场营销域（销售）+ 产品研发域（产品/SKU/价格）。
+  actors:
+  - 销售
+  - 销售/售前
+  - 售前
+  - 售前/商务
+  - 销售管理
+  - 商务
+  - 系统
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 商机跟进记录
+    behaviorRef: null
+    stage: 商机推进
+    readObjects:
+    - AGG-MKT-003
+    writeObjects:
+    - AGG-MKT-027
+    role: 销售
+    supportApp: CRM
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 客户需求确认
+    behaviorRef: null
+    stage: 需求确认
+    readObjects:
+    - AGG-MKT-003
+    writeObjects: []
+    role: 销售/售前
+    supportApp: CRM
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 产品/配置选型
+    behaviorRef: null
+    stage: 方案配置
+    readObjects:
+    - AGG-RND-002
+    - AGG-RND-003
+    writeObjects: []
+    role: 售前
+    supportApp: CRM/PLM
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 价格测算
+    behaviorRef: null
+    stage: 报价测算
+    readObjects: []
+    writeObjects: []
+    role: 售前/商务
+    supportApp: CRM/定价系统
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 折扣/特价审批
+    behaviorRef: null
+    stage: 价格审批
+    readObjects: []
+    writeObjects: []
+    role: 销售管理
+    supportApp: OA/CRM
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 生成正式报价单
+    behaviorRef: null
+    stage: 报价生成
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-006
+    role: 商务
+    supportApp: CRM/CPQ
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 报价单发送客户
+    behaviorRef: null
+    stage: 报价发送
+    readObjects:
+    - AGG-MKT-006
+    writeObjects: []
+    role: 销售
+    supportApp: CRM/邮件
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 竞品/对手方案对比
+    behaviorRef: null
+    stage: 竞争分析
+    readObjects: []
+    writeObjects: []
+    role: 售前
+    supportApp: BI
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 商务谈判记录
+    behaviorRef: null
+    stage: 谈判
+    readObjects:
+    - AGG-MKT-006
+    writeObjects:
+    - AGG-MKT-027
+    role: 销售
+    supportApp: CRM
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 报价有效期刷新
+    behaviorRef: null
+    stage: 报价管理
+    readObjects:
+    - AGG-MKT-006
+    writeObjects: []
+    role: 系统
+    supportApp: CRM
+    nextSteps:
+    - S11
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-04
+  name: LTC-开票到回款
+  domain: 端到端场景
+  description: 场景定位：LTC 第七程（终点），覆盖账期管理 → 对账 → 收款 → 核销 → 催收/坏账。跨域：财务域（应收/资金）为主，衔接市场营销域（客户账务）。
+  actors:
+  - 财务AR
+  - 财务/商务
+  - 出纳/资金
+  - 信用/销售
+  - 资金
+  - 财务
+  - 财务/管理
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 应收账龄计算
+    behaviorRef: null
+    stage: 账期管理
+    readObjects:
+    - AGG-FIN-007
+    - AGG-FIN-011
+    writeObjects: []
+    role: 财务AR
+    supportApp: ERP/AR
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 对账单发送客户
+    behaviorRef: null
+    stage: 对账
+    readObjects:
+    - AGG-FIN-007
+    writeObjects: []
+    role: 财务/商务
+    supportApp: ERP/邮件
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 客户付款到账
+    behaviorRef: null
+    stage: 收款
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-011
+    role: 出纳/资金
+    supportApp: 资金系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 收款核销应收
+    behaviorRef: BEH-FIN-005
+    stage: 核销
+    readObjects:
+    - AGG-FIN-011
+    - AGG-FIN-007
+    writeObjects:
+    - AGG-FIN-007
+    role: 财务AR
+    supportApp: ERP/AR
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 逾期催收
+    behaviorRef: null
+    stage: 催收
+    readObjects: []
+    writeObjects: []
+    role: 信用/销售
+    supportApp: CRM/AR
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 票据/信用证处理
+    behaviorRef: null
+    stage: 票据
+    readObjects:
+    - AGG-FIN-011
+    writeObjects: []
+    role: 资金
+    supportApp: 资金系统
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 坏账计提
+    behaviorRef: null
+    stage: 坏账
+    readObjects: []
+    writeObjects: []
+    role: 财务
+    supportApp: ERP财务
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 回款分析
+    behaviorRef: null
+    stage: 分析
+    readObjects:
+    - AGG-FIN-011
+    - AGG-FIN-007
+    writeObjects: []
+    role: 财务/管理
+    supportApp: BI
+    nextSteps:
+    - S09
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-05
+  name: LTC-报价到合同
+  domain: 端到端场景
+  description: 场景定位：LTC 第三程，覆盖商务谈判 → 合同条款 → 合同评审 → 签署。跨域：市场营销域（销售/商务）+ 财务域（信用/税务）+ 法务（合规）。
+  actors:
+  - 商务/法务
+  - 法务
+  - 财务/风控
+  - 管理层
+  - 商务/印章
+  - 档案/商务
+  - 销售
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 合同条款起草
+    behaviorRef: null
+    stage: 合同起草
+    readObjects:
+    - AGG-MKT-006
+    writeObjects: []
+    role: 商务/法务
+    supportApp: 合同系统
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 法务合规评审
+    behaviorRef: null
+    stage: 合同评审
+    readObjects: []
+    writeObjects: []
+    role: 法务
+    supportApp: 合同系统
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 信用与风险审查
+    behaviorRef: null
+    stage: 信用审查
+    readObjects:
+    - AGG-MKT-001
+    writeObjects: []
+    role: 财务/风控
+    supportApp: CRM/风险系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 合同内部审批
+    behaviorRef: null
+    stage: 合同审批
+    readObjects: []
+    writeObjects: []
+    role: 管理层
+    supportApp: OA/合同系统
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 合同用印/签署
+    behaviorRef: null
+    stage: 合同签署
+    readObjects: []
+    writeObjects: []
+    role: 商务/印章
+    supportApp: 合同系统/电子签
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 合同归档
+    behaviorRef: null
+    stage: 合同归档
+    readObjects: []
+    writeObjects: []
+    role: 档案/商务
+    supportApp: 合同系统
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 商机赢单更新
+    behaviorRef: null
+    stage: 商机关闭
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-003
+    role: 销售
+    supportApp: CRM
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 合同变更/增补
+    behaviorRef: null
+    stage: 合同变更
+    readObjects: []
+    writeObjects: []
+    role: 商务/法务
+    supportApp: 合同系统
+    nextSteps:
+    - S09
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-06
+  name: LTC-线索到商机
+  domain: 端到端场景
+  description: 场景定位：LTC（线索到回款）第一程，覆盖营销获客 → 线索培育 → 商机创建。跨域：市场营销域为主，衔接战略经营域（目标）与客户主数据。
+  actors:
+  - 市场/销售
+  - 系统/数据管理
+  - 算法/营销
+  - 营销
+  - 营销自动化
+  - 销售/客服
+  - 销售/数据
+  - 系统/销售
+  - 销售
+  - 销售管理
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 录入/获取线索
+    behaviorRef: null
+    stage: 营销获客
+    readObjects:
+    - AGG-MKT-009
+    - AGG-MKT-010
+    writeObjects:
+    - AGG-MKT-002
+    role: 市场/销售
+    supportApp: CRM/MA/广告平台
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 线索查重与合并
+    behaviorRef: null
+    stage: 线索清洗
+    readObjects:
+    - AGG-MKT-001
+    - AGG-MKT-002
+    writeObjects:
+    - AGG-MKT-002
+    role: 系统/数据管理
+    supportApp: CRM/MDM
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 线索评分计算
+    behaviorRef: BEH-MKT-003
+    stage: 线索评分
+    readObjects:
+    - AGG-MKT-004
+    writeObjects:
+    - AGG-MKT-002
+    role: 算法/营销
+    supportApp: CDP/MA
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 线索分层打标
+    behaviorRef: null
+    stage: 线索分层
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-004
+    role: 营销
+    supportApp: CDP
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 培育触达-邮件
+    behaviorRef: null
+    stage: 线索培育
+    readObjects:
+    - AGG-MKT-011
+    writeObjects:
+    - AGG-MKT-026
+    role: 营销自动化
+    supportApp: MA
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 培育触达-短信/电话
+    behaviorRef: null
+    stage: 线索培育
+    readObjects:
+    - AGG-MKT-011
+    writeObjects:
+    - AGG-MKT-026
+    role: 销售/客服
+    supportApp: MA/CRM
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 培育响应跟踪
+    behaviorRef: null
+    stage: 培育反馈
+    readObjects:
+    - AGG-MKT-026
+    writeObjects:
+    - AGG-MKT-002
+    role: 营销
+    supportApp: MA
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 客户主数据补全
+    behaviorRef: null
+    stage: 客户建档
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-001
+    role: 销售/数据
+    supportApp: CRM/MDM
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 线索转商机判定
+    behaviorRef: null
+    stage: 转化判定
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-003
+    role: 系统/销售
+    supportApp: CRM
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 商机基础信息创建
+    behaviorRef: null
+    stage: 商机创建
+    readObjects:
+    - AGG-MKT-001
+    writeObjects:
+    - AGG-MKT-003
+    role: 销售
+    supportApp: CRM
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 商机分配销售负责人
+    behaviorRef: null
+    stage: 商机分派
+    readObjects:
+    - AGG-MKT-003
+    writeObjects:
+    - AGG-MKT-003
+    role: 销售管理
+    supportApp: CRM
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 线索无效关闭
+    behaviorRef: null
+    stage: 线索关闭
+    readObjects:
+    - AGG-MKT-002
+    writeObjects:
+    - AGG-MKT-002
+    role: 销售
+    supportApp: CRM
+    nextSteps:
+    - S13
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-LTC-07
+  name: LTC-订单到交付
+  domain: 端到端场景
+  description: 场景定位：LTC 第五程，覆盖订单履约 → 计划/补货 → 生产或调拨 → 拣配 → 发货签收。跨域：供应链域（计划/采购/物流）+ 生产制造域 + 市场营销域（订单调度）。
+  actors:
+  - 订单/计划
+  - 系统
+  - 计划
+  - 仓管
+  - 发货
+  - 物流
+  - 客户/配送
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 订单履约路由
+    behaviorRef: null
+    stage: 履约调度
+    readObjects:
+    - AGG-MKT-008
+    writeObjects: []
+    role: 订单/计划
+    supportApp: OMS
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 库存预占
+    behaviorRef: BEH-SUP-029
+    stage: 库存分配
+    readObjects:
+    - AGG-SUP-029
+    writeObjects:
+    - AGG-SUP-029
+    role: 系统
+    supportApp: WMS/ERP
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 缺货补货触发
+    behaviorRef: null
+    stage: 补货
+    readObjects:
+    - AGG-SUP-029
+    writeObjects:
+    - AGG-SUP-014
+    role: 计划
+    supportApp: APS/ERP
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 生产工单生成
+    behaviorRef: null
+    stage: 生产
+    readObjects:
+    - AGG-MKT-008
+    writeObjects:
+    - AGG-MAN-014
+    - AGG-MAN-015
+    role: 计划
+    supportApp: MES/ERP
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 拣货单生成
+    behaviorRef: null
+    stage: 拣货
+    readObjects:
+    - AGG-MKT-008
+    - AGG-SUP-029
+    writeObjects: []
+    role: 仓管
+    supportApp: WMS
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 拣货与复核
+    behaviorRef: null
+    stage: 拣货执行
+    readObjects: []
+    writeObjects: []
+    role: 仓管
+    supportApp: WMS
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 包装/装箱
+    behaviorRef: null
+    stage: 包装
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-039
+    role: 仓管
+    supportApp: WMS
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 发货通知(ASN)
+    behaviorRef: null
+    stage: 发货
+    readObjects:
+    - AGG-MKT-008
+    - AGG-SUP-039
+    writeObjects: []
+    role: 发货
+    supportApp: WMS/OMS
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 物流配送发运
+    behaviorRef: null
+    stage: 运输
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-033
+    - AGG-SUP-036
+    role: 物流
+    supportApp: TMS
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 客户签收
+    behaviorRef: null
+    stage: 签收
+    readObjects:
+    - AGG-SUP-033
+    writeObjects: []
+    role: 客户/配送
+    supportApp: TMS/OMS
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 订单状态更新为已交付
+    behaviorRef: null
+    stage: 交付回写
+    readObjects: []
+    writeObjects:
+    - AGG-MKT-008
+    role: 系统
+    supportApp: OMS
+    nextSteps:
+    - S12
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-P2P-01
+  name: P2P-采购到付款
+  domain: 端到端场景
+  description: 场景定位：采购履约 + 财务付款的端到端，覆盖请购 → 寻源 → 订单 → 收货 → 发票 → 付款。跨域：供应链域（采购/物流）+ 财务域（应付/资金）。
+  actors:
+  - 需求部门
+  - 审批人
+  - 采购
+  - 采购/法务
+  - 供应商
+  - 收货/质检
+  - 仓管
+  - 财务
+  - 财务AP
+  - 出纳
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 采购申请创建
+    behaviorRef: null
+    stage: 请购
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-014
+    role: 需求部门
+    supportApp: ERP
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 采购申请审批
+    behaviorRef: null
+    stage: 请购审批
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-015
+    role: 审批人
+    supportApp: OA/ERP
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 供应商寻源/询价
+    behaviorRef: BEH-SUP-013
+    stage: 寻源
+    readObjects:
+    - AGG-SUP-001
+    - AGG-SUP-012
+    writeObjects:
+    - AGG-SUP-018
+    role: 采购
+    supportApp: SRM
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 框架协议签订
+    behaviorRef: null
+    stage: 合同
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-016
+    - AGG-SUP-017
+    role: 采购/法务
+    supportApp: SRM
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 采购订单生成发布
+    behaviorRef: null
+    stage: 订单
+    readObjects:
+    - AGG-SUP-014
+    - AGG-SUP-016
+    writeObjects:
+    - AGG-SUP-019
+    role: 采购
+    supportApp: SRM/ERP
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 供应商发货(ASN)
+    behaviorRef: null
+    stage: 发货
+    readObjects:
+    - AGG-SUP-019
+    writeObjects:
+    - AGG-SUP-026
+    role: 供应商
+    supportApp: SRM
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 收货与质检
+    behaviorRef: null
+    stage: 收货
+    readObjects:
+    - AGG-SUP-019
+    writeObjects: []
+    role: 收货/质检
+    supportApp: WMS/QMS
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 入库上架
+    behaviorRef: null
+    stage: 入库
+    readObjects: []
+    writeObjects:
+    - AGG-SUP-029
+    role: 仓管
+    supportApp: WMS
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 采购发票接收认证
+    behaviorRef: null
+    stage: 发票
+    readObjects:
+    - AGG-SUP-019
+    writeObjects:
+    - AGG-FIN-010
+    role: 财务
+    supportApp: 发票系统
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 三单匹配
+    behaviorRef: BEH-FIN-009
+    stage: 匹配
+    readObjects:
+    - AGG-FIN-010
+    - AGG-SUP-019
+    writeObjects:
+    - AGG-FIN-010
+    role: 财务AP
+    supportApp: ERP/AP
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 应付确认
+    behaviorRef: BEH-FIN-007
+    stage: 应付
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-009
+    role: 财务AP
+    supportApp: ERP/AP
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 付款申请
+    behaviorRef: null
+    stage: 付款
+    readObjects:
+    - AGG-FIN-009
+    - AGG-FIN-016
+    writeObjects:
+    - AGG-FIN-012
+    role: 财务
+    supportApp: 资金系统
+    nextSteps:
+    - S13
+  - stepId: S13
+    stepType: BEHAVIOR_CALL
+    action: 付款执行(银企)
+    behaviorRef: null
+    stage: 付款
+    readObjects:
+    - AGG-FIN-012
+    writeObjects:
+    - AGG-FIN-012
+    role: 出纳
+    supportApp: 资金系统
+    nextSteps:
+    - S14
+  - stepId: S14
+    stepType: BEHAVIOR_CALL
+    action: 付款核销
+    behaviorRef: null
+    stage: 核销
+    readObjects:
+    - AGG-FIN-012
+    - AGG-FIN-009
+    writeObjects:
+    - AGG-FIN-009
+    role: 财务
+    supportApp: ERP/AP
+    nextSteps:
+    - S15
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-P2R-01
+  name: P2R-预算到报告
+  domain: 端到端场景
+  description: 场景定位：财务域主导的端到端，覆盖预算编制 → 预算控制 → 记账 → 成本归集 → 月结 → 报表/合并 → 经营分析。跨域：财务域为主，衔接战略经营域（预算源自BP）、各业务域（业务单据）。
+  actors:
+  - 财务/业务
+  - 财务
+  - 系统
+  - 税务
+  - 财务/管理
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 预算编制
+    behaviorRef: BEH-STR-006
+    stage: 预算
+    readObjects:
+    - AGG-STR-007
+    writeObjects:
+    - AGG-STR-008
+    role: 财务/业务
+    supportApp: 预算系统
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 预算分解下达
+    behaviorRef: null
+    stage: 预算分解
+    readObjects:
+    - AGG-STR-008
+    writeObjects: []
+    role: 财务
+    supportApp: 预算系统
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 预算控制校验
+    behaviorRef: BEH-FIN-012
+    stage: 控制
+    readObjects:
+    - AGG-FIN-016
+    - AGG-HR-024
+    writeObjects:
+    - AGG-FIN-016
+    role: 系统
+    supportApp: 预算系统
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 业务单据记账
+    behaviorRef: null
+    stage: 核算
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-006
+    role: 财务
+    supportApp: ERP财务
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 成本归集与分摊
+    behaviorRef: null
+    stage: 成本
+    readObjects:
+    - AGG-MAN-015
+    writeObjects:
+    - AGG-FIN-003
+    role: 财务
+    supportApp: ERP/EPM
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 资产折旧计提
+    behaviorRef: null
+    stage: 资产
+    readObjects:
+    - AGG-FIN-014
+    writeObjects: []
+    role: 财务
+    supportApp: 资产系统
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 月末结账
+    behaviorRef: null
+    stage: 结账
+    readObjects: []
+    writeObjects: []
+    role: 财务
+    supportApp: ERP财务
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 税务申报
+    behaviorRef: BEH-FIN-016
+    stage: 税务
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-018
+    role: 税务
+    supportApp: 税务系统
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 财务报表出具
+    behaviorRef: BEH-FIN-017
+    stage: 报表
+    readObjects:
+    - AGG-FIN-006
+    writeObjects:
+    - AGG-FIN-020
+    role: 财务
+    supportApp: BI/合并系统
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 合并报告
+    behaviorRef: null
+    stage: 合并
+    readObjects: []
+    writeObjects:
+    - AGG-FIN-021
+    role: 财务
+    supportApp: 合并系统
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 经营分析看板
+    behaviorRef: BEH-STR-008
+    stage: 分析
+    readObjects:
+    - AGG-FIN-020
+    writeObjects:
+    - AGG-STR-013
+    role: 财务/管理
+    supportApp: BI
+    nextSteps:
+    - S12
+  alternativeFlows: []
+  exceptionFlows: []
+- id: UC-S2E-01
+  name: S2E-战略到执行
+  domain: 端到端场景
+  description: 场景定位：战略经营域主导的端到端，覆盖战略制定 → 目标分解 → 举措/计划 → 预算投资 → 执行跟踪 → 经营分析 → 复盘。跨域：战略经营域为主，贯穿并向下游所有业务域传递目标约束。
+  actors:
+  - 战略部门
+  - 战略/各域
+  - 战略/业务
+  - 各业务域
+  - 财务/业务
+  - 战略/财务
+  - 风控/战略
+  - 董事会/执委会
+  - 管理/BI
+  - PMO
+  - 高管/HR
+  preconditions: []
+  postconditions: []
+  primaryFlow:
+  - stepId: S01
+    stepType: BEHAVIOR_CALL
+    action: 战略制定与解码
+    behaviorRef: null
+    stage: 战略
+    readObjects: []
+    writeObjects:
+    - AGG-STR-001
+    - AGG-STR-006
+    role: 战略部门
+    supportApp: EPM
+    nextSteps:
+    - S02
+  - stepId: S02
+    stepType: BEHAVIOR_CALL
+    action: 目标分解(KPI/OKR)
+    behaviorRef: BEH-STR-002
+    stage: 目标
+    readObjects:
+    - AGG-STR-001
+    writeObjects:
+    - AGG-STR-004
+    - AGG-STR-005
+    role: 战略/各域
+    supportApp: EPM/OKR
+    nextSteps:
+    - S03
+  - stepId: S03
+    stepType: BEHAVIOR_CALL
+    action: 战略举措规划
+    behaviorRef: BEH-STR-003
+    stage: 举措
+    readObjects:
+    - AGG-STR-001
+    writeObjects:
+    - AGG-STR-002
+    role: 战略/业务
+    supportApp: EPM
+    nextSteps:
+    - S04
+  - stepId: S04
+    stepType: BEHAVIOR_CALL
+    action: 商业计划编制
+    behaviorRef: BEH-STR-005
+    stage: 计划
+    readObjects: []
+    writeObjects:
+    - AGG-STR-007
+    role: 各业务域
+    supportApp: EPM
+    nextSteps:
+    - S05
+  - stepId: S05
+    stepType: BEHAVIOR_CALL
+    action: 全面预算编制
+    behaviorRef: BEH-STR-006
+    stage: 预算
+    readObjects:
+    - AGG-STR-007
+    writeObjects:
+    - AGG-STR-008
+    role: 财务/业务
+    supportApp: 预算系统
+    nextSteps:
+    - S06
+  - stepId: S06
+    stepType: BEHAVIOR_CALL
+    action: 投资项目立项
+    behaviorRef: null
+    stage: 投资
+    readObjects: []
+    writeObjects:
+    - AGG-STR-009
+    role: 战略/财务
+    supportApp: 投资系统
+    nextSteps:
+    - S07
+  - stepId: S07
+    stepType: BEHAVIOR_CALL
+    action: 风险与机遇识别
+    behaviorRef: null
+    stage: 风险
+    readObjects: []
+    writeObjects: []
+    role: 风控/战略
+    supportApp: 风险系统
+    nextSteps:
+    - S08
+  - stepId: S08
+    stepType: BEHAVIOR_CALL
+    action: 决策事项审议
+    behaviorRef: null
+    stage: 决策
+    readObjects: []
+    writeObjects: []
+    role: 董事会/执委会
+    supportApp: 决策系统/OA
+    nextSteps:
+    - S09
+  - stepId: S09
+    stepType: BEHAVIOR_CALL
+    action: 经营分析看板
+    behaviorRef: BEH-STR-008
+    stage: 分析
+    readObjects: []
+    writeObjects:
+    - AGG-STR-013
+    role: 管理/BI
+    supportApp: BI
+    nextSteps:
+    - S10
+  - stepId: S10
+    stepType: BEHAVIOR_CALL
+    action: 里程碑跟踪
+    behaviorRef: BEH-STR-012
+    stage: 跟踪
+    readObjects: []
+    writeObjects:
+    - AGG-STR-012
+    role: PMO
+    supportApp: EPM
+    nextSteps:
+    - S11
+  - stepId: S11
+    stepType: BEHAVIOR_CALL
+    action: 战略复盘
+    behaviorRef: BEH-STR-013
+    stage: 复盘
+    readObjects: []
+    writeObjects:
+    - AGG-STR-017
+    role: 战略部门
+    supportApp: EPM
+    nextSteps:
+    - S12
+  - stepId: S12
+    stepType: BEHAVIOR_CALL
+    action: 组织架构调整
+    behaviorRef: BEH-STR-014
+    stage: 组织
+    readObjects: []
+    writeObjects:
+    - AGG-STR-010
+    - AGG-STR-011
+    role: 高管/HR
+    supportApp: HRIS/EPM
+    nextSteps:
+    - S13
+  alternativeFlows: []
+  exceptionFlows: []
+business_processes:
+- id: BP-H2R
+  name: 招聘到退休（H2R）
+  useCases:
+  - UC-H2R-01
+  sagaBoundary: null
+- id: BP-I2R
+  name: 问题到解决（I2R）
+  useCases:
+  - UC-I2R-01
+  sagaBoundary: null
+- id: BP-IPD
+  name: IPD集成产品研发（创意到上市）
+  useCases:
+  - UC-IPD-01
+  sagaBoundary: null
+- id: BP-ISC
+  name: ISC集成供应链（计划到交付）
+  useCases:
+  - UC-ISC-01
+  sagaBoundary: null
+- id: BP-LTC
+  name: LTC端到端（线索到回款）
+  useCases:
+  - UC-LTC-01
+  - UC-LTC-02
+  - UC-LTC-03
+  - UC-LTC-04
+  - UC-LTC-05
+  - UC-LTC-06
+  - UC-LTC-07
+  sagaBoundary: null
+- id: BP-P2P
+  name: 采购到付款（P2P）
+  useCases:
+  - UC-P2P-01
+  sagaBoundary: null
+- id: BP-P2R
+  name: 预算到报告（P2R）
+  useCases:
+  - UC-P2R-01
+  sagaBoundary: null
+- id: BP-S2E
+  name: 战略到执行（S2E）
+  useCases:
+  - UC-S2E-01
+  sagaBoundary: null

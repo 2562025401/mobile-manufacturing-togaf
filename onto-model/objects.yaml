@@ -1,0 +1,10002 @@
+model_type: OBJECT
+version: '2.0'
+domain: 手机制造行业企业架构-业务域元模型
+aggregates:
+- id: AGG-AFT-001
+  name: 服务请求
+  alias: Aft1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 客户发起的售后问题受理记录
+  domain: 售后服务
+  sourceSystem: 售后系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 请求编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr03
+    label: 产品SN/IMEI
+    type: String
+    required: false
+  - name: attr04
+    label: 问题类型
+    type: String
+    required: false
+  - name: attr05
+    label: 渠道(热线/在线/门店)
+    type: String
+    required: false
+  - name: attr06
+    label: 优先级
+    type: String
+    required: false
+  - name: attr07
+    label: 受理时间
+    type: DateTime
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-001
+  relatedRules: []
+- id: AGG-AFT-002
+  name: 服务工单
+  alias: Aft2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 派单后的售后问题处理执行单据
+  domain: 售后服务
+  sourceSystem: 售后系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 工单号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联请求
+    type: String
+    required: false
+  - name: attr03
+    label: 客户
+    type: String
+    required: false
+  - name: attr04
+    label: 产品SN
+    type: String
+    required: false
+  - name: attr05
+    label: 故障描述
+    type: String
+    required: false
+  - name: attr06
+    label: 优先级
+    type: String
+    required: false
+  - name: attr07
+    label: 状态(待派单/处理中/已完成)
+    type: String
+    required: false
+  - name: attr08
+    label: SLA时限
+    type: String
+    required: false
+  - name: attr09
+    label: 处理人
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-002
+  - BEH-AFT-003
+  - BEH-AFT-004
+  - BEH-AFT-016
+  relatedRules:
+  - RULE-AFT-001
+  - RULE-AFT-009
+- id: AGG-AFT-003
+  name: 维修单
+  alias: Aft3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 具体维修执行与结果记录
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 维修单号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 故障描述
+    type: String
+    required: false
+  - name: attr04
+    label: 维修方式(寄修/上门/到店)
+    type: String
+    required: false
+  - name: attr05
+    label: 更换料件
+    type: String
+    required: false
+  - name: attr06
+    label: 工时
+    type: String
+    required: false
+  - name: attr07
+    label: 费用
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 维修结论
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-008
+  relatedRules:
+  - RULE-AFT-002
+  - RULE-AFT-007
+- id: AGG-AFT-004
+  name: 退换货单
+  alias: Aft4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 退货/换货处理单据
+  domain: 售后服务
+  sourceSystem: 售后系统/OMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 单号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 类型(退/换)
+    type: String
+    required: false
+  - name: attr04
+    label: 原因码
+    type: String
+    required: false
+  - name: attr05
+    label: 商品SN
+    type: String
+    required: false
+  - name: attr06
+    label: 审批状态
+    type: String
+    required: false
+  - name: attr07
+    label: 物流单号
+    type: String
+    required: true
+  - name: attr08
+    label: 退款金额
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-009
+  relatedRules:
+  - RULE-AFT-005
+- id: AGG-AFT-005
+  name: 召回批量事件
+  alias: Aft5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 质量召回或批量缺陷处理事件
+  domain: 售后服务
+  sourceSystem: 售后系统/QMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 事件号
+    type: String
+    required: true
+  - name: attr02
+    label: 机型/SN范围
+    type: String
+    required: false
+  - name: attr03
+    label: 原因
+    type: String
+    required: false
+  - name: attr04
+    label: 处理方案
+    type: String
+    required: false
+  - name: attr05
+    label: 影响数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-018
+  relatedRules:
+  - RULE-AFT-008
+- id: AGG-AFT-006
+  name: 备件主数据
+  alias: Aft6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 售后维修用备件库存对象
+  domain: 售后服务
+  sourceSystem: 备件WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 备件编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 适用机型
+    type: String
+    required: false
+  - name: attr04
+    label: 库存量
+    type: String
+    required: false
+  - name: attr05
+    label: 所在仓
+    type: String
+    required: false
+  - name: attr06
+    label: 价格
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 批次
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-AFT-007
+  name: 备件库存记录
+  alias: Aft7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 网点/中央仓的备件现存与可用数量
+  domain: 售后服务
+  sourceSystem: 备件WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 备件编码
+    type: String
+    required: true
+  - name: attr03
+    label: 仓库/网点
+    type: String
+    required: false
+  - name: attr04
+    label: 现存数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 预占数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 可用数量
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 批次
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-005
+  - BEH-AFT-006
+  - BEH-AFT-007
+  relatedRules:
+  - RULE-AFT-003
+- id: AGG-AFT-008
+  name: 备件申领单
+  alias: Aft8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 网点向中央仓申领备件的单据
+  domain: 售后服务
+  sourceSystem: 备件WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 申领单号
+    type: String
+    required: true
+  - name: attr02
+    label: 网点
+    type: String
+    required: false
+  - name: attr03
+    label: 备件编码
+    type: String
+    required: true
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 用途
+    type: String
+    required: false
+  - name: attr06
+    label: 紧急度
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-006
+  relatedRules: []
+- id: AGG-AFT-009
+  name: 备件调拨单
+  alias: Aft9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 网点间或中央仓的备件调拨
+  domain: 售后服务
+  sourceSystem: 备件WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 调拨单号
+    type: String
+    required: true
+  - name: attr02
+    label: 备件编码
+    type: String
+    required: true
+  - name: attr03
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 源仓
+    type: String
+    required: false
+  - name: attr05
+    label: 目标网点
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-007
+  relatedRules: []
+- id: AGG-AFT-010
+  name: 服务网点
+  alias: Aft10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 授权服务中心/门店档案
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 网点编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(官方/授权)
+    type: String
+    required: false
+  - name: attr04
+    label: 区域
+    type: String
+    required: false
+  - name: attr05
+    label: 服务能力
+    type: String
+    required: false
+  - name: attr06
+    label: 营业时间
+    type: DateTime
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-019
+  relatedRules: []
+- id: AGG-AFT-011
+  name: 服务工程师
+  alias: Aft11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 维修人员档案与技能
+  domain: 售后服务
+  sourceSystem: 售后系统/HR
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 工程师编码
+    type: String
+    required: true
+  - name: attr02
+    label: 姓名
+    type: String
+    required: false
+  - name: attr03
+    label: 技能等级
+    type: String
+    required: false
+  - name: attr04
+    label: 所属网点
+    type: String
+    required: false
+  - name: attr05
+    label: 可修机型
+    type: String
+    required: false
+  - name: attr06
+    label: 在岗状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-003
+  - BEH-AFT-019
+  relatedRules: []
+- id: AGG-AFT-012
+  name: 客户投诉
+  alias: Aft12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 客户不满或争议的记录与处理
+  domain: 售后服务
+  sourceSystem: 投诉系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 投诉编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 关联工单
+    type: String
+    required: false
+  - name: attr04
+    label: 投诉内容
+    type: String
+    required: false
+  - name: attr05
+    label: 等级
+    type: String
+    required: false
+  - name: attr06
+    label: 处理人
+    type: String
+    required: false
+  - name: attr07
+    label: 处理结果
+    type: String
+    required: false
+  - name: attr08
+    label: 补偿方案
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-010
+  relatedRules:
+  - RULE-AFT-006
+- id: AGG-AFT-013
+  name: 满意度评价(CSAT/NPS)
+  alias: Aft13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 服务结束后的评价与净推荐值
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 评价编号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 评分
+    type: String
+    required: false
+  - name: attr04
+    label: 评价项
+    type: String
+    required: false
+  - name: attr05
+    label: 文本
+    type: String
+    required: false
+  - name: attr06
+    label: 提交时间
+    type: DateTime
+    required: false
+  - name: attr07
+    label: NPS值
+    type: Decimal
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-AFT-014
+  name: 保修登记
+  alias: Aft14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 产品标准保修期登记（购机激活后）
+  domain: 售后服务
+  sourceSystem: 售后系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 登记号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 产品SN
+    type: String
+    required: false
+  - name: attr04
+    label: 购买日期
+    type: Date
+    required: false
+  - name: attr05
+    label: 保修类型(标准)
+    type: String
+    required: false
+  - name: attr06
+    label: 保修起止
+    type: String
+    required: false
+  - name: attr07
+    label: 关联订单
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-012
+  relatedRules:
+  - RULE-AFT-002
+  - RULE-AFT-009
+- id: AGG-AFT-015
+  name: 服务合同
+  alias: Aft15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 付费服务合同（含延保、碎屏险、企业服务包等）
+  domain: 售后服务
+  sourceSystem: 售后系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 合同号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 产品SN
+    type: String
+    required: false
+  - name: attr04
+    label: 合同类型(延保/碎屏险/服务包)
+    type: String
+    required: false
+  - name: attr05
+    label: 有效期
+    type: String
+    required: false
+  - name: attr06
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-013
+  relatedRules:
+  - RULE-AFT-002
+- id: AGG-AFT-016
+  name: 增值服务订单
+  alias: Aft16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 延保/增值服务的购买与开通订单
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 服务单号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 产品SN
+    type: String
+    required: false
+  - name: attr04
+    label: 服务类型(延保/碎屏险)
+    type: String
+    required: false
+  - name: attr05
+    label: 有效期
+    type: String
+    required: false
+  - name: attr06
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-011
+  relatedRules: []
+- id: AGG-AFT-017
+  name: 服务知识库条目
+  alias: Aft17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 故障现象-原因-方案的沉淀
+  domain: 售后服务
+  sourceSystem: 知识库
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 条目编号
+    type: String
+    required: true
+  - name: attr02
+    label: 标题
+    type: String
+    required: false
+  - name: attr03
+    label: 机型
+    type: String
+    required: false
+  - name: attr04
+    label: 故障现象
+    type: String
+    required: false
+  - name: attr05
+    label: 根因
+    type: String
+    required: false
+  - name: attr06
+    label: 解决方案
+    type: String
+    required: false
+  - name: attr07
+    label: 使用次数
+    type: String
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-015
+  relatedRules: []
+- id: AGG-AFT-018
+  name: 服务故障代码
+  alias: Aft18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 标准化故障/不良分类代码
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 代码
+    type: String
+    required: false
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属系统
+    type: String
+    required: false
+  - name: attr04
+    label: 严重度
+    type: String
+    required: false
+  - name: attr05
+    label: 默认处理建议
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-004
+  relatedRules:
+  - RULE-AFT-004
+- id: AGG-AFT-019
+  name: 服务SLA规则
+  alias: Aft19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 工单响应与解决的时限标准
+  domain: 售后服务
+  sourceSystem: 售后系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 规则号
+    type: String
+    required: true
+  - name: attr02
+    label: 问题类型
+    type: String
+    required: false
+  - name: attr03
+    label: 优先级
+    type: String
+    required: false
+  - name: attr04
+    label: 响应时限
+    type: String
+    required: false
+  - name: attr05
+    label: 解决时限
+    type: String
+    required: false
+  - name: attr06
+    label: 超时罚则
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-AFT-020
+  name: 服务费用结算
+  alias: Aft20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 维修人工、料件、物流费用与结算
+  domain: 售后服务
+  sourceSystem: 售后系统/财务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 售后服务
+  attributes:
+  - name: attr01
+    label: 费用单号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 费用类型
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 结算对象(保内/保外/客户)
+    type: String
+    required: false
+  - name: attr06
+    label: 开票状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-AFT-017
+  relatedRules: []
+- id: AGG-FIN-001
+  name: 账套核算主体
+  alias: Fin1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 独立核算的法人或利润中心主体
+  domain: 财务
+  sourceSystem: ERP财务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 账套编码
+    type: String
+    required: true
+  - name: attr02
+    label: 主体名称
+    type: String
+    required: false
+  - name: attr03
+    label: 法人属性
+    type: String
+    required: false
+  - name: attr04
+    label: 币种
+    type: String
+    required: false
+  - name: attr05
+    label: 会计政策
+    type: String
+    required: false
+  - name: attr06
+    label: 所属集团
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-FIN-002
+  name: 会计科目
+  alias: Fin2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 会计核算的最小科目定义
+  domain: 财务
+  sourceSystem: ERP财务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 科目编码
+    type: String
+    required: true
+  - name: attr02
+    label: 科目名称
+    type: String
+    required: false
+  - name: attr03
+    label: 科目类型(资产/负债/权益/损益)
+    type: String
+    required: false
+  - name: attr04
+    label: 借贷方向
+    type: String
+    required: false
+  - name: attr05
+    label: 辅助核算
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-FIN-003
+  name: 成本中心
+  alias: Fin3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 费用归集与成本分摊的责任单元
+  domain: 财务
+  sourceSystem: ERP/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 成本中心编码
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 负责人
+    type: String
+    required: false
+  - name: attr04
+    label: 所属组织
+    type: String
+    required: false
+  - name: attr05
+    label: 预算归属
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-015
+  relatedRules: []
+- id: AGG-FIN-004
+  name: 银行账户
+  alias: Fin4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 企业开立的收付款银行账户
+  domain: 财务
+  sourceSystem: 资金系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 账户编码
+    type: String
+    required: true
+  - name: attr02
+    label: 开户行
+    type: String
+    required: false
+  - name: attr03
+    label: 账号
+    type: String
+    required: true
+  - name: attr04
+    label: 币种
+    type: String
+    required: false
+  - name: attr05
+    label: 账户类型(收入/支出/保证金)
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-FIN-005
+  name: 会计期间
+  alias: Fin5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 核算期间的开启与闭合规则
+  domain: 财务
+  sourceSystem: ERP财务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 期间编号
+    type: String
+    required: true
+  - name: attr02
+    label: 年度
+    type: String
+    required: false
+  - name: attr03
+    label: 月份
+    type: String
+    required: false
+  - name: attr04
+    label: 开启状态
+    type: String
+    required: false
+  - name: attr05
+    label: 关闭状态
+    type: String
+    required: false
+  - name: attr06
+    label: 结转状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-020
+  relatedRules:
+  - RULE-FIN-010
+- id: AGG-FIN-006
+  name: 总账凭证
+  alias: Fin6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 记账凭证(借贷分录)
+  domain: 财务
+  sourceSystem: ERP财务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 凭证号
+    type: String
+    required: true
+  - name: attr02
+    label: 账套
+    type: String
+    required: false
+  - name: attr03
+    label: 期间
+    type: String
+    required: false
+  - name: attr04
+    label: 摘要
+    type: String
+    required: false
+  - name: attr05
+    label: 借方科目
+    type: String
+    required: false
+  - name: attr06
+    label: 贷方科目
+    type: String
+    required: false
+  - name: attr07
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 币种
+    type: String
+    required: false
+  - name: attr09
+    label: 附件
+    type: String
+    required: false
+  - name: attr10
+    label: 记账人
+    type: String
+    required: false
+  - name: attr11
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-001
+  relatedRules:
+  - RULE-FIN-008
+  - RULE-FIN-010
+- id: AGG-FIN-007
+  name: 客户应收
+  alias: Fin7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 应向客户收取的款项
+  domain: 财务
+  sourceSystem: ERP/AR
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 应收单号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 关联发票/订单
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 币种
+    type: String
+    required: false
+  - name: attr06
+    label: 到期日
+    type: String
+    required: false
+  - name: attr07
+    label: 已收金额
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 账龄
+    type: String
+    required: false
+  - name: attr09
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-002
+  - BEH-FIN-004
+  - BEH-FIN-005
+  - BEH-FIN-006
+  relatedRules:
+  - RULE-FIN-004
+  - RULE-FIN-009
+- id: AGG-FIN-008
+  name: 销售发票
+  alias: Fin8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 开具给客户的销售发票
+  domain: 财务
+  sourceSystem: 开票系统/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 发票号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 销售订单号
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 税额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 开票日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 红冲状态
+    type: String
+    required: false
+  - name: attr08
+    label: 交付状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-003
+  relatedRules:
+  - RULE-FIN-007
+- id: AGG-FIN-009
+  name: 供应商应付
+  alias: Fin9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 应付供应商的款项
+  domain: 财务
+  sourceSystem: ERP/AP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 应付单号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商
+    type: String
+    required: false
+  - name: attr03
+    label: 关联发票/采购订单
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 到期日
+    type: String
+    required: false
+  - name: attr06
+    label: 已付金额
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-007
+  - BEH-FIN-011
+  relatedRules:
+  - RULE-FIN-009
+- id: AGG-FIN-010
+  name: 采购发票
+  alias: Fin10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供应商开具的采购发票
+  domain: 财务
+  sourceSystem: 发票系统/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 发票号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商
+    type: String
+    required: false
+  - name: attr03
+    label: 采购订单
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 税额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 认证状态
+    type: String
+    required: false
+  - name: attr07
+    label: 匹配状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-008
+  - BEH-FIN-009
+  relatedRules:
+  - RULE-FIN-001
+  - RULE-FIN-003
+- id: AGG-FIN-011
+  name: 收款单
+  alias: Fin11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 实际收到客户款项的记录
+  domain: 财务
+  sourceSystem: 资金系统/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 收款单号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 方式(电汇/票据)
+    type: String
+    required: false
+  - name: attr05
+    label: 到账日
+    type: String
+    required: false
+  - name: attr06
+    label: 核销状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-004
+  relatedRules: []
+- id: AGG-FIN-012
+  name: 付款单
+  alias: Fin12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 实际支付供应商款项的记录
+  domain: 财务
+  sourceSystem: 资金系统/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 付款单号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商
+    type: String
+    required: false
+  - name: attr03
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 付款方式
+    type: String
+    required: false
+  - name: attr05
+    label: 计划日
+    type: String
+    required: false
+  - name: attr06
+    label: 实际日
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-010
+  relatedRules:
+  - RULE-FIN-005
+- id: AGG-FIN-013
+  name: 预收预付款
+  alias: Fin13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 销售预收款与采购预付款项
+  domain: 财务
+  sourceSystem: ERP/资金
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 单据号
+    type: String
+    required: true
+  - name: attr02
+    label: 类型(预收/预付)
+    type: String
+    required: false
+  - name: attr03
+    label: 往来单位
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 核销金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-006
+  - BEH-FIN-011
+  relatedRules:
+  - RULE-FIN-009
+- id: AGG-FIN-014
+  name: 固定资产
+  alias: Fin14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 企业持有的长期资产档案
+  domain: 财务
+  sourceSystem: 资产系统/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 资产编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类别
+    type: String
+    required: false
+  - name: attr04
+    label: 原值
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 累计折旧
+    type: String
+    required: false
+  - name: attr06
+    label: 净值
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 使用部门
+    type: String
+    required: false
+  - name: attr08
+    label: 位置
+    type: String
+    required: false
+  - name: attr09
+    label: 状态(在用/闲置/报废)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-014
+  relatedRules:
+  - RULE-FIN-006
+- id: AGG-FIN-015
+  name: 生产成本成本对象
+  alias: Fin15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 工单/订单归集的材料/人工/制造费用
+  domain: 财务
+  sourceSystem: ERP成本
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 成本对象号
+    type: Decimal
+    required: false
+  - name: attr02
+    label: 关联工单/订单
+    type: String
+    required: false
+  - name: attr03
+    label: 材料成本
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 人工成本
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 制造费用
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 完工成本
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 结转状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-015
+  relatedRules: []
+- id: AGG-FIN-016
+  name: 预算
+  alias: Fin16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 部门/项目/科目的费用预算
+  domain: 财务
+  sourceSystem: 预算系统/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 预算编号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 维度(组织/项目/科目)
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 预算额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 已用额
+    type: String
+    required: false
+  - name: attr06
+    label: 剩余
+    type: String
+    required: false
+  - name: attr07
+    label: 控制策略(软/硬)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-012
+  relatedRules:
+  - RULE-FIN-002
+- id: AGG-FIN-017
+  name: 费用报销单
+  alias: Fin17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工/部门的费用报销单据
+  domain: 财务
+  sourceSystem: 费控系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 报销单号
+    type: String
+    required: true
+  - name: attr02
+    label: 申请人
+    type: String
+    required: false
+  - name: attr03
+    label: 费用类型
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 票据张数
+    type: String
+    required: false
+  - name: attr06
+    label: 审批流
+    type: String
+    required: false
+  - name: attr07
+    label: 打款状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-013
+  relatedRules:
+  - RULE-FIN-002
+  - RULE-FIN-005
+- id: AGG-FIN-018
+  name: 税务申报
+  alias: Fin18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 增值税/所得税等申报记录
+  domain: 财务
+  sourceSystem: 税务系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 申报编号
+    type: String
+    required: true
+  - name: attr02
+    label: 税种
+    type: Decimal
+    required: false
+  - name: attr03
+    label: 所属期
+    type: String
+    required: false
+  - name: attr04
+    label: 应纳税额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 已缴
+    type: String
+    required: false
+  - name: attr06
+    label: 申报状态
+    type: String
+    required: false
+  - name: attr07
+    label: 缴纳状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-016
+  relatedRules: []
+- id: AGG-FIN-019
+  name: 现金流资金计划
+  alias: Fin19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 资金头寸与收支计划
+  domain: 财务
+  sourceSystem: 资金系统/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 日期
+    type: Date
+    required: false
+  - name: attr03
+    label: 收入预测
+    type: String
+    required: false
+  - name: attr04
+    label: 支出预测
+    type: String
+    required: false
+  - name: attr05
+    label: 净头寸
+    type: String
+    required: false
+  - name: attr06
+    label: 币种
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-019
+  relatedRules: []
+- id: AGG-FIN-020
+  name: 财务报表
+  alias: Fin20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 单体三大报表结果
+  domain: 财务
+  sourceSystem: BI/合并系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 报表编号
+    type: String
+    required: true
+  - name: attr02
+    label: 类型(资产负债表/利润表/现金流)
+    type: String
+    required: false
+  - name: attr03
+    label: 期间
+    type: String
+    required: false
+  - name: attr04
+    label: 账套
+    type: String
+    required: false
+  - name: attr05
+    label: 币种
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-017
+  relatedRules:
+  - RULE-FIN-008
+- id: AGG-FIN-021
+  name: 合并报表
+  alias: Fin21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 集团合并抵消后的报表结果
+  domain: 财务
+  sourceSystem: 合并系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 合并报表号
+    type: String
+    required: false
+  - name: attr02
+    label: 类型
+    type: String
+    required: false
+  - name: attr03
+    label: 期间
+    type: String
+    required: false
+  - name: attr04
+    label: 合并范围
+    type: String
+    required: false
+  - name: attr05
+    label: 抵消分录
+    type: String
+    required: false
+  - name: attr06
+    label: 币种
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-FIN-018
+  relatedRules: []
+- id: AGG-FIN-022
+  name: 汇率税率规则
+  alias: Fin22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 币种折算与计税的生效规则
+  domain: 财务
+  sourceSystem: ERP/税务
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 财务
+  attributes:
+  - name: attr01
+    label: 规则号
+    type: String
+    required: true
+  - name: attr02
+    label: 币种对
+    type: String
+    required: false
+  - name: attr03
+    label: 汇率类型
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 生效日
+    type: String
+    required: false
+  - name: attr05
+    label: 税率
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 计税公式
+    type: Decimal
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-HR-001
+  name: 组织
+  alias: Hr1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 公司组织单元（公司/中心/部门群）定义
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 组织编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 上级
+    type: String
+    required: false
+  - name: attr04
+    label: 层级
+    type: String
+    required: false
+  - name: attr05
+    label: 负责人
+    type: String
+    required: false
+  - name: attr06
+    label: 成本中心
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-019
+  relatedRules: []
+- id: AGG-HR-002
+  name: 部门
+  alias: Hr2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 具体部门定义与编制
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 部门编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 上级组织
+    type: String
+    required: false
+  - name: attr04
+    label: 负责人
+    type: String
+    required: false
+  - name: attr05
+    label: 编制人数
+    type: String
+    required: false
+  - name: attr06
+    label: 在岗人数
+    type: String
+    required: false
+  - name: attr07
+    label: 成本中心
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-019
+  relatedRules: []
+- id: AGG-HR-003
+  name: 岗位
+  alias: Hr3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 岗位职责与任职要求的常设定义
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 岗位编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 序列(管理/专业/操作)
+    type: String
+    required: false
+  - name: attr04
+    label: 职级
+    type: String
+    required: false
+  - name: attr05
+    label: 职责描述
+    type: String
+    required: false
+  - name: attr06
+    label: 任职资格
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-HR-004
+  name: 职位
+  alias: Hr4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 具体人员占用的职位实例（汇报关系节点）
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 职位编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 职级
+    type: String
+    required: false
+  - name: attr05
+    label: 汇报对象
+    type: String
+    required: false
+  - name: attr06
+    label: 编制归属
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-016
+  relatedRules: []
+- id: AGG-HR-005
+  name: 编制计划
+  alias: Hr5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 部门/岗位的人员编制规划
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 编制编号
+    type: String
+    required: true
+  - name: attr02
+    label: 组织/部门
+    type: String
+    required: false
+  - name: attr03
+    label: 岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 编制上限
+    type: String
+    required: false
+  - name: attr05
+    label: 当前在岗
+    type: String
+    required: false
+  - name: attr06
+    label: 冻结标识
+    type: Boolean
+    required: false
+  - name: attr07
+    label: 年度
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-008
+  relatedRules:
+  - RULE-HR-001
+- id: AGG-HR-006
+  name: 编制规则
+  alias: Hr6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 部门编制与HC管控规则
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 规则号
+    type: String
+    required: true
+  - name: attr02
+    label: 组织
+    type: String
+    required: false
+  - name: attr03
+    label: 岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 编制上限
+    type: String
+    required: false
+  - name: attr05
+    label: 冻结条件
+    type: String
+    required: false
+  - name: attr06
+    label: 审批阈值
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-HR-008
+  relatedRules:
+  - RULE-HR-001
+- id: AGG-HR-007
+  name: 员工主数据
+  alias: Hr7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 在职/离职人员的统一档案
+  domain: 人力资源
+  sourceSystem: HRIS/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 员工编码
+    type: String
+    required: true
+  - name: attr02
+    label: 姓名
+    type: String
+    required: false
+  - name: attr03
+    label: 工号
+    type: String
+    required: true
+  - name: attr04
+    label: 部门
+    type: String
+    required: false
+  - name: attr05
+    label: 岗位
+    type: String
+    required: false
+  - name: attr06
+    label: 职级
+    type: String
+    required: false
+  - name: attr07
+    label: 入职日期
+    type: Date
+    required: false
+  - name: attr08
+    label: 合同类型
+    type: String
+    required: false
+  - name: attr09
+    label: 状态(试用/正式/离职)
+    type: String
+    required: false
+  - name: attr10
+    label: 直属上级
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-005
+  - BEH-HR-007
+  - BEH-HR-016
+  relatedRules:
+  - RULE-HR-002
+- id: AGG-HR-008
+  name: 员工技能资质
+  alias: Hr8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 员工技能等级与执业资质
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 技能编号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 技能类别
+    type: String
+    required: false
+  - name: attr04
+    label: 等级
+    type: String
+    required: false
+  - name: attr05
+    label: 证书
+    type: String
+    required: false
+  - name: attr06
+    label: 有效期
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-007
+  relatedRules:
+  - RULE-HR-009
+- id: AGG-HR-009
+  name: 招聘需求
+  alias: Hr9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 部门提出的用人需求
+  domain: 人力资源
+  sourceSystem: 招聘系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 需求编号
+    type: String
+    required: true
+  - name: attr02
+    label: 部门
+    type: String
+    required: false
+  - name: attr03
+    label: 岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 人数
+    type: String
+    required: false
+  - name: attr05
+    label: 紧急度
+    type: String
+    required: false
+  - name: attr06
+    label: 到岗日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 预算
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-001
+  relatedRules:
+  - RULE-HR-001
+- id: AGG-HR-010
+  name: 候选人简历
+  alias: Hr10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 应聘者的简历与评价
+  domain: 人力资源
+  sourceSystem: 招聘系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 候选人编号
+    type: String
+    required: true
+  - name: attr02
+    label: 姓名
+    type: String
+    required: false
+  - name: attr03
+    label: 来源渠道
+    type: String
+    required: false
+  - name: attr04
+    label: 应聘岗位
+    type: String
+    required: false
+  - name: attr05
+    label: 简历
+    type: String
+    required: false
+  - name: attr06
+    label: 面试评价
+    type: String
+    required: false
+  - name: attr07
+    label: 状态(初筛/面试/Offer/入职)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-002
+  - BEH-HR-003
+  relatedRules: []
+- id: AGG-HR-011
+  name: Offer录用通知
+  alias: Hr11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 发给候选人的录用意向
+  domain: 人力资源
+  sourceSystem: 招聘/HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: Offer编号
+    type: String
+    required: true
+  - name: attr02
+    label: 候选人
+    type: String
+    required: false
+  - name: attr03
+    label: 岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 薪资
+    type: String
+    required: false
+  - name: attr05
+    label: 职级
+    type: String
+    required: false
+  - name: attr06
+    label: 生效日期
+    type: Date
+    required: false
+  - name: attr07
+    label: Offer状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-004
+  relatedRules:
+  - RULE-HR-007
+- id: AGG-HR-012
+  name: 入职办理单
+  alias: Hr12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 入职手续办理单据
+  domain: 人力资源
+  sourceSystem: 招聘/HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 入职单号
+    type: String
+    required: true
+  - name: attr02
+    label: 候选人
+    type: String
+    required: false
+  - name: attr03
+    label: 岗位
+    type: String
+    required: false
+  - name: attr04
+    label: 入职日期
+    type: Date
+    required: false
+  - name: attr05
+    label: 入职资料
+    type: String
+    required: false
+  - name: attr06
+    label: 办理状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-005
+  relatedRules: []
+- id: AGG-HR-013
+  name: 劳动合同
+  alias: Hr13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工劳动合同的签订与续签
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 合同编号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(固定/无固定)
+    type: String
+    required: false
+  - name: attr04
+    label: 起始日
+    type: String
+    required: false
+  - name: attr05
+    label: 终止日
+    type: String
+    required: false
+  - name: attr06
+    label: 签订状态
+    type: String
+    required: false
+  - name: attr07
+    label: 续签次数
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-005
+  - BEH-HR-006
+  relatedRules: []
+- id: AGG-HR-014
+  name: 薪酬职级体系
+  alias: Hr14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 岗位职级对应的薪酬带宽标准
+  domain: 人力资源
+  sourceSystem: HRIS/薪酬
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 体系编号
+    type: String
+    required: true
+  - name: attr02
+    label: 职级
+    type: String
+    required: false
+  - name: attr03
+    label: 薪酬下限
+    type: String
+    required: false
+  - name: attr04
+    label: 薪酬上限
+    type: String
+    required: false
+  - name: attr05
+    label: 宽带档位
+    type: String
+    required: false
+  - name: attr06
+    label: 生效日
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules:
+  - RULE-HR-003
+- id: AGG-HR-015
+  name: 薪酬工资单
+  alias: Hr15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 月度/周期薪酬明细
+  domain: 人力资源
+  sourceSystem: 薪酬系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 工资单号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 基本工资
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 绩效工资
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 津贴
+    type: String
+    required: false
+  - name: attr06
+    label: 扣款
+    type: String
+    required: false
+  - name: attr07
+    label: 个税
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 实发
+    type: String
+    required: false
+  - name: attr09
+    label: 发放日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-HR-009
+  relatedRules:
+  - RULE-HR-003
+  - RULE-HR-004
+- id: AGG-HR-016
+  name: 社保公积金
+  alias: Hr16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 五险一金缴纳记录
+  domain: 人力资源
+  sourceSystem: 薪酬/社保系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 缴纳基数
+    type: String
+    required: false
+  - name: attr04
+    label: 单位部分
+    type: String
+    required: false
+  - name: attr05
+    label: 个人部分
+    type: String
+    required: false
+  - name: attr06
+    label: 缴纳月份
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-009
+  relatedRules: []
+- id: AGG-HR-017
+  name: 绩效计划
+  alias: Hr17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 周期绩效目标设定
+  domain: 人力资源
+  sourceSystem: 绩效系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 绩效计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 目标(OKR/KPI)
+    type: String
+    required: false
+  - name: attr05
+    label: 权重
+    type: String
+    required: false
+  - name: attr06
+    label: 对齐上级
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-010
+  relatedRules: []
+- id: AGG-HR-018
+  name: 绩效结果
+  alias: Hr18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 周期绩效评估结论
+  domain: 人力资源
+  sourceSystem: 绩效系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 绩效结果编号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 自评
+    type: String
+    required: false
+  - name: attr05
+    label: 上级评
+    type: String
+    required: false
+  - name: attr06
+    label: 等级
+    type: String
+    required: false
+  - name: attr07
+    label: 结果应用
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-011
+  relatedRules:
+  - RULE-HR-006
+- id: AGG-HR-019
+  name: 培训计划
+  alias: Hr19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 培训课程与排期计划
+  domain: 人力资源
+  sourceSystem: 培训系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 课程
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(内训/外训)
+    type: String
+    required: false
+  - name: attr04
+    label: 讲师
+    type: String
+    required: false
+  - name: attr05
+    label: 时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 参训对象
+    type: String
+    required: false
+  - name: attr07
+    label: 预算
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-HR-012
+  relatedRules: []
+- id: AGG-HR-020
+  name: 培训发展记录
+  alias: Hr20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 员工参训结果与学时
+  domain: 人力资源
+  sourceSystem: 培训系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 课程
+    type: String
+    required: false
+  - name: attr04
+    label: 学时
+    type: String
+    required: false
+  - name: attr05
+    label: 成绩
+    type: String
+    required: false
+  - name: attr06
+    label: 费用
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-HR-012
+  relatedRules: []
+- id: AGG-HR-021
+  name: 考勤记录
+  alias: Hr21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 打卡与出勤记录
+  domain: 人力资源
+  sourceSystem: 考勤系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 日期
+    type: Date
+    required: false
+  - name: attr04
+    label: 打卡时间
+    type: DateTime
+    required: false
+  - name: attr05
+    label: 出勤状态
+    type: String
+    required: false
+  - name: attr06
+    label: 加班时长
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-013
+  relatedRules: []
+- id: AGG-HR-022
+  name: 假期记录
+  alias: Hr22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 请假与剩余额度使用
+  domain: 人力资源
+  sourceSystem: 考勤系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 请假类型
+    type: String
+    required: false
+  - name: attr04
+    label: 时长
+    type: String
+    required: false
+  - name: attr05
+    label: 剩余额度
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 审批状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-013
+  relatedRules:
+  - RULE-HR-005
+- id: AGG-HR-023
+  name: 费用申请单
+  alias: Hr23
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工差旅/业务费用的事前申请
+  domain: 人力资源
+  sourceSystem: 费控系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 申请单号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 费用类型
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 预计金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 事由
+    type: String
+    required: false
+  - name: attr06
+    label: 审批状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-014
+  relatedRules: []
+- id: AGG-HR-024
+  name: 费用报销单
+  alias: Hr24
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工/部门的费用报销单据
+  domain: 人力资源
+  sourceSystem: 费控系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 报销单号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 费用类型
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 票据张数
+    type: String
+    required: false
+  - name: attr06
+    label: 审批流
+    type: String
+    required: false
+  - name: attr07
+    label: 打款状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-015
+  relatedRules: []
+- id: AGG-HR-025
+  name: 离职单
+  alias: Hr25
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工离职办理单据
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 单号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 离职类型
+    type: String
+    required: false
+  - name: attr04
+    label: 原因
+    type: String
+    required: false
+  - name: attr05
+    label: 生效日
+    type: String
+    required: false
+  - name: attr06
+    label: 交接清单
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-017
+  relatedRules:
+  - RULE-HR-008
+- id: AGG-HR-026
+  name: 调动单
+  alias: Hr26
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 员工内部调动单据
+  domain: 人力资源
+  sourceSystem: HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 单号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(晋升/平调/降职)
+    type: String
+    required: false
+  - name: attr04
+    label: 原部门/岗位
+    type: String
+    required: false
+  - name: attr05
+    label: 新部门/岗位
+    type: String
+    required: false
+  - name: attr06
+    label: 生效日
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-016
+  relatedRules: []
+- id: AGG-HR-027
+  name: 人才盘点九宫格
+  alias: Hr27
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 人才能力与潜力评估结果
+  domain: 人力资源
+  sourceSystem: 人才系统/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 人力资源
+  attributes:
+  - name: attr01
+    label: 盘点编号
+    type: String
+    required: true
+  - name: attr02
+    label: 员工
+    type: String
+    required: false
+  - name: attr03
+    label: 绩效维度
+    type: String
+    required: false
+  - name: attr04
+    label: 潜力维度
+    type: String
+    required: false
+  - name: attr05
+    label: 九宫格位置
+    type: String
+    required: false
+  - name: attr06
+    label: 继任标记
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-HR-018
+  relatedRules: []
+- id: AGG-MAN-001
+  name: 工厂主数据
+  alias: Man1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 制造组织的最小工厂单元定义
+  domain: 生产制造
+  sourceSystem: ERP/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工厂编码
+    type: String
+    required: true
+  - name: attr02
+    label: 工厂名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所在地
+    type: String
+    required: false
+  - name: attr04
+    label: 所属公司
+    type: String
+    required: false
+  - name: attr05
+    label: 产能属性
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-004
+  relatedRules: []
+- id: AGG-MAN-002
+  name: 车间主数据
+  alias: Man2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 工厂下属的车间组织单元
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 车间编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属工厂
+    type: String
+    required: false
+  - name: attr04
+    label: 负责人
+    type: String
+    required: false
+  - name: attr05
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-004
+  relatedRules: []
+- id: AGG-MAN-003
+  name: 工作中心主数据
+  alias: Man3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 具备独立产能的产能归集单元
+  domain: 生产制造
+  sourceSystem: MES/APS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工作中心编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属工厂
+    type: String
+    required: false
+  - name: attr04
+    label: 工种
+    type: String
+    required: false
+  - name: attr05
+    label: 标准产能
+    type: String
+    required: false
+  - name: attr06
+    label: 日历
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-004
+  name: 产线主数据
+  alias: Man4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 物理产线/流水线定义
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 产线编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属车间/工厂
+    type: String
+    required: false
+  - name: attr04
+    label: 产品族
+    type: String
+    required: false
+  - name: attr05
+    label: 节拍
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-004
+  relatedRules: []
+- id: AGG-MAN-005
+  name: 工艺路线
+  alias: Man5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 产品制造的工序顺序与标准工时
+  domain: 生产制造
+  sourceSystem: MES/PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工艺版本
+    type: String
+    required: false
+  - name: attr02
+    label: 产品编码
+    type: String
+    required: true
+  - name: attr03
+    label: 工序序列
+    type: String
+    required: false
+  - name: attr04
+    label: 工序名称
+    type: String
+    required: false
+  - name: attr05
+    label: 标准工时
+    type: String
+    required: false
+  - name: attr06
+    label: 设备类型
+    type: String
+    required: false
+  - name: attr07
+    label: 工装
+    type: String
+    required: false
+  - name: attr08
+    label: 质检点
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-003
+  relatedRules: []
+- id: AGG-MAN-006
+  name: 工序主数据
+  alias: Man6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 车间最小作业工序定义
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工序编码
+    type: String
+    required: true
+  - name: attr02
+    label: 工序名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属产线
+    type: String
+    required: false
+  - name: attr04
+    label: 责任班组
+    type: String
+    required: false
+  - name: attr05
+    label: 标准产能
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-007
+  name: 工位主数据
+  alias: Man7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 产线上的具体作业站位
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工位编码
+    type: String
+    required: true
+  - name: attr02
+    label: 工位号
+    type: String
+    required: true
+  - name: attr03
+    label: 所属产线/工序
+    type: String
+    required: false
+  - name: attr04
+    label: 责任班组
+    type: String
+    required: false
+  - name: attr05
+    label: 设备
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-008
+  name: 制造BOM(MBOM)
+  alias: Man8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 面向制造视角的物料构成
+  domain: 生产制造
+  sourceSystem: PLM/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: MBOM版本
+    type: String
+    required: false
+  - name: attr02
+    label: 父项
+    type: String
+    required: false
+  - name: attr03
+    label: 子项
+    type: String
+    required: false
+  - name: attr04
+    label: 用量
+    type: String
+    required: false
+  - name: attr05
+    label: 工位配送点
+    type: String
+    required: false
+  - name: attr06
+    label: 损耗率
+    type: Decimal
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-009
+  name: 设备主数据
+  alias: Man9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 生产设备的档案与状态
+  domain: 生产制造
+  sourceSystem: MES/TPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 设备编码
+    type: String
+    required: true
+  - name: attr02
+    label: 设备名称
+    type: String
+    required: false
+  - name: attr03
+    label: 型号
+    type: String
+    required: true
+  - name: attr04
+    label: 产线
+    type: String
+    required: false
+  - name: attr05
+    label: 厂商
+    type: String
+    required: false
+  - name: attr06
+    label: 资产编号
+    type: String
+    required: true
+  - name: attr07
+    label: 状态(运行/故障/保养)
+    type: String
+    required: false
+  - name: attr08
+    label: 校准日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-013
+  relatedRules:
+  - RULE-MAN-005
+- id: AGG-MAN-010
+  name: 模具主数据
+  alias: Man10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 模具档案（手机注塑/冲压大量使用）
+  domain: 生产制造
+  sourceSystem: MES/TPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 模具编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(注塑模/冲压模)
+    type: String
+    required: false
+  - name: attr04
+    label: 关联产品
+    type: String
+    required: false
+  - name: attr05
+    label: 寿命次数
+    type: String
+    required: false
+  - name: attr06
+    label: 保养周期
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-015
+  relatedRules:
+  - RULE-MAN-006
+- id: AGG-MAN-011
+  name: 工装主数据
+  alias: Man11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 夹具、治具等工艺装备档案
+  domain: 生产制造
+  sourceSystem: MES/TPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工装编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(夹具/治具/检具)
+    type: String
+    required: false
+  - name: attr04
+    label: 关联工序
+    type: String
+    required: false
+  - name: attr05
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-012
+  name: 生产指令
+  alias: Man12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 关键工序的工艺参数下发指令
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 指令号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 工序
+    type: String
+    required: false
+  - name: attr04
+    label: 参数名
+    type: String
+    required: false
+  - name: attr05
+    label: 标准值
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 上下限
+    type: String
+    required: false
+  - name: attr07
+    label: 单位
+    type: String
+    required: false
+  - name: attr08
+    label: 下发人
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-013
+  name: 工艺参数
+  alias: Man13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 关键工序的工艺参数标准
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 参数号
+    type: String
+    required: true
+  - name: attr02
+    label: 工序
+    type: String
+    required: false
+  - name: attr03
+    label: 参数名
+    type: String
+    required: false
+  - name: attr04
+    label: 标准值
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 上下限
+    type: String
+    required: false
+  - name: attr06
+    label: 单位
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-014
+  name: 生产订单
+  alias: Man14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: ERP层面向工厂下达的制造计划指令
+  domain: 生产制造
+  sourceSystem: ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 生产订单号
+    type: String
+    required: false
+  - name: attr02
+    label: 产品编码
+    type: String
+    required: true
+  - name: attr03
+    label: 计划数量
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 计划开工/完工
+    type: String
+    required: false
+  - name: attr05
+    label: 工厂
+    type: String
+    required: false
+  - name: attr06
+    label: 状态(计划/下达)
+    type: String
+    required: false
+  - name: attr07
+    label: 关联MPS
+    type: String
+    required: false
+  - name: attr08
+    label: 关联销售订单
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-001
+  relatedRules: []
+- id: AGG-MAN-015
+  name: 工单
+  alias: Man15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: MES层具体产品的制造执行指令单据
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 工单号
+    type: String
+    required: true
+  - name: attr02
+    label: 生产订单号
+    type: String
+    required: false
+  - name: attr03
+    label: 产品编码
+    type: String
+    required: true
+  - name: attr04
+    label: 计划数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 已产数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 开工日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 完工日期
+    type: Date
+    required: false
+  - name: attr08
+    label: 产线
+    type: String
+    required: false
+  - name: attr09
+    label: 状态(计划/开工/完工)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-002
+  - BEH-MAN-005
+  - BEH-MAN-008
+  relatedRules:
+  - RULE-MAN-001
+- id: AGG-MAN-016
+  name: 领料单
+  alias: Man16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 工单物料的齐套领用单据
+  domain: 生产制造
+  sourceSystem: WMS/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 领料单号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr04
+    label: 需求数
+    type: String
+    required: false
+  - name: attr05
+    label: 实发数
+    type: String
+    required: false
+  - name: attr06
+    label: 库位
+    type: String
+    required: false
+  - name: attr07
+    label: 齐套标识
+    type: Boolean
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-006
+  relatedRules:
+  - RULE-MAN-001
+- id: AGG-MAN-017
+  name: 配送单
+  alias: Man17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 物料从仓库到产线工位的配送单据
+  domain: 生产制造
+  sourceSystem: WMS/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 配送单号
+    type: String
+    required: true
+  - name: attr02
+    label: 领料单号
+    type: String
+    required: true
+  - name: attr03
+    label: 工单号
+    type: String
+    required: true
+  - name: attr04
+    label: 物料
+    type: String
+    required: false
+  - name: attr05
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 目标工位
+    type: String
+    required: false
+  - name: attr07
+    label: 配送时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-007
+  relatedRules: []
+- id: AGG-MAN-018
+  name: 在制品(WIP)记录
+  alias: Man18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 工序间在产数量与状态
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 工序
+    type: String
+    required: false
+  - name: attr04
+    label: 在产数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 合格数
+    type: String
+    required: false
+  - name: attr06
+    label: 不良数
+    type: String
+    required: false
+  - name: attr07
+    label: 停留时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-010
+  - BEH-MAN-011
+  relatedRules:
+  - RULE-MAN-004
+- id: AGG-MAN-019
+  name: 生产报工记录
+  alias: Man19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 工序完工的数量与工时报工
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 报工号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 工序
+    type: String
+    required: false
+  - name: attr04
+    label: 报工数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 合格数
+    type: String
+    required: false
+  - name: attr06
+    label: 工时
+    type: String
+    required: false
+  - name: attr07
+    label: 操作人
+    type: String
+    required: false
+  - name: attr08
+    label: 时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-010
+  relatedRules: []
+- id: AGG-MAN-020
+  name: 生产异常事件
+  alias: Man20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 停工、缺料、设备故障等异常记录
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 事件号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单/设备
+    type: String
+    required: false
+  - name: attr03
+    label: 异常类型(停机/缺料/故障)
+    type: String
+    required: false
+  - name: attr04
+    label: 开始时间
+    type: DateTime
+    required: false
+  - name: attr05
+    label: 结束时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 影响产量
+    type: String
+    required: false
+  - name: attr07
+    label: 原因码
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-016
+  relatedRules: []
+- id: AGG-MAN-021
+  name: SMT上料换线记录
+  alias: Man21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: SMT产线上料与换线核对记录
+  domain: 生产制造
+  sourceSystem: MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 产线
+    type: String
+    required: false
+  - name: attr03
+    label: 工单
+    type: String
+    required: false
+  - name: attr04
+    label: 物料批次
+    type: String
+    required: false
+  - name: attr05
+    label: 站位
+    type: String
+    required: false
+  - name: attr06
+    label: 核对人
+    type: String
+    required: false
+  - name: attr07
+    label: 核对时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-009
+  relatedRules:
+  - RULE-MAN-002
+- id: AGG-MAN-022
+  name: 排班计划
+  alias: Man22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 车间人员与产线的班次安排
+  domain: 生产制造
+  sourceSystem: MES/HR
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 计划号
+    type: String
+    required: true
+  - name: attr02
+    label: 日期
+    type: Date
+    required: false
+  - name: attr03
+    label: 班次(早/中/晚)
+    type: String
+    required: false
+  - name: attr04
+    label: 产线
+    type: String
+    required: false
+  - name: attr05
+    label: 班组
+    type: String
+    required: false
+  - name: attr06
+    label: 人员
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-005
+  - BEH-MAN-021
+  relatedRules: []
+- id: AGG-MAN-023
+  name: 检验计划(质检方案)
+  alias: Man23
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 产品/工序的检验项目与抽样方案定义
+  domain: 生产制造
+  sourceSystem: QMS/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 检验计划号
+    type: String
+    required: false
+  - name: attr02
+    label: 产品/工序
+    type: String
+    required: false
+  - name: attr03
+    label: 检验项
+    type: String
+    required: false
+  - name: attr04
+    label: 检验类型(首/巡/终)
+    type: String
+    required: false
+  - name: attr05
+    label: 抽样方案
+    type: String
+    required: false
+  - name: attr06
+    label: 判定标准
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-MAN-024
+  name: 质量检验记录(SPC)
+  alias: Man24
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 首检/巡检/终检的质量数据
+  domain: 生产制造
+  sourceSystem: QMS/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 检验单号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 工序
+    type: String
+    required: false
+  - name: attr04
+    label: 检验项
+    type: String
+    required: false
+  - name: attr05
+    label: 实测值
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 标准上下限
+    type: String
+    required: false
+  - name: attr07
+    label: 判定
+    type: String
+    required: false
+  - name: attr08
+    label: 检验员
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-012
+  relatedRules:
+  - RULE-MAN-003
+- id: AGG-MAN-025
+  name: 设备点检记录
+  alias: Man25
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 设备日常点检执行记录
+  domain: 生产制造
+  sourceSystem: TPM/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 设备编码
+    type: String
+    required: true
+  - name: attr03
+    label: 点检类型
+    type: String
+    required: false
+  - name: attr04
+    label: 结果
+    type: String
+    required: false
+  - name: attr05
+    label: 异常描述
+    type: String
+    required: false
+  - name: attr06
+    label: 处理人
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-013
+  relatedRules: []
+- id: AGG-MAN-026
+  name: 设备保养记录
+  alias: Man26
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 设备一级/二级保养与校准记录
+  domain: 生产制造
+  sourceSystem: TPM/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 设备编码
+    type: String
+    required: true
+  - name: attr03
+    label: 保养类型(一级/二级/校准)
+    type: String
+    required: false
+  - name: attr04
+    label: 结果
+    type: String
+    required: false
+  - name: attr05
+    label: 处理人
+    type: String
+    required: false
+  - name: attr06
+    label: 下次日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-014
+  relatedRules: []
+- id: AGG-MAN-027
+  name: 模具保养寿命记录
+  alias: Man27
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 模具保养与寿命次数追踪
+  domain: 生产制造
+  sourceSystem: TPM/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 模具编码
+    type: String
+    required: true
+  - name: attr03
+    label: 保养类型
+    type: String
+    required: false
+  - name: attr04
+    label: 累计次数
+    type: String
+    required: false
+  - name: attr05
+    label: 寿命预警
+    type: String
+    required: false
+  - name: attr06
+    label: 处理人
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-015
+  relatedRules:
+  - RULE-MAN-006
+- id: AGG-MAN-028
+  name: 不良返工单
+  alias: Man28
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 不合格品的返工或报废处理单据
+  domain: 生产制造
+  sourceSystem: MES/QMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 单据号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 物料/成品
+    type: String
+    required: false
+  - name: attr04
+    label: 不良数
+    type: String
+    required: false
+  - name: attr05
+    label: 不良代码
+    type: String
+    required: false
+  - name: attr06
+    label: 处理方式(返工/报废)
+    type: String
+    required: false
+  - name: attr07
+    label: 责任工序
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-017
+  relatedRules:
+  - RULE-MAN-008
+- id: AGG-MAN-029
+  name: 成品入库单
+  alias: Man29
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 完工成品入库的业务单据
+  domain: 生产制造
+  sourceSystem: MES/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 入库单号
+    type: String
+    required: true
+  - name: attr02
+    label: 工单号
+    type: String
+    required: true
+  - name: attr03
+    label: 产品编码
+    type: String
+    required: true
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 批次
+    type: String
+    required: false
+  - name: attr06
+    label: 质检结论
+    type: String
+    required: false
+  - name: attr07
+    label: 入库库位
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-018
+  relatedRules:
+  - RULE-MAN-009
+- id: AGG-MAN-030
+  name: 生产追溯记录
+  alias: Man30
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 产品SN-工单-物料批次-工序-操作人的正向/反向追溯链
+  domain: 生产制造
+  sourceSystem: MES/追溯系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 追溯号
+    type: String
+    required: true
+  - name: attr02
+    label: SN/批次
+    type: String
+    required: false
+  - name: attr03
+    label: 工单号
+    type: String
+    required: true
+  - name: attr04
+    label: 工序
+    type: String
+    required: false
+  - name: attr05
+    label: 用料批次
+    type: String
+    required: false
+  - name: attr06
+    label: 操作人
+    type: String
+    required: false
+  - name: attr07
+    label: 设备
+    type: String
+    required: false
+  - name: attr08
+    label: 时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-019
+  relatedRules:
+  - RULE-MAN-010
+- id: AGG-MAN-031
+  name: 生产绩效(良率)
+  alias: Man31
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 工单/产线/班次的产出与质量度量
+  domain: 生产制造
+  sourceSystem: MES/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 生产制造
+  attributes:
+  - name: attr01
+    label: 指标号
+    type: String
+    required: true
+  - name: attr02
+    label: 维度(工单/产线/班次)
+    type: String
+    required: false
+  - name: attr03
+    label: 产出量
+    type: String
+    required: false
+  - name: attr04
+    label: 良率
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 工时效率(OEE)
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 周期
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MAN-020
+  relatedRules:
+  - RULE-MAN-007
+- id: AGG-MKT-001
+  name: 客户主数据
+  alias: Mkt1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 个人/企业客户及联系人统一档案
+  domain: 市场营销
+  sourceSystem: CRM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr02
+    label: 客户名称
+    type: String
+    required: false
+  - name: attr03
+    label: 客户类型(个人/企业)
+    type: String
+    required: false
+  - name: attr04
+    label: 联系方式
+    type: String
+    required: false
+  - name: attr05
+    label: 地域
+    type: String
+    required: false
+  - name: attr06
+    label: 行业
+    type: String
+    required: false
+  - name: attr07
+    label: 等级
+    type: String
+    required: false
+  - name: attr08
+    label: 来源渠道
+    type: String
+    required: false
+  - name: attr09
+    label: 统一ID
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-001
+  relatedRules:
+  - RULE-MKT-001
+- id: AGG-MKT-002
+  name: 线索(Lead)
+  alias: Mkt2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 尚未 qualifying 的潜在购买意向
+  domain: 市场营销
+  sourceSystem: CRM/MA
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 线索编号
+    type: String
+    required: true
+  - name: attr02
+    label: 姓名/企业
+    type: String
+    required: false
+  - name: attr03
+    label: 联系方式
+    type: String
+    required: false
+  - name: attr04
+    label: 来源(广告/转介/门店)
+    type: String
+    required: false
+  - name: attr05
+    label: 意向产品
+    type: String
+    required: false
+  - name: attr06
+    label: 评分
+    type: String
+    required: false
+  - name: attr07
+    label: 状态(新/培育/转化/无效)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-002
+  - BEH-MKT-003
+  - BEH-MKT-004
+  relatedRules:
+  - RULE-MKT-001
+  - RULE-MKT-002
+- id: AGG-MKT-003
+  name: 商机(Opportunity)
+  alias: Mkt3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 已确认需求、进入销售漏斗的成交机会
+  domain: 市场营销
+  sourceSystem: CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 商机编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 阶段(发现/方案/报价/谈判/赢单)
+    type: String
+    required: false
+  - name: attr05
+    label: 预计成交日
+    type: String
+    required: false
+  - name: attr06
+    label: 负责人
+    type: String
+    required: false
+  - name: attr07
+    label: 赢率
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 产品线
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-005
+  - BEH-MKT-010
+  - BEH-MKT-011
+  relatedRules:
+  - RULE-MKT-003
+- id: AGG-MKT-004
+  name: 客户画像
+  alias: Mkt4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 基于行为计算的客户分群与特征
+  domain: 市场营销
+  sourceSystem: CDP/DMP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 画像编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr03
+    label: 分群
+    type: String
+    required: false
+  - name: attr04
+    label: 特征集
+    type: String
+    required: false
+  - name: attr05
+    label: 更新时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-009
+  relatedRules: []
+- id: AGG-MKT-005
+  name: 客户标签
+  alias: Mkt5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 贴到客户身上的标签与分值
+  domain: 市场营销
+  sourceSystem: CDP/DMP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 标签编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr03
+    label: 标签(高净值/换机期/影像党)
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 分值
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 有效期
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-003
+  - BEH-MKT-009
+  relatedRules: []
+- id: AGG-MKT-006
+  name: 报价单(Quote)
+  alias: Mkt6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 向客户出具的正式报价方案（LTC报价阶段关键对象）
+  domain: 市场营销
+  sourceSystem: CRM/CPQ
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 报价单号
+    type: String
+    required: true
+  - name: attr02
+    label: 商机编号
+    type: String
+    required: true
+  - name: attr03
+    label: 客户
+    type: String
+    required: false
+  - name: attr04
+    label: 产品/配置
+    type: String
+    required: false
+  - name: attr05
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 单价
+    type: String
+    required: false
+  - name: attr07
+    label: 折扣
+    type: String
+    required: false
+  - name: attr08
+    label: 总价
+    type: String
+    required: false
+  - name: attr09
+    label: 有效期
+    type: String
+    required: false
+  - name: attr10
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-012
+  relatedRules:
+  - RULE-MKT-004
+- id: AGG-MKT-007
+  name: 销售合同
+  alias: Mkt7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 与客户签订的具法律效力的销售契约
+  domain: 市场营销
+  sourceSystem: CRM/合同系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 合同号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 关联商机/报价
+    type: String
+    required: false
+  - name: attr04
+    label: 产品明细
+    type: String
+    required: false
+  - name: attr05
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 条款
+    type: String
+    required: false
+  - name: attr07
+    label: 签约日
+    type: String
+    required: false
+  - name: attr08
+    label: 生效日
+    type: String
+    required: false
+  - name: attr09
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-013
+  relatedRules: []
+- id: AGG-MKT-008
+  name: 销售订单(SO)
+  alias: Mkt8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 客户确认后的销售执行单据（LTC订单阶段关键对象）
+  domain: 市场营销
+  sourceSystem: CRM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 订单号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户
+    type: String
+    required: false
+  - name: attr03
+    label: 关联合同
+    type: String
+    required: false
+  - name: attr04
+    label: 产品/SKU
+    type: String
+    required: false
+  - name: attr05
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 单价
+    type: String
+    required: false
+  - name: attr07
+    label: 交期
+    type: String
+    required: false
+  - name: attr08
+    label: 发货状态
+    type: String
+    required: false
+  - name: attr09
+    label: 开票状态
+    type: String
+    required: false
+  - name: attr10
+    label: 收货状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-014
+  relatedRules:
+  - RULE-MKT-005
+  - RULE-MKT-009
+- id: AGG-MKT-009
+  name: 市场活动
+  alias: Mkt9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 线上/线下营销活动的策划与执行
+  domain: 市场营销
+  sourceSystem: MA/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 活动编号
+    type: String
+    required: true
+  - name: attr02
+    label: 活动名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(发布会/促销/展会)
+    type: String
+    required: false
+  - name: attr04
+    label: 渠道
+    type: String
+    required: false
+  - name: attr05
+    label: 预算
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 开始/结束日
+    type: String
+    required: false
+  - name: attr07
+    label: 目标人群
+    type: String
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-006
+  relatedRules: []
+- id: AGG-MKT-010
+  name: 广告投放计划
+  alias: Mkt10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 各媒体渠道的广告投放安排
+  domain: 市场营销
+  sourceSystem: 广告平台/MA
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 投放编号
+    type: String
+    required: true
+  - name: attr02
+    label: 渠道(信息流/搜索/OTV)
+    type: String
+    required: false
+  - name: attr03
+    label: 素材
+    type: String
+    required: false
+  - name: attr04
+    label: 预算
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 定向条件
+    type: String
+    required: false
+  - name: attr06
+    label: 排期
+    type: String
+    required: false
+  - name: attr07
+    label: 出价
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-007
+  relatedRules: []
+- id: AGG-MKT-011
+  name: 营销内容
+  alias: Mkt11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 文案、海报、视频等营销资产
+  domain: 市场营销
+  sourceSystem: MA/内容平台
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 内容编号
+    type: String
+    required: true
+  - name: attr02
+    label: 标题
+    type: String
+    required: false
+  - name: attr03
+    label: 类型
+    type: String
+    required: false
+  - name: attr04
+    label: 关联活动
+    type: String
+    required: false
+  - name: attr05
+    label: 版本
+    type: String
+    required: false
+  - name: attr06
+    label: 合规审核状态
+    type: String
+    required: false
+  - name: attr07
+    label: 发布渠道
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-008
+  relatedRules:
+  - RULE-MKT-008
+- id: AGG-MKT-012
+  name: 营销素材
+  alias: Mkt12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 可复用的图片/视频/版式等素材资源
+  domain: 市场营销
+  sourceSystem: MA/内容平台
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 素材编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型
+    type: String
+    required: false
+  - name: attr04
+    label: 格式
+    type: String
+    required: false
+  - name: attr05
+    label: 尺寸
+    type: String
+    required: false
+  - name: attr06
+    label: 版权信息
+    type: String
+    required: false
+  - name: attr07
+    label: 归属活动
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-008
+  relatedRules: []
+- id: AGG-MKT-013
+  name: 会员
+  alias: Mkt13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 注册会员身份档案
+  domain: 市场营销
+  sourceSystem: CRM/会员系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 会员编号
+    type: String
+    required: true
+  - name: attr02
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr03
+    label: 等级
+    type: String
+    required: false
+  - name: attr04
+    label: 入会日
+    type: String
+    required: false
+  - name: attr05
+    label: 状态
+    type: String
+    required: false
+  - name: attr06
+    label: 所属渠道
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-015
+  relatedRules:
+  - RULE-MKT-010
+- id: AGG-MKT-014
+  name: 忠诚度积分账户
+  alias: Mkt14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 会员积分与权益账户
+  domain: 市场营销
+  sourceSystem: CRM/会员系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 账户编号
+    type: String
+    required: true
+  - name: attr02
+    label: 会员编号
+    type: String
+    required: true
+  - name: attr03
+    label: 积分
+    type: String
+    required: false
+  - name: attr04
+    label: 成长值
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 权益包
+    type: String
+    required: false
+  - name: attr06
+    label: 有效期
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-015
+  - BEH-MKT-016
+  relatedRules:
+  - RULE-MKT-010
+- id: AGG-MKT-015
+  name: 促销优惠规则
+  alias: Mkt15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 折扣、满减、券的生效规则
+  domain: 市场营销
+  sourceSystem: 促销引擎
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 规则编号
+    type: String
+    required: true
+  - name: attr02
+    label: 类型(折扣/满减/赠品)
+    type: String
+    required: false
+  - name: attr03
+    label: 适用产品
+    type: String
+    required: false
+  - name: attr04
+    label: 门槛
+    type: String
+    required: false
+  - name: attr05
+    label: 折扣率
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 有效期
+    type: String
+    required: false
+  - name: attr07
+    label: 渠道范围
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-017
+  relatedRules:
+  - RULE-MKT-006
+- id: AGG-MKT-016
+  name: 优惠券
+  alias: Mkt16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 发放到客户的可用券
+  domain: 市场营销
+  sourceSystem: 促销引擎/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 券码
+    type: String
+    required: false
+  - name: attr02
+    label: 类型
+    type: String
+    required: false
+  - name: attr03
+    label: 面额
+    type: String
+    required: false
+  - name: attr04
+    label: 适用条件
+    type: String
+    required: false
+  - name: attr05
+    label: 有效期
+    type: String
+    required: false
+  - name: attr06
+    label: 领取人
+    type: String
+    required: false
+  - name: attr07
+    label: 核销状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-018
+  relatedRules:
+  - RULE-MKT-006
+  - RULE-MKT-007
+- id: AGG-MKT-017
+  name: 权益
+  alias: Mkt17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 客户可享的增值权益实例
+  domain: 市场营销
+  sourceSystem: CRM/会员系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 权益编号
+    type: String
+    required: true
+  - name: attr02
+    label: 类型(延保/会员/服务)
+    type: String
+    required: false
+  - name: attr03
+    label: 关联客户/会员
+    type: String
+    required: false
+  - name: attr04
+    label: 生效日
+    type: String
+    required: false
+  - name: attr05
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-018
+  relatedRules:
+  - RULE-MKT-006
+- id: AGG-MKT-018
+  name: 渠道经销商
+  alias: Mkt18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 分销渠道与经销商档案
+  domain: 市场营销
+  sourceSystem: 渠道系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 渠道编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(直营/代理/运营商)
+    type: String
+    required: false
+  - name: attr04
+    label: 区域
+    type: String
+    required: false
+  - name: attr05
+    label: 等级
+    type: String
+    required: false
+  - name: attr06
+    label: 信用额度
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-019
+  relatedRules:
+  - RULE-MKT-009
+  - RULE-MKT-011
+- id: AGG-MKT-019
+  name: 门店零售终端
+  alias: Mkt19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 自有体验店/零售门店/运营商营业厅档案（手机销售关键）
+  domain: 市场营销
+  sourceSystem: 渠道系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 门店编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(体验店/旗舰店/授权店)
+    type: String
+    required: false
+  - name: attr04
+    label: 区域
+    type: String
+    required: false
+  - name: attr05
+    label: 所属渠道
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-020
+  relatedRules:
+  - RULE-MKT-011
+- id: AGG-MKT-020
+  name: 赢单记录
+  alias: Mkt20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 商机赢单的结果记录
+  domain: 市场营销
+  sourceSystem: CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 赢单编号
+    type: String
+    required: true
+  - name: attr02
+    label: 商机编号
+    type: String
+    required: true
+  - name: attr03
+    label: 客户
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 产品
+    type: String
+    required: false
+  - name: attr06
+    label: 赢单日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 关联合同
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-013
+  relatedRules: []
+- id: AGG-MKT-021
+  name: 产品价格定价表
+  alias: Mkt21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 机型/SKU的分销价、零售价、渠道价体系
+  domain: 市场营销
+  sourceSystem: 价格系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 价格表号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 产品/SKU
+    type: String
+    required: false
+  - name: attr03
+    label: 价格类型(出厂/批发/零售)
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 价格
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 生效日
+    type: String
+    required: false
+  - name: attr06
+    label: 区域
+    type: String
+    required: false
+  - name: attr07
+    label: 币种
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-021
+  relatedRules: []
+- id: AGG-MKT-022
+  name: 销售目标配额
+  alias: Mkt22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 组织/人员/区域的销售目标与配额
+  domain: 市场营销
+  sourceSystem: CRM/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 目标编号
+    type: String
+    required: true
+  - name: attr02
+    label: 维度(组织/人员/区域)
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 产品目标
+    type: String
+    required: false
+  - name: attr05
+    label: 金额目标
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 配额
+    type: String
+    required: false
+  - name: attr07
+    label: 完成率
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-022
+  relatedRules: []
+- id: AGG-MKT-023
+  name: 销售预测
+  alias: Mkt23
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 未来周期的销售量与金额预测
+  domain: 市场营销
+  sourceSystem: CRM/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 预测编号
+    type: String
+    required: true
+  - name: attr02
+    label: 产品/SKU
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 预测数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 预测金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 版本
+    type: String
+    required: false
+  - name: attr07
+    label: 准确率
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-022
+  relatedRules: []
+- id: AGG-MKT-024
+  name: 竞品信息
+  alias: Mkt24
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 竞争品牌/机型的特征与动态
+  domain: 市场营销
+  sourceSystem: CI系统/CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 竞品编号
+    type: String
+    required: true
+  - name: attr02
+    label: 品牌
+    type: String
+    required: false
+  - name: attr03
+    label: 机型
+    type: String
+    required: false
+  - name: attr04
+    label: 关键规格
+    type: String
+    required: false
+  - name: attr05
+    label: 价格
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 上市时间
+    type: DateTime
+    required: false
+  - name: attr07
+    label: 动态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-023
+  relatedRules: []
+- id: AGG-MKT-025
+  name: 营销费用预算
+  alias: Mkt25
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 活动与渠道的费用与ROI度量
+  domain: 市场营销
+  sourceSystem: MA/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 费用编号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 活动/渠道
+    type: String
+    required: false
+  - name: attr03
+    label: 预算
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 实际花费
+    type: String
+    required: false
+  - name: attr05
+    label: 转化数
+    type: String
+    required: false
+  - name: attr06
+    label: 获客成本CAC
+    type: Decimal
+    required: false
+  - name: attr07
+    label: ROI
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-024
+  relatedRules: []
+- id: AGG-MKT-026
+  name: 线索培育记录
+  alias: Mkt26
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 培育触达的轨迹(邮件/短信/电话)
+  domain: 市场营销
+  sourceSystem: MA
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 线索编号
+    type: String
+    required: true
+  - name: attr03
+    label: 触达方式
+    type: String
+    required: false
+  - name: attr04
+    label: 内容
+    type: String
+    required: false
+  - name: attr05
+    label: 时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 响应(打开/点击/转化)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-004
+  relatedRules: []
+- id: AGG-MKT-027
+  name: 商机跟进记录
+  alias: Mkt27
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 销售跟进的动作与沟通留痕
+  domain: 市场营销
+  sourceSystem: CRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 市场营销
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 商机编号
+    type: String
+    required: true
+  - name: attr03
+    label: 跟进方式
+    type: String
+    required: false
+  - name: attr04
+    label: 内容
+    type: String
+    required: false
+  - name: attr05
+    label: 时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 下一步
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-MKT-011
+  relatedRules: []
+- id: AGG-RND-001
+  name: 产品系列主数据
+  alias: Rnd1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 企业产品族/系列的统一定义
+  domain: 产品研发
+  sourceSystem: PLM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 系列编码
+    type: String
+    required: true
+  - name: attr02
+    label: 系列名称
+    type: String
+    required: false
+  - name: attr03
+    label: 目标市场
+    type: String
+    required: false
+  - name: attr04
+    label: 定位(高端/中端/入门)
+    type: String
+    required: false
+  - name: attr05
+    label: 生命周期阶段
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-001
+  relatedRules: []
+- id: AGG-RND-002
+  name: 机型主数据
+  alias: Rnd2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 具体手机机型的统一定义
+  domain: 产品研发
+  sourceSystem: PLM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 机型编码
+    type: String
+    required: true
+  - name: attr02
+    label: 机型名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属系列
+    type: String
+    required: false
+  - name: attr04
+    label: 目标市场
+    type: String
+    required: false
+  - name: attr05
+    label: 定位
+    type: String
+    required: false
+  - name: attr06
+    label: 上市状态
+    type: String
+    required: false
+  - name: attr07
+    label: 生命周期阶段
+    type: String
+    required: false
+  - name: attr08
+    label: 产品经理
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-002
+  - BEH-RND-024
+  relatedRules:
+  - RULE-RND-009
+- id: AGG-RND-003
+  name: SKU主数据
+  alias: Rnd3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 可销售的最小产品规格单元
+  domain: 产品研发
+  sourceSystem: PLM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: SKU编码
+    type: String
+    required: true
+  - name: attr02
+    label: 机型编码
+    type: String
+    required: true
+  - name: attr03
+    label: 颜色
+    type: String
+    required: false
+  - name: attr04
+    label: 内存/存储规格
+    type: String
+    required: false
+  - name: attr05
+    label: 销售区域
+    type: String
+    required: false
+  - name: attr06
+    label: 价格档
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 包装版本
+    type: String
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-RND-004
+  name: 物料主数据(设计视图)
+  alias: Rnd4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 研发视角的物料定义（与主数据域同源，引用为主）
+  domain: 产品研发
+  sourceSystem: PLM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr02
+    label: 物料名称
+    type: String
+    required: false
+  - name: attr03
+    label: 规格型号
+    type: String
+    required: true
+  - name: attr04
+    label: 物料类型
+    type: String
+    required: false
+  - name: attr05
+    label: 设计属性
+    type: String
+    required: false
+  - name: attr06
+    label: 环保属性(RoHS/REACH)
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-RND-005
+  name: BOM对象
+  alias: Rnd5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 产品多层级物料构成清单（研发EBOM）
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: BOM版本
+    type: String
+    required: false
+  - name: attr02
+    label: 父项物料/机型
+    type: String
+    required: false
+  - name: attr03
+    label: 子项物料
+    type: String
+    required: false
+  - name: attr04
+    label: 用量
+    type: String
+    required: false
+  - name: attr05
+    label: 层级
+    type: String
+    required: false
+  - name: attr06
+    label: 位号
+    type: String
+    required: true
+  - name: attr07
+    label: 损耗率
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 生效日期
+    type: Date
+    required: false
+  - name: attr09
+    label: 替代料组
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-009
+  - BEH-RND-010
+  - BEH-RND-017
+  relatedRules:
+  - RULE-RND-002
+- id: AGG-RND-006
+  name: 产品平台(平台模块)
+  alias: Rnd6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 可跨机型复用的平台与共用模块定义
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 模块编码
+    type: String
+    required: true
+  - name: attr02
+    label: 模块名称
+    type: String
+    required: false
+  - name: attr03
+    label: 适用产品族
+    type: String
+    required: false
+  - name: attr04
+    label: 接口标准
+    type: String
+    required: false
+  - name: attr05
+    label: 版本
+    type: String
+    required: false
+  - name: attr06
+    label: 复用次数
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-022
+  relatedRules:
+  - RULE-RND-007
+- id: AGG-RND-007
+  name: 软件版本(固件)
+  alias: Rnd7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 手机软件/固件/ROM版本定义（手机行业关键）
+  domain: 产品研发
+  sourceSystem: PLM/软件仓库
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 版本号
+    type: String
+    required: true
+  - name: attr02
+    label: 软件类型(系统/驱动/应用)
+    type: String
+    required: false
+  - name: attr03
+    label: 关联机型
+    type: String
+    required: false
+  - name: attr04
+    label: 基线
+    type: String
+    required: false
+  - name: attr05
+    label: 发布日期
+    type: Date
+    required: false
+  - name: attr06
+    label: 升级策略
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-019
+  relatedRules: []
+- id: AGG-RND-008
+  name: 产品需求(PRD)
+  alias: Rnd8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 经评审的产品功能与体验需求
+  domain: 产品研发
+  sourceSystem: PLM/需求系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 需求编号
+    type: String
+    required: true
+  - name: attr02
+    label: 需求标题
+    type: String
+    required: false
+  - name: attr03
+    label: 来源(市场/用户/技术)
+    type: String
+    required: false
+  - name: attr04
+    label: 优先级
+    type: String
+    required: false
+  - name: attr05
+    label: 状态(草稿/评审/实现/关闭)
+    type: String
+    required: false
+  - name: attr06
+    label: 关联项目
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-003
+  - BEH-RND-004
+  relatedRules: []
+- id: AGG-RND-009
+  name: 研发项目
+  alias: Rnd9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 从概念到发布的研发执行项目
+  domain: 产品研发
+  sourceSystem: PLM/项目系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 项目编号
+    type: String
+    required: true
+  - name: attr02
+    label: 项目名称
+    type: String
+    required: false
+  - name: attr03
+    label: 所属产品线
+    type: String
+    required: false
+  - name: attr04
+    label: 阶段(概念/计划/开发/验证/发布)
+    type: String
+    required: false
+  - name: attr05
+    label: 负责人
+    type: String
+    required: false
+  - name: attr06
+    label: 里程碑
+    type: String
+    required: false
+  - name: attr07
+    label: 预算
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-002
+  relatedRules:
+  - RULE-RND-001
+- id: AGG-RND-010
+  name: 设计文档
+  alias: Rnd10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 结构、硬件、软件的研发设计产出物
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 文档编号
+    type: String
+    required: true
+  - name: attr02
+    label: 文档类型(ID/结构/硬件/软件)
+    type: String
+    required: false
+  - name: attr03
+    label: 版本
+    type: String
+    required: false
+  - name: attr04
+    label: 关联产品
+    type: String
+    required: false
+  - name: attr05
+    label: 作者
+    type: String
+    required: false
+  - name: attr06
+    label: 审批状态
+    type: String
+    required: false
+  - name: attr07
+    label: 归档路径
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-006
+  - BEH-RND-007
+  relatedRules: []
+- id: AGG-RND-011
+  name: 图纸
+  alias: Rnd11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 结构/硬件/PCB等工程图纸
+  domain: 产品研发
+  sourceSystem: PLM/CAD
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 图号
+    type: String
+    required: true
+  - name: attr02
+    label: 图纸类型(结构/硬件/PCB)
+    type: String
+    required: false
+  - name: attr03
+    label: 版本
+    type: String
+    required: false
+  - name: attr04
+    label: 关联物料
+    type: String
+    required: false
+  - name: attr05
+    label: 审批状态
+    type: String
+    required: false
+  - name: attr06
+    label: 归档路径
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-008
+  - BEH-RND-017
+  relatedRules: []
+- id: AGG-RND-012
+  name: 器件选型清单
+  alias: Rnd12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 关键元器件的选型与认证结果
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 选型编号
+    type: String
+    required: true
+  - name: attr02
+    label: 器件类别(SoC/屏幕/摄像头/电池)
+    type: String
+    required: false
+  - name: attr03
+    label: 候选型号
+    type: String
+    required: true
+  - name: attr04
+    label: 选定型号
+    type: String
+    required: true
+  - name: attr05
+    label: 认证状态
+    type: String
+    required: false
+  - name: attr06
+    label: 供应商
+    type: String
+    required: false
+  - name: attr07
+    label: 成本
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-RND-005
+  relatedRules:
+  - RULE-RND-004
+- id: AGG-RND-013
+  name: 试制打样单
+  alias: Rnd13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 工程样机或小批量试制的生产任务
+  domain: 产品研发
+  sourceSystem: PLM/MES
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 试制单号
+    type: String
+    required: true
+  - name: attr02
+    label: 机型编码
+    type: String
+    required: true
+  - name: attr03
+    label: 试制类型(EVT/DVT/PVT)
+    type: String
+    required: false
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 目标
+    type: String
+    required: false
+  - name: attr06
+    label: 结果记录
+    type: String
+    required: false
+  - name: attr07
+    label: 关联项目
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-011
+  relatedRules:
+  - RULE-RND-005
+- id: AGG-RND-014
+  name: 测试任务
+  alias: Rnd14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 功能、性能、可靠性、认证测试的执行计划
+  domain: 产品研发
+  sourceSystem: PLM/测试系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 测试编号
+    type: String
+    required: true
+  - name: attr02
+    label: 测试类型
+    type: String
+    required: false
+  - name: attr03
+    label: 关联产品/样机
+    type: String
+    required: false
+  - name: attr04
+    label: 用例数
+    type: String
+    required: false
+  - name: attr05
+    label: 计划开始/结束
+    type: String
+    required: false
+  - name: attr06
+    label: 负责人
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-012
+  relatedRules: []
+- id: AGG-RND-015
+  name: 测试报告
+  alias: Rnd15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 测试结论与缺陷统计结果
+  domain: 产品研发
+  sourceSystem: PLM/测试系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 报告编号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联测试任务
+    type: String
+    required: false
+  - name: attr03
+    label: 通过率
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 缺陷数
+    type: String
+    required: false
+  - name: attr05
+    label: 测试结论
+    type: String
+    required: false
+  - name: attr06
+    label: 测试人
+    type: String
+    required: false
+  - name: attr07
+    label: 日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-RND-013
+  relatedRules:
+  - RULE-RND-006
+- id: AGG-RND-016
+  name: 工程变更(ECO/ECN)
+  alias: Rnd16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 对已发布产品/BOM/图纸的变更请求与执行
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 变更单号
+    type: String
+    required: true
+  - name: attr02
+    label: 变更类型(设计/工艺/物料)
+    type: String
+    required: false
+  - name: attr03
+    label: 影响范围
+    type: String
+    required: false
+  - name: attr04
+    label: 变更原因
+    type: String
+    required: false
+  - name: attr05
+    label: 评审结论
+    type: String
+    required: false
+  - name: attr06
+    label: 生效日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 旧版/新版
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-015
+  - BEH-RND-016
+  - BEH-RND-017
+  relatedRules:
+  - RULE-RND-003
+- id: AGG-RND-017
+  name: 认证证书(入网许可)
+  alias: Rnd17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 产品上市所需的强制认证与入网许可（手机行业关键：CCC/CTA/CE/FCC）
+  domain: 产品研发
+  sourceSystem: PLM/合规系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 证书号
+    type: String
+    required: true
+  - name: attr02
+    label: 认证类型
+    type: String
+    required: false
+  - name: attr03
+    label: 关联机型
+    type: String
+    required: false
+  - name: attr04
+    label: 发证机构
+    type: String
+    required: false
+  - name: attr05
+    label: 生效日
+    type: String
+    required: false
+  - name: attr06
+    label: 失效日
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-018
+  relatedRules:
+  - RULE-RND-009
+- id: AGG-RND-018
+  name: 专利(知识产权)
+  alias: Rnd18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 研发产出的专利与技术秘密
+  domain: 产品研发
+  sourceSystem: PLM/知识产权系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 专利号
+    type: String
+    required: true
+  - name: attr02
+    label: 专利名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(发明/实用/外观)
+    type: String
+    required: false
+  - name: attr04
+    label: 申请人
+    type: String
+    required: false
+  - name: attr05
+    label: 状态(申请/授权)
+    type: String
+    required: false
+  - name: attr06
+    label: 归属产品
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-020
+  relatedRules:
+  - RULE-RND-008
+- id: AGG-RND-019
+  name: 标准化复用模块
+  alias: Rnd19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 可跨产品复用的标准化模块定义
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 模块编码
+    type: String
+    required: true
+  - name: attr02
+    label: 模块名称
+    type: String
+    required: false
+  - name: attr03
+    label: 适用产品族
+    type: String
+    required: false
+  - name: attr04
+    label: 接口标准
+    type: String
+    required: false
+  - name: attr05
+    label: 版本
+    type: String
+    required: false
+  - name: attr06
+    label: 复用次数
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-022
+  relatedRules:
+  - RULE-RND-007
+- id: AGG-RND-020
+  name: 研发物料需求
+  alias: Rnd20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 试制与研发用的物料申领需求
+  domain: 产品研发
+  sourceSystem: PLM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 需求单号
+    type: String
+    required: true
+  - name: attr02
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr03
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr04
+    label: 用途(试制/验证)
+    type: String
+    required: false
+  - name: attr05
+    label: 需求日期
+    type: Date
+    required: false
+  - name: attr06
+    label: 关联项目
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-021
+  relatedRules: []
+- id: AGG-RND-021
+  name: 质量缺陷记录
+  alias: Rnd21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 研发阶段发现的设计与器件缺陷
+  domain: 产品研发
+  sourceSystem: PLM/QMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 缺陷编号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联产品/测试
+    type: String
+    required: false
+  - name: attr03
+    label: 严重度
+    type: String
+    required: false
+  - name: attr04
+    label: 根因
+    type: String
+    required: false
+  - name: attr05
+    label: 责任方
+    type: String
+    required: false
+  - name: attr06
+    label: 关闭状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-023
+  relatedRules: []
+- id: AGG-RND-022
+  name: 研发工时投入
+  alias: Rnd22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 项目人力与费用投入度量
+  domain: 产品研发
+  sourceSystem: 项目系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 项目编号
+    type: String
+    required: true
+  - name: attr03
+    label: 人员
+    type: String
+    required: false
+  - name: attr04
+    label: 工时
+    type: String
+    required: false
+  - name: attr05
+    label: 费用科目
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 周期
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-RND-023
+  name: 技术评审结论(DCP/TR)
+  alias: Rnd23
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 各阶段决策评审与专家评审结论
+  domain: 产品研发
+  sourceSystem: PLM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 产品研发
+  attributes:
+  - name: attr01
+    label: 评审编号
+    type: String
+    required: true
+  - name: attr02
+    label: 评审类型(DCP/TR)
+    type: String
+    required: false
+  - name: attr03
+    label: 关联项目
+    type: String
+    required: false
+  - name: attr04
+    label: 结论(Go/No-Go)
+    type: String
+    required: false
+  - name: attr05
+    label: 问题清单
+    type: String
+    required: false
+  - name: attr06
+    label: 评审人
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-RND-014
+  relatedRules: []
+- id: AGG-STR-001
+  name: 战略目标
+  alias: Str1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 企业长期/年度战略方向与目标
+  domain: 战略经营
+  sourceSystem: EPM/战略系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 目标编号
+    type: String
+    required: true
+  - name: attr02
+    label: 层级(公司/业务域)
+    type: String
+    required: false
+  - name: attr03
+    label: 名称
+    type: String
+    required: false
+  - name: attr04
+    label: 描述
+    type: String
+    required: false
+  - name: attr05
+    label: 所属战略主题
+    type: String
+    required: false
+  - name: attr06
+    label: owner
+    type: String
+    required: false
+  - name: attr07
+    label: 期限
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-001
+  relatedRules: []
+- id: AGG-STR-002
+  name: 战略举措
+  alias: Str2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 支撑战略目标的关键行动组合
+  domain: 战略经营
+  sourceSystem: EPM/项目系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 举措编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 关联目标
+    type: String
+    required: false
+  - name: attr04
+    label: 负责人
+    type: String
+    required: false
+  - name: attr05
+    label: 里程碑
+    type: String
+    required: false
+  - name: attr06
+    label: 资源需求
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-003
+  relatedRules: []
+- id: AGG-STR-003
+  name: 关键任务(战役)
+  alias: Str3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 战略落地的专项战役与关键任务包
+  domain: 战略经营
+  sourceSystem: EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 任务编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 关联举措
+    type: String
+    required: false
+  - name: attr04
+    label: 责任部门
+    type: String
+    required: false
+  - name: attr05
+    label: 周期
+    type: String
+    required: false
+  - name: attr06
+    label: 目标值
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-004
+  relatedRules: []
+- id: AGG-STR-004
+  name: 经营目标(KPI)
+  alias: Str4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 可量化的年度经营指标
+  domain: 战略经营
+  sourceSystem: EPM/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: KPI编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 口径定义
+    type: String
+    required: false
+  - name: attr04
+    label: 单位
+    type: String
+    required: false
+  - name: attr05
+    label: 目标值
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 基线值
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 责任人
+    type: String
+    required: false
+  - name: attr08
+    label: 所属BSC维度
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-002
+  - BEH-STR-015
+  relatedRules:
+  - RULE-STR-001
+  - RULE-STR-004
+- id: AGG-STR-005
+  name: OKR
+  alias: Str5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 目标与关键结果的管理单元
+  domain: 战略经营
+  sourceSystem: OKR系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: OKR编号
+    type: String
+    required: true
+  - name: attr02
+    label: 周期
+    type: String
+    required: false
+  - name: attr03
+    label: 目标O
+    type: String
+    required: false
+  - name: attr04
+    label: 关键结果KR
+    type: String
+    required: false
+  - name: attr05
+    label: 权重
+    type: String
+    required: false
+  - name: attr06
+    label: 进度
+    type: String
+    required: false
+  - name: attr07
+    label: 对齐上级O
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-002
+  relatedRules: []
+- id: AGG-STR-006
+  name: 战略地图(因果链)
+  alias: Str6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 目标-驱动因素-举措的因果关系
+  domain: 战略经营
+  sourceSystem: EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 地图编号
+    type: String
+    required: true
+  - name: attr02
+    label: 层级
+    type: String
+    required: false
+  - name: attr03
+    label: 节点
+    type: String
+    required: false
+  - name: attr04
+    label: 连线关系
+    type: String
+    required: false
+  - name: attr05
+    label: 权重
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-001
+  relatedRules:
+  - RULE-STR-008
+- id: AGG-STR-007
+  name: 商业计划(BP)
+  alias: Str7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 年度业务计划与资源测算
+  domain: 战略经营
+  sourceSystem: EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 业务域
+    type: String
+    required: false
+  - name: attr03
+    label: 收入目标
+    type: String
+    required: false
+  - name: attr04
+    label: 成本费用
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 投资
+    type: String
+    required: false
+  - name: attr06
+    label: 人力资源
+    type: String
+    required: false
+  - name: attr07
+    label: 假设条件
+    type: String
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-005
+  relatedRules: []
+- id: AGG-STR-008
+  name: 全面预算
+  alias: Str8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 与战略衔接的财务预算草案
+  domain: 战略经营
+  sourceSystem: 预算系统/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 预算编号
+    type: Decimal
+    required: true
+  - name: attr02
+    label: 维度(组织/科目/项目)
+    type: String
+    required: false
+  - name: attr03
+    label: 年度/季度
+    type: String
+    required: false
+  - name: attr04
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 版本
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-006
+  relatedRules:
+  - RULE-STR-002
+- id: AGG-STR-009
+  name: 投资项目(专项)
+  alias: Str9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 重大投资与战略专项
+  domain: 战略经营
+  sourceSystem: 投资系统/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 项目编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 类型(产能/并购/研发)
+    type: String
+    required: false
+  - name: attr04
+    label: 投资额
+    type: String
+    required: false
+  - name: attr05
+    label: IRR
+    type: String
+    required: false
+  - name: attr06
+    label: 回收期
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-007
+  relatedRules:
+  - RULE-STR-003
+- id: AGG-STR-010
+  name: 组织架构
+  alias: Str10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 集团组织架构定义
+  domain: 战略经营
+  sourceSystem: HRIS/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 组织编码
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 层级
+    type: String
+    required: false
+  - name: attr04
+    label: 汇报关系
+    type: String
+    required: false
+  - name: attr05
+    label: 所属管控层级
+    type: String
+    required: false
+  - name: attr06
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-014
+  relatedRules: []
+- id: AGG-STR-011
+  name: 管控模式
+  alias: Str11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 总部-事业部-区域的管控关系与授权规则
+  domain: 战略经营
+  sourceSystem: EPM/HRIS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 模式编号
+    type: String
+    required: true
+  - name: attr02
+    label: 组织类型(总部/事业部/区域)
+    type: String
+    required: false
+  - name: attr03
+    label: 管控方式(运营/战略/财务)
+    type: String
+    required: false
+  - name: attr04
+    label: 授权清单
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-014
+  relatedRules:
+  - RULE-STR-009
+- id: AGG-STR-012
+  name: 里程碑(关键节点)
+  alias: Str12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 战略落地的关键时间点
+  domain: 战略经营
+  sourceSystem: EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 里程碑编号
+    type: String
+    required: true
+  - name: attr02
+    label: 名称
+    type: String
+    required: false
+  - name: attr03
+    label: 关联举措
+    type: String
+    required: false
+  - name: attr04
+    label: 计划日
+    type: String
+    required: false
+  - name: attr05
+    label: 实际日
+    type: String
+    required: false
+  - name: attr06
+    label: 完成状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-012
+  relatedRules:
+  - RULE-STR-007
+- id: AGG-STR-013
+  name: 经营分析看板
+  alias: Str13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 经营结果的实时/周期分析视图
+  domain: 战略经营
+  sourceSystem: BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 看板编号
+    type: String
+    required: true
+  - name: attr02
+    label: 维度
+    type: String
+    required: false
+  - name: attr03
+    label: 指标集
+    type: String
+    required: false
+  - name: attr04
+    label: 同比/环比
+    type: String
+    required: false
+  - name: attr05
+    label: 预警项
+    type: String
+    required: false
+  - name: attr06
+    label: 刷新频率
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-STR-008
+  relatedRules: []
+- id: AGG-STR-014
+  name: 风险机遇登记
+  alias: Str14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 战略与经营风险、市场机遇
+  domain: 战略经营
+  sourceSystem: 风险系统/EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 登记号
+    type: String
+    required: true
+  - name: attr02
+    label: 类型(风险/机遇)
+    type: String
+    required: false
+  - name: attr03
+    label: 描述
+    type: String
+    required: false
+  - name: attr04
+    label: 等级
+    type: String
+    required: false
+  - name: attr05
+    label: 影响
+    type: String
+    required: false
+  - name: attr06
+    label: 应对措施
+    type: String
+    required: false
+  - name: attr07
+    label: 责任人
+    type: String
+    required: false
+  - name: attr08
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-010
+  relatedRules:
+  - RULE-STR-005
+- id: AGG-STR-015
+  name: 决策决议
+  alias: Str15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 董事会/执委会的决策议题与结论
+  domain: 战略经营
+  sourceSystem: 决策系统/OA
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 决议编号
+    type: String
+    required: true
+  - name: attr02
+    label: 议题
+    type: String
+    required: false
+  - name: attr03
+    label: 提案部门
+    type: String
+    required: false
+  - name: attr04
+    label: 会议
+    type: String
+    required: false
+  - name: attr05
+    label: 结论
+    type: String
+    required: false
+  - name: attr06
+    label: 行动项
+    type: String
+    required: false
+  - name: attr07
+    label: 责任人
+    type: String
+    required: false
+  - name: attr08
+    label: 时限
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-011
+  relatedRules:
+  - RULE-STR-006
+  - RULE-STR-009
+- id: AGG-STR-016
+  name: 对标标杆数据
+  alias: Str16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 外部对标与行业基准数据
+  domain: 战略经营
+  sourceSystem: BI/外部库
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 数据编号
+    type: String
+    required: true
+  - name: attr02
+    label: 维度
+    type: String
+    required: false
+  - name: attr03
+    label: 对标企业
+    type: String
+    required: false
+  - name: attr04
+    label: 指标值
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 来源
+    type: String
+    required: false
+  - name: attr06
+    label: 日期
+    type: Date
+    required: false
+  relatedBehaviors:
+  - BEH-STR-009
+  relatedRules: []
+- id: AGG-STR-017
+  name: 战略复盘记录
+  alias: Str17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 周期战略执行复盘结论
+  domain: 战略经营
+  sourceSystem: EPM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 战略经营
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 周期
+    type: String
+    required: false
+  - name: attr03
+    label: 达成情况
+    type: String
+    required: false
+  - name: attr04
+    label: 偏差原因
+    type: String
+    required: false
+  - name: attr05
+    label: 纠偏措施
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-STR-013
+  relatedRules: []
+- id: AGG-SUP-001
+  name: 物料主数据
+  alias: Sup1
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 企业生产与采购的最小可管理物料单元编码与基础属性
+  domain: 供应链
+  sourceSystem: ERP/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr02
+    label: 物料名称
+    type: String
+    required: false
+  - name: attr03
+    label: 规格型号
+    type: String
+    required: true
+  - name: attr04
+    label: 计量单位
+    type: String
+    required: false
+  - name: attr05
+    label: 物料类型(原材料/半成品/成品/包材)
+    type: String
+    required: false
+  - name: attr06
+    label: ABC分类
+    type: String
+    required: false
+  - name: attr07
+    label: 安全库存
+    type: String
+    required: false
+  - name: attr08
+    label: 采购提前期
+    type: String
+    required: false
+  - name: attr09
+    label: 默认供应商
+    type: String
+    required: false
+  - name: attr10
+    label: 批次管理标识
+    type: Boolean
+    required: false
+  - name: attr11
+    label: 序列号管理标识
+    type: Boolean
+    required: false
+  - name: attr12
+    label: 呆滞标识
+    type: Boolean
+    required: false
+  - name: attr13
+    label: 图号
+    type: String
+    required: true
+  - name: attr14
+    label: 物料组
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-001
+  relatedRules: []
+- id: AGG-SUP-002
+  name: 仓库主数据
+  alias: Sup2
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 仓储网络节点的档案定义
+  domain: 供应链
+  sourceSystem: WMS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 仓库编码
+    type: String
+    required: true
+  - name: attr02
+    label: 仓库名称
+    type: String
+    required: false
+  - name: attr03
+    label: 仓库类型(原料仓/成品仓/线边仓/VMI仓)
+    type: String
+    required: false
+  - name: attr04
+    label: 物理位置
+    type: String
+    required: false
+  - name: attr05
+    label: 所属工厂
+    type: String
+    required: false
+  - name: attr06
+    label: 温湿度要求
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-002
+  relatedRules: []
+- id: AGG-SUP-003
+  name: 库位主数据
+  alias: Sup3
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 仓库内最小存储单元的定位与容量定义
+  domain: 供应链
+  sourceSystem: WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 库位编码
+    type: String
+    required: true
+  - name: attr02
+    label: 仓库编码
+    type: String
+    required: true
+  - name: attr03
+    label: 库位类型(存储/拣选/暂存/不良)
+    type: String
+    required: false
+  - name: attr04
+    label: 容量
+    type: String
+    required: false
+  - name: attr05
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-002
+  relatedRules: []
+- id: AGG-SUP-004
+  name: 序列号(SN)主数据
+  alias: Sup4
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 手机/关键件唯一身份标识（SN/IMEI）及生命周期状态
+  domain: 供应链
+  sourceSystem: MES/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 序列号
+    type: String
+    required: true
+  - name: attr02
+    label: IMEI
+    type: String
+    required: false
+  - name: attr03
+    label: 关联物料/产品编码
+    type: String
+    required: true
+  - name: attr04
+    label: 生产批次
+    type: String
+    required: false
+  - name: attr05
+    label: 出厂日期
+    type: Date
+    required: false
+  - name: attr06
+    label: 状态(在库/在售/售后/报废)
+    type: String
+    required: false
+  - name: attr07
+    label: 关联订单
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-003
+  - BEH-SUP-026
+  relatedRules:
+  - RULE-SUP-013
+  - RULE-MAN-010
+- id: AGG-SUP-005
+  name: 物料替代关系
+  alias: Sup5
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 物料间可替代规则与比例（BOM替代料核心）
+  domain: 供应链
+  sourceSystem: PLM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 替代组号
+    type: String
+    required: true
+  - name: attr02
+    label: 主物料
+    type: String
+    required: false
+  - name: attr03
+    label: 替代物料
+    type: String
+    required: false
+  - name: attr04
+    label: 替代比例
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 替代条件(设计/供应)
+    type: String
+    required: false
+  - name: attr06
+    label: 生效日
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-004
+  relatedRules:
+  - RULE-SUP-014
+- id: AGG-SUP-006
+  name: 需求预测
+  alias: Sup6
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 物料或产品在未来周期的预测需求量
+  domain: 供应链
+  sourceSystem: APS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 预测单号
+    type: String
+    required: true
+  - name: attr02
+    label: 物料/产品编码
+    type: String
+    required: true
+  - name: attr03
+    label: 预测周期
+    type: String
+    required: false
+  - name: attr04
+    label: 预测数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 实际数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 预测方法
+    type: String
+    required: false
+  - name: attr07
+    label: 预测准确率
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 预测版本
+    type: String
+    required: false
+  - name: attr09
+    label: 责任部门
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-005
+  relatedRules: []
+- id: AGG-SUP-007
+  name: S&OP运营计划
+  alias: Sup7
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供需平衡的月度共识运营计划
+  domain: 供应链
+  sourceSystem: APS/BI
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 产品族
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 共识需求
+    type: String
+    required: false
+  - name: attr05
+    label: 供应能力
+    type: String
+    required: false
+  - name: attr06
+    label: 计划产量
+    type: String
+    required: false
+  - name: attr07
+    label: 库存目标
+    type: String
+    required: false
+  - name: attr08
+    label: 审批状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-006
+  relatedRules: []
+- id: AGG-SUP-008
+  name: 主生产计划(MPS)
+  alias: Sup8
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 成品维度的生产计划安排
+  domain: 供应链
+  sourceSystem: APS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 产品编码
+    type: String
+    required: true
+  - name: attr03
+    label: 计划周期
+    type: String
+    required: false
+  - name: attr04
+    label: 计划产量
+    type: String
+    required: false
+  - name: attr05
+    label: 期初库存
+    type: String
+    required: false
+  - name: attr06
+    label: 期末库存
+    type: String
+    required: false
+  - name: attr07
+    label: 毛需求
+    type: String
+    required: false
+  - name: attr08
+    label: 已分配量
+    type: String
+    required: false
+  - name: attr09
+    label: 计划类型(确定/模拟)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-006
+  - BEH-SUP-007
+  - BEH-SUP-009
+  relatedRules: []
+- id: AGG-SUP-009
+  name: 物料需求计划(MRP)
+  alias: Sup9
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 由MPS展算得到的物料净需求与计划订单
+  domain: 供应链
+  sourceSystem: APS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 毛需求
+    type: String
+    required: false
+  - name: attr05
+    label: 净需求
+    type: String
+    required: false
+  - name: attr06
+    label: 现有库存
+    type: String
+    required: false
+  - name: attr07
+    label: 在途量
+    type: String
+    required: false
+  - name: attr08
+    label: 计划订单量
+    type: String
+    required: false
+  - name: attr09
+    label: 建议释放日
+    type: String
+    required: false
+  - name: attr10
+    label: 采购/自制标识
+    type: Boolean
+    required: false
+  - name: attr11
+    label: 追溯MPS号
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-008
+  relatedRules: []
+- id: AGG-SUP-010
+  name: 产能需求计划(CRP)
+  alias: Sup10
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 工作中心维度的负荷与可用工时对比
+  domain: 供应链
+  sourceSystem: APS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 计划编号
+    type: String
+    required: true
+  - name: attr02
+    label: 工作中心
+    type: String
+    required: false
+  - name: attr03
+    label: 周期
+    type: String
+    required: false
+  - name: attr04
+    label: 负荷工时
+    type: String
+    required: false
+  - name: attr05
+    label: 可用工时
+    type: String
+    required: false
+  - name: attr06
+    label: 负荷率
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 瓶颈标识
+    type: Boolean
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-009
+  relatedRules: []
+- id: AGG-SUP-011
+  name: 安全库存补货规则
+  alias: Sup11
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 物料补货策略与阈值参数（业务规则实体化）
+  domain: 供应链
+  sourceSystem: ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 规则号
+    type: String
+    required: true
+  - name: attr02
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr03
+    label: 安全库存
+    type: String
+    required: false
+  - name: attr04
+    label: 再订货点
+    type: String
+    required: false
+  - name: attr05
+    label: 补货批量
+    type: String
+    required: false
+  - name: attr06
+    label: 补货策略(固定/期间/批量)
+    type: String
+    required: false
+  - name: attr07
+    label: 提前期
+    type: String
+    required: false
+  - name: attr08
+    label: 最大库存
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-010
+  relatedRules:
+  - RULE-SUP-007
+- id: AGG-SUP-012
+  name: 供应商主数据
+  alias: Sup12
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: MD
+  categoryLabel: 主数据
+  description: 经过准入认证的供货方档案与资质信息
+  domain: 供应链
+  sourceSystem: SRM/MDM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商名称
+    type: String
+    required: false
+  - name: attr03
+    label: 统一社会信用代码
+    type: String
+    required: false
+  - name: attr04
+    label: 供应商等级
+    type: String
+    required: false
+  - name: attr05
+    label: 所在国家/地区
+    type: String
+    required: false
+  - name: attr06
+    label: 合作状态
+    type: String
+    required: false
+  - name: attr07
+    label: 付款条件
+    type: String
+    required: false
+  - name: attr08
+    label: 结算币种
+    type: String
+    required: false
+  - name: attr09
+    label: 资质证书
+    type: String
+    required: false
+  - name: attr10
+    label: 供货品类
+    type: String
+    required: false
+  - name: attr11
+    label: 冻结标识
+    type: Boolean
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-040
+  relatedRules: []
+- id: AGG-SUP-013
+  name: 供应商开发准入申请
+  alias: Sup13
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 新供应商引入与认证的流程业务单据
+  domain: 供应链
+  sourceSystem: SRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 申请号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商名称
+    type: String
+    required: false
+  - name: attr03
+    label: 拟供货品类
+    type: String
+    required: false
+  - name: attr04
+    label: 引入原因
+    type: String
+    required: false
+  - name: attr05
+    label: 资质材料
+    type: String
+    required: false
+  - name: attr06
+    label: 评审结论
+    type: String
+    required: false
+  - name: attr07
+    label: 准入状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-013
+  relatedRules: []
+- id: AGG-SUP-014
+  name: 采购申请
+  alias: Sup14
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 内部部门提出的有明确物料与需求日期的采购需求单据
+  domain: 供应链
+  sourceSystem: ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 申请单号
+    type: String
+    required: true
+  - name: attr02
+    label: 申请人
+    type: String
+    required: false
+  - name: attr03
+    label: 申请部门
+    type: String
+    required: false
+  - name: attr04
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr05
+    label: 申请数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 需求日期
+    type: Date
+    required: false
+  - name: attr07
+    label: 预算科目
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 紧急程度
+    type: String
+    required: false
+  - name: attr09
+    label: 审批状态
+    type: String
+    required: false
+  - name: attr10
+    label: 关联项目
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-011
+  - BEH-SUP-012
+  relatedRules:
+  - RULE-SUP-001
+- id: AGG-SUP-015
+  name: 采购申请审批记录
+  alias: Sup15
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 采购申请各级审批流转的留痕
+  domain: 供应链
+  sourceSystem: OA/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 审批记录号
+    type: String
+    required: false
+  - name: attr02
+    label: 申请单号
+    type: String
+    required: true
+  - name: attr03
+    label: 审批节点
+    type: String
+    required: false
+  - name: attr04
+    label: 审批人
+    type: String
+    required: false
+  - name: attr05
+    label: 审批动作(同意/驳回)
+    type: String
+    required: false
+  - name: attr06
+    label: 审批意见
+    type: String
+    required: false
+  - name: attr07
+    label: 审批时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-012
+  relatedRules: []
+- id: AGG-SUP-016
+  name: 框架协议
+  alias: Sup16
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 约定价格、数量区间与有效期的主从协议
+  domain: 供应链
+  sourceSystem: SRM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 协议号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 物料范围
+    type: String
+    required: false
+  - name: attr04
+    label: 协议价格
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 有效期起
+    type: String
+    required: false
+  - name: attr06
+    label: 有效期止
+    type: String
+    required: false
+  - name: attr07
+    label: 量价折扣阶梯
+    type: String
+    required: false
+  - name: attr08
+    label: 最小起订量
+    type: String
+    required: false
+  - name: attr09
+    label: 违约条款
+    type: String
+    required: false
+  - name: attr10
+    label: 协议状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-014
+  relatedRules:
+  - RULE-SUP-009
+- id: AGG-SUP-017
+  name: 采购合同
+  alias: Sup17
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 与供应商签订的具法律效力的采购契约单据
+  domain: 供应链
+  sourceSystem: SRM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 合同号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 合同类型(单次/年度)
+    type: String
+    required: false
+  - name: attr04
+    label: 标的物料/范围
+    type: String
+    required: false
+  - name: attr05
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 交期
+    type: String
+    required: false
+  - name: attr07
+    label: 付款条款
+    type: String
+    required: false
+  - name: attr08
+    label: 税码
+    type: Decimal
+    required: false
+  - name: attr09
+    label: 生效日
+    type: String
+    required: false
+  - name: attr10
+    label: 终止日
+    type: String
+    required: false
+  - name: attr11
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-015
+  relatedRules:
+  - RULE-SUP-009
+- id: AGG-SUP-018
+  name: 采购价格记录
+  alias: Sup18
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 物料-供应商维度的有效采购价格与生效区间
+  domain: 供应链
+  sourceSystem: SRM/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 价格记录号
+    type: Decimal
+    required: false
+  - name: attr02
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr03
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr04
+    label: 价格
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 币种
+    type: String
+    required: false
+  - name: attr06
+    label: 价格类型(合同价/询价价/计划价)
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 生效日期
+    type: Date
+    required: false
+  - name: attr08
+    label: 失效日期
+    type: Date
+    required: false
+  - name: attr09
+    label: 价格单位
+    type: Decimal
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-013
+  relatedRules:
+  - RULE-SUP-003
+- id: AGG-SUP-019
+  name: 采购订单(PO)
+  alias: Sup19
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 向供应商发出的正式采购契约单据
+  domain: 供应链
+  sourceSystem: ERP/SRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: PO号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 单据类型
+    type: String
+    required: false
+  - name: attr04
+    label: 行项目(物料/数量/单价)
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 币种
+    type: String
+    required: false
+  - name: attr07
+    label: 交期
+    type: String
+    required: false
+  - name: attr08
+    label: 付款条款
+    type: String
+    required: false
+  - name: attr09
+    label: 税码
+    type: Decimal
+    required: false
+  - name: attr10
+    label: 收货状态
+    type: String
+    required: false
+  - name: attr11
+    label: 开票状态
+    type: String
+    required: false
+  - name: attr12
+    label: 冻结标识
+    type: Boolean
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-016
+  - BEH-SUP-017
+  - BEH-SUP-020
+  relatedRules:
+  - RULE-SUP-002
+  - RULE-SUP-008
+  - RULE-SUP-010
+  - RULE-SUP-012
+  - RULE-SUP-014
+- id: AGG-SUP-020
+  name: 供应商交期承诺
+  alias: Sup20
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供应商对PO行的交期与数量确认结果
+  domain: 供应链
+  sourceSystem: SRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 承诺单号
+    type: String
+    required: true
+  - name: attr02
+    label: PO号
+    type: String
+    required: true
+  - name: attr03
+    label: 行号
+    type: String
+    required: true
+  - name: attr04
+    label: 承诺交期
+    type: String
+    required: false
+  - name: attr05
+    label: 承诺数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 确认状态
+    type: String
+    required: false
+  - name: attr07
+    label: 确认人
+    type: String
+    required: false
+  - name: attr08
+    label: 变更原因
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-018
+  relatedRules: []
+- id: AGG-SUP-021
+  name: 委外加工单(外协)
+  alias: Sup21
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 委托外部加工商完成的工序/半成品加工任务（手机SMT/组装大量外协）
+  domain: 供应链
+  sourceSystem: ERP/SRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 委外单号
+    type: String
+    required: true
+  - name: attr02
+    label: 加工商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 物料/半成品
+    type: String
+    required: false
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 工序
+    type: String
+    required: false
+  - name: attr06
+    label: 单价
+    type: String
+    required: false
+  - name: attr07
+    label: 发料清单
+    type: String
+    required: false
+  - name: attr08
+    label: 回收要求
+    type: String
+    required: false
+  - name: attr09
+    label: 完工状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-019
+  relatedRules:
+  - RULE-SUP-015
+- id: AGG-SUP-022
+  name: 采购收货单(GRN)
+  alias: Sup22
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供应商到货后验收入库前生成的实收业务单据
+  domain: 供应链
+  sourceSystem: ERP/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 收货单号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联PO号
+    type: String
+    required: false
+  - name: attr03
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr04
+    label: 实收数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 批次号
+    type: String
+    required: true
+  - name: attr06
+    label: 收货仓库
+    type: String
+    required: false
+  - name: attr07
+    label: 质检结果
+    type: String
+    required: false
+  - name: attr08
+    label: 过账状态
+    type: String
+    required: false
+  - name: attr09
+    label: 供应商发货单号
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-022
+  - BEH-SUP-023
+  - BEH-SUP-024
+  relatedRules:
+  - RULE-SUP-004
+  - RULE-SUP-005
+- id: AGG-SUP-023
+  name: 采购入库单
+  alias: Sup23
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 质检合格后物料正式入仓的业务单据
+  domain: 供应链
+  sourceSystem: WMS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 入库单号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联收货单
+    type: String
+    required: false
+  - name: attr03
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr04
+    label: 入库数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 库位
+    type: String
+    required: false
+  - name: attr06
+    label: 批次
+    type: String
+    required: false
+  - name: attr07
+    label: 上架人
+    type: String
+    required: false
+  - name: attr08
+    label: 过账时间
+    type: DateTime
+    required: false
+  - name: attr09
+    label: 库存状态(良品/待检/不良)
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-025
+  relatedRules: []
+- id: AGG-SUP-024
+  name: 退货不良品处理单
+  alias: Sup24
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 收货不良或库存不良的退供应商/报废处理单据
+  domain: 供应链
+  sourceSystem: ERP/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 处理单号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联收货单
+    type: String
+    required: false
+  - name: attr03
+    label: 物料
+    type: String
+    required: false
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 不良原因
+    type: String
+    required: false
+  - name: attr06
+    label: 处理方式(退货/换货/报废)
+    type: String
+    required: false
+  - name: attr07
+    label: 责任方
+    type: String
+    required: false
+  - name: attr08
+    label: 处理状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-024
+  - BEH-SUP-039
+  relatedRules:
+  - RULE-SUP-005
+- id: AGG-SUP-025
+  name: 供应商绩效评估
+  alias: Sup25
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: ID
+  categoryLabel: 指标数据
+  description: 供应商周期性的交付/质量/成本评分结果
+  domain: 供应链
+  sourceSystem: SRM
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 评估单号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 评估周期
+    type: String
+    required: false
+  - name: attr04
+    label: 准交率
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 质量合格率
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 价格偏差率
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 服务评分
+    type: String
+    required: false
+  - name: attr08
+    label: 综合得分
+    type: String
+    required: false
+  - name: attr09
+    label: 等级建议
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-038
+  relatedRules: []
+- id: AGG-SUP-026
+  name: 发货通知(ASN)
+  alias: Sup26
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供应商发货前提交的预计到货通知
+  domain: 供应链
+  sourceSystem: SRM/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: ASN号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 关联PO号
+    type: String
+    required: false
+  - name: attr04
+    label: 物料清单
+    type: String
+    required: false
+  - name: attr05
+    label: 预计到达时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 运输单号
+    type: String
+    required: true
+  - name: attr07
+    label: 包装件数
+    type: String
+    required: false
+  - name: attr08
+    label: 车牌号
+    type: String
+    required: true
+  relatedBehaviors:
+  - BEH-SUP-021
+  relatedRules: []
+- id: AGG-SUP-027
+  name: 销售发货单
+  alias: Sup27
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 面向客户销售订单的发货指令单据（LTC交付关键对象）
+  domain: 供应链
+  sourceSystem: WMS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 发货单号
+    type: String
+    required: true
+  - name: attr02
+    label: 销售订单号
+    type: String
+    required: false
+  - name: attr03
+    label: 客户编码
+    type: String
+    required: true
+  - name: attr04
+    label: 产品/物料
+    type: String
+    required: false
+  - name: attr05
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 批次
+    type: String
+    required: false
+  - name: attr07
+    label: SN范围
+    type: String
+    required: false
+  - name: attr08
+    label: 发货仓库
+    type: String
+    required: false
+  - name: attr09
+    label: 运单号
+    type: String
+    required: true
+  - name: attr10
+    label: 发货状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-026
+  relatedRules:
+  - RULE-SUP-013
+  - RULE-SUP-016
+- id: AGG-SUP-028
+  name: 销售出库单
+  alias: Sup28
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 仓库依据发货单实物出库的过账单据
+  domain: 供应链
+  sourceSystem: WMS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 出库单号
+    type: String
+    required: true
+  - name: attr02
+    label: 关联发货单
+    type: String
+    required: false
+  - name: attr03
+    label: 物料/产品
+    type: String
+    required: false
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 批次
+    type: String
+    required: false
+  - name: attr06
+    label: 库位
+    type: String
+    required: false
+  - name: attr07
+    label: SN明细
+    type: String
+    required: false
+  - name: attr08
+    label: 过账时间
+    type: DateTime
+    required: false
+  - name: attr09
+    label: 过账状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-027
+  relatedRules:
+  - RULE-SUP-016
+- id: AGG-SUP-029
+  name: 库存记录
+  alias: Sup29
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 仓库/库位维度下物料的现存与可用数量状态
+  domain: 供应链
+  sourceSystem: ERP/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr02
+    label: 仓库编码
+    type: String
+    required: true
+  - name: attr03
+    label: 库位
+    type: String
+    required: false
+  - name: attr04
+    label: 现存数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 冻结数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 预占数量
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 可用数量
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 批次
+    type: String
+    required: false
+  - name: attr09
+    label: 库存状态
+    type: String
+    required: false
+  - name: attr10
+    label: 盘点周期
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-010
+  - BEH-SUP-025
+  - BEH-SUP-027
+  - BEH-SUP-028
+  - BEH-SUP-029
+  - BEH-SUP-030
+  - BEH-SUP-031
+  - BEH-RND-021
+  - BEH-MAN-006
+  - BEH-MAN-018
+  relatedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+- id: AGG-SUP-030
+  name: 寄售(VMI)库存记录
+  alias: Sup30
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 供应商寄售或VMI模式下在厂库存与耗用结算状态
+  domain: 供应链
+  sourceSystem: ERP/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 记录号
+    type: String
+    required: true
+  - name: attr02
+    label: 供应商编码
+    type: String
+    required: true
+  - name: attr03
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr04
+    label: 寄售数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 耗用数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 结算状态
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-SUP-031
+  name: 库存移动单
+  alias: Sup31
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 移库、调拨、盘盈盘亏等库存数量变更单据
+  domain: 供应链
+  sourceSystem: ERP/WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 移动单号
+    type: String
+    required: true
+  - name: attr02
+    label: 移动类型(移库/调拨/盘点调整)
+    type: String
+    required: false
+  - name: attr03
+    label: 物料编码
+    type: String
+    required: true
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 源库位
+    type: String
+    required: false
+  - name: attr06
+    label: 目标库位
+    type: String
+    required: false
+  - name: attr07
+    label: 原因码
+    type: String
+    required: false
+  - name: attr08
+    label: 过账人
+    type: String
+    required: false
+  - name: attr09
+    label: 过账时间
+    type: DateTime
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-025
+  - BEH-SUP-027
+  - BEH-SUP-030
+  relatedRules:
+  - RULE-SUP-011
+- id: AGG-SUP-032
+  name: 库存盘点单
+  alias: Sup32
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 周期性或临时盘点任务及其差异结果
+  domain: 供应链
+  sourceSystem: WMS/ERP
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 盘点单号
+    type: String
+    required: true
+  - name: attr02
+    label: 仓库
+    type: String
+    required: false
+  - name: attr03
+    label: 盘点范围
+    type: String
+    required: false
+  - name: attr04
+    label: 盘点人
+    type: String
+    required: false
+  - name: attr05
+    label: 账面数量
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 实盘数量
+    type: Decimal
+    required: false
+  - name: attr07
+    label: 差异数量
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 差异原因
+    type: String
+    required: false
+  - name: attr09
+    label: 调整状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-031
+  relatedRules: []
+- id: AGG-SUP-033
+  name: 运输单
+  alias: Sup33
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 企业内部委托运输的任务单据
+  domain: 供应链
+  sourceSystem: TMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 运单号
+    type: String
+    required: true
+  - name: attr02
+    label: 起点
+    type: String
+    required: false
+  - name: attr03
+    label: 终点
+    type: String
+    required: false
+  - name: attr04
+    label: 承运商
+    type: String
+    required: false
+  - name: attr05
+    label: 货物明细
+    type: String
+    required: false
+  - name: attr06
+    label: 重量体积
+    type: String
+    required: false
+  - name: attr07
+    label: 预计时效
+    type: String
+    required: false
+  - name: attr08
+    label: 实际发运时间
+    type: DateTime
+    required: false
+  - name: attr09
+    label: 运费
+    type: String
+    required: false
+  - name: attr10
+    label: 运输方式
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-032
+  - BEH-SUP-034
+  relatedRules: []
+- id: AGG-SUP-034
+  name: 运单
+  alias: Sup34
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 承运商签发的运输凭证（提货/交付依据）
+  domain: 供应链
+  sourceSystem: TMS/承运商
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 运单号
+    type: String
+    required: true
+  - name: attr02
+    label: 承运商
+    type: String
+    required: false
+  - name: attr03
+    label: 关联运输单
+    type: String
+    required: false
+  - name: attr04
+    label: 提货人
+    type: String
+    required: false
+  - name: attr05
+    label: 货物描述
+    type: String
+    required: false
+  - name: attr06
+    label: 签发日
+    type: String
+    required: false
+  - name: attr07
+    label: 签收状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-033
+  relatedRules: []
+- id: AGG-SUP-035
+  name: 提单
+  alias: Sup35
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 海运/空运等跨境运输的物权凭证
+  domain: 供应链
+  sourceSystem: TMS/承运商
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 提单号
+    type: String
+    required: true
+  - name: attr02
+    label: 承运商
+    type: String
+    required: false
+  - name: attr03
+    label: 关联运输单
+    type: String
+    required: false
+  - name: attr04
+    label: 收发货人
+    type: String
+    required: false
+  - name: attr05
+    label: 货物描述
+    type: String
+    required: false
+  - name: attr06
+    label: 签发日
+    type: String
+    required: false
+  - name: attr07
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-033
+  relatedRules: []
+- id: AGG-SUP-036
+  name: 物流跟踪事件
+  alias: Sup36
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: BD
+  categoryLabel: 行为数据
+  description: 运输途中节点轨迹与状态变更记录
+  domain: 供应链
+  sourceSystem: TMS/GPS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 事件号
+    type: String
+    required: true
+  - name: attr02
+    label: 运单号
+    type: String
+    required: true
+  - name: attr03
+    label: 当前位置
+    type: String
+    required: false
+  - name: attr04
+    label: 事件类型(揽收/中转/派送/签收)
+    type: String
+    required: false
+  - name: attr05
+    label: 发生时间
+    type: DateTime
+    required: false
+  - name: attr06
+    label: 签收人
+    type: String
+    required: false
+  - name: attr07
+    label: 异常原因
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-035
+  relatedRules: []
+- id: AGG-SUP-037
+  name: 运费规则
+  alias: Sup37
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: RD
+  categoryLabel: 规则数据
+  description: 承运商与路线的计费标准
+  domain: 供应链
+  sourceSystem: TMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 规则号
+    type: String
+    required: true
+  - name: attr02
+    label: 承运商
+    type: String
+    required: false
+  - name: attr03
+    label: 路线/区域
+    type: String
+    required: false
+  - name: attr04
+    label: 计费方式(重量/体积/件)
+    type: String
+    required: false
+  - name: attr05
+    label: 单价
+    type: String
+    required: false
+  - name: attr06
+    label: 时效等级
+    type: String
+    required: false
+  - name: attr07
+    label: 生效日
+    type: String
+    required: false
+  relatedBehaviors: []
+  relatedRules: []
+- id: AGG-SUP-038
+  name: 报关进出口单据
+  alias: Sup38
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 跨境收发货物的海关申报与监管单证
+  domain: 供应链
+  sourceSystem: 关务系统
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 报关单号
+    type: String
+    required: true
+  - name: attr02
+    label: 进出口类型(进/出)
+    type: String
+    required: false
+  - name: attr03
+    label: 物料/HS编码
+    type: String
+    required: true
+  - name: attr04
+    label: 数量
+    type: Decimal
+    required: false
+  - name: attr05
+    label: 金额
+    type: Decimal
+    required: false
+  - name: attr06
+    label: 币种
+    type: String
+    required: false
+  - name: attr07
+    label: 关税率
+    type: Decimal
+    required: false
+  - name: attr08
+    label: 监管证件
+    type: String
+    required: false
+  - name: attr09
+    label: 状态
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-036
+  relatedRules:
+  - RULE-SUP-009
+- id: AGG-SUP-039
+  name: 装箱单(包装记录)
+  alias: Sup39
+  aggregateType: AGGREGATE_ROOT
+  objectCategory: TD
+  categoryLabel: 事务数据
+  description: 发货装箱明细与包装规格
+  domain: 供应链
+  sourceSystem: WMS
+  lifecycle:
+  - 草稿
+  - 生效
+  - 作废
+  tags:
+  - 供应链
+  attributes:
+  - name: attr01
+    label: 装箱单号
+    type: String
+    required: true
+  - name: attr02
+    label: 发货单号
+    type: String
+    required: true
+  - name: attr03
+    label: 箱号
+    type: String
+    required: true
+  - name: attr04
+    label: 货物明细
+    type: String
+    required: false
+  - name: attr05
+    label: 毛重
+    type: String
+    required: false
+  - name: attr06
+    label: 净重
+    type: String
+    required: false
+  - name: attr07
+    label: 体积
+    type: String
+    required: false
+  - name: attr08
+    label: 包装规格
+    type: String
+    required: false
+  relatedBehaviors:
+  - BEH-SUP-037
+  relatedRules: []
+aggregate_associations:
+- id: ASSOC-AGG-RND-020-AGG-SUP-029
+  sourceAggregate: AGG-RND-020
+  targetAggregate: AGG-SUP-029
+  associationType: REFERENCE
+  sourceRole: 行为产出
+  targetRole: 被产出对象
+  cardinality: ONE_TO_MANY
+  referenceField: null
+  description: 研发领料 产出 库存记录
+- id: ASSOC-AGG-MAN-016-AGG-SUP-029
+  sourceAggregate: AGG-MAN-016
+  targetAggregate: AGG-SUP-029
+  associationType: REFERENCE
+  sourceRole: 行为产出
+  targetRole: 被产出对象
+  cardinality: ONE_TO_MANY
+  referenceField: null
+  description: 工单领料/齐套 产出 库存记录
+- id: ASSOC-AGG-MAN-029-AGG-SUP-029
+  sourceAggregate: AGG-MAN-029
+  targetAggregate: AGG-SUP-029
+  associationType: REFERENCE
+  sourceRole: 行为产出
+  targetRole: 被产出对象
+  cardinality: ONE_TO_MANY
+  referenceField: null
+  description: 成品入库 产出 库存记录

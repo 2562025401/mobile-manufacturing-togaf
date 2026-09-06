@@ -1,0 +1,2962 @@
+model_type: BEHAVIOR
+version: '1.0'
+domain: 手机制造行业企业架构-业务域元模型
+behaviors:
+- id: BEH-AFT-001
+  name: 创建服务请求
+  ownerEntity: AGG-AFT-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 工单接入
+  behaviorCategory: 创建
+  description: 客户来电/在线/门店
+  input: 客户来电/在线/门店
+  outputObjects:
+  - AGG-AFT-001
+  appliedRules: []
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-002
+  name: 创建服务工单
+  ownerEntity: AGG-AFT-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 工单接入
+  behaviorCategory: 创建
+  description: 请求受理
+  input: 请求受理
+  outputObjects:
+  - AGG-AFT-002
+  appliedRules:
+  - RULE-AFT-001
+  - RULE-AFT-009
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-003
+  name: 工单派单
+  ownerEntity: AGG-AFT-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 调度
+  behaviorCategory: 分配
+  description: 工单生成
+  input: 工单生成
+  outputObjects:
+  - AGG-AFT-002
+  - AGG-AFT-011
+  appliedRules:
+  - RULE-AFT-001
+  - RULE-AFT-009
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-004
+  name: 故障定性/编码
+  ownerEntity: AGG-AFT-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 诊断
+  behaviorCategory: 分类
+  description: 描述录入
+  input: 描述录入
+  outputObjects:
+  - AGG-AFT-018
+  - AGG-AFT-002
+  appliedRules:
+  - RULE-AFT-001
+  - RULE-AFT-004
+  - RULE-AFT-009
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-005
+  name: 备件库存查询
+  ownerEntity: AGG-AFT-007
+  behaviorType: QUERY
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 备件
+  behaviorCategory: 读取
+  description: 维修需要
+  input: 维修需要
+  outputObjects:
+  - AGG-AFT-007
+  appliedRules:
+  - RULE-AFT-003
+  producedEvents: []
+  supportApp: 备件WMS
+- id: BEH-AFT-006
+  name: 备件申领
+  ownerEntity: AGG-AFT-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 备件
+  behaviorCategory: 创建
+  description: 维修需要
+  input: 维修需要
+  outputObjects:
+  - AGG-AFT-008
+  - AGG-AFT-007
+  appliedRules:
+  - RULE-AFT-003
+  producedEvents: []
+  supportApp: 备件WMS
+- id: BEH-AFT-007
+  name: 备件调拨
+  ownerEntity: AGG-AFT-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 备件
+  behaviorCategory: 执行
+  description: 申领/补货
+  input: 申领/补货
+  outputObjects:
+  - AGG-AFT-009
+  - AGG-AFT-007
+  appliedRules:
+  - RULE-AFT-003
+  producedEvents: []
+  supportApp: 备件WMS
+- id: BEH-AFT-008
+  name: 维修执行
+  ownerEntity: AGG-AFT-003
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 维修
+  behaviorCategory: 执行
+  description: 派单到达
+  input: 派单到达
+  outputObjects:
+  - AGG-AFT-003
+  appliedRules:
+  - RULE-AFT-002
+  - RULE-AFT-007
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-009
+  name: 退换货处理
+  ownerEntity: AGG-AFT-004
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 退换
+  behaviorCategory: 执行
+  description: 客户申请
+  input: 客户申请
+  outputObjects:
+  - AGG-AFT-004
+  appliedRules:
+  - RULE-AFT-005
+  producedEvents: []
+  supportApp: 售后系统/OMS
+- id: BEH-AFT-010
+  name: 客户投诉处理
+  ownerEntity: AGG-AFT-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 投诉
+  behaviorCategory: 处理
+  description: 投诉提交
+  input: 投诉提交
+  outputObjects:
+  - AGG-AFT-012
+  appliedRules:
+  - RULE-AFT-006
+  producedEvents: []
+  supportApp: 投诉系统
+- id: BEH-AFT-011
+  name: 增值服务开通
+  ownerEntity: AGG-AFT-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 增值
+  behaviorCategory: 创建
+  description: 客户购买
+  input: 客户购买
+  outputObjects:
+  - AGG-AFT-016
+  appliedRules: []
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-012
+  name: 保修登记
+  ownerEntity: AGG-AFT-014
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 权益
+  behaviorCategory: 创建
+  description: 购机/激活
+  input: 购机/激活
+  outputObjects:
+  - AGG-AFT-014
+  appliedRules:
+  - RULE-AFT-002
+  - RULE-AFT-009
+  producedEvents: []
+  supportApp: 售后系统/CRM
+- id: BEH-AFT-013
+  name: 服务合同签订
+  ownerEntity: AGG-AFT-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 权益
+  behaviorCategory: 创建
+  description: 付费服务购买
+  input: 付费服务购买
+  outputObjects:
+  - AGG-AFT-015
+  appliedRules:
+  - RULE-AFT-002
+  producedEvents: []
+  supportApp: 售后系统/CRM
+- id: BEH-AFT-014
+  name: 满意度回收
+  ownerEntity: null
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 售后服务
+  subDomain: 评价
+  behaviorCategory: 记录
+  description: 工单关闭
+  input: 工单关闭
+  outputObjects: []
+  appliedRules: []
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-015
+  name: 知识沉淀
+  ownerEntity: AGG-AFT-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 知识
+  behaviorCategory: 创建
+  description: 典型故障解决
+  input: 典型故障解决
+  outputObjects:
+  - AGG-AFT-017
+  appliedRules: []
+  producedEvents: []
+  supportApp: 知识库
+- id: BEH-AFT-016
+  name: SLA监控
+  ownerEntity: AGG-AFT-002
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 售后服务
+  subDomain: 监控
+  behaviorCategory: 校验
+  description: 实时
+  input: 实时
+  outputObjects:
+  - AGG-AFT-002
+  appliedRules:
+  - RULE-AFT-001
+  - RULE-AFT-009
+  producedEvents: []
+  supportApp: 售后系统
+- id: BEH-AFT-017
+  name: 费用核算
+  ownerEntity: AGG-AFT-020
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 售后服务
+  subDomain: 结算
+  behaviorCategory: 计算
+  description: 工单关闭
+  input: 工单关闭
+  outputObjects:
+  - AGG-AFT-020
+  appliedRules: []
+  producedEvents: []
+  supportApp: 售后系统/财务
+- id: BEH-AFT-018
+  name: 召回处理
+  ownerEntity: AGG-AFT-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 质量事件
+  behaviorCategory: 执行
+  description: 批量缺陷
+  input: 批量缺陷
+  outputObjects:
+  - AGG-AFT-005
+  appliedRules:
+  - RULE-AFT-008
+  producedEvents: []
+  supportApp: 售后系统/QMS
+- id: BEH-AFT-019
+  name: 网点/工程师管理
+  ownerEntity: AGG-AFT-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 售后服务
+  subDomain: 资源
+  behaviorCategory: 更新
+  description: 组织调整
+  input: 组织调整
+  outputObjects:
+  - AGG-AFT-010
+  - AGG-AFT-011
+  appliedRules: []
+  producedEvents: []
+  supportApp: 售后系统/HR
+- id: BEH-FIN-001
+  name: 凭证录入/过账
+  ownerEntity: AGG-FIN-006
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 总账
+  behaviorCategory: 创建
+  description: 业务单据
+  input: 业务单据
+  outputObjects:
+  - AGG-FIN-006
+  appliedRules:
+  - RULE-FIN-008
+  - RULE-FIN-010
+  producedEvents: []
+  supportApp: ERP财务
+- id: BEH-FIN-002
+  name: 应收确认
+  ownerEntity: AGG-FIN-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 应收
+  behaviorCategory: 创建
+  description: 发货/开票
+  input: 发货/开票
+  outputObjects:
+  - AGG-FIN-007
+  appliedRules:
+  - RULE-FIN-004
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: ERP/AR
+- id: BEH-FIN-003
+  name: 销售开票
+  ownerEntity: AGG-FIN-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 发票
+  behaviorCategory: 创建
+  description: 开票申请
+  input: 开票申请
+  outputObjects:
+  - AGG-FIN-008
+  appliedRules:
+  - RULE-FIN-007
+  producedEvents: []
+  supportApp: 开票系统
+- id: BEH-FIN-004
+  name: 收款
+  ownerEntity: AGG-FIN-011
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 资金
+  behaviorCategory: 创建
+  description: 到账
+  input: 到账
+  outputObjects:
+  - AGG-FIN-011
+  - AGG-FIN-007
+  appliedRules:
+  - RULE-FIN-004
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: 资金系统
+- id: BEH-FIN-005
+  name: 收款核销
+  ownerEntity: AGG-FIN-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 应收
+  behaviorCategory: 更新
+  description: 收款单
+  input: 收款单
+  outputObjects:
+  - AGG-FIN-007
+  appliedRules:
+  - RULE-FIN-004
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: ERP/AR
+- id: BEH-FIN-006
+  name: 预收确认/核销
+  ownerEntity: AGG-FIN-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 资金
+  behaviorCategory: 创建/更新
+  description: 客户预付款
+  input: 客户预付款
+  outputObjects:
+  - AGG-FIN-013
+  - AGG-FIN-007
+  appliedRules:
+  - RULE-FIN-004
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: ERP/AR
+- id: BEH-FIN-007
+  name: 应付确认
+  ownerEntity: AGG-FIN-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 应付
+  behaviorCategory: 创建
+  description: 收货/发票
+  input: 收货/发票
+  outputObjects:
+  - AGG-FIN-009
+  appliedRules:
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: ERP/AP
+- id: BEH-FIN-008
+  name: 采购发票认证
+  ownerEntity: AGG-FIN-010
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 发票
+  behaviorCategory: 校验
+  description: 收到发票
+  input: 收到发票
+  outputObjects:
+  - AGG-FIN-010
+  appliedRules:
+  - RULE-FIN-001
+  - RULE-FIN-003
+  producedEvents: []
+  supportApp: 发票系统
+- id: BEH-FIN-009
+  name: 三单匹配
+  ownerEntity: AGG-FIN-010
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 应付
+  behaviorCategory: 校验
+  description: 发票+订单+收货
+  input: 发票+订单+收货
+  outputObjects:
+  - AGG-FIN-010
+  appliedRules:
+  - RULE-FIN-001
+  - RULE-FIN-003
+  producedEvents: []
+  supportApp: ERP/AP
+- id: BEH-FIN-010
+  name: 付款
+  ownerEntity: AGG-FIN-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 资金
+  behaviorCategory: 创建
+  description: 付款计划
+  input: 付款计划
+  outputObjects:
+  - AGG-FIN-012
+  appliedRules:
+  - RULE-FIN-005
+  producedEvents: []
+  supportApp: 资金系统
+- id: BEH-FIN-011
+  name: 预付确认/核销
+  ownerEntity: AGG-FIN-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 资金
+  behaviorCategory: 创建/更新
+  description: 供应商预付款
+  input: 供应商预付款
+  outputObjects:
+  - AGG-FIN-013
+  - AGG-FIN-009
+  appliedRules:
+  - RULE-FIN-009
+  producedEvents: []
+  supportApp: ERP/AP
+- id: BEH-FIN-012
+  name: 预算控制
+  ownerEntity: AGG-FIN-016
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 预算
+  behaviorCategory: 校验
+  description: 费用发生
+  input: 费用发生
+  outputObjects:
+  - AGG-FIN-016
+  appliedRules:
+  - RULE-FIN-002
+  producedEvents: []
+  supportApp: 预算系统
+- id: BEH-FIN-013
+  name: 费用报销
+  ownerEntity: AGG-FIN-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 报销
+  behaviorCategory: 创建/审批
+  description: 费用发生
+  input: 费用发生
+  outputObjects:
+  - AGG-FIN-017
+  appliedRules:
+  - RULE-FIN-002
+  - RULE-FIN-005
+  producedEvents: []
+  supportApp: 费控系统
+- id: BEH-FIN-014
+  name: 资产入账/折旧
+  ownerEntity: AGG-FIN-014
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 资产
+  behaviorCategory: 创建/计算
+  description: 采购完工
+  input: 采购完工
+  outputObjects:
+  - AGG-FIN-014
+  appliedRules:
+  - RULE-FIN-006
+  producedEvents: []
+  supportApp: 资产系统
+- id: BEH-FIN-015
+  name: 成本归集/结转
+  ownerEntity: AGG-FIN-015
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 成本
+  behaviorCategory: 计算
+  description: 周期结算
+  input: 周期结算
+  outputObjects:
+  - AGG-FIN-015
+  - AGG-FIN-003
+  appliedRules: []
+  producedEvents: []
+  supportApp: ERP/成本
+- id: BEH-FIN-016
+  name: 税务申报
+  ownerEntity: AGG-FIN-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 税务
+  behaviorCategory: 创建
+  description: 所属期到
+  input: 所属期到
+  outputObjects:
+  - AGG-FIN-018
+  appliedRules: []
+  producedEvents: []
+  supportApp: 税务系统
+- id: BEH-FIN-017
+  name: 报表出具
+  ownerEntity: AGG-FIN-020
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 报告
+  behaviorCategory: 计算
+  description: 期间末
+  input: 期间末
+  outputObjects:
+  - AGG-FIN-020
+  appliedRules:
+  - RULE-FIN-008
+  producedEvents: []
+  supportApp: BI
+- id: BEH-FIN-018
+  name: 合并出具
+  ownerEntity: AGG-FIN-021
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 报告
+  behaviorCategory: 计算
+  description: 报表齐套
+  input: 报表齐套
+  outputObjects:
+  - AGG-FIN-021
+  appliedRules: []
+  producedEvents: []
+  supportApp: 合并系统
+- id: BEH-FIN-019
+  name: 资金计划
+  ownerEntity: AGG-FIN-019
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 财务
+  subDomain: 资金
+  behaviorCategory: 计算
+  description: 周期
+  input: 周期
+  outputObjects:
+  - AGG-FIN-019
+  appliedRules: []
+  producedEvents: []
+  supportApp: 资金系统/BI
+- id: BEH-FIN-020
+  name: 期间关账
+  ownerEntity: AGG-FIN-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 财务
+  subDomain: 总账
+  behaviorCategory: 执行
+  description: 期间末
+  input: 期间末
+  outputObjects:
+  - AGG-FIN-005
+  appliedRules:
+  - RULE-FIN-010
+  producedEvents: []
+  supportApp: ERP财务
+- id: BEH-HR-001
+  name: 提交招聘需求
+  ownerEntity: AGG-HR-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 招聘
+  behaviorCategory: 创建
+  description: 部门缺编
+  input: 部门缺编
+  outputObjects:
+  - AGG-HR-009
+  appliedRules:
+  - RULE-HR-001
+  producedEvents: []
+  supportApp: 招聘系统
+- id: BEH-HR-002
+  name: 简历筛选
+  ownerEntity: AGG-HR-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 招聘
+  behaviorCategory: 执行
+  description: 收到简历
+  input: 收到简历
+  outputObjects:
+  - AGG-HR-010
+  appliedRules: []
+  producedEvents: []
+  supportApp: 招聘系统
+- id: BEH-HR-003
+  name: 面试与评估
+  ownerEntity: AGG-HR-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 招聘
+  behaviorCategory: 执行
+  description: 进入面试
+  input: 进入面试
+  outputObjects:
+  - AGG-HR-010
+  appliedRules: []
+  producedEvents: []
+  supportApp: 招聘系统
+- id: BEH-HR-004
+  name: 发Offer
+  ownerEntity: AGG-HR-011
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 招聘
+  behaviorCategory: 创建
+  description: 面试通过
+  input: 面试通过
+  outputObjects:
+  - AGG-HR-011
+  appliedRules:
+  - RULE-HR-007
+  producedEvents: []
+  supportApp: 招聘/HRIS
+- id: BEH-HR-005
+  name: 入职办理
+  ownerEntity: AGG-HR-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 入职
+  behaviorCategory: 创建
+  description: Offer接受
+  input: Offer接受
+  outputObjects:
+  - AGG-HR-012
+  - AGG-HR-007
+  - AGG-HR-013
+  appliedRules:
+  - RULE-HR-002
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-006
+  name: 合同签署/续签
+  ownerEntity: AGG-HR-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 合同
+  behaviorCategory: 创建/更新
+  description: 入职/到期
+  input: 入职/到期
+  outputObjects:
+  - AGG-HR-013
+  appliedRules: []
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-007
+  name: 信息维护
+  ownerEntity: AGG-HR-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 员工管理
+  behaviorCategory: 更新
+  description: 异动/调薪
+  input: 异动/调薪
+  outputObjects:
+  - AGG-HR-007
+  - AGG-HR-008
+  appliedRules:
+  - RULE-HR-002
+  - RULE-HR-009
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-008
+  name: 编制控制
+  ownerEntity: AGG-HR-005
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 人力资源
+  subDomain: 编制
+  behaviorCategory: 校验
+  description: 招聘/入职
+  input: 招聘/入职
+  outputObjects:
+  - AGG-HR-005
+  - AGG-HR-006
+  appliedRules:
+  - RULE-HR-001
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-009
+  name: 薪酬核算
+  ownerEntity: AGG-HR-015
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 人力资源
+  subDomain: 薪酬
+  behaviorCategory: 计算
+  description: 周期/考勤/绩效
+  input: 周期/考勤/绩效
+  outputObjects:
+  - AGG-HR-015
+  - AGG-HR-016
+  appliedRules:
+  - RULE-HR-003
+  - RULE-HR-004
+  producedEvents: []
+  supportApp: 薪酬系统
+- id: BEH-HR-010
+  name: 绩效计划制定
+  ownerEntity: AGG-HR-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 绩效
+  behaviorCategory: 创建
+  description: 周期初
+  input: 周期初
+  outputObjects:
+  - AGG-HR-017
+  appliedRules: []
+  producedEvents: []
+  supportApp: 绩效系统
+- id: BEH-HR-011
+  name: 绩效评估
+  ownerEntity: AGG-HR-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 绩效
+  behaviorCategory: 执行
+  description: 周期末
+  input: 周期末
+  outputObjects:
+  - AGG-HR-018
+  appliedRules:
+  - RULE-HR-006
+  producedEvents: []
+  supportApp: 绩效系统
+- id: BEH-HR-012
+  name: 培训实施
+  ownerEntity: AGG-HR-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 培训
+  behaviorCategory: 执行
+  description: 培训计划
+  input: 培训计划
+  outputObjects:
+  - AGG-HR-019
+  - AGG-HR-020
+  appliedRules: []
+  producedEvents: []
+  supportApp: 培训系统
+- id: BEH-HR-013
+  name: 考勤记录
+  ownerEntity: AGG-HR-021
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 人力资源
+  subDomain: 考勤
+  behaviorCategory: 记录
+  description: 打卡/请假
+  input: 打卡/请假
+  outputObjects:
+  - AGG-HR-021
+  - AGG-HR-022
+  appliedRules:
+  - RULE-HR-005
+  producedEvents: []
+  supportApp: 考勤系统
+- id: BEH-HR-014
+  name: 费用申请
+  ownerEntity: AGG-HR-023
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 报销
+  behaviorCategory: 创建
+  description: 费用发生前
+  input: 费用发生前
+  outputObjects:
+  - AGG-HR-023
+  appliedRules: []
+  producedEvents: []
+  supportApp: 费控系统
+- id: BEH-HR-015
+  name: 费用报销
+  ownerEntity: AGG-HR-024
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 报销
+  behaviorCategory: 创建
+  description: 费用发生后
+  input: 费用发生后
+  outputObjects:
+  - AGG-HR-024
+  appliedRules: []
+  producedEvents: []
+  supportApp: 费控系统
+- id: BEH-HR-016
+  name: 内部调动
+  ownerEntity: AGG-HR-026
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 异动
+  behaviorCategory: 更新
+  description: 组织需要
+  input: 组织需要
+  outputObjects:
+  - AGG-HR-026
+  - AGG-HR-007
+  - AGG-HR-004
+  appliedRules:
+  - RULE-HR-002
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-017
+  name: 离职办理
+  ownerEntity: AGG-HR-025
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 离职
+  behaviorCategory: 执行
+  description: 员工离职
+  input: 员工离职
+  outputObjects:
+  - AGG-HR-025
+  appliedRules:
+  - RULE-HR-008
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-HR-018
+  name: 人才盘点
+  ownerEntity: AGG-HR-027
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 人力资源
+  subDomain: 人才
+  behaviorCategory: 计算
+  description: 周期盘点
+  input: 周期盘点
+  outputObjects:
+  - AGG-HR-027
+  appliedRules: []
+  producedEvents: []
+  supportApp: 人才系统
+- id: BEH-HR-019
+  name: 组织调整
+  ownerEntity: AGG-HR-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 人力资源
+  subDomain: 组织
+  behaviorCategory: 更新
+  description: 架构变更
+  input: 架构变更
+  outputObjects:
+  - AGG-HR-001
+  - AGG-HR-002
+  appliedRules: []
+  producedEvents: []
+  supportApp: HRIS
+- id: BEH-MAN-001
+  name: 接收生产计划
+  ownerEntity: AGG-MAN-014
+  behaviorType: QUERY
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 计划接收
+  behaviorCategory: 读取
+  description: MPS/销售订单
+  input: MPS/销售订单
+  outputObjects:
+  - AGG-MAN-014
+  appliedRules: []
+  producedEvents: []
+  supportApp: ERP/MES
+- id: BEH-MAN-002
+  name: 下达工单
+  ownerEntity: AGG-MAN-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 工单管理
+  behaviorCategory: 创建
+  description: 生产订单下达
+  input: 生产订单下达
+  outputObjects:
+  - AGG-MAN-015
+  appliedRules:
+  - RULE-MAN-001
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-003
+  name: 维护工艺路线
+  ownerEntity: AGG-MAN-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 工艺管理
+  behaviorCategory: 创建/更新
+  description: 产品设计
+  input: 产品设计
+  outputObjects:
+  - AGG-MAN-005
+  appliedRules: []
+  producedEvents: []
+  supportApp: MES/PLM
+- id: BEH-MAN-004
+  name: 维护工厂/车间/产线主数据
+  ownerEntity: AGG-MAN-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 主数据
+  behaviorCategory: 创建/更新
+  description: 产能建设
+  input: 产能建设
+  outputObjects:
+  - AGG-MAN-001
+  - AGG-MAN-002
+  - AGG-MAN-004
+  appliedRules: []
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-005
+  name: 车间排产
+  ownerEntity: AGG-MAN-015
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 生产制造
+  subDomain: 排产
+  behaviorCategory: 计算
+  description: 工单+设备+班次
+  input: 工单+设备+班次
+  outputObjects:
+  - AGG-MAN-015
+  - AGG-MAN-022
+  appliedRules:
+  - RULE-MAN-001
+  producedEvents: []
+  supportApp: MES/APS
+- id: BEH-MAN-006
+  name: 工单领料/齐套
+  ownerEntity: AGG-MAN-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 物料
+  behaviorCategory: 执行
+  description: 工单开工前
+  input: 工单开工前
+  outputObjects:
+  - AGG-MAN-016
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-MAN-001
+  producedEvents: []
+  supportApp: WMS/MES
+- id: BEH-MAN-007
+  name: 物料配送
+  ownerEntity: AGG-MAN-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 物料
+  behaviorCategory: 执行
+  description: 齐套后
+  input: 齐套后
+  outputObjects:
+  - AGG-MAN-017
+  appliedRules: []
+  producedEvents: []
+  supportApp: WMS/MES
+- id: BEH-MAN-008
+  name: 工单开工
+  ownerEntity: AGG-MAN-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 执行
+  behaviorCategory: 状态变更
+  description: 齐套就绪
+  input: 齐套就绪
+  outputObjects:
+  - AGG-MAN-015
+  appliedRules:
+  - RULE-MAN-001
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-009
+  name: SMT上料核对
+  ownerEntity: AGG-MAN-021
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 生产制造
+  subDomain: 执行
+  behaviorCategory: 校验
+  description: 换线/上料
+  input: 换线/上料
+  outputObjects:
+  - AGG-MAN-021
+  appliedRules:
+  - RULE-MAN-002
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-010
+  name: 工序报工
+  ownerEntity: AGG-MAN-019
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 生产制造
+  subDomain: 执行
+  behaviorCategory: 记录
+  description: 工序完工
+  input: 工序完工
+  outputObjects:
+  - AGG-MAN-019
+  - AGG-MAN-018
+  appliedRules:
+  - RULE-MAN-004
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-011
+  name: 工序流转
+  ownerEntity: AGG-MAN-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 执行
+  behaviorCategory: 更新
+  description: 报工后
+  input: 报工后
+  outputObjects:
+  - AGG-MAN-018
+  appliedRules:
+  - RULE-MAN-004
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-012
+  name: 质量检验(SPC)
+  ownerEntity: AGG-MAN-024
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 生产制造
+  subDomain: 质量
+  behaviorCategory: 校验
+  description: 质检点触发
+  input: 质检点触发
+  outputObjects:
+  - AGG-MAN-024
+  appliedRules:
+  - RULE-MAN-003
+  producedEvents: []
+  supportApp: QMS/MES
+- id: BEH-MAN-013
+  name: 设备点检
+  ownerEntity: AGG-MAN-025
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 设备
+  behaviorCategory: 执行
+  description: 周期/异常
+  input: 周期/异常
+  outputObjects:
+  - AGG-MAN-025
+  - AGG-MAN-009
+  appliedRules:
+  - RULE-MAN-005
+  producedEvents: []
+  supportApp: TPM/MES
+- id: BEH-MAN-014
+  name: 设备保养
+  ownerEntity: AGG-MAN-026
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 设备
+  behaviorCategory: 执行
+  description: 周期
+  input: 周期
+  outputObjects:
+  - AGG-MAN-026
+  appliedRules: []
+  producedEvents: []
+  supportApp: TPM/MES
+- id: BEH-MAN-015
+  name: 模具保养
+  ownerEntity: AGG-MAN-027
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 设备
+  behaviorCategory: 执行
+  description: 周期/寿命预警
+  input: 周期/寿命预警
+  outputObjects:
+  - AGG-MAN-027
+  - AGG-MAN-010
+  appliedRules:
+  - RULE-MAN-006
+  producedEvents: []
+  supportApp: TPM/MES
+- id: BEH-MAN-016
+  name: 异常处理
+  ownerEntity: AGG-MAN-020
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 异常
+  behaviorCategory: 执行
+  description: 停机/缺料
+  input: 停机/缺料
+  outputObjects:
+  - AGG-MAN-020
+  appliedRules: []
+  producedEvents: []
+  supportApp: MES
+- id: BEH-MAN-017
+  name: 返工/报废处理
+  ownerEntity: AGG-MAN-028
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 质量
+  behaviorCategory: 执行
+  description: 不良判定
+  input: 不良判定
+  outputObjects:
+  - AGG-MAN-028
+  appliedRules:
+  - RULE-MAN-008
+  producedEvents: []
+  supportApp: MES/QMS
+- id: BEH-MAN-018
+  name: 成品入库
+  ownerEntity: AGG-MAN-029
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 入库
+  behaviorCategory: 创建
+  description: 工单完工
+  input: 工单完工
+  outputObjects:
+  - AGG-MAN-029
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-MAN-009
+  producedEvents: []
+  supportApp: MES/WMS
+- id: BEH-MAN-019
+  name: 生产追溯查询
+  ownerEntity: AGG-MAN-030
+  behaviorType: QUERY
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 追溯
+  behaviorCategory: 读取
+  description: 质量/客诉触发
+  input: 质量/客诉触发
+  outputObjects:
+  - AGG-MAN-030
+  appliedRules:
+  - RULE-MAN-010
+  producedEvents: []
+  supportApp: MES/追溯系统
+- id: BEH-MAN-020
+  name: 生产统计/良率计算
+  ownerEntity: AGG-MAN-031
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 生产制造
+  subDomain: 度量
+  behaviorCategory: 计算
+  description: 周期结算
+  input: 周期结算
+  outputObjects:
+  - AGG-MAN-031
+  appliedRules:
+  - RULE-MAN-007
+  producedEvents: []
+  supportApp: MES/BI
+- id: BEH-MAN-021
+  name: 排班管理
+  ownerEntity: AGG-MAN-022
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 生产制造
+  subDomain: 人员
+  behaviorCategory: 创建
+  description: 生产计划
+  input: 生产计划
+  outputObjects:
+  - AGG-MAN-022
+  appliedRules: []
+  producedEvents: []
+  supportApp: MES/HR
+- id: BEH-MKT-001
+  name: 新建客户
+  ownerEntity: AGG-MKT-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 客户管理
+  behaviorCategory: 创建
+  description: 注册/录入
+  input: 注册/录入
+  outputObjects:
+  - AGG-MKT-001
+  appliedRules:
+  - RULE-MKT-001
+  producedEvents: []
+  supportApp: CRM/MDM
+- id: BEH-MKT-002
+  name: 线索录入/获取
+  ownerEntity: AGG-MKT-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 线索管理
+  behaviorCategory: 创建
+  description: 广告/转介/门店
+  input: 广告/转介/门店
+  outputObjects:
+  - AGG-MKT-002
+  appliedRules:
+  - RULE-MKT-001
+  - RULE-MKT-002
+  producedEvents: []
+  supportApp: CRM/MA
+- id: BEH-MKT-003
+  name: 线索评分
+  ownerEntity: AGG-MKT-005
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 市场营销
+  subDomain: 线索管理
+  behaviorCategory: 计算
+  description: 行为数据
+  input: 行为数据
+  outputObjects:
+  - AGG-MKT-005
+  - AGG-MKT-002
+  appliedRules:
+  - RULE-MKT-001
+  - RULE-MKT-002
+  producedEvents: []
+  supportApp: CDP/MA
+- id: BEH-MKT-004
+  name: 线索培育
+  ownerEntity: AGG-MKT-026
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 线索管理
+  behaviorCategory: 执行
+  description: 评分分层
+  input: 评分分层
+  outputObjects:
+  - AGG-MKT-026
+  - AGG-MKT-002
+  appliedRules:
+  - RULE-MKT-001
+  - RULE-MKT-002
+  producedEvents: []
+  supportApp: MA
+- id: BEH-MKT-005
+  name: 线索转化
+  ownerEntity: AGG-MKT-003
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 线索管理
+  behaviorCategory: 状态变更
+  description: 培育达标
+  input: 培育达标
+  outputObjects:
+  - AGG-MKT-003
+  appliedRules:
+  - RULE-MKT-003
+  producedEvents: []
+  supportApp: CRM
+- id: BEH-MKT-006
+  name: 创建市场活动
+  ownerEntity: AGG-MKT-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 活动管理
+  behaviorCategory: 创建
+  description: 营销计划
+  input: 营销计划
+  outputObjects:
+  - AGG-MKT-009
+  appliedRules: []
+  producedEvents: []
+  supportApp: MA/CRM
+- id: BEH-MKT-007
+  name: 执行投放
+  ownerEntity: AGG-MKT-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 广告
+  behaviorCategory: 执行
+  description: 投放计划
+  input: 投放计划
+  outputObjects:
+  - AGG-MKT-010
+  appliedRules: []
+  producedEvents: []
+  supportApp: 广告平台/MA
+- id: BEH-MKT-008
+  name: 内容制作与审核
+  ownerEntity: AGG-MKT-011
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 内容
+  behaviorCategory: 创建/审批
+  description: 活动需求
+  input: 活动需求
+  outputObjects:
+  - AGG-MKT-011
+  - AGG-MKT-012
+  appliedRules:
+  - RULE-MKT-008
+  producedEvents: []
+  supportApp: MA
+- id: BEH-MKT-009
+  name: 客户分群与打标
+  ownerEntity: AGG-MKT-004
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 市场营销
+  subDomain: 客户运营
+  behaviorCategory: 计算
+  description: 行为数据
+  input: 行为数据
+  outputObjects:
+  - AGG-MKT-004
+  - AGG-MKT-005
+  appliedRules: []
+  producedEvents: []
+  supportApp: CDP
+- id: BEH-MKT-010
+  name: 商机创建
+  ownerEntity: AGG-MKT-003
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 商机管理
+  behaviorCategory: 创建
+  description: 线索转化/主动开发
+  input: 线索转化/主动开发
+  outputObjects:
+  - AGG-MKT-003
+  appliedRules:
+  - RULE-MKT-003
+  producedEvents: []
+  supportApp: CRM
+- id: BEH-MKT-011
+  name: 商机推进/跟进
+  ownerEntity: AGG-MKT-027
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 商机管理
+  behaviorCategory: 更新
+  description: 销售动作
+  input: 销售动作
+  outputObjects:
+  - AGG-MKT-027
+  - AGG-MKT-003
+  appliedRules:
+  - RULE-MKT-003
+  producedEvents: []
+  supportApp: CRM
+- id: BEH-MKT-012
+  name: 生成报价单
+  ownerEntity: AGG-MKT-006
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 报价管理
+  behaviorCategory: 创建
+  description: 商机进入报价
+  input: 商机进入报价
+  outputObjects:
+  - AGG-MKT-006
+  appliedRules:
+  - RULE-MKT-004
+  producedEvents: []
+  supportApp: CRM/CPQ
+- id: BEH-MKT-013
+  name: 合同签署
+  ownerEntity: AGG-MKT-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 成交
+  behaviorCategory: 创建
+  description: 报价确认/赢单
+  input: 报价确认/赢单
+  outputObjects:
+  - AGG-MKT-007
+  - AGG-MKT-020
+  appliedRules: []
+  producedEvents: []
+  supportApp: CRM/合同系统
+- id: BEH-MKT-014
+  name: 创建销售订单
+  ownerEntity: AGG-MKT-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 订单管理
+  behaviorCategory: 创建
+  description: 合同生效/客户确认
+  input: 合同生效/客户确认
+  outputObjects:
+  - AGG-MKT-008
+  appliedRules:
+  - RULE-MKT-005
+  - RULE-MKT-009
+  producedEvents: []
+  supportApp: CRM/ERP
+- id: BEH-MKT-015
+  name: 会员注册/运营
+  ownerEntity: AGG-MKT-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 会员
+  behaviorCategory: 创建/更新
+  description: 客户入会
+  input: 客户入会
+  outputObjects:
+  - AGG-MKT-013
+  - AGG-MKT-014
+  appliedRules:
+  - RULE-MKT-010
+  producedEvents: []
+  supportApp: CRM
+- id: BEH-MKT-016
+  name: 积分发放/兑换
+  ownerEntity: AGG-MKT-014
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 会员
+  behaviorCategory: 执行
+  description: 消费/活动
+  input: 消费/活动
+  outputObjects:
+  - AGG-MKT-014
+  appliedRules:
+  - RULE-MKT-010
+  producedEvents: []
+  supportApp: CRM
+- id: BEH-MKT-017
+  name: 促销规则配置
+  ownerEntity: AGG-MKT-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 促销
+  behaviorCategory: 创建
+  description: 营销活动
+  input: 营销活动
+  outputObjects:
+  - AGG-MKT-015
+  appliedRules:
+  - RULE-MKT-006
+  producedEvents: []
+  supportApp: 促销引擎
+- id: BEH-MKT-018
+  name: 发券/核销
+  ownerEntity: AGG-MKT-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 促销
+  behaviorCategory: 执行
+  description: 活动/触点
+  input: 活动/触点
+  outputObjects:
+  - AGG-MKT-016
+  - AGG-MKT-017
+  appliedRules:
+  - RULE-MKT-006
+  - RULE-MKT-007
+  producedEvents: []
+  supportApp: 促销引擎
+- id: BEH-MKT-019
+  name: 渠道建档/管理
+  ownerEntity: AGG-MKT-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 渠道
+  behaviorCategory: 创建/更新
+  description: 新渠道引入
+  input: 新渠道引入
+  outputObjects:
+  - AGG-MKT-018
+  appliedRules:
+  - RULE-MKT-009
+  - RULE-MKT-011
+  producedEvents: []
+  supportApp: 渠道系统
+- id: BEH-MKT-020
+  name: 门店建档/管理
+  ownerEntity: AGG-MKT-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 门店
+  behaviorCategory: 创建/更新
+  description: 新门店开设
+  input: 新门店开设
+  outputObjects:
+  - AGG-MKT-019
+  appliedRules:
+  - RULE-MKT-011
+  producedEvents: []
+  supportApp: 渠道系统
+- id: BEH-MKT-021
+  name: 价格维护
+  ownerEntity: AGG-MKT-021
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 价格
+  behaviorCategory: 创建/更新
+  description: 定价策略
+  input: 定价策略
+  outputObjects:
+  - AGG-MKT-021
+  appliedRules: []
+  producedEvents: []
+  supportApp: 价格系统
+- id: BEH-MKT-022
+  name: 销售预测/目标分解
+  ownerEntity: AGG-MKT-023
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 市场营销
+  subDomain: 计划
+  behaviorCategory: 计算
+  description: 周期计划
+  input: 周期计划
+  outputObjects:
+  - AGG-MKT-023
+  - AGG-MKT-022
+  appliedRules: []
+  producedEvents: []
+  supportApp: CRM/BI
+- id: BEH-MKT-023
+  name: 竞品录入
+  ownerEntity: AGG-MKT-024
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 市场营销
+  subDomain: 竞争情报
+  behaviorCategory: 创建
+  description: 市场扫描
+  input: 市场扫描
+  outputObjects:
+  - AGG-MKT-024
+  appliedRules: []
+  producedEvents: []
+  supportApp: CI系统/CRM
+- id: BEH-MKT-024
+  name: 营销ROI分析
+  ownerEntity: AGG-MKT-025
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 市场营销
+  subDomain: 度量
+  behaviorCategory: 计算
+  description: 周期结算
+  input: 周期结算
+  outputObjects:
+  - AGG-MKT-025
+  appliedRules: []
+  producedEvents: []
+  supportApp: MA/BI
+- id: BEH-RND-001
+  name: 创建产品系列
+  ownerEntity: AGG-RND-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 产品规划
+  behaviorCategory: 创建
+  description: 战略/市场需求
+  input: 战略/市场需求
+  outputObjects:
+  - AGG-RND-001
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-002
+  name: 产品立项
+  ownerEntity: AGG-RND-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 产品规划
+  behaviorCategory: 创建
+  description: 战略/市场需求
+  input: 战略/市场需求
+  outputObjects:
+  - AGG-RND-009
+  - AGG-RND-002
+  appliedRules:
+  - RULE-RND-001
+  - RULE-RND-009
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-003
+  name: 提交产品需求
+  ownerEntity: AGG-RND-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 需求管理
+  behaviorCategory: 创建
+  description: 市场/用户输入
+  input: 市场/用户输入
+  outputObjects:
+  - AGG-RND-008
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/需求系统
+- id: BEH-RND-004
+  name: 需求评审
+  ownerEntity: AGG-RND-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 需求管理
+  behaviorCategory: 审批
+  description: 需求提交
+  input: 需求提交
+  outputObjects:
+  - AGG-RND-008
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-005
+  name: 器件选型
+  ownerEntity: AGG-RND-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 硬件研发
+  behaviorCategory: 执行
+  description: 设计方案
+  input: 设计方案
+  outputObjects:
+  - AGG-RND-012
+  appliedRules:
+  - RULE-RND-004
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-006
+  name: 创建设计文档
+  ownerEntity: AGG-RND-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 设计开发
+  behaviorCategory: 创建
+  description: 设计任务
+  input: 设计任务
+  outputObjects:
+  - AGG-RND-010
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/CAD
+- id: BEH-RND-007
+  name: 文档评审
+  ownerEntity: AGG-RND-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 设计开发
+  behaviorCategory: 审批
+  description: 文档完成
+  input: 文档完成
+  outputObjects:
+  - AGG-RND-010
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-008
+  name: 发布图纸
+  ownerEntity: AGG-RND-011
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 设计开发
+  behaviorCategory: 发布
+  description: 评审通过
+  input: 评审通过
+  outputObjects:
+  - AGG-RND-011
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/CAD
+- id: BEH-RND-009
+  name: 维护BOM
+  ownerEntity: AGG-RND-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: BOM管理
+  behaviorCategory: 创建/更新
+  description: 设计定稿
+  input: 设计定稿
+  outputObjects:
+  - AGG-RND-005
+  appliedRules:
+  - RULE-RND-002
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-010
+  name: 发布BOM
+  ownerEntity: AGG-RND-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: BOM管理
+  behaviorCategory: 发布
+  description: 评审通过
+  input: 评审通过
+  outputObjects:
+  - AGG-RND-005
+  appliedRules:
+  - RULE-RND-002
+  producedEvents: []
+  supportApp: PLM/ERP
+- id: BEH-RND-011
+  name: 发起试制
+  ownerEntity: AGG-RND-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 试制验证
+  behaviorCategory: 创建
+  description: 设计完成
+  input: 设计完成
+  outputObjects:
+  - AGG-RND-013
+  appliedRules:
+  - RULE-RND-005
+  producedEvents: []
+  supportApp: PLM/MES
+- id: BEH-RND-012
+  name: 执行测试
+  ownerEntity: AGG-RND-014
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 测试验证
+  behaviorCategory: 执行
+  description: 样机就绪
+  input: 样机就绪
+  outputObjects:
+  - AGG-RND-014
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/测试系统
+- id: BEH-RND-013
+  name: 出具测试报告
+  ownerEntity: AGG-RND-015
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 产品研发
+  subDomain: 测试验证
+  behaviorCategory: 记录
+  description: 测试完成
+  input: 测试完成
+  outputObjects:
+  - AGG-RND-015
+  appliedRules:
+  - RULE-RND-006
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-014
+  name: 阶段评审(DCP/TR)
+  ownerEntity: AGG-RND-023
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 阶段管控
+  behaviorCategory: 决策
+  description: 里程碑到达
+  input: 里程碑到达
+  outputObjects:
+  - AGG-RND-023
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-015
+  name: 发起工程变更
+  ownerEntity: AGG-RND-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 变更管理
+  behaviorCategory: 创建
+  description: 设计/质量问题
+  input: 设计/质量问题
+  outputObjects:
+  - AGG-RND-016
+  appliedRules:
+  - RULE-RND-003
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-016
+  name: 变更评审
+  ownerEntity: AGG-RND-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 变更管理
+  behaviorCategory: 审批
+  description: 变更提交
+  input: 变更提交
+  outputObjects:
+  - AGG-RND-016
+  appliedRules:
+  - RULE-RND-003
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-017
+  name: 变更发布
+  ownerEntity: AGG-RND-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 变更管理
+  behaviorCategory: 发布
+  description: 评审通过
+  input: 评审通过
+  outputObjects:
+  - AGG-RND-016
+  - AGG-RND-005
+  - AGG-RND-011
+  appliedRules:
+  - RULE-RND-002
+  - RULE-RND-003
+  producedEvents: []
+  supportApp: PLM/ERP
+- id: BEH-RND-018
+  name: 申请认证/入网许可
+  ownerEntity: AGG-RND-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 合规
+  behaviorCategory: 创建
+  description: 量产前
+  input: 量产前
+  outputObjects:
+  - AGG-RND-017
+  appliedRules:
+  - RULE-RND-009
+  producedEvents: []
+  supportApp: PLM/合规系统
+- id: BEH-RND-019
+  name: 发布软件版本
+  ownerEntity: AGG-RND-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 软件
+  behaviorCategory: 发布
+  description: 验证通过
+  input: 验证通过
+  outputObjects:
+  - AGG-RND-007
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/软件仓库
+- id: BEH-RND-020
+  name: 提交专利
+  ownerEntity: AGG-RND-018
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 知识产权
+  behaviorCategory: 创建
+  description: 研发产出
+  input: 研发产出
+  outputObjects:
+  - AGG-RND-018
+  appliedRules:
+  - RULE-RND-008
+  producedEvents: []
+  supportApp: PLM/知产系统
+- id: BEH-RND-021
+  name: 研发领料
+  ownerEntity: AGG-RND-020
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 研发物料
+  behaviorCategory: 创建
+  description: 试制需求
+  input: 试制需求
+  outputObjects:
+  - AGG-RND-020
+  - AGG-SUP-029
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/ERP
+- id: BEH-RND-022
+  name: 模块复用登记
+  ownerEntity: AGG-RND-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 标准化
+  behaviorCategory: 创建
+  description: 设计沉淀
+  input: 设计沉淀
+  outputObjects:
+  - AGG-RND-019
+  - AGG-RND-006
+  appliedRules:
+  - RULE-RND-007
+  producedEvents: []
+  supportApp: PLM
+- id: BEH-RND-023
+  name: 缺陷跟踪
+  ownerEntity: AGG-RND-021
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 质量
+  behaviorCategory: 更新
+  description: 测试/试制发现
+  input: 测试/试制发现
+  outputObjects:
+  - AGG-RND-021
+  appliedRules: []
+  producedEvents: []
+  supportApp: PLM/QMS
+- id: BEH-RND-024
+  name: 产品发布(GA)
+  ownerEntity: AGG-RND-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 产品研发
+  subDomain: 上市准备
+  behaviorCategory: 发布
+  description: 验证+认证通过
+  input: 验证+认证通过
+  outputObjects:
+  - AGG-RND-002
+  appliedRules:
+  - RULE-RND-009
+  producedEvents: []
+  supportApp: PLM/MDM
+- id: BEH-STR-001
+  name: 战略制定/解码
+  ownerEntity: AGG-STR-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 战略管理
+  behaviorCategory: 创建
+  description: 内外部诊断
+  input: 内外部诊断
+  outputObjects:
+  - AGG-STR-001
+  - AGG-STR-006
+  appliedRules:
+  - RULE-STR-008
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-002
+  name: 目标分解
+  ownerEntity: AGG-STR-004
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 目标管理
+  behaviorCategory: 分解
+  description: 战略目标
+  input: 战略目标
+  outputObjects:
+  - AGG-STR-004
+  - AGG-STR-005
+  appliedRules:
+  - RULE-STR-001
+  - RULE-STR-004
+  producedEvents: []
+  supportApp: EPM/OKR
+- id: BEH-STR-003
+  name: 举措规划
+  ownerEntity: AGG-STR-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 举措管理
+  behaviorCategory: 创建
+  description: 目标对齐
+  input: 目标对齐
+  outputObjects:
+  - AGG-STR-002
+  appliedRules: []
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-004
+  name: 战役推进
+  ownerEntity: AGG-STR-003
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 任务管理
+  behaviorCategory: 执行
+  description: 举措对齐
+  input: 举措对齐
+  outputObjects:
+  - AGG-STR-003
+  appliedRules: []
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-005
+  name: 商业计划编制
+  ownerEntity: AGG-STR-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 经营计划
+  behaviorCategory: 创建
+  description: 目标+举措
+  input: 目标+举措
+  outputObjects:
+  - AGG-STR-007
+  appliedRules: []
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-006
+  name: 预算编制
+  ownerEntity: AGG-STR-008
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 预算
+  behaviorCategory: 创建
+  description: BP+资源
+  input: BP+资源
+  outputObjects:
+  - AGG-STR-008
+  appliedRules:
+  - RULE-STR-002
+  producedEvents: []
+  supportApp: 预算系统
+- id: BEH-STR-007
+  name: 投资立项
+  ownerEntity: AGG-STR-009
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 投资
+  behaviorCategory: 创建
+  description: 战略机会
+  input: 战略机会
+  outputObjects:
+  - AGG-STR-009
+  appliedRules:
+  - RULE-STR-003
+  producedEvents: []
+  supportApp: 投资系统
+- id: BEH-STR-008
+  name: 经营分析
+  ownerEntity: AGG-STR-013
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 战略经营
+  subDomain: 分析
+  behaviorCategory: 计算
+  description: 周期数据
+  input: 周期数据
+  outputObjects:
+  - AGG-STR-013
+  appliedRules: []
+  producedEvents: []
+  supportApp: BI
+- id: BEH-STR-009
+  name: 对标分析
+  ownerEntity: AGG-STR-016
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 战略经营
+  subDomain: 对标
+  behaviorCategory: 计算
+  description: 外部数据
+  input: 外部数据
+  outputObjects:
+  - AGG-STR-016
+  appliedRules: []
+  producedEvents: []
+  supportApp: BI
+- id: BEH-STR-010
+  name: 风险识别/应对
+  ownerEntity: AGG-STR-014
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 风险
+  behaviorCategory: 创建/更新
+  description: 环境扫描
+  input: 环境扫描
+  outputObjects:
+  - AGG-STR-014
+  appliedRules:
+  - RULE-STR-005
+  producedEvents: []
+  supportApp: 风险系统
+- id: BEH-STR-011
+  name: 决策审议
+  ownerEntity: AGG-STR-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 决策
+  behaviorCategory: 决策
+  description: 议题提交
+  input: 议题提交
+  outputObjects:
+  - AGG-STR-015
+  appliedRules:
+  - RULE-STR-006
+  - RULE-STR-009
+  producedEvents: []
+  supportApp: 决策系统/OA
+- id: BEH-STR-012
+  name: 里程碑跟踪
+  ownerEntity: AGG-STR-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 跟踪
+  behaviorCategory: 更新
+  description: 周期
+  input: 周期
+  outputObjects:
+  - AGG-STR-012
+  appliedRules:
+  - RULE-STR-007
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-013
+  name: 战略复盘
+  ownerEntity: AGG-STR-017
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 战略经营
+  subDomain: 复盘
+  behaviorCategory: 记录
+  description: 周期末
+  input: 周期末
+  outputObjects:
+  - AGG-STR-017
+  appliedRules: []
+  producedEvents: []
+  supportApp: EPM
+- id: BEH-STR-014
+  name: 组织架构调整
+  ownerEntity: AGG-STR-010
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 战略经营
+  subDomain: 组织
+  behaviorCategory: 更新
+  description: 战略需要
+  input: 战略需要
+  outputObjects:
+  - AGG-STR-010
+  - AGG-STR-011
+  appliedRules:
+  - RULE-STR-009
+  producedEvents: []
+  supportApp: HRIS/EPM
+- id: BEH-STR-015
+  name: KPI考核应用
+  ownerEntity: AGG-STR-004
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 战略经营
+  subDomain: 考核
+  behaviorCategory: 计算
+  description: 周期末
+  input: 周期末
+  outputObjects:
+  - AGG-STR-004
+  appliedRules:
+  - RULE-STR-001
+  - RULE-STR-004
+  producedEvents: []
+  supportApp: EPM/BI
+- id: BEH-SUP-001
+  name: 维护物料主数据
+  ownerEntity: AGG-SUP-001
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 计划/主数据
+  behaviorCategory: 创建/更新
+  description: 研发释放物料或属性变更
+  input: 研发释放物料或属性变更
+  outputObjects:
+  - AGG-SUP-001
+  appliedRules: []
+  producedEvents: []
+  supportApp: MDM/ERP
+- id: BEH-SUP-002
+  name: 维护仓库/库位主数据
+  ownerEntity: AGG-SUP-002
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 计划/主数据
+  behaviorCategory: 创建/更新
+  description: 仓储网络调整
+  input: 仓储网络调整
+  outputObjects:
+  - AGG-SUP-002
+  - AGG-SUP-003
+  appliedRules: []
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-003
+  name: 采集序列号(SN)
+  ownerEntity: AGG-SUP-004
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 计划/追溯
+  behaviorCategory: 创建
+  description: 生产完工或入库
+  input: 生产完工或入库
+  outputObjects:
+  - AGG-SUP-004
+  appliedRules:
+  - RULE-SUP-013
+  producedEvents: []
+  supportApp: MES/ERP
+- id: BEH-SUP-004
+  name: 维护物料替代关系
+  ownerEntity: AGG-SUP-005
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 计划/主数据
+  behaviorCategory: 创建/更新
+  description: 设计或供应变更
+  input: 设计或供应变更
+  outputObjects:
+  - AGG-SUP-005
+  appliedRules:
+  - RULE-SUP-014
+  producedEvents: []
+  supportApp: PLM/ERP
+- id: BEH-SUP-005
+  name: 生成需求预测
+  ownerEntity: AGG-SUP-006
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 计划/需求管理
+  behaviorCategory: 计算
+  description: 历史销量+市场输入
+  input: 历史销量+市场输入
+  outputObjects:
+  - AGG-SUP-006
+  appliedRules: []
+  producedEvents: []
+  supportApp: APS
+- id: BEH-SUP-006
+  name: 运行S&OP平衡
+  ownerEntity: AGG-SUP-007
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 计划/S&OP
+  behaviorCategory: 决策
+  description: 月度经营会议
+  input: 月度经营会议
+  outputObjects:
+  - AGG-SUP-007
+  - AGG-SUP-008
+  appliedRules: []
+  producedEvents: []
+  supportApp: APS/BI
+- id: BEH-SUP-007
+  name: 生成主生产计划(MPS)
+  ownerEntity: AGG-SUP-008
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 计划/生产计划
+  behaviorCategory: 计算
+  description: 需求预测+产能
+  input: 需求预测+产能
+  outputObjects:
+  - AGG-SUP-008
+  appliedRules: []
+  producedEvents: []
+  supportApp: APS
+- id: BEH-SUP-008
+  name: 运行物料需求计划(MRP)
+  ownerEntity: AGG-SUP-009
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 计划/物料计划
+  behaviorCategory: 计算
+  description: MPS+库存+BOM+替代关系
+  input: MPS+库存+BOM+替代关系
+  outputObjects:
+  - AGG-SUP-009
+  appliedRules: []
+  producedEvents: []
+  supportApp: APS/ERP
+- id: BEH-SUP-009
+  name: 产能负荷检查(CRP)
+  ownerEntity: AGG-SUP-010
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 计划/产能
+  behaviorCategory: 计算
+  description: MPS下达
+  input: MPS下达
+  outputObjects:
+  - AGG-SUP-010
+  - AGG-SUP-008
+  appliedRules: []
+  producedEvents: []
+  supportApp: APS
+- id: BEH-SUP-010
+  name: 安全库存检查
+  ownerEntity: AGG-SUP-029
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 计划/补货
+  behaviorCategory: 校验
+  description: 周期作业或实时
+  input: 周期作业或实时
+  outputObjects:
+  - AGG-SUP-029
+  - AGG-SUP-011
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  producedEvents: []
+  supportApp: ERP
+- id: BEH-SUP-011
+  name: 创建采购申请
+  ownerEntity: AGG-SUP-014
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/需求
+  behaviorCategory: 创建
+  description: MRP建议或人工需求
+  input: MRP建议或人工需求
+  outputObjects:
+  - AGG-SUP-014
+  appliedRules:
+  - RULE-SUP-001
+  producedEvents: []
+  supportApp: ERP
+- id: BEH-SUP-012
+  name: 审批采购申请
+  ownerEntity: AGG-SUP-015
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/需求
+  behaviorCategory: 审批
+  description: 申请提交
+  input: 申请提交
+  outputObjects:
+  - AGG-SUP-015
+  - AGG-SUP-014
+  appliedRules:
+  - RULE-SUP-001
+  producedEvents: []
+  supportApp: OA/ERP
+- id: BEH-SUP-013
+  name: 供应商寻源/询价
+  ownerEntity: AGG-SUP-013
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/寻源
+  behaviorCategory: 执行
+  description: 新物料或新供应商
+  input: 新物料或新供应商
+  outputObjects:
+  - AGG-SUP-013
+  - AGG-SUP-018
+  appliedRules:
+  - RULE-SUP-003
+  producedEvents: []
+  supportApp: SRM
+- id: BEH-SUP-014
+  name: 创建框架协议
+  ownerEntity: AGG-SUP-016
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/合同
+  behaviorCategory: 创建
+  description: 年度/项目采购
+  input: 年度/项目采购
+  outputObjects:
+  - AGG-SUP-016
+  appliedRules:
+  - RULE-SUP-009
+  producedEvents: []
+  supportApp: SRM
+- id: BEH-SUP-015
+  name: 创建采购合同
+  ownerEntity: AGG-SUP-017
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/合同
+  behaviorCategory: 创建
+  description: 框架协议或单次采购
+  input: 框架协议或单次采购
+  outputObjects:
+  - AGG-SUP-017
+  appliedRules:
+  - RULE-SUP-009
+  producedEvents: []
+  supportApp: SRM/ERP
+- id: BEH-SUP-016
+  name: 生成采购订单
+  ownerEntity: AGG-SUP-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/执行
+  behaviorCategory: 创建
+  description: 审批通过的申请
+  input: 审批通过的申请
+  outputObjects:
+  - AGG-SUP-019
+  appliedRules:
+  - RULE-SUP-002
+  - RULE-SUP-008
+  - RULE-SUP-010
+  - RULE-SUP-012
+  - RULE-SUP-014
+  producedEvents: []
+  supportApp: ERP/SRM
+- id: BEH-SUP-017
+  name: 发布采购订单
+  ownerEntity: AGG-SUP-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/执行
+  behaviorCategory: 发送
+  description: 订单生成
+  input: 订单生成
+  outputObjects:
+  - AGG-SUP-019
+  appliedRules:
+  - RULE-SUP-002
+  - RULE-SUP-008
+  - RULE-SUP-010
+  - RULE-SUP-012
+  - RULE-SUP-014
+  producedEvents: []
+  supportApp: SRM
+- id: BEH-SUP-018
+  name: 供应商确认交期
+  ownerEntity: AGG-SUP-020
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/执行
+  behaviorCategory: 确认
+  description: 收到PO
+  input: 收到PO
+  outputObjects:
+  - AGG-SUP-020
+  appliedRules: []
+  producedEvents: []
+  supportApp: SRM
+- id: BEH-SUP-019
+  name: 创建委外加工单
+  ownerEntity: AGG-SUP-021
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/外协
+  behaviorCategory: 创建
+  description: 产能不足或专业工序
+  input: 产能不足或专业工序
+  outputObjects:
+  - AGG-SUP-021
+  appliedRules:
+  - RULE-SUP-015
+  producedEvents: []
+  supportApp: ERP/SRM
+- id: BEH-SUP-020
+  name: 订单变更
+  ownerEntity: AGG-SUP-019
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/执行
+  behaviorCategory: 更新
+  description: 需求或交期变化
+  input: 需求或交期变化
+  outputObjects:
+  - AGG-SUP-019
+  appliedRules:
+  - RULE-SUP-002
+  - RULE-SUP-008
+  - RULE-SUP-010
+  - RULE-SUP-012
+  - RULE-SUP-014
+  producedEvents: []
+  supportApp: ERP/SRM
+- id: BEH-SUP-021
+  name: 创建ASN发货通知
+  ownerEntity: AGG-SUP-026
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/收货
+  behaviorCategory: 创建
+  description: 供应商发货
+  input: 供应商发货
+  outputObjects:
+  - AGG-SUP-026
+  appliedRules: []
+  producedEvents: []
+  supportApp: SRM/WMS
+- id: BEH-SUP-022
+  name: 到货预约
+  ownerEntity: AGG-SUP-022
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/收货
+  behaviorCategory: 协调
+  description: ASN到达
+  input: ASN到达
+  outputObjects:
+  - AGG-SUP-022
+  appliedRules:
+  - RULE-SUP-004
+  - RULE-SUP-005
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-023
+  name: 创建采购收货单
+  ownerEntity: AGG-SUP-022
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/收货
+  behaviorCategory: 创建
+  description: 实物到货
+  input: 实物到货
+  outputObjects:
+  - AGG-SUP-022
+  appliedRules:
+  - RULE-SUP-004
+  - RULE-SUP-005
+  producedEvents: []
+  supportApp: ERP/WMS
+- id: BEH-SUP-024
+  name: 物料质检
+  ownerEntity: AGG-SUP-022
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 物流/质检
+  behaviorCategory: 校验
+  description: 收货触发
+  input: 收货触发
+  outputObjects:
+  - AGG-SUP-022
+  - AGG-SUP-024
+  appliedRules:
+  - RULE-SUP-004
+  - RULE-SUP-005
+  producedEvents: []
+  supportApp: QMS/WMS
+- id: BEH-SUP-025
+  name: 创建采购入库单
+  ownerEntity: AGG-SUP-023
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/入库
+  behaviorCategory: 创建
+  description: 质检合格
+  input: 质检合格
+  outputObjects:
+  - AGG-SUP-023
+  - AGG-SUP-029
+  - AGG-SUP-031
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  - RULE-SUP-011
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-026
+  name: 创建销售发货单
+  ownerEntity: AGG-SUP-027
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/发货
+  behaviorCategory: 创建
+  description: 销售订单下达
+  input: 销售订单下达
+  outputObjects:
+  - AGG-SUP-027
+  - AGG-SUP-004
+  appliedRules:
+  - RULE-SUP-013
+  - RULE-SUP-016
+  producedEvents: []
+  supportApp: WMS/ERP
+- id: BEH-SUP-027
+  name: 销售出库过账
+  ownerEntity: AGG-SUP-028
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/出库
+  behaviorCategory: 创建
+  description: 发货单确认
+  input: 发货单确认
+  outputObjects:
+  - AGG-SUP-028
+  - AGG-SUP-029
+  - AGG-SUP-031
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  - RULE-SUP-011
+  - RULE-SUP-016
+  producedEvents: []
+  supportApp: WMS/ERP
+- id: BEH-SUP-028
+  name: 库存查询
+  ownerEntity: AGG-SUP-029
+  behaviorType: QUERY
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/库存
+  behaviorCategory: 读取
+  description: 业务调用
+  input: 业务调用
+  outputObjects:
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  producedEvents: []
+  supportApp: ERP/WMS
+- id: BEH-SUP-029
+  name: 库存预占
+  ownerEntity: AGG-SUP-029
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/库存
+  behaviorCategory: 更新
+  description: 订单/工单需求
+  input: 订单/工单需求
+  outputObjects:
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  producedEvents: []
+  supportApp: ERP/WMS
+- id: BEH-SUP-030
+  name: 库存调拨
+  ownerEntity: AGG-SUP-031
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/库存
+  behaviorCategory: 执行
+  description: 仓库间补货
+  input: 仓库间补货
+  outputObjects:
+  - AGG-SUP-031
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  - RULE-SUP-011
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-031
+  name: 库存盘点
+  ownerEntity: AGG-SUP-032
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/库存
+  behaviorCategory: 执行
+  description: 周期/临时
+  input: 周期/临时
+  outputObjects:
+  - AGG-SUP-032
+  - AGG-SUP-029
+  appliedRules:
+  - RULE-SUP-006
+  - RULE-SUP-007
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-032
+  name: 创建运输单
+  ownerEntity: AGG-SUP-033
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/运输
+  behaviorCategory: 创建
+  description: 出库或调拨
+  input: 出库或调拨
+  outputObjects:
+  - AGG-SUP-033
+  appliedRules: []
+  producedEvents: []
+  supportApp: TMS
+- id: BEH-SUP-033
+  name: 生成运单/提单
+  ownerEntity: AGG-SUP-034
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/运输
+  behaviorCategory: 创建
+  description: 运输单委托承运
+  input: 运输单委托承运
+  outputObjects:
+  - AGG-SUP-034
+  - AGG-SUP-035
+  appliedRules: []
+  producedEvents: []
+  supportApp: TMS/承运商
+- id: BEH-SUP-034
+  name: 运输调度
+  ownerEntity: AGG-SUP-033
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/运输
+  behaviorCategory: 执行
+  description: 运输单
+  input: 运输单
+  outputObjects:
+  - AGG-SUP-033
+  appliedRules: []
+  producedEvents: []
+  supportApp: TMS
+- id: BEH-SUP-035
+  name: 物流跟踪更新
+  ownerEntity: AGG-SUP-036
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 物流/运输
+  behaviorCategory: 记录
+  description: GPS/承运商回传
+  input: GPS/承运商回传
+  outputObjects:
+  - AGG-SUP-036
+  appliedRules: []
+  producedEvents: []
+  supportApp: TMS
+- id: BEH-SUP-036
+  name: 报关进出口申报
+  ownerEntity: AGG-SUP-038
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/关务
+  behaviorCategory: 创建
+  description: 跨境收发
+  input: 跨境收发
+  outputObjects:
+  - AGG-SUP-038
+  appliedRules:
+  - RULE-SUP-009
+  producedEvents: []
+  supportApp: 关务系统
+- id: BEH-SUP-037
+  name: 生成装箱单
+  ownerEntity: AGG-SUP-039
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/发货
+  behaviorCategory: 创建
+  description: 发货完成
+  input: 发货完成
+  outputObjects:
+  - AGG-SUP-039
+  appliedRules: []
+  producedEvents: []
+  supportApp: WMS
+- id: BEH-SUP-038
+  name: 供应商绩效评估
+  ownerEntity: AGG-SUP-025
+  behaviorType: COMMAND
+  triggerType: SYSTEM
+  domain: 供应链
+  subDomain: 采购/供应商管理
+  behaviorCategory: 计算
+  description: 周期结算
+  input: 周期结算
+  outputObjects:
+  - AGG-SUP-025
+  appliedRules: []
+  producedEvents: []
+  supportApp: SRM
+- id: BEH-SUP-039
+  name: 不良品处理
+  ownerEntity: AGG-SUP-024
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 物流/质量
+  behaviorCategory: 执行
+  description: 质检不合格
+  input: 质检不合格
+  outputObjects:
+  - AGG-SUP-024
+  appliedRules:
+  - RULE-SUP-005
+  producedEvents: []
+  supportApp: ERP/WMS
+- id: BEH-SUP-040
+  name: 供应商冻结/解冻
+  ownerEntity: AGG-SUP-012
+  behaviorType: COMMAND
+  triggerType: USER_ACTION
+  domain: 供应链
+  subDomain: 采购/供应商管理
+  behaviorCategory: 更新
+  description: 资质或绩效异常
+  input: 资质或绩效异常
+  outputObjects:
+  - AGG-SUP-012
+  appliedRules: []
+  producedEvents: []
+  supportApp: SRM
